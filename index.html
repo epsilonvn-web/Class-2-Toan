@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vườn Tri Thức Lớp 2 - Môn Toán</title>
+  <title>Vườn Tri Thức Toán Lớp 2 - Em Học Vui</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Quicksand & Nunito -->
@@ -17,10 +17,10 @@
 
   <style>
     :root {
-      --primary: #3B82F6;
-      --secondary: #1D4ED8;
+      --primary: #EC4899;
+      --secondary: #8B5CF6;
       --accent: #F59E0B;
-      --dark: #1E293B;
+      --dark: #374151;
     }
     * {
       box-sizing: border-box;
@@ -29,7 +29,7 @@
     }
     body {
       font-family: 'Nunito', 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #EFF6FF 0%, #E0F2FE 50%, #EDE9FE 100%);
+      background: linear-gradient(135deg, #FDF2F8 0%, #F5F3FF 50%, #EFF6FF 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -43,10 +43,10 @@
     #app-container {
       background: rgba(255, 255, 255, 0.98);
       width: 100%;
-      max-width: 1100px;
-      min-height: 760px;
+      max-width: 1080px;
+      min-height: 780px;
       border-radius: 36px;
-      box-shadow: 0 24px 60px rgba(59, 130, 246, 0.2);
+      box-shadow: 0 24px 60px rgba(236, 72, 153, 0.18);
       border: 6px solid #FFF;
       display: flex;
       flex-direction: column;
@@ -60,32 +60,51 @@
       transform: translateY(-5px) scale(1.02);
     }
     .btn-bounce:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
     }
     .seq-box {
       width: 52px;
       height: 52px;
       border-radius: 16px;
       background: #FFF;
-      border: 3px solid #3B82F6;
-      color: #1D4ED8;
-      font-size: 22px;
+      border: 3px solid #F472B6;
+      color: #DB2777;
+      font-size: 20px;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 0 #2563EB;
+      box-shadow: 0 4px 0 #F472B6;
     }
     .seq-box.target {
       background: #FEF3C7;
       border-color: #F59E0B;
       color: #D97706;
       box-shadow: 0 4px 0 #D97706;
-      animation: pulse-target 1.4s infinite;
+      animation: pulse-target 1.3s infinite;
     }
     @keyframes pulse-target {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.08); }
+    }
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    .nav-btn {
+      transition: all 0.2s ease;
+    }
+    .nav-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
     }
   </style>
 </head>
@@ -94,42 +113,49 @@
   <div id="app-container">
 
     <!-- MÀN HÌNH BẮT ĐẦU -->
-    <div id="start-overlay" class="absolute inset-0 bg-gradient-to-br from-blue-600/95 via-indigo-600/95 to-purple-700/95 z-50 flex flex-col items-center justify-center p-6 text-center text-white">
+    <div id="start-overlay" class="absolute inset-0 bg-gradient-to-br from-pink-500/95 via-purple-600/95 to-indigo-600/95 z-50 flex flex-col items-center justify-center p-6 text-center text-white">
       <div class="w-24 h-24 bg-white rounded-3xl flex items-center justify-center text-6xl shadow-2xl mb-4 transform -rotate-6 animate-bounce">
-        🔢
+        🐰
       </div>
-      <h1 class="text-3xl md:text-4xl font-black font-cute mb-3">🔢 TOÁN HỌC LỚP 2 VUI NHỘN 🔢</h1>
-      <p class="text-base md:text-lg font-bold max-w-lg mb-6 leading-relaxed text-blue-100">
-        Bé sẵn sàng chinh phục các con số, bảng tính và hình học cùng Thỏ Trắng chưa nào? ✨
+      <h1 class="text-3xl md:text-5xl font-black font-cute mb-3 tracking-wide">🌸 VƯỜN TOÁN LỚP 2 🌸</h1>
+      <p class="text-base md:text-lg font-bold max-w-lg mb-6 leading-relaxed text-pink-100">
+        Bé cùng Thỏ Hồng chinh phục các phép tính cộng trừ, bảng nhân chia và bài toán hay từ Sách Giáo Khoa nhé! ✨
       </p>
-      <button onclick="initAppAudio()" class="btn-bounce bg-amber-300 hover:bg-amber-200 text-amber-900 text-2xl md:text-3xl font-black px-10 py-4 md:py-5 rounded-full shadow-2xl border-4 border-white transition flex items-center space-x-3">
-        <span>🔊 BẮT ĐẦU HỌC NGAY</span>
+      <button onclick="initAppAudio()" class="btn-bounce bg-amber-300 hover:bg-amber-200 text-amber-950 text-2xl md:text-3xl font-black px-10 py-4 md:py-5 rounded-full shadow-2xl border-4 border-white transition flex items-center space-x-3">
+        <span>✨ BẮT ĐẦU HỌC NGAY ✨</span>
       </button>
     </div>
 
     <!-- HEADER -->
-    <header class="bg-white/95 backdrop-blur-md px-5 py-3 flex justify-between items-center border-b-2 border-blue-100 z-10">
+    <header class="bg-white/95 backdrop-blur-md px-4 sm:px-6 py-3.5 flex justify-between items-center border-b-2 border-pink-100 z-10 gap-2">
+      <!-- Nút Menu & Tab Chủ đề -->
       <div class="flex items-center space-x-2">
-        <button id="btn-back-menu" onclick="openMathMenu()" class="btn-bounce bg-blue-50 hover:bg-blue-100 text-blue-700 border-2 border-blue-200 font-extrabold px-3 py-1.5 rounded-2xl text-xs md:text-sm flex items-center space-x-1 shadow-sm hidden">
-          <span>⬅️ Menu Chính</span>
+        <button id="btn-back-menu" onclick="openMathMenu()" class="btn-bounce bg-pink-50 hover:bg-pink-100 text-pink-700 border-2 border-pink-200 font-extrabold px-3 py-1.5 rounded-2xl text-xs md:text-sm flex items-center space-x-1.5 shadow-sm hidden">
+          <span>🏠 Menu Chủ Đề</span>
         </button>
+        <div id="topic-tab-badge" class="hidden sm:flex items-center gap-1.5 bg-purple-50 text-purple-700 border-2 border-purple-200 font-black px-3 py-1.5 rounded-2xl text-xs md:text-sm shadow-sm">
+          <span>🏷️</span>
+          <span id="topic-tab-text">Chủ đề</span>
+        </div>
       </div>
 
+      <!-- Tiêu đề chính -->
       <div class="flex items-center justify-center">
-        <h1 class="text-lg sm:text-xl md:text-2xl font-black font-cute text-blue-600 tracking-wide drop-shadow-sm flex items-center gap-1.5 cursor-pointer" onclick="openMathMenu()">
-          <span>🔢</span>
-          <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">TOÁN HỌC LỚP 2</span>
-          <span>🔢</span>
+        <h1 class="text-base sm:text-xl md:text-2xl font-black font-cute tracking-wide drop-shadow-sm flex items-center gap-1.5 cursor-pointer" onclick="openMathMenu()">
+          <span>🎀</span>
+          <span class="bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">TOÁN HỌC LỚP 2</span>
+          <span>🎀</span>
         </h1>
       </div>
 
+      <!-- Sao & Mascot -->
       <div class="flex items-center space-x-2">
         <div class="flex items-center space-x-1.5 bg-amber-50 border-2 border-amber-300 px-3 py-1 rounded-2xl shadow-inner">
-          <span class="text-xl animate-spin" style="animation-duration: 4s;">⭐</span>
-          <span id="stars-count" class="text-xl font-black text-amber-600">0</span>
-          <span class="text-[11px] font-black text-amber-500 hidden sm:inline">Sao</span>
+          <span class="text-lg md:text-xl animate-spin" style="animation-duration: 4s;">⭐</span>
+          <span id="stars-count" class="text-lg md:text-xl font-black text-amber-600">0</span>
+          <span class="text-[11px] font-black text-amber-500 hidden md:inline">Sao</span>
         </div>
-        <button onclick="speakMascotCheer()" class="btn-bounce bg-blue-100 hover:bg-blue-200 text-blue-700 border border-blue-300 px-2.5 py-1.5 rounded-2xl text-xs font-black flex items-center space-x-1 shadow-sm">
+        <button onclick="speakMascotCheer()" class="btn-bounce bg-pink-100 hover:bg-pink-200 text-pink-700 border border-pink-300 px-3 py-1.5 rounded-2xl text-xs font-black flex items-center space-x-1 shadow-sm">
           <span>🐰 Cổ vũ</span>
         </button>
       </div>
@@ -137,15 +163,18 @@
 
     <!-- NỘI DUNG CHÍNH -->
     <main id="main-content" class="flex-1 p-4 md:p-6 flex flex-col items-center justify-center text-center overflow-y-auto">
-      <!-- Dynamic Rendering -->
+      <!-- Màn chơi hiển thị động -->
     </main>
 
   </div>
 
   <script>
     let stars = parseInt(localStorage.getItem('stars_math_lop2') || '0');
-    let currentMode = null;
-    let currentAnswer = null;
+    let currentTopicName = "";
+    let currentQuestionList = [];
+    let currentQuestionIndex = 0;
+    let selectedAnswerState = {}; // Lưu trạng thái trả lời của từng câu
+
     let audioCtx = null;
     const onlineAudioPlayer = new Audio();
 
@@ -158,7 +187,7 @@
         if (audioCtx.state === 'suspended') audioCtx.resume();
       }
       playTone('correct');
-      speakClear("Chào bé yêu! Chúc con học môn Toán thật giỏi và rinh thật nhiều ngôi sao nhé!", "vi");
+      speakClear("Chào bé yêu! Thỏ Hồng chúc con học Toán thật giỏi và rinh thật nhiều ngôi sao lấp lánh nhé!", "vi");
       document.getElementById('start-overlay').style.display = 'none';
       openMathMenu();
     }
@@ -179,15 +208,19 @@
         const now = audioCtx.currentTime;
 
         if (type === 'correct') {
+          osc.type = 'triangle';
           osc.frequency.setValueAtTime(523.25, now);
-          osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.15);
+          osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.08);
+          osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.16);
+          osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.24);
           gain.gain.setValueAtTime(0.3, now);
-          gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
           osc.start(now);
-          osc.stop(now + 0.35);
+          osc.stop(now + 0.4);
         } else {
+          osc.type = 'sine';
           osc.frequency.setValueAtTime(260, now);
-          osc.frequency.linearRampToValueAtTime(180, now + 0.22);
+          osc.frequency.linearRampToValueAtTime(170, now + 0.22);
           gain.gain.setValueAtTime(0.25, now);
           gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
           osc.start(now);
@@ -200,17 +233,27 @@
       try {
         onlineAudioPlayer.pause();
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        
         let cleanText = String(text || '')
           .replace(/\+/g, ' cộng ')
           .replace(/-/g, ' trừ ')
           .replace(/×/g, ' nhân ')
+          .replace(/\*/g, ' nhân ')
           .replace(/:/g, ' chia ')
-          .replace(/=/g, ' bằng ');
+          .replace(/\//g, ' chia ')
+          .replace(/=/g, ' bằng ')
+          .replace(/kg/gi, ' ki-lô-gam ')
+          .replace(/\bl\b/gi, ' lít ')
+          .replace(/dm/gi, ' đề-xi-mét ')
+          .replace(/cm/gi, ' xăng-ti-mét ')
+          .replace(/\bm\b/gi, ' mét ')
+          .replace(/\?/g, ' mấy ');
+
         const encoded = encodeURIComponent(cleanText.trim());
         const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encoded}`;
 
         onlineAudioPlayer.src = ttsUrl;
-        onlineAudioPlayer.playbackRate = 0.92;
+        onlineAudioPlayer.playbackRate = 0.95;
         onlineAudioPlayer.onended = () => {
           if (typeof onEndCallback === 'function') onEndCallback();
         };
@@ -231,9 +274,14 @@
         return;
       }
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.88;
-      utterance.pitch = 1.1;
       utterance.lang = 'vi-VN';
+      utterance.rate = 0.92;
+      utterance.pitch = 1.08;
+
+      const voices = window.speechSynthesis.getVoices();
+      const vietVoice = voices.find(v => (v.lang === 'vi-VN' || v.lang.startsWith('vi')) && (v.name.includes('HoaiMy') || v.name.includes('Linh') || v.name.includes('Female') || v.name.includes('Google')));
+      if (vietVoice) utterance.voice = vietVoice;
+
       utterance.onend = () => {
         if (typeof onEndCallback === 'function') onEndCallback();
       };
@@ -242,9 +290,10 @@
 
     function speakMascotCheer() {
       const cheers = [
-        "Bé tính toán giỏi quá! Cứ phát huy nhé!",
-        "Cố lên con, mỗi câu trả lời đúng là một ngôi sao sáng lấp lánh!",
-        "Thỏ trắng chúc bé học Toán thật vui và đạt điểm 10 tuyệt đối!"
+        "Bé gái của Thỏ Hồng học giỏi và thông minh lắm!",
+        "Tuyệt vời quá con ơi, rinh thêm nhiều ngôi sao lấp lánh nào!",
+        "Thỏ Hồng chúc bé yêu luôn chăm ngoan và học giỏi môn Toán nhé!",
+        "Con làm bài rất cẩn thận, Thỏ Hồng tự hào về con lắm!"
       ];
       speakClear(cheers[Math.floor(Math.random() * cheers.length)], "vi");
     }
@@ -253,374 +302,434 @@
       stars += num;
       localStorage.setItem('stars_math_lop2', stars);
       document.getElementById('stars-count').innerText = stars;
-      confetti({ particleCount: 60, spread: 80, origin: { y: 0.75 } });
-    }
-
-    const QUEUE_SYSTEM = {};
-    function getNextItemFromPool(poolKey, rawDataArray) {
-      if (!QUEUE_SYSTEM[poolKey] || QUEUE_SYSTEM[poolKey].length === 0) {
-        const shuffled = [...rawDataArray];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        QUEUE_SYSTEM[poolKey] = shuffled;
-      }
-      return QUEUE_SYSTEM[poolKey].pop();
+      confetti({
+        particleCount: 50,
+        spread: 70,
+        origin: { y: 0.7 },
+        colors: ['#EC4899', '#8B5CF6', '#F59E0B', '#10B981', '#3B82F6']
+      });
     }
 
     const container = document.getElementById('main-content');
     const btnBackMenu = document.getElementById('btn-back-menu');
+    const topicTabBadge = document.getElementById('topic-tab-badge');
+    const topicTabText = document.getElementById('topic-tab-text');
 
+    function updateHeaderTopic(name) {
+      currentTopicName = name;
+      if (name) {
+        btnBackMenu.classList.remove('hidden');
+        topicTabBadge.classList.remove('hidden');
+        topicTabText.innerText = name;
+      } else {
+        btnBackMenu.classList.add('hidden');
+        topicTabBadge.classList.add('hidden');
+        topicTabText.innerText = "";
+      }
+    }
+
+    // ==========================================
+    // MENU CHÍNH
+    // ==========================================
     function openMathMenu() {
-      currentMode = null;
-      btnBackMenu.classList.add('hidden');
+      updateHeaderTopic("");
       container.innerHTML = `
-        <div class="mb-4">
-          <h2 class="text-2xl md:text-3xl font-black text-blue-600 font-cute">🔢 MÔN TOÁN LỚP 2 - CHƯƠNG TRÌNH ĐỘC LẬP</h2>
-          <p class="text-xs md:text-sm font-bold text-gray-500">Bé chọn chuyên mục bên dưới để luyện tập nhé!</p>
+        <div class="mb-5">
+          <h2 class="text-2xl md:text-3xl font-black text-pink-600 font-cute">🌸 CÁC CHỦ ĐỀ TOÁN LỚP 2 CHUẨN SGK 🌸</h2>
+          <p class="text-xs md:text-sm font-bold text-gray-500">Bé chọn chuyên mục yêu thích để cùng Thỏ Hồng ôn luyện nhé!</p>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5 w-full max-w-5xl">
-          <div onclick="startMathLogicGame()" class="card-hover bg-white border-2 border-purple-200 hover:border-purple-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+          <div onclick="startTopic('Dãy Số & Tia Số', MATH_LOGIC_BANK)" class="card-hover bg-white border-2 border-purple-200 hover:border-purple-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">🧩</div>
-            <h3 class="text-xs md:text-sm font-black text-purple-700">1. Dãy Số Quy Luật</h3>
+            <h3 class="text-xs md:text-sm font-black text-purple-700">1. Dãy Số & Tia Số</h3>
           </div>
-          <div onclick="startMathAddSubGame()" class="card-hover bg-white border-2 border-blue-200 hover:border-blue-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
-            <div class="text-3xl mb-1">➕</div>
-            <h3 class="text-xs md:text-sm font-black text-blue-700">2. Phép Tính Có Nhớ</h3>
+          
+          <!-- MỤC SỐ 2: PHÉP TÍNH CỘNG TRỪ -->
+          <div onclick="openAddSubMenu()" class="card-hover bg-white border-2 border-pink-300 hover:border-pink-500 rounded-3xl p-3.5 text-center cursor-pointer shadow-md bg-gradient-to-b from-pink-50/50 to-white ring-2 ring-pink-200">
+            <div class="text-3xl mb-1 text-pink-500 font-black">➕ ➖</div>
+            <h3 class="text-xs md:text-sm font-black text-pink-700">2. Phép Tính Cộng Trừ</h3>
           </div>
-          <div onclick="startMathMultGame()" class="card-hover bg-white border-2 border-amber-200 hover:border-amber-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+
+          <div onclick="startTopic('Bảng Nhân 2 & 5', MATH_MULT)" class="card-hover bg-white border-2 border-amber-200 hover:border-amber-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">✖️</div>
             <h3 class="text-xs md:text-sm font-black text-amber-700">3. Bảng Nhân 2 & 5</h3>
           </div>
-          <div onclick="startMathDivGame()" class="card-hover bg-white border-2 border-teal-200 hover:border-teal-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+          <div onclick="startTopic('Bảng Chia 2 & 5', MATH_DIV)" class="card-hover bg-white border-2 border-teal-200 hover:border-teal-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">➗</div>
             <h3 class="text-xs md:text-sm font-black text-teal-700">4. Bảng Chia 2 & 5</h3>
           </div>
-          <div onclick="startMathGeometryGame()" class="card-hover bg-white border-2 border-rose-200 hover:border-rose-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+          <div onclick="startTopic('Hình Học Cơ Bản', MATH_GEOMETRY)" class="card-hover bg-white border-2 border-rose-200 hover:border-rose-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">📐</div>
             <h3 class="text-xs md:text-sm font-black text-rose-700">5. Hình Học Cơ Bản</h3>
           </div>
-          <div onclick="startMathLengthGame()" class="card-hover bg-white border-2 border-cyan-200 hover:border-cyan-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+          <div onclick="startTopic('Đo Độ Dài & Cây Cầu', MATH_LENGTH)" class="card-hover bg-white border-2 border-cyan-200 hover:border-cyan-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">📏</div>
-            <h3 class="text-xs md:text-sm font-black text-cyan-700">6. Đo Độ Dài (dm, cm, m)</h3>
+            <h3 class="text-xs md:text-sm font-black text-cyan-700">6. Đo Độ Dài & Cây Cầu</h3>
           </div>
-          <div onclick="startMathMassLitGame()" class="card-hover bg-white border-2 border-emerald-200 hover:border-emerald-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+          <div onclick="startTopic('Đơn Vị Lít & Ki-lô-gam', MATH_MASS_LIT)" class="card-hover bg-white border-2 border-emerald-200 hover:border-emerald-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">⚖️</div>
             <h3 class="text-xs md:text-sm font-black text-emerald-700">7. Đơn Vị Lít & Ki-lô-gam</h3>
           </div>
-          <div onclick="startMathClockGame()" class="card-hover bg-white border-2 border-orange-200 hover:border-orange-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+          <div onclick="startTopic('Xem Giờ & Lịch', MATH_CLOCK)" class="card-hover bg-white border-2 border-orange-200 hover:border-orange-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">⏰</div>
             <h3 class="text-xs md:text-sm font-black text-orange-700">8. Xem Giờ & Lịch</h3>
           </div>
-          <div onclick="startMathWordGame()" class="card-hover bg-white border-2 border-indigo-200 hover:border-indigo-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+          <div onclick="startTopic('Bài Toán Lời Văn', MATH_WORD_PROBLEMS)" class="card-hover bg-white border-2 border-indigo-200 hover:border-indigo-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">📖</div>
-            <h3 class="text-xs md:text-sm font-black text-indigo-700">9. Bài Toán Có Lời Văn</h3>
+            <h3 class="text-xs md:text-sm font-black text-indigo-700">9. Bài Toán Lời Văn</h3>
           </div>
-          <div onclick="startMathFindXGame()" class="card-hover bg-white border-2 border-pink-200 hover:border-pink-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
+          <div onclick="startTopic('Thành Phần Chưa Biết', MATH_FIND_X)" class="card-hover bg-white border-2 border-fuchsia-200 hover:border-fuchsia-400 rounded-3xl p-3.5 text-center cursor-pointer shadow-sm">
             <div class="text-3xl mb-1">🔍</div>
-            <h3 class="text-xs md:text-sm font-black text-pink-700">10. Tìm Thành Phần Chưa Biết</h3>
+            <h3 class="text-xs md:text-sm font-black text-fuchsia-700">10. Thành Phần Chưa Biết</h3>
           </div>
         </div>
       `;
     }
 
-    const MATH_LOGIC_BANK = [
-      { sequence: [2, 4, 6, "?", 10], rule: "Đếm thêm 2 đơn vị (+2)", answer: 8, choices: [7, 8, 9, 12] },
-      { sequence: [5, 10, 15, "?", 25], rule: "Đếm nhảy 5 đơn vị (+5)", answer: 20, choices: [18, 20, 22, 30] },
-      { sequence: [10, 20, 30, 40, "?"], rule: "Dãy số tròn chục (+10)", answer: 50, choices: [45, 50, 60, 55] },
-      { sequence: [1, 3, 5, 7, "?"], rule: "Dãy số lẻ (+2)", answer: 9, choices: [8, 9, 10, 11] }
-    ];
-
-    function startMathLogicGame() {
-      currentMode = 'mathLogic';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathLogic', MATH_LOGIC_BANK);
-      currentAnswer = q.answer;
-      const seqHtml = q.sequence.map(item => item === "?" ? `<div class="seq-box target">?</div>` : `<div class="seq-box">${item}</div>`).join('');
-
+    // ==========================================
+    // MENU PHÂN MỤC CHO PHÉP TÍNH CỘNG TRỪ (MỤC 2)
+    // ==========================================
+    function openAddSubMenu() {
+      updateHeaderTopic("Phép Tính Cộng Trừ");
       container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>Điền số thích hợp vào dấu ?</span>
-          <button class="btn-bounce bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.sequence.join(', ').replace('?', 'chấm hỏi')}', 'vi')">🔊 Nghe</button>
+        <div class="mb-6">
+          <h2 class="text-2xl md:text-3xl font-black text-pink-600 font-cute">➕ PHÉP TÍNH CỘNG TRỪ ➖</h2>
+          <p class="text-xs md:text-sm font-bold text-gray-500">Bé chọn phạm vi số muốn luyện tập nhé!</p>
         </div>
-        <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl px-4">
+          <div onclick="startTopic('Cộng Trừ Tới 100', MATH_ADD_SUB_100)" class="card-hover bg-white border-4 border-pink-300 hover:border-pink-500 rounded-3xl p-6 text-center cursor-pointer shadow-lg bg-gradient-to-b from-pink-50/60 to-white">
+            <div class="w-16 h-16 bg-pink-100 text-pink-600 rounded-2xl flex items-center justify-center text-3xl font-black mx-auto mb-3 shadow-inner">
+              💯
+            </div>
+            <h3 class="text-lg md:text-xl font-black text-pink-700 mb-1">1. Cộng Trừ Tới 100</h3>
+            <p class="text-xs font-bold text-gray-500">Phép cộng, trừ có nhớ & không nhớ trong phạm vi 100, tháp số, tách số tròn 10</p>
+          </div>
+
+          <div onclick="startTopic('Cộng Trừ Từ 100 Tới 1000', MATH_ADD_SUB_1000)" class="card-hover bg-white border-4 border-purple-300 hover:border-purple-500 rounded-3xl p-6 text-center cursor-pointer shadow-lg bg-gradient-to-b from-purple-50/60 to-white">
+            <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-3xl font-black mx-auto mb-3 shadow-inner">
+              🔢
+            </div>
+            <h3 class="text-lg md:text-xl font-black text-purple-700 mb-1">2. Cộng Trừ Từ 100 Tới 1000</h3>
+            <p class="text-xs font-bold text-gray-500">Cộng trừ các số có 3 chữ số, đặt tính rồi tính, tính nhẩm tròn trăm</p>
+          </div>
+        </div>
+        <div class="mt-8">
+          <button onclick="openMathMenu()" class="btn-bounce bg-gray-100 hover:bg-gray-200 text-gray-700 font-black px-6 py-2.5 rounded-2xl text-sm border-2 border-gray-300 shadow-sm">
+            ⬅️ Quay lại Menu Chính
+          </button>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // KHỞI ĐỘNG VÀ ĐIỀU HƯỚNG CHỦ ĐỀ
+    // ==========================================
+    function startTopic(topicName, dataArray) {
+      updateHeaderTopic(topicName);
+      currentQuestionList = [...dataArray];
+      currentQuestionIndex = 0;
+      selectedAnswerState = {};
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = currentQuestionList[currentQuestionIndex];
+      const isFirst = currentQuestionIndex === 0;
+      const isLast = currentQuestionIndex === currentQuestionList.length - 1;
+      const answered = selectedAnswerState[currentQuestionIndex];
+
+      let centerContent = '';
+      if (q.sequence) {
+        const seqHtml = q.sequence.map(item => item === "?" ? `<div class="seq-box target">?</div>` : `<div class="seq-box">${item}</div>`).join('');
+        centerContent = `
           <div class="flex flex-wrap gap-2 justify-center mb-3">${seqHtml}</div>
-          <div class="text-sm font-extrabold text-purple-600">Quy luật: ${q.rule}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${q.choices.map(c => `<button class="btn-bounce bg-white border-4 border-blue-400 hover:bg-blue-50 text-blue-700 font-black text-2xl py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, ${c})">${c}</button>`).join('')}
-        </div>
-      `;
-    }
-
-    const MATH_ADD_SUB = [
-      { a: 38, b: 25, op: '+', res: 63 }, { a: 52, b: 17, op: '-', res: 35 },
-      { a: 47, b: 36, op: '+', res: 83 }, { a: 70, b: 24, op: '-', res: 46 }
-    ];
-
-    function startMathAddSubGame() {
-      currentMode = 'mathAddSub';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathAddSub', MATH_ADD_SUB);
-      currentAnswer = q.res;
-      let choices = [q.res];
-      while (choices.length < 4) {
-        let fake = q.res + (Math.floor(Math.random() * 5) + 1) * (Math.random() > 0.5 ? 1 : -1);
-        if (!choices.includes(fake) && fake > 0) choices.push(fake);
+          <div class="text-sm font-extrabold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">Quy luật: ${q.rule}</div>
+        `;
+      } else {
+        centerContent = `
+          ${q.visual ? `<div class="text-2xl md:text-3xl mb-2">${q.visual}</div>` : ''}
+          <div class="text-3xl md:text-4xl font-black text-pink-600 font-cute tracking-wider">${q.mathText || q.question}</div>
+        `;
       }
-      choices.sort(() => Math.random() - 0.5);
+
+      const speakPrompt = q.sequence ? q.sequence.join(', ').replace('?', 'chấm hỏi') : (q.mathText || q.question || q.visual);
 
       container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>Tính kết quả phép tính</span>
-          <button class="btn-bounce bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.a} ${q.op === '+' ? 'cộng' : 'trừ'} ${q.b} bằng bao nhiêu?', 'vi')">🔊 Nghe</button>
+        <div class="flex items-center justify-between w-full max-w-xl mb-2">
+          <div class="source-badge bg-pink-100 text-pink-700 border border-pink-200">${q.source}</div>
+          <div class="text-xs font-black text-gray-500 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
+            Câu ${currentQuestionIndex + 1} / ${currentQuestionList.length}
+          </div>
         </div>
-        <div class="bg-blue-50/50 border-2 border-dashed border-blue-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-4xl md:text-5xl font-black text-blue-600 font-cute tracking-wider">${q.a} ${q.op} ${q.b} = ?</div>
+
+        <div class="text-base sm:text-lg md:text-xl font-black text-gray-800 mb-3 flex items-center justify-center gap-2 max-w-2xl">
+          <span>${q.question || "Chọn đáp án đúng"}</span>
+          <button class="btn-bounce bg-pink-100 hover:bg-pink-200 text-pink-700 text-xs font-black px-2.5 py-1.5 rounded-xl flex items-center gap-1 shadow-sm flex-shrink-0" onclick="speakClear('${speakPrompt}', 'vi')">
+            🔊 Nghe
+          </button>
         </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${choices.map(c => `<button class="btn-bounce bg-white border-4 border-blue-400 hover:bg-blue-50 text-blue-700 font-black text-2xl py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, ${c})">${c}</button>`).join('')}
+
+        <!-- Khung nội dung câu hỏi -->
+        <div class="bg-pink-50/40 border-2 border-dashed border-pink-200 rounded-3xl p-4 md:p-5 w-full max-w-xl mb-4 flex flex-col items-center shadow-inner">
+          ${centerContent}
+        </div>
+
+        <!-- Thông báo kết quả phản hồi -->
+        <div id="feedback-msg" class="h-6 text-sm font-black mb-2 transition-all"></div>
+
+        <!-- 4 Nút đáp án -->
+        <div class="grid grid-cols-2 gap-3.5 w-full max-w-md mb-6">
+          ${q.choices.map(c => {
+            let btnClass = "bg-white border-pink-300 hover:bg-pink-50 text-pink-800";
+            if (answered) {
+              if (String(c) === String(q.answer)) {
+                btnClass = "!bg-emerald-500 !text-white !border-emerald-600 shadow-lg";
+              } else if (String(c) === String(answered.selected)) {
+                btnClass = "!bg-rose-500 !text-white !border-rose-600 shadow-md";
+              }
+            }
+            return `<button class="choice-btn btn-bounce border-4 ${btnClass} font-black text-lg md:text-2xl py-3 md:py-3.5 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, '${c}')" ${answered ? 'disabled' : ''}>${c}</button>`;
+          }).join('')}
+        </div>
+
+        <!-- THANH NÚT CHUYỂN CÂU HỎI (TRƯỚC / SAU) -->
+        <div class="flex items-center justify-between w-full max-w-md pt-2 border-t-2 border-pink-100 gap-4">
+          <button onclick="prevQuestion()" ${isFirst ? 'disabled' : ''} class="nav-btn btn-bounce flex-1 bg-white hover:bg-pink-50 text-pink-700 border-2 border-pink-300 font-black py-2.5 px-4 rounded-2xl text-sm md:text-base flex items-center justify-center space-x-1 shadow-sm">
+            <span>⬅️ Câu Trước</span>
+          </button>
+          
+          <button onclick="nextQuestion()" class="nav-btn btn-bounce flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black py-2.5 px-4 rounded-2xl text-sm md:text-base flex items-center justify-center space-x-1 shadow-md">
+            <span>${isLast ? '✨ Hoàn Thành' : 'Câu Sau ➡️'}</span>
+          </button>
         </div>
       `;
-    }
 
-    const MATH_MULT = [
-      { num1: 2, num2: 6, res: 12, visual: "2 × 6 = ?" }, { num1: 5, num2: 4, res: 20, visual: "5 × 4 = ?" }
-    ];
-
-    function startMathMultGame() {
-      currentMode = 'mathMult';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathMult', MATH_MULT);
-      currentAnswer = q.res;
-      let choices = [q.res];
-      while (choices.length < 4) {
-        let fake = q.num1 * (Math.floor(Math.random() * 9) + 1);
-        if (!choices.includes(fake)) choices.push(fake);
+      if (answered) {
+        const fb = document.getElementById('feedback-msg');
+        if (answered.isCorrect) {
+          fb.innerHTML = `<span class="text-emerald-600 font-extrabold">🌟 Bé đã trả lời đúng! Bé nhấn "Câu Sau ➡️" để tiếp tục nhé!</span>`;
+        } else {
+          fb.innerHTML = `<span class="text-rose-600 font-extrabold">💡 Đáp án đúng là: ${q.answer}. Bé nhấn "Câu Sau ➡️" nhé!</span>`;
+        }
       }
-      choices.sort(() => Math.random() - 0.5);
-
-      container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>Bảng nhân ${q.num1}</span>
-          <button class="btn-bounce bg-amber-100 hover:bg-amber-200 text-amber-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.num1} nhân ${q.num2} bằng bao nhiêu?', 'vi')">🔊 Nghe</button>
-        </div>
-        <div class="bg-amber-50/50 border-2 border-dashed border-amber-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-4xl md:text-5xl font-black text-amber-600 font-cute tracking-wider">${q.visual}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${choices.map(c => `<button class="btn-bounce bg-white border-4 border-amber-400 hover:bg-amber-50 text-amber-800 font-black text-2xl py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, ${c})">${c}</button>`).join('')}
-        </div>
-      `;
-    }
-
-    const MATH_DIV = [
-      { num1: 16, num2: 2, res: 8, visual: "16 : 2 = ?" }, { num1: 35, num2: 5, res: 7, visual: "35 : 5 = ?" }
-    ];
-
-    function startMathDivGame() {
-      currentMode = 'mathDiv';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathDiv', MATH_DIV);
-      currentAnswer = q.res;
-      let choices = [q.res];
-      while (choices.length < 4) {
-        let fake = Math.floor(Math.random() * 9) + 1;
-        if (!choices.includes(fake)) choices.push(fake);
-      }
-      choices.sort(() => Math.random() - 0.5);
-
-      container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>Bảng chia ${q.num2}</span>
-          <button class="btn-bounce bg-teal-100 hover:bg-teal-200 text-teal-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.num1} chia ${q.num2} bằng bao nhiêu?', 'vi')">🔊 Nghe</button>
-        </div>
-        <div class="bg-teal-50/50 border-2 border-dashed border-teal-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-4xl md:text-5xl font-black text-teal-600 font-cute tracking-wider">${q.visual}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${choices.map(c => `<button class="btn-bounce bg-white border-4 border-teal-400 hover:bg-teal-50 text-teal-800 font-black text-2xl py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, ${c})">${c}</button>`).join('')}
-        </div>
-      `;
-    }
-
-    const MATH_GEOMETRY = [
-      { visual: "📐", question: "Hình tam giác có bao nhiêu cạnh và đỉnh?", choices: ["3 cạnh và 3 đỉnh", "4 cạnh và 4 đỉnh", "2 cạnh", "5 cạnh"], answer: "3 cạnh và 3 đỉnh" }
-    ];
-
-    function startMathGeometryGame() {
-      currentMode = 'mathGeometry';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathGeometry', MATH_GEOMETRY);
-      currentAnswer = q.answer;
-      container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>${q.question}</span>
-          <button class="btn-bounce bg-rose-100 hover:bg-rose-200 text-rose-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.question}', 'vi')">🔊 Nghe</button>
-        </div>
-        <div class="bg-rose-50/50 border-2 border-dashed border-rose-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-6xl mb-2">${q.visual}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${q.choices.map(c => `<button class="btn-bounce bg-white border-4 border-rose-400 hover:bg-rose-50 text-rose-800 font-black text-lg py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, '${c}')">${c}</button>`).join('')}
-        </div>
-      `;
-    }
-
-    const MATH_LENGTH = [
-      { visual: "📏", question: "1 đề-xi-mét (1 dm) bằng bao nhiêu xăng-ti-mét (cm)?", choices: ["10 cm", "1 cm", "100 cm", "5 cm"], answer: "10 cm" }
-    ];
-
-    function startMathLengthGame() {
-      currentMode = 'mathLength';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathLength', MATH_LENGTH);
-      currentAnswer = q.answer;
-      container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>${q.question}</span>
-          <button class="btn-bounce bg-cyan-100 hover:bg-cyan-200 text-cyan-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.question}', 'vi')">🔊 Nghe</button>
-        </div>
-        <div class="bg-cyan-50/50 border-2 border-dashed border-cyan-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-6xl mb-2">${q.visual}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${q.choices.map(c => `<button class="btn-bounce bg-white border-4 border-cyan-400 hover:bg-cyan-50 text-cyan-800 font-black text-lg py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, '${c}')">${c}</button>`).join('')}
-        </div>
-      `;
-    }
-
-    const MATH_MASS_LIT = [
-      { visual: "⚖️", question: "Bao gạo nặng 35 kg, mẹ dùng 15 kg. Hỏi còn lại bao nhiêu kg gạo?", choices: ["20 kg", "25 kg", "15 kg", "30 kg"], answer: "20 kg" }
-    ];
-
-    function startMathMassLitGame() {
-      currentMode = 'mathMassLit';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathMassLit', MATH_MASS_LIT);
-      currentAnswer = q.answer;
-      container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>${q.question}</span>
-          <button class="btn-bounce bg-emerald-100 hover:bg-emerald-200 text-emerald-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.question}', 'vi')">🔊 Nghe</button>
-        </div>
-        <div class="bg-emerald-50/50 border-2 border-dashed border-emerald-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-6xl mb-2">${q.visual}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${q.choices.map(c => `<button class="btn-bounce bg-white border-4 border-emerald-400 hover:bg-emerald-50 text-emerald-800 font-black text-lg py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, '${c}')">${c}</button>`).join('')}
-        </div>
-      `;
-    }
-
-    const MATH_CLOCK = [
-      { visual: "🕒", question: "Kim ngắn chỉ số 3, kim dài chỉ số 12. Đồng hồ chỉ mấy giờ?", choices: ["3 giờ đúng", "12 giờ đúng", "3 giờ 15 phút", "4 giờ"], answer: "3 giờ đúng" }
-    ];
-
-    function startMathClockGame() {
-      currentMode = 'mathClock';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathClock', MATH_CLOCK);
-      currentAnswer = q.answer;
-      container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>${q.question}</span>
-          <button class="btn-bounce bg-orange-100 hover:bg-orange-200 text-orange-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.question}', 'vi')">🔊 Nghe</button>
-        </div>
-        <div class="bg-orange-50/50 border-2 border-dashed border-orange-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-6xl mb-2">${q.visual}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${q.choices.map(c => `<button class="btn-bounce bg-white border-4 border-orange-400 hover:bg-orange-50 text-orange-800 font-black text-lg py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, '${c}')">${c}</button>`).join('')}
-        </div>
-      `;
-    }
-
-    const MATH_WORD_PROBLEMS = [
-      { story: "Mai có 18 bông hoa. Lan có nhiều hơn Mai 7 bông hoa. Hỏi Lan có bao nhiêu bông hoa?", choices: ["25 bông", "24 bông", "23 bông", "26 bông"], answer: "25 bông" }
-    ];
-
-    function startMathWordGame() {
-      currentMode = 'mathWord';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathWord', MATH_WORD_PROBLEMS);
-      currentAnswer = q.answer;
-      container.innerHTML = `
-        <div class="text-lg md:text-xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>${q.story}</span>
-          <button class="btn-bounce bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.story}', 'vi')">🔊 Nghe</button>
-        </div>
-        <div class="bg-indigo-50/50 border-2 border-dashed border-indigo-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-5xl">🌸 🚌 🐥</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${q.choices.map(c => `<button class="btn-bounce bg-white border-4 border-indigo-400 hover:bg-indigo-50 text-indigo-800 font-black text-xl py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, '${c}')">${c}</button>`).join('')}
-        </div>
-      `;
-    }
-
-    const MATH_FIND_X = [
-      { question: "Tìm x, biết: x + 15 = 40", equation: "x + 15 = 40 ➔ x = ?", choices: [25, 30, 20, 35], answer: 25 }
-    ];
-
-    function startMathFindXGame() {
-      currentMode = 'mathFindX';
-      btnBackMenu.classList.remove('hidden');
-      const q = getNextItemFromPool('pool_mathFindX', MATH_FIND_X);
-      currentAnswer = q.answer;
-      container.innerHTML = `
-        <div class="text-xl md:text-2xl font-black text-gray-800 mb-4 flex items-center justify-center gap-3">
-          <span>${q.question}</span>
-          <button class="btn-bounce bg-pink-100 hover:bg-pink-200 text-pink-700 text-sm font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm" onclick="speakClear('${q.question}', 'vi')">🔊 Nghe</button>
-        </div>
-        <div class="bg-pink-50/50 border-2 border-dashed border-pink-200 rounded-3xl p-6 w-full max-w-xl mb-6 flex flex-col items-center">
-          <div class="text-3xl md:text-4xl font-black text-pink-600 font-cute tracking-wider">${q.equation}</div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md">
-          ${q.choices.map(c => `<button class="btn-bounce bg-white border-4 border-pink-400 hover:bg-pink-50 text-pink-800 font-black text-2xl py-3 rounded-2xl shadow-md transition" onclick="checkChoiceAnswer(this, ${c})">${c}</button>`).join('')}
-        </div>
-      `;
     }
 
     function checkChoiceAnswer(btnElement, selected) {
-      if (selected === currentAnswer) {
-        btnElement.classList.add('!bg-blue-500', '!text-white', '!border-blue-600');
+      const q = currentQuestionList[currentQuestionIndex];
+      const isCorrect = String(selected) === String(q.answer);
+      const fb = document.getElementById('feedback-msg');
+
+      selectedAnswerState[currentQuestionIndex] = { selected, isCorrect };
+
+      const allBtns = container.querySelectorAll('.choice-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btnElement.classList.add('!bg-emerald-500', '!text-white', '!border-emerald-600');
         playTone('correct');
         addStars(1);
+        fb.innerHTML = `<span class="text-emerald-600 font-extrabold">🌟 Bé trả lời chính xác! Nhấn "Câu Sau ➡️" để tiếp tục nhé!</span>`;
 
-        const allBtns = container.querySelectorAll('button');
-        allBtns.forEach(b => b.disabled = true);
-
-        speakClear("Chính xác! Bé giỏi quá!", "vi", () => {
-          setTimeout(nextQuestion, 1100);
-        });
+        const praises = ["Chính xác! Bé thông minh quá!", "Đúng rồi! Bé của Thỏ giỏi lắm!", "Xuất sắc! Thêm một ngôi sao sáng lấp lánh!"];
+        const cheerText = praises[Math.floor(Math.random() * praises.length)];
+        speakClear(cheerText, "vi");
       } else {
         btnElement.classList.add('!bg-rose-500', '!text-white', '!border-rose-600');
         playTone('wrong');
-        speakClear("Chưa đúng rồi, con tính lại nhé!", "vi");
+        fb.innerHTML = `<span class="text-rose-600 font-extrabold">💡 Chưa đúng rồi! Đáp án đúng là: ${q.answer}. Nhấn "Câu Sau ➡️" nhé!</span>`;
+        speakClear(`Chưa đúng rồi! Đáp án đúng là ${q.answer}`, "vi");
+      }
+    }
 
-        setTimeout(() => {
-          btnElement.classList.remove('!bg-rose-500', '!text-white', '!border-rose-600');
-        }, 1100);
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion();
       }
     }
 
     function nextQuestion() {
-      switch(currentMode) {
-        case 'mathLogic': startMathLogicGame(); break;
-        case 'mathAddSub': startMathAddSubGame(); break;
-        case 'mathMult': startMathMultGame(); break;
-        case 'mathDiv': startMathDivGame(); break;
-        case 'mathGeometry': startMathGeometryGame(); break;
-        case 'mathLength': startMathLengthGame(); break;
-        case 'mathMassLit': startMathMassLitGame(); break;
-        case 'mathClock': startMathClockGame(); break;
-        case 'mathWord': startMathWordGame(); break;
-        case 'mathFindX': startMathFindXGame(); break;
-        default: openMathMenu(); break;
+      if (currentQuestionIndex < currentQuestionList.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        // Hoàn thành bộ câu hỏi
+        confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
+        speakClear("Chúc mừng bé yêu đã hoàn thành xuất sắc tất cả câu hỏi trong chủ đề này!", "vi");
+        container.innerHTML = `
+          <div class="bg-white border-4 border-pink-300 rounded-3xl p-8 max-w-lg text-center shadow-xl">
+            <div class="text-6xl mb-3 animate-bounce">🏆</div>
+            <h2 class="text-2xl md:text-3xl font-black text-pink-600 font-cute mb-2">XUẤT SẮC QUÁ BÉ ƠI!</h2>
+            <p class="text-sm md:text-base font-bold text-gray-600 mb-6">Bé đã hoàn thành toàn bộ bài tập trong chủ đề <span class="text-pink-600 font-black">"${currentTopicName}"</span>.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <button onclick="startTopic(currentTopicName, currentQuestionList)" class="btn-bounce bg-amber-400 hover:bg-amber-300 text-amber-950 font-black px-6 py-3 rounded-2xl shadow-md">
+                🔄 Luyện tập lại
+              </button>
+              <button onclick="openMathMenu()" class="btn-bounce bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black px-6 py-3 rounded-2xl shadow-md">
+                🏠 Về Menu Chủ Đề
+              </button>
+            </div>
+          </div>
+        `;
       }
     }
+
+    // ==========================================
+    // DỮ LIỆU BÀI TẬP SGK TOÁN LỚP 2
+    // ==========================================
+
+    // 1. DÃY SỐ & TIA SỐ
+    const MATH_LOGIC_BANK = [
+      { source: "KNTT - Trang 11", sequence: [0, 1, 2, 3, "?", 5, 6, 7, 8, 9, 10], rule: "Tia số từ 0 đến 10", answer: 4, choices: [4, 5, 3, 6] },
+      { source: "KNTT - Trang 11", sequence: [10, 11, 12, "?", 14, 15, 16, 17, 18, 19, 20], rule: "Tia số từ 10 đến 20", answer: 13, choices: [13, 14, 15, 12] },
+      { source: "KNTT - Trang 11", visual: "🎈 Quả bóng mang phép tính: 10 + 7", question: "Quả bóng bay 10 + 7 ứng với vạch số nào trên tia số?", answer: 17, choices: [17, 18, 16, 15] },
+      { source: "KNTT - Trang 11", question: "Số liền trước của 16 là số nào?", answer: 15, choices: [15, 17, 14, 16] },
+      { source: "KNTT - Trang 11", question: "Số liền sau của 18 là số nào?", answer: 19, choices: [17, 19, 20, 18] },
+      { source: "KNTT - Trang 11", question: "Ghép 2 trong 3 thẻ số 4, 5, 0 được tất cả bao nhiêu số có 2 chữ số?", answer: "4 số (45, 40, 54, 50)", choices: ["4 số (45, 40, 54, 50)", "5 số", "6 số", "3 số"] },
+      { source: "CTST - Trang 14", sequence: [2, 4, 6, "?", 10, 12, 14, 16, 18, 20], rule: "Đếm nhảy thêm 2 đơn vị (+2)", answer: 8, choices: [7, 8, 9, 10] },
+      { source: "CTST - Trang 15", sequence: [20, 18, "?", 14, 12, 10], rule: "Dãy số lùi cách 2 đơn vị (-2)", answer: 16, choices: [15, 16, 17, 14] },
+      { source: "CTST - Trang 100", sequence: [343, 344, 345, "?", 347, 348, 349, 350], rule: "Tia số tăng liên tiếp 1 đơn vị", answer: 346, choices: [346, 345, 347, 350] },
+      { source: "CTST - Trang 100", sequence: [264, 266, 268, "?", 272, 274, 276], rule: "Tia số đếm thêm 2 đơn vị", answer: 270, choices: [269, 270, 271, 272] },
+      { source: "CTST - Trang 100", sequence: [550, 555, "?", 565, 570, 575, 580], rule: "Tia số đếm cách 5 đơn vị", answer: 560, choices: [558, 560, 562, 565] },
+      { source: "CTST - Trang 100", sequence: [930, 940, 950, 960, "?", 980, 990, 1000], rule: "Tia số đếm cách tròn chục (+10)", answer: 970, choices: [965, 970, 975, 980] },
+      { source: "Cánh Diều - Trang 46", sequence: [100, 200, 300, "?", 500, 600, 700, 800, 900, 1000], rule: "Tia số tròn trăm (+100)", answer: 400, choices: [400, 350, 450, 500] }
+    ];
+
+    // 2A. CỘNG TRỪ TỚI 100 (PHẠM VI 100)
+    const MATH_ADD_SUB_100 = [
+      { source: "CTST - Trang 44", mathText: "7 + 4 = 7 + ? + 1", question: "Tách số để cộng tròn 10: 7 + 4 = 7 + ? + 1", answer: 3, choices: [3, 2, 4, 1] },
+      { source: "CTST - Trang 44", mathText: "6 + 5 = 6 + ? + 1", question: "Tách số để cộng tròn 10: 6 + 5 = 6 + ? + 1", answer: 4, choices: [4, 3, 2, 5] },
+      { source: "CTST - Trang 44", visual: "🐱 Mèo mẹ mang số: 9 + 6", question: "Mèo con nào có kết quả tương ứng với mèo mẹ 9 + 6?", answer: 15, choices: [15, 14, 16, 13] },
+      { source: "CTST - Trang 44", visual: "🐱 Mèo mẹ mang số: 8 + 6", question: "Mèo con nào có kết quả tương ứng với mèo mẹ 8 + 6?", answer: 14, choices: [14, 15, 13, 12] },
+      { source: "CTST - Trang 14", visual: "🏰 Tháp số cộng dồn: Tầng 2 có 4 và 5", question: "Đỉnh tháp cộng dồn của hai số 4 và 5 là số mấy?", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "CTST - Trang 47", mathText: "3 + 7 + 6 = ?", question: "Tính nhẩm nhanh: 3 + 7 + 6 = ?", answer: 16, choices: [16, 15, 17, 14] },
+      { source: "CTST - Trang 86", mathText: "29 + 5 = ?", question: "Đặt tính rồi tính: 29 + 5 = ?", answer: 34, choices: [34, 35, 33, 24] },
+      { source: "CTST - Trang 86", mathText: "29 + 25 = ?", question: "Đặt tính rồi tính: 29 + 25 = ?", answer: 54, choices: [54, 55, 44, 64] },
+      { source: "CTST - Trang 86", mathText: "49 + 34 = ?", question: "Đặt tính rồi tính: 49 + 34 = ?", answer: 83, choices: [83, 73, 84, 93] },
+      { source: "CTST - Trang 93", mathText: "34 - 5 = ?", question: "Đặt tính rồi tính: 34 - 5 = ?", answer: 29, choices: [29, 31, 28, 19] },
+      { source: "CTST - Trang 93", mathText: "54 - 25 = ?", question: "Đặt tính rồi tính: 54 - 25 = ?", answer: 29, choices: [29, 39, 31, 28] },
+      { source: "KNTT - Trang 38", mathText: "8 + 5 - 3 = ?", question: "Hoa quả mang phép tính: 8 + 5 - 3 = ?", answer: 10, choices: [10, 11, 9, 13] },
+      { source: "KNTT - Trang 76", visual: "🔋 Cháu có 36 cục pin và 17 cục pin", question: "Cả hai cháu có tất cả bao nhiêu cục pin (36 + 17)?", answer: 53, choices: [53, 43, 54, 63] },
+      { source: "KNTT - Trang 113", mathText: "40 + 60 = ?", question: "Gấu mang bảng gỗ: 40 + 60 = ?", answer: 100, choices: [100, 90, 80, 110] },
+      { source: "KNTT - Trang 113", mathText: "100 - 40 = ?", question: "Gấu mang bảng gỗ: 100 - 40 = ?", answer: 60, choices: [60, 50, 70, 40] },
+      { source: "Cánh Diều - Trang 66", mathText: "52 - 24 = ?", question: "Đặt tính rồi tính: 52 - 24 = ?", answer: 28, choices: [28, 38, 26, 32] },
+      { source: "Cánh Diều - Trang 74", mathText: "58 + 17 = ?", question: "Đặt tính rồi tính: 58 + 17 = ?", answer: 75, choices: [75, 74, 65, 85] },
+      { source: "Cánh Diều - Trang 74", mathText: "85 - 68 = ?", question: "Đặt tính rồi tính: 85 - 68 = ?", answer: 17, choices: [17, 27, 18, 19] },
+      { source: "Cánh Diều - Trang 74", mathText: "100 - 24 = ?", question: "Đặt tính rồi tính: 100 - 24 = ?", answer: 76, choices: [76, 86, 74, 66] }
+    ];
+
+    // 2B. CỘNG TRỪ TỪ 100 TỚI 1000 (PHẠM VI 1000)
+    const MATH_ADD_SUB_1000 = [
+      { source: "KNTT - Trang 79", visual: "📚 Tập 1 có 264 trang, Tập 2 có 312 trang", question: "Cả hai tập sách có tất cả bao nhiêu trang (264 + 312)?", answer: 576, choices: [576, 586, 566, 476] },
+      { source: "KNTT - Trang 84", mathText: "427 + 246 = ?", question: "Đặt tính rồi tính: 427 + 246 = ?", answer: 673, choices: [673, 663, 683, 773] },
+      { source: "KNTT - Trang 84", mathText: "607 + 143 = ?", question: "Đặt tính rồi tính: 607 + 143 = ?", answer: 750, choices: [750, 740, 760, 850] },
+      { source: "KNTT - Trang 84", mathText: "400 + 200 = ?", question: "Tính nhẩm tròn trăm: 400 + 200 = ?", answer: 600, choices: [600, 500, 700, 800] },
+      { source: "KNTT - Trang 84", mathText: "300 + 700 = ?", question: "Tính nhẩm tròn trăm: 300 + 700 = ?", answer: 1000, choices: [1000, 900, 800, 1100] },
+      { source: "KNTT - Trang 90", mathText: "372 - 251 + 437 = ?", question: "Tính giá trị biểu thức: 372 - 251 + 437 = ?", answer: 558, choices: [558, 358, 458, 548] },
+      { source: "KNTT - Trang 97", mathText: "267 + 731 = ?", question: "Đặt tính rồi tính: 267 + 731 = ?", answer: 998, choices: [998, 988, 997, 1000] },
+      { source: "KNTT - Trang 97", mathText: "721 - 350 = ?", question: "Đặt tính rồi tính: 721 - 350 = ?", answer: 371, choices: [371, 381, 471, 361] },
+      { source: "KNTT - Trang 117", mathText: "700 - 300 = ?", question: "Quả táo tính nhẩm: 700 - 300 = ?", answer: 400, choices: [400, 500, 300, 600] },
+      { source: "CTST - Trang 79", mathText: "263 + 4 = ?", question: "Tính cộng không nhớ: 263 + 4 = ?", answer: 267, choices: [267, 268, 257, 277] },
+      { source: "CTST - Trang 79", mathText: "213 + 224 = ?", question: "Tính cộng không nhớ: 213 + 224 = ?", answer: 437, choices: [437, 447, 427, 537] },
+      { source: "CTST - Trang 82", mathText: "437 - 224 = ?", question: "Tính trừ không nhớ: 437 - 224 = ?", answer: 213, choices: [213, 223, 113, 313] },
+      { source: "CTST - Trang 90", mathText: "652 + 139 = ?", question: "Tính tổng 2 số có 3 chữ số: 652 + 139 = ?", answer: 791, choices: [791, 781, 792, 801] },
+      { source: "CTST - Trang 92", mathText: "234 - 5 = ?", question: "Tính trừ có nhớ: 234 - 5 = ?", answer: 229, choices: [229, 231, 219, 239] },
+      { source: "CTST - Trang 92", mathText: "417 - 163 = ?", question: "Tính trừ có nhớ: 417 - 163 = ?", answer: 254, choices: [254, 264, 354, 244] },
+      { source: "CTST - Trang 103", visual: "🚌 Xe buýt số 555 đón các bạn mang phép tính nào?", question: "Xe buýt số 555 sẽ đón bạn mang phép tính nào?", answer: "324 + 231", choices: ["324 + 231", "251 + 637", "637 + 251", "400 + 200"] },
+      { source: "Cánh Diều - Trang 58", visual: "📖 Khối Một: 243 quyển, Khối Hai: 325 quyển", question: "Cả hai khối ủng hộ được bao nhiêu quyển sách (243 + 325)?", answer: 568, choices: [568, 558, 578, 468] },
+      { source: "Cánh Diều - Trang 71", visual: "📚 Có 362 quyển sách, cho mượn 145 quyển", question: "Trong thư viện còn lại bao nhiêu quyển sách (362 - 145)?", answer: 217, choices: [217, 227, 207, 117] }
+    ];
+
+    // 3. BẢNG NHÂN 2 & 5
+    const MATH_MULT = [
+      { source: "KNTT - Trang 10", mathText: "2 × 7 = ?", question: "Sóc nhặt hạt dẻ: 2 × 7 bằng bao nhiêu?", answer: 14, choices: [14, 12, 16, 18] },
+      { source: "KNTT - Trang 10", mathText: "2 × 9 = ?", question: "Sóc nhặt hạt dẻ: 2 × 9 bằng bao nhiêu?", answer: 18, choices: [18, 16, 20, 14] },
+      { source: "CTST - Trang 15", visual: "🦆 Đàn vịt bơi hồ: 10 con vịt", question: "Mỗi con vịt có 2 cánh. Hỏi 10 con vịt có bao nhiêu cái cánh?", answer: 20, choices: [20, 10, 18, 12] },
+      { source: "Cánh Diều - Trang 11", visual: "🌸 5 chậu hoa, mỗi chậu có 2 bông", question: "Có 5 chậu hoa, mỗi chậu có 2 bông hoa đỏ. Phép nhân tính tổng số bông là:", answer: "2 × 5 = 10", choices: ["2 × 5 = 10", "2 × 4 = 8", "5 + 2 = 7", "2 × 6 = 12"] },
+      { source: "Cánh Diều - Trang 11", visual: "🏓 3 bạn chơi bóng bàn, mỗi bạn cầm 2 vợt", question: "3 bạn cầm vợt bóng bàn, mỗi bạn cầm 2 cái. Hỏi có tất cả mấy cái vợt?", answer: 6, choices: [6, 5, 8, 4] },
+      { source: "Cánh Diều - Trang 11", mathText: "2 kg × 6 = ?", question: "Tính: 2 kg × 6 = ?", answer: "12 kg", choices: ["12 kg", "10 kg", "14 kg", "8 kg"] },
+      { source: "Cánh Diều - Trang 11", mathText: "2 dm × 9 = ?", question: "Tính: 2 dm × 9 = ?", answer: "18 dm", choices: ["18 dm", "16 dm", "19 dm", "20 dm"] },
+      { source: "Cánh Diều - Trang 11", mathText: "2 l × 7 = ?", question: "Tính: 2 l × 7 = ?", answer: "14 l", choices: ["14 l", "12 l", "16 l", "9 l"] },
+      { source: "KNTT - Trang 27", visual: "🍎 4 đĩa, mỗi đĩa có 5 quả táo", question: "Có 4 đĩa táo, mỗi đĩa 5 quả. Phép nhân thích hợp là:", answer: "5 × 4 = 20", choices: ["5 × 4 = 20", "4 × 5 = 20", "5 + 4 = 9", "5 × 3 = 15"] },
+      { source: "KNTT - Trang 123", visual: "🥥 Mỗi chùm có 5 quả dừa", question: "Mỗi chùm có 5 quả dừa. Hỏi 4 chùm dừa như vậy có bao nhiêu quả?", answer: "20 quả", choices: ["20 quả", "15 quả", "25 quả", "16 quả"] },
+      { source: "KNTT - Trang 123", mathText: "5 × 8 = ?", question: "Bảng nhân 5: 5 × 8 bằng bao nhiêu?", answer: 40, choices: [40, 35, 45, 30] }
+    ];
+
+    // 4. BẢNG CHIA 2 & 5
+    const MATH_DIV = [
+      { source: "CTST - Trang 24", visual: "🍬 Hũ kẹo có 14 cái kẹo", question: "Chia đều 14 cái kẹo trong hũ cho 2 bạn. Mỗi bạn được mấy cái kẹo?", answer: "7 cái", choices: ["7 cái", "6 cái", "8 cái", "5 cái"] },
+      { source: "CTST - Trang 24", visual: "🍬 Hũ kẹo có 16 cái kẹo", question: "Chia đều 16 cái kẹo trong hũ cho 2 bạn. Mỗi bạn được mấy cái kẹo?", answer: "8 cái", choices: ["8 cái", "7 cái", "9 cái", "6 cái"] },
+      { source: "CTST - Trang 24", visual: "🍬 Có 10 cái kẹo", question: "Lấy hết 10 cái kẹo chia cho mỗi bạn 2 cái. Hỏi có mấy bạn được chia?", answer: "5 bạn", choices: ["5 bạn", "4 bạn", "6 bạn", "2 bạn"] },
+      { source: "KNTT - Trang 22", visual: "🐥 Đàn gà bên đống rơm: 20 cái chân gà", question: "Đàn gà có 20 cái chân. Mỗi con gà có 2 chân. Hỏi đàn gà có bao nhiêu con?", answer: "10 con gà", choices: ["10 con gà", "8 con gà", "12 con gà", "5 con gà"] },
+      { source: "KNTT - Trang 22", mathText: "16 : 2 : 2 : 2 = ?", question: "Ong tìm tổ mật: 16 chia 2 rồi chia 2 rồi chia 2 bằng mấy?", answer: 2, choices: [2, 4, 1, 3] },
+      { source: "Cánh Diều - Trang 20", mathText: "18 cm : 2 = ?", question: "Tính: 18 cm : 2 = ?", answer: "9 cm", choices: ["9 cm", "8 cm", "7 cm", "10 cm"] },
+      { source: "Cánh Diều - Trang 20", mathText: "14 kg : 2 = ?", question: "Tính: 14 kg : 2 = ?", answer: "7 kg", choices: ["7 kg", "6 kg", "8 kg", "5 kg"] },
+      { source: "Cánh Diều - Trang 20", mathText: "16 l : 2 = ?", question: "Tính: 16 l : 2 = ?", answer: "8 l", choices: ["8 l", "7 l", "9 l", "6 l"] },
+      { source: "KNTT - Trang 123", visual: "🥮 Liên hoan Trung thu: 15 hộp bánh", question: "Cô giáo mua 15 hộp bánh chia đều cho 5 tổ. Hỏi mỗi tổ được mấy hộp bánh?", answer: "3 hộp", choices: ["3 hộp", "4 hộp", "2 hộp", "5 hộp"] },
+      { source: "KNTT - Trang 27", mathText: "45 : 5 = ?", question: "Bảng chia 5: 45 : 5 bằng bao nhiêu?", answer: 9, choices: [9, 8, 7, 10] },
+      { source: "Cánh Diều - Trang 25", visual: "🧹 Lớp 2C dọn vệ sinh: 20 học sinh", question: "20 học sinh chia thành các nhóm, mỗi nhóm 5 bạn. Hỏi có tất cả mấy nhóm?", answer: "4 nhóm", choices: ["4 nhóm", "5 nhóm", "3 nhóm", "2 nhóm"] }
+    ];
+
+    // 5. HÌNH HỌC CƠ BẢN
+    const MATH_GEOMETRY = [
+      { source: "KNTT - Trang 137", visual: "📐 Hình thang chia đôi", question: "Hình vẽ gồm một hình thang có 1 đường cắt dọc và 1 đường chéo. Có tất cả bao nhiêu hình tứ giác?", answer: "3 hình tứ giác", choices: ["3 hình tứ giác", "2 hình tứ giác", "4 hình tứ giác", "5 hình tứ giác"] },
+      { source: "KNTT - Trang 97", visual: "📦 Khối lập phương (523) & Khối cầu (365)", question: "Tính tổng của hai số ghi trên khối lập phương và khối cầu: 523 + 365 = ?", answer: 888, choices: [888, 878, 898, 988] },
+      { source: "KNTT - Trang 97", visual: "🧊 Khối hộp chữ nhật (572) & Khối trụ (416)", question: "Tính hiệu của hai số ghi trên khối hộp chữ nhật và khối trụ: 572 - 416 = ?", answer: 156, choices: [156, 166, 146, 150] },
+      { source: "KNTT - Trang 97", visual: "🔺 Mai (332), ⏢ Rô-bốt (591), 🟡 Việt (542)", question: "Miếng bìa có kết quả phép tính lớn nhất mang hình gì?", answer: "Hình thang (591)", choices: ["Hình thang (591)", "Hình tam giác (332)", "Hình tròn (542)", "Hình vuông"] },
+      { source: "SGK Toán 2", visual: "📐 Tam giác", question: "Hình tam giác có bao nhiêu cạnh và bao nhiêu đỉnh?", answer: "3 cạnh và 3 đỉnh", choices: ["3 cạnh và 3 đỉnh", "4 cạnh và 4 đỉnh", "2 cạnh và 3 đỉnh", "3 cạnh và 4 đỉnh"] },
+      { source: "SGK Toán 2", visual: "🟦 Hình tứ giác", question: "Hình tứ giác có tất cả bao nhiêu cạnh?", answer: "4 cạnh", choices: ["4 cạnh", "3 cạnh", "5 cạnh", "6 cạnh"] }
+    ];
+
+    // 6. ĐO ĐỘ DÀI & CÂY CẦU
+    const MATH_LENGTH = [
+      { source: "SGK Toán 2", mathText: "1 dm = ? cm", question: "1 đề-xi-mét (1 dm) bằng bao nhiêu xăng-ti-mét (cm)?", answer: "10 cm", choices: ["10 cm", "1 cm", "100 cm", "5 cm"] },
+      { source: "SGK Toán 2", mathText: "1 m = ? dm", question: "1 mét (1 m) bằng bao nhiêu đề-xi-mét (dm)?", answer: "10 dm", choices: ["10 dm", "100 dm", "1 dm", "5 dm"] },
+      { source: "SGK Toán 2", mathText: "1 m = ? cm", question: "1 mét (1 m) bằng bao nhiêu xăng-ti-mét (cm)?", answer: "100 cm", choices: ["100 cm", "10 cm", "1000 cm", "50 cm"] },
+      { source: "KNTT - Trang 90", visual: "🌉 Cầu Rồng (666m), Cầu Bãi Cháy (903m), Cầu Trường Tiền (403m), Cầu Bến Thuỷ 2 (1000m)", question: "Trong các cây cầu trên, cây cầu nào DÀI NHẤT?", answer: "Cầu Bến Thuỷ 2 (1000 m)", choices: ["Cầu Bến Thuỷ 2 (1000 m)", "Cầu Bãi Cháy (903 m)", "Cầu Rồng (666 m)", "Cầu Trường Tiền (403 m)"] },
+      { source: "KNTT - Trang 90", visual: "🌉 Cầu Rồng (666m), Cầu Bãi Cháy (903m), Cầu Trường Tiền (403m), Cầu Bến Thuỷ 2 (1000m)", question: "Trong các cây cầu trên, cây cầu nào NGẮN NHẤT?", answer: "Cầu Trường Tiền (403 m)", choices: ["Cầu Trường Tiền (403 m)", "Cầu Rồng (666 m)", "Cầu Bãi Cháy (903 m)", "Cầu Bến Thuỷ 2 (1000 m)"] },
+      { source: "KNTT - Trang 90", visual: "🌉 Cầu Bãi Cháy (903m) & Cầu Trường Tiền (403m)", question: "Cầu Bãi Cháy dài hơn cầu Trường Tiền bao nhiêu mét?", answer: "500 m", choices: ["500 m", "400 m", "600 m", "300 m"] }
+    ];
+
+    // 7. ĐƠN VỊ LÍT & KI-LÔ-GAM
+    const MATH_MASS_LIT = [
+      { source: "KNTT - Trang 137", visual: "🍈 Cân đĩa: Quả mít cân thăng bằng với quả 2 kg và 5 kg", question: "Quả mít cân nặng bao nhiêu ki-lô-gam?", answer: "7 kg", choices: ["7 kg", "6 kg", "8 kg", "5 kg"] },
+      { source: "KNTT - Trang 137", visual: "🛢️ Can 10 l rót đầy 2 ca nước (mỗi ca 2 l)", question: "Rót đầy hai ca 2 l từ một can 10 l nước. Trong can còn lại bao nhiêu lít nước?", answer: "6 l", choices: ["6 l", "8 l", "4 l", "7 l"] },
+      { source: "KNTT - Trang 97", visual: "🌾 Cửa hàng: Sáng bán 250 kg, Chiều bán 175 kg", question: "Một cửa hàng buổi sáng bán được 250 kg gạo, chiều bán 175 kg. Cả hai buổi bán được bao nhiêu kg gạo?", answer: "425 kg", choices: ["425 kg", "415 kg", "435 kg", "325 kg"] },
+      { source: "SGK Toán 2", mathText: "35 l + 28 l = ?", question: "Tính: 35 lít + 28 lít = ?", answer: "63 l", choices: ["63 l", "53 l", "62 l", "64 l"] },
+      { source: "SGK Toán 2", mathText: "50 kg - 18 kg = ?", question: "Bao gạo 50 kg mẹ dùng 18 kg. Hỏi còn lại bao nhiêu kg gạo?", answer: "32 kg", choices: ["32 kg", "38 kg", "42 kg", "22 kg"] }
+    ];
+
+    // 8. XEM GIỜ & LỊCH
+    const MATH_CLOCK = [
+      { source: "SGK Toán 2", visual: "🕒 Kim ngắn chỉ số 8, kim dài chỉ số 12", question: "Kim ngắn chỉ số 8, kim dài chỉ số 12. Đồng hồ chỉ mấy giờ?", answer: "8 giờ đúng", choices: ["8 giờ đúng", "12 giờ đúng", "8 giờ 15 phút", "9 giờ"] },
+      { source: "SGK Toán 2", visual: "🕞 Kim ngắn ở giữa số 2 và 3, kim dài chỉ số 6", question: "Đồng hồ chỉ mấy giờ?", answer: "2 giờ 30 phút (2 giờ rưỡi)", choices: ["2 giờ 30 phút (2 giờ rưỡi)", "3 giờ 30 phút", "2 giờ 6 phút", "6 giờ 10 phút"] },
+      { source: "SGK Toán 2", question: "8 giờ tối còn được gọi là mấy giờ?", answer: "20 giờ", choices: ["20 giờ", "18 giờ", "19 giờ", "21 giờ"] },
+      { source: "SGK Toán 2", question: "Một ngày có bao nhiêu giờ?", answer: "24 giờ", choices: ["24 giờ", "12 giờ", "20 giờ", "48 giờ"] },
+      { source: "SGK Toán 2", question: "Một tuần lễ có bao nhiêu ngày?", answer: "7 ngày", choices: ["7 ngày", "5 ngày", "6 ngày", "8 ngày"] },
+      { source: "SGK Toán 2", question: "Nếu hôm nay là Thứ Tư ngày 15, thì Thứ Tư tuần sau là ngày mấy?", answer: "Ngày 22", choices: ["Ngày 22", "Ngày 21", "Ngày 23", "Ngày 20"] }
+    ];
+
+    // 9. BÀI TOÁN CÓ LỜI VĂN
+    const MATH_WORD_PROBLEMS = [
+      { source: "KNTT - Trang 137", question: "Để ủng hộ các bạn vùng lũ lụt, lớp 2A quyên góp được 83 quyển sách, lớp 2B quyên góp ít hơn lớp 2A là 18 quyển sách. Hỏi lớp 2B quyên góp được bao nhiêu quyển sách?", answer: "65 quyển", choices: ["65 quyển", "75 quyển", "64 quyển", "101 quyển"] },
+      { source: "CTST - Trang 100", question: "Số hạc giấy của lớp 2A là 90 con. Lớp 2B gấp nhiều hơn lớp 2A là 5 con. Hỏi lớp 2B gấp được bao nhiêu con hạc giấy?", answer: "95 con", choices: ["95 con", "85 con", "100 con", "90 con"] },
+      { source: "CTST - Trang 100", question: "Số hạc giấy của lớp 2C là số liền trước của 110. Hỏi lớp 2C gấp được bao nhiêu con hạc giấy?", answer: "109 con", choices: ["109 con", "111 con", "108 con", "100 con"] },
+      { source: "CTST - Trang 100", question: "Số hạc giấy của lớp 2D là số liền sau của 110. Hỏi lớp 2D gấp được bao nhiêu con hạc giấy?", answer: "111 con", choices: ["111 con", "109 con", "112 con", "120 con"] },
+      { source: "KNTT - Trang 27", question: "Trong trò chơi Ô ăn quan, mỗi ô có 5 viên sỏi. Hỏi 10 ô như vậy có tất cả bao nhiêu viên sỏi?", answer: "50 viên", choices: ["50 viên", "45 viên", "55 viên", "40 viên"] },
+      { source: "CTST - Trang 90", question: "Gà nâu đẻ 168 quả trứng, gà trắng đẻ 207 quả trứng. Hỏi tổng số trứng của gà nâu và gà trắng là bao nhiêu quả?", answer: "375 quả", choices: ["375 quả", "365 quả", "385 quả", "370 quả"] },
+      { source: "Cánh Diều - Trang 100", question: "Khi tham gia ngày hội Bảo vệ môi trường, khối lớp Hai làm được 24 sản phẩm, khối lớp Ba làm nhiều hơn khối lớp Hai 16 sản phẩm. Hỏi khối lớp Ba làm được bao nhiêu sản phẩm?", answer: "40 sản phẩm", choices: ["40 sản phẩm", "38 sản phẩm", "42 sản phẩm", "30 sản phẩm"] }
+    ];
+
+    // 10. TÌM THÀNH PHẦN CHƯA BIẾT
+    const MATH_FIND_X = [
+      { source: "CTST - Trang 47", visual: "🐌 Ốc sên che số bí mật", equation: "5 + 7 = ?", question: "Con ốc sên che tổng của hai số 5 và 7. Số bí mật là:", answer: 12, choices: [12, 11, 13, 14] },
+      { source: "CTST - Trang 47", visual: "🦔 Nhím che số bí mật", equation: "6 + 8 = ?", question: "Con nhím che tổng của hai số 6 và 8. Số bí mật là:", answer: 14, choices: [14, 15, 13, 12] },
+      { source: "CTST - Trang 47", equation: "7 + ? = 11", question: "Tìm số thích hợp điền vào dấu ?: 7 + ? = 11", answer: 4, choices: [4, 5, 3, 6] },
+      { source: "CTST - Trang 47", equation: "? + 8 = 16", question: "Tìm số thích hợp điền vào dấu ?: ? + 8 = 16", answer: 8, choices: [8, 7, 9, 6] },
+      { source: "CTST - Trang 15", equation: "2 × ? = 14", question: "Tìm thừa số còn thiếu: 2 × ? = 14", answer: 7, choices: [7, 6, 8, 9] },
+      { source: "CTST - Trang 24", equation: "? : 2 = 7", question: "Tìm số bị chia: ? : 2 = 7", answer: 14, choices: [14, 12, 16, 18] },
+      { source: "KNTT - Trang 38", visual: "🔌 Quạt Xanh Dương (9+5), Quạt Cam (7+5), Quạt Đỏ (6+6)", question: "Hai quạt nào có chung ổ cắm điện số 12?", answer: "Quạt Cam (7+5) và Quạt Đỏ (6+6)", choices: ["Quạt Cam (7+5) và Quạt Đỏ (6+6)", "Quạt Xanh Dương và Quạt Cam", "Quạt Xanh Dương và Quạt Đỏ", "Quạt Cam và Quạt Xanh Lá"] }
+    ];
   </script>
 </body>
 </html>
