@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Vườn Tri Thức Toán Lớp 2 - Em Học Vui</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Quicksand & Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Quicksand:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #EC4899;
+      --secondary: #8B5CF6;
+      --accent: #F59E0B;
+      --dark: #1F2937;
+    }
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body {
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #FDF2F8 0%, #F5F3FF 50%, #EFF6FF 100%);
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+      padding: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--dark);
+      overflow: hidden;
+    }
+    .font-cute {
+      font-family: 'Quicksand', cursive, sans-serif;
+    }
+    #app-container {
+      background: rgba(255, 255, 255, 0.98);
+      width: 100%;
+      max-width: 1180px;
+      height: 97vh;
+      max-height: 780px;
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(236, 72, 153, 0.18);
+      border: 3px solid #FFF;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-hover {
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+    .btn-bounce:active {
+      transform: scale(0.96);
+    }
+    .seq-box {
+      min-width: 52px;
+      height: 52px;
+      padding: 0 10px;
+      border-radius: 14px;
+      background: #FFF;
+      border: 3px solid #F472B6;
+      color: #DB2777;
+      font-size: 22px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 0 #F472B6;
+    }
+    .seq-box.target {
+      background: #FEF3C7;
+      border-color: #F59E0B;
+      color: #D97706;
+      box-shadow: 0 3px 0 #D97706;
+      animation: pulse-target 1.3s infinite;
+    }
+    @keyframes pulse-target {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .nav-btn {
+      transition: all 0.2s ease;
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FDF2F8;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #F472B6;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-container">
+
+    <!-- MÀN HÌNH BẮT ĐẦU VÀ KÍCH HOẠT ÂM THANH -->
+    <div id="start-overlay" class="absolute inset-0 bg-gradient-to-br from-pink-500/95 via-purple-600/95 to-indigo-600/95 z-50 flex flex-col items-center justify-center p-4 text-center text-white">
+      <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-5xl shadow-2xl mb-4 transform -rotate-6 animate-bounce">
+        🐰
+      </div>
+      <h1 class="text-3xl md:text-4xl font-black font-cute mb-2 tracking-wide drop-shadow-md">🌸 VƯỜN TOÁN LỚP 2 🌸</h1>
+      <p class="text-base md:text-lg font-bold max-w-lg mb-6 leading-relaxed text-pink-100">
+        Bé cùng Thỏ Hồng xem bài giảng sinh động, học toàn bộ kiến thức SGK và thử sức với ngân hàng đề thi kì 1, kì 2, Olympic / Violympic cùng 100 câu tư duy logic nhé! ✨
+      </p>
+      <button onclick="initAppAudio()" class="btn-bounce bg-amber-300 hover:bg-amber-200 text-amber-950 text-xl md:text-2xl font-black px-8 py-3.5 rounded-full shadow-2xl border-3 border-white transition flex items-center space-x-2">
+        <span>✨ BẮT ĐẦU HỌC NGAY ✨</span>
+      </button>
+    </div>
+
+    <!-- MODAL BÀI GIẢNG / LÝ THUYẾT TRỌNG TÂM -->
+    <div id="lesson-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden flex items-center justify-center p-4">
+      <div class="bg-white border-3 border-pink-400 rounded-3xl w-full max-w-2xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+        <div class="bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-3 text-white flex justify-between items-center flex-shrink-0">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">📖</span>
+            <h3 id="lesson-modal-title" class="font-black text-lg md:text-xl font-cute">Bài Giảng Trọng Tâm</h3>
+          </div>
+          <button onclick="closeLessonModal()" class="text-white hover:text-pink-200 text-2xl font-black px-2 py-0.5 rounded-full">✕</button>
+        </div>
+        <div id="lesson-modal-content" class="p-5 overflow-y-auto text-base md:text-lg text-gray-700 leading-relaxed space-y-3.5 font-semibold"></div>
+        <div class="p-3.5 bg-pink-50 border-t border-pink-200 flex justify-between items-center flex-shrink-0">
+          <button onclick="closeLessonModal()" class="btn-bounce bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white text-sm md:text-base font-black px-6 py-2 rounded-xl shadow-md">
+            <span>✨ Đã hiểu, vào làm bài ngay!</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEADER: THANH ĐIỀU HƯỚNG BREADCRUMB -->
+    <header class="bg-white/95 backdrop-blur-md px-4 py-2 flex justify-between items-center border-b border-pink-100 z-10 gap-2 flex-shrink-0">
+      <div id="breadcrumb-container" class="flex items-center space-x-1.5 flex-wrap"></div>
+
+      <div class="flex items-center justify-center">
+        <h1 class="text-lg sm:text-xl md:text-2xl font-black font-cute tracking-wide drop-shadow-sm flex items-center gap-1.5 cursor-pointer" onclick="openMathMenu()">
+          <span>🎀</span>
+          <span class="bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">TOÁN HỌC LỚP 2</span>
+          <span>🎀</span>
+        </h1>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-1.5 bg-amber-50 border-2 border-amber-300 px-3 py-1 rounded-xl shadow-inner">
+          <span class="text-lg animate-spin" style="animation-duration: 4s;">⭐</span>
+          <span id="stars-count" class="text-lg font-black text-amber-600">0</span>
+          <span class="text-xs font-black text-amber-500 hidden md:inline">Sao</span>
+        </div>
+        <button onclick="speakMascotCheer()" class="btn-bounce bg-pink-100 hover:bg-pink-200 text-pink-800 border border-pink-300 px-3 py-1 rounded-xl text-xs md:text-sm font-black flex items-center space-x-1 shadow-sm">
+          <span>🐰 Cổ vũ</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main id="main-content" class="flex-1 px-5 py-3 flex flex-col items-center justify-between text-center overflow-hidden"></main>
+
+  </div>
+
+  <script>
+    let stars = parseInt(localStorage.getItem('stars_math_lop2') || '0');
+    let currentTopicId = "";
+    let currentTopicName = "";
+    let currentQuestionList = [];
+    let currentQuestionIndex = 0;
+    let selectedAnswerState = {};
+
+    let audioCtx = null;
+    const onlineAudioPlayer = new Audio();
+    let currentAudioToken = 0;
+
+    document.getElementById('stars-count').innerText = stars;
+
+    const container = document.getElementById('main-content');
+    const breadcrumbContainer = document.getElementById('breadcrumb-container');
+
+    function stopAllSpeech() {
+      currentAudioToken++;
+      if (onlineAudioPlayer) {
+        onlineAudioPlayer.pause();
+        onlineAudioPlayer.removeAttribute('src');
+        onlineAudioPlayer.onended = null;
+        onlineAudioPlayer.onerror = null;
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function initAppAudio() {
+      stopAllSpeech();
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) {
+        audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      }
+      playTone('correct');
+      document.getElementById('start-overlay').style.display = 'none';
+      openMathMenu();
+      
+      setTimeout(() => {
+        speakClear("Chào bé yêu! Thỏ Hồng chúc con học Toán thật vui, ôn luyện đề thi học kì 1, học kì 2 và Olympic thật xuất sắc nhé!", "vi");
+      }, 300);
+    }
+
+    function playTone(type) {
+      try {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) audioCtx = new AudioContext();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        if (!audioCtx) return;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        const now = audioCtx.currentTime;
+
+        if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.08);
+          osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.16);
+          osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.24);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(260, now);
+          osc.frequency.linearRampToValueAtTime(170, now + 0.2);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        }
+      } catch (e) {}
+    }
+
+    function splitTextForTTS(text) {
+      const MAX_LEN = 160;
+      if (text.length <= MAX_LEN) return [text];
+      const parts = [];
+      const sentences = text.match(/[^.!?…\n]+[.!?…\n]*\s*/g) || [text];
+      let current = '';
+      sentences.forEach(sentence => {
+        if ((current + sentence).length > MAX_LEN) {
+          if (current.trim()) parts.push(current.trim());
+          if (sentence.length > MAX_LEN) {
+            const words = sentence.split(' ');
+            let chunk = '';
+            words.forEach(w => {
+              if ((chunk + ' ' + w).trim().length > MAX_LEN) {
+                if (chunk.trim()) parts.push(chunk.trim());
+                chunk = w;
+              } else {
+                chunk = (chunk + ' ' + w).trim();
+              }
+            });
+            if (chunk.trim()) parts.push(chunk.trim());
+            current = '';
+          } else {
+            current = sentence;
+          }
+        } else {
+          current += sentence;
+        }
+      });
+      if (current.trim()) parts.push(current.trim());
+      return parts.filter(Boolean);
+    }
+
+    function playGoogleTTSChunks(cleanText, onEndCallback) {
+      const thisToken = ++currentAudioToken;
+      const chunks = splitTextForTTS(cleanText);
+      let i = 0;
+      const playNext = () => {
+        if (thisToken !== currentAudioToken) return;
+        if (i >= chunks.length) {
+          if (typeof onEndCallback === 'function') onEndCallback();
+          return;
+        }
+        const encoded = encodeURIComponent(chunks[i].trim());
+        const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encoded}`;
+        onlineAudioPlayer.src = ttsUrl;
+        onlineAudioPlayer.playbackRate = 0.95;
+        onlineAudioPlayer.onended = () => { 
+          if (thisToken === currentAudioToken) {
+            i++; 
+            playNext(); 
+          }
+        };
+        onlineAudioPlayer.onerror = () => { 
+          if (thisToken === currentAudioToken) {
+            fallbackWebSpeech(cleanText, onEndCallback); 
+          }
+        };
+        const playPromise = onlineAudioPlayer.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => { 
+            if (thisToken === currentAudioToken) {
+              fallbackWebSpeech(cleanText, onEndCallback); 
+            }
+          });
+        }
+      };
+      playNext();
+    }
+
+    function speakClear(text, lang = 'vi', onEndCallback = null) {
+      try {
+        stopAllSpeech();
+        let cleanText = String(text || '')
+          .replace(/<[^>]*>/g, ' ')
+          .replace(/\+/g, ' cộng ')
+          .replace(/-/g, ' trừ ')
+          .replace(/×/g, ' nhân ')
+          .replace(/\*/g, ' nhân ')
+          .replace(/:/g, ' chia ')
+          .replace(/\//g, ' chia ')
+          .replace(/=/g, ' bằng ')
+          .replace(/kg/gi, ' ki-lô-gam ')
+          .replace(/\bg\b/gi, ' gam ')
+          .replace(/\bl\b/gi, ' lít ')
+          .replace(/ml/gi, ' mi-li-lít ')
+          .replace(/dm/gi, ' đề-xi-mét ')
+          .replace(/cm/gi, ' xăng-ti-mét ')
+          .replace(/mm/gi, ' mi-li-mét ')
+          .replace(/km/gi, ' ki-lô-mét ')
+          .replace(/\?/g, ' mấy ')
+          .trim();
+
+        playGoogleTTSChunks(cleanText, onEndCallback);
+      } catch (err) {
+        fallbackWebSpeech(text, onEndCallback);
+      }
+    }
+
+    function fallbackWebSpeech(text, onEndCallback = null) {
+      if (!('speechSynthesis' in window)) {
+        if (typeof onEndCallback === 'function') onEndCallback();
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g, ' '));
+      utterance.lang = 'vi-VN';
+      utterance.rate = 0.95;
+      utterance.pitch = 1.05;
+
+      const voices = window.speechSynthesis.getVoices();
+      const vietVoice = voices.find(v => (v.lang === 'vi-VN' || v.lang.startsWith('vi')) && (v.name.includes('HoaiMy') || v.name.includes('Linh') || v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Ban Mai')));
+      if (vietVoice) utterance.voice = vietVoice;
+
+      utterance.onend = () => {
+        if (typeof onEndCallback === 'function') onEndCallback();
+      };
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakMascotCheer() {
+      stopAllSpeech();
+      const cheers = [
+        "Bé làm bài rất giỏi, tư duy sắc bén lắm!",
+        "Thỏ Hồng chúc mừng con, tuyệt vời lắm!",
+        "Chăm chỉ suy luận logic và luyện đề mỗi ngày con nha!",
+        "Con thông minh quá, tiếp tục phát huy nào!"
+      ];
+      const randomCheer = cheers[Math.floor(Math.random() * cheers.length)];
+      speakClear(randomCheer, "vi");
+    }
+
+    function addStars(num) {
+      stars += num;
+      localStorage.setItem('stars_math_lop2', stars);
+      document.getElementById('stars-count').innerText = stars;
+      confetti({
+        particleCount: 40,
+        spread: 65,
+        origin: { y: 0.7 },
+        colors: ['#EC4899', '#8B5CF6', '#F59E0B', '#10B981', '#3B82F6']
+      });
+    }
+
+    function renderBreadcrumb(items) {
+      if (!items || items.length === 0) {
+        breadcrumbContainer.innerHTML = "";
+        return;
+      }
+
+      let html = "";
+      items.forEach((item, index) => {
+        const isLast = index === items.length - 1;
+        if (index > 0) {
+          html += `<span class="text-pink-300 font-black text-xs md:text-sm px-0.5">/</span>`;
+        }
+
+        if (isLast && item.active) {
+          html += `
+            <div class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-black px-3.5 py-1 rounded-full text-xs md:text-sm shadow-sm flex items-center gap-1 border border-pink-400">
+              <span>${item.icon || '🏷️'}</span>
+              <span>${item.name}</span>
+            </div>
+          `;
+        } else {
+          html += `
+            <button onclick="${item.action}" class="btn-bounce bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-300 font-black px-3 py-1 rounded-full text-xs md:text-sm flex items-center gap-1 shadow-sm transition">
+              <span>${item.icon || '📁'}</span>
+              <span>${item.name}</span>
+            </button>
+          `;
+        }
+      });
+      breadcrumbContainer.innerHTML = html;
+    }
+
+    // =========================================================================
+    // MENU CHÍNH DASHBOARD (15 CHỦ ĐỀ TOÁN HỌC & ĐỀ THI SGK)
+    // =========================================================================
+    function openMathMenu() {
+      stopAllSpeech();
+      renderBreadcrumb([]);
+      currentTopicId = "";
+      currentTopicName = "";
+
+      container.innerHTML = `
+        <div class="my-auto w-full max-w-5xl flex flex-col items-center">
+          <div class="mb-3">
+            <h2 class="text-xl md:text-2xl font-black text-pink-600 font-cute">🌸 CÁC BÀI TOÁN LỚP 2 CHUẨN SGK & BỘ ĐỀ THI ÔN LUYỆN 🌸</h2>
+            <p class="text-xs md:text-sm font-bold text-gray-500">Mỗi chủ đề và đề thi đều được xáo trộn ngẫu nhiên hoàn toàn!</p>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 w-full">
+            <div onclick="startTopic('topic_1', '1. Dãy Số & Quy Luật', getExpandedQuestions(MATH_LOGIC_BANK, 'logic'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '1. Dãy Số & Quy Luật', active: true, icon: '🧩'}])" class="card-hover bg-white border-2 border-purple-200 hover:border-purple-400 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm">
+              <div class="text-2xl mb-1">🧩</div>
+              <h3 class="text-xs md:text-sm font-black text-purple-700 leading-tight">1. Dãy Số & Quy Luật</h3>
+            </div>
+            
+            <div onclick="openAddSubMenu()" class="card-hover bg-white border-2 border-pink-300 hover:border-pink-500 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm bg-gradient-to-b from-pink-50/50 to-white ring-1 ring-pink-200">
+              <div class="text-2xl mb-1 text-pink-500 font-black">➕ ➖</div>
+              <h3 class="text-xs md:text-sm font-black text-pink-700 leading-tight">2. Phép Tính Cộng Trừ</h3>
+            </div>
+
+            <div onclick="openMultDivMenu()" class="card-hover bg-white border-3 border-amber-300 hover:border-amber-500 rounded-2xl p-2.5 text-center cursor-pointer shadow-md bg-gradient-to-b from-amber-50/70 to-white ring-2 ring-amber-300">
+              <div class="text-2xl mb-1 text-amber-600 font-black">✖️ ➗</div>
+              <h3 class="text-xs md:text-sm font-black text-amber-800 leading-tight">3. Phép Nhân & Chia</h3>
+            </div>
+
+            <div onclick="startTopic('topic_4_geom', '4. Hình Học & Khối Hình', getExpandedQuestions(MATH_GEOMETRY_ALL, 'geom'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '4. Hình Học & Khối Hình', active: true, icon: '📐'}])" class="card-hover bg-white border-2 border-rose-200 hover:border-rose-400 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm bg-gradient-to-b from-rose-50/40 to-white">
+              <div class="text-2xl mb-1">📐 🧊</div>
+              <h3 class="text-xs md:text-sm font-black text-rose-700 leading-tight">4. Hình Học & Khối Hình</h3>
+            </div>
+
+            <div onclick="openMeasurementTimeMenu()" class="card-hover bg-white border-3 border-cyan-400 hover:border-cyan-600 rounded-2xl p-2.5 text-center cursor-pointer shadow-md bg-gradient-to-b from-cyan-50/70 to-white ring-2 ring-cyan-300">
+              <div class="text-2xl mb-1 text-cyan-600 font-black">📏 ⚖️ ⏰</div>
+              <h3 class="text-xs md:text-sm font-black text-cyan-800 leading-tight">5. Đơn Vị Đo & Thời Gian</h3>
+            </div>
+
+            <div onclick="startTopic('topic_8', '6. Bài Toán Lời Văn', getExpandedQuestions(MATH_WORD_PROBLEMS, 'word'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '6. Bài Toán Lời Văn', active: true, icon: '📖'}])" class="card-hover bg-white border-2 border-indigo-200 hover:border-indigo-400 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm">
+              <div class="text-2xl mb-1">📖</div>
+              <h3 class="text-xs md:text-sm font-black text-indigo-700 leading-tight">6. Bài Toán Lời Văn</h3>
+            </div>
+
+            <div onclick="startTopic('topic_10', '7. Lời Văn Nâng Cao', getExpandedQuestions(MATH_WORD_ADVANCED, 'word_adv'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '7. Lời Văn Nâng Cao', active: true, icon: '🌟'}])" class="card-hover bg-white border-2 border-red-200 hover:border-red-400 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm bg-gradient-to-b from-red-50/50 to-white ring-1 ring-red-200">
+              <div class="text-2xl mb-1">🌟</div>
+              <h3 class="text-xs md:text-sm font-black text-red-700 leading-tight">7. Lời Văn Nâng Cao</h3>
+            </div>
+
+            <div onclick="startTopic('topic_11', '8. Đường Gấp Khúc', getExpandedQuestions(MATH_POLYLINE, 'polyline'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '8. Đường Gấp Khúc', active: true, icon: '📏'}])" class="card-hover bg-white border-2 border-lime-200 hover:border-lime-400 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm bg-gradient-to-b from-lime-50/50 to-white ring-1 ring-lime-200">
+              <div class="text-2xl mb-1">📏</div>
+              <h3 class="text-xs md:text-sm font-black text-lime-700 leading-tight">8. Đường Gấp Khúc</h3>
+            </div>
+
+            <div onclick="startTopic('topic_12', '9. Các Số Phạm Vi 1000', getExpandedQuestions(MATH_NUMBERS_1000, 'num1000'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '9. Các Số Phạm Vi 1000', active: true, icon: '🔢'}])" class="card-hover bg-white border-2 border-sky-200 hover:border-sky-400 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm bg-gradient-to-b from-sky-50/50 to-white ring-1 ring-sky-200">
+              <div class="text-2xl mb-1">🔢</div>
+              <h3 class="text-xs md:text-sm font-black text-sky-700 leading-tight">9. Các Số Phạm Vi 1000</h3>
+            </div>
+
+            <div onclick="startTopic('topic_13', '10. Tiền Việt Nam', getExpandedQuestions(MATH_MONEY, 'money'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '10. Tiền Việt Nam', active: true, icon: '💵'}])" class="card-hover bg-white border-2 border-yellow-300 hover:border-yellow-500 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm bg-gradient-to-b from-yellow-50/50 to-white ring-1 ring-yellow-200">
+              <div class="text-2xl mb-1">💵</div>
+              <h3 class="text-xs md:text-sm font-black text-yellow-700 leading-tight">10. Tiền Việt Nam</h3>
+            </div>
+
+            <div onclick="startTopic('topic_14', '11. Thống Kê & Khả Năng', getExpandedQuestions(MATH_STATS_PROBABILITY, 'stats'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '11. Thống Kê & Khả Năng', active: true, icon: '📊'}])" class="card-hover bg-white border-2 border-fuchsia-200 hover:border-fuchsia-400 rounded-2xl p-2.5 text-center cursor-pointer shadow-sm bg-gradient-to-b from-fuchsia-50/50 to-white ring-1 ring-fuchsia-200">
+              <div class="text-2xl mb-1">📊</div>
+              <h3 class="text-xs md:text-sm font-black text-fuchsia-700 leading-tight">11. Thống Kê & Khả Năng</h3>
+            </div>
+
+            <div onclick="startTopic('topic_15_logic', '12. Tư Duy Logic (100 Câu)', getExpandedQuestions(MATH_LOGIC_ADVANCED_BANK, 'logic_adv', 100), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '12. Tư Duy Logic', active: true, icon: '💡'}])" class="card-hover bg-white border-3 border-amber-400 hover:border-amber-600 rounded-2xl p-2.5 text-center cursor-pointer shadow-md bg-gradient-to-b from-amber-50/70 to-white ring-2 ring-amber-300">
+              <div class="text-2xl mb-1">💡 🎯</div>
+              <h3 class="text-xs md:text-sm font-black text-amber-800 leading-tight">12. Tư Duy Logic (100 Câu)</h3>
+            </div>
+
+            <!-- MỤC 13: ĐỀ THI HỌC KÌ 1 ĐÃ ĐƯỢC NẠP 100% TỪ TÀI LIỆU -->
+            <div onclick="startTopic('topic_exam_hk1', '13. Đề Thi Học Kì 1', EXAM_SEMESTER_1, [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '13. Đề Thi Học Kì 1', active: true, icon: '📝'}])" class="card-hover bg-white border-3 border-blue-300 hover:border-blue-500 rounded-2xl p-2.5 text-center cursor-pointer shadow-md bg-gradient-to-b from-blue-50/70 to-white ring-1 ring-blue-300">
+              <div class="text-2xl mb-1">📝 🌸</div>
+              <h3 class="text-xs md:text-sm font-black text-blue-800 leading-tight">13. Đề Thi Học Kì 1</h3>
+            </div>
+
+            <!-- MỤC 14: ĐỀ THI HỌC KÌ 2 ĐÃ ĐƯỢC NẠP 100% TỪ TÀI LIỆU -->
+            <div onclick="startTopic('topic_exam_hk2', '14. Đề Thi Học Kì 2', EXAM_SEMESTER_2, [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '14. Đề Thi Học Kì 2', active: true, icon: '🎯'}])" class="card-hover bg-white border-3 border-emerald-300 hover:border-emerald-500 rounded-2xl p-2.5 text-center cursor-pointer shadow-md bg-gradient-to-b from-emerald-50/70 to-white ring-1 ring-emerald-300">
+              <div class="text-2xl mb-1">🎯 🏆</div>
+              <h3 class="text-xs md:text-sm font-black text-emerald-800 leading-tight">14. Đề Thi Học Kì 2</h3>
+            </div>
+
+            <!-- MỤC 15: ĐỀ THI OLYMPIC & VIOLYMPIC TOÀN DIỆN -->
+            <div onclick="startTopic('topic_exam_violympic', '15. Đề Thi Olympic Violympic', EXAM_VIOLYMPIC, [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '15. Đề Thi Olympic Violympic', active: true, icon: '🥇'}])" class="card-hover bg-white border-3 border-yellow-400 hover:border-yellow-600 rounded-2xl p-2.5 text-center cursor-pointer shadow-md bg-gradient-to-b from-yellow-50/80 to-white ring-2 ring-yellow-400">
+              <div class="text-2xl mb-1">🥇 💻</div>
+              <h3 class="text-xs md:text-sm font-black text-yellow-800 leading-tight">15. Đề Thi Olympic Violympic</h3>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // MENU PHÂN MỤC CHO PHÉP TÍNH CỘNG TRỪ
+    // ==========================================
+    function openAddSubMenu() {
+      stopAllSpeech();
+      renderBreadcrumb([
+        { name: 'Menu', action: 'openMathMenu()', icon: '🏠' },
+        { name: '2. Phép Tính Cộng Trừ', active: true, icon: '➕' }
+      ]);
+      currentTopicId = "topic_2";
+      currentTopicName = "2. Phép Tính Cộng Trừ";
+
+      container.innerHTML = `
+        <div class="my-auto w-full max-w-xl flex flex-col items-center">
+          <div class="mb-4">
+            <h2 class="text-xl md:text-2xl font-black text-pink-600 font-cute">➕ PHÉP TÍNH CỘNG TRỪ ➖</h2>
+            <p class="text-sm font-bold text-gray-500">Mỗi phần có hơn 50 câu hỏi trắc nghiệm rèn luyện phản xạ nhanh!</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            <div onclick="startTopic('topic_2a', '2.1. Cộng Trừ Tới 100', getExpandedQuestions(MATH_ADD_SUB_100, 'add_sub_100'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '2. Phép Tính Cộng Trừ', action: 'openAddSubMenu()', icon: '➕'}, {name: '2.1. Cộng Trừ Tới 100', active: true, icon: '💯'}])" class="card-hover bg-white border-3 border-pink-300 hover:border-pink-500 rounded-3xl p-5 text-center cursor-pointer shadow-md bg-gradient-to-b from-pink-50/60 to-white">
+              <div class="w-14 h-14 bg-pink-100 text-pink-600 rounded-2xl flex items-center justify-center text-3xl font-black mx-auto mb-2.5 shadow-inner">💯</div>
+              <h3 class="text-base md:text-lg font-black text-pink-700 mb-1">2.1. Cộng Trừ Tới 100</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Phép cộng, trừ có nhớ & không nhớ trong phạm vi 100, tháp số</p>
+            </div>
+
+            <div onclick="startTopic('topic_2b', '2.2. Cộng Trừ Từ 100 Tới 1000', getExpandedQuestions(MATH_ADD_SUB_1000, 'add_sub_1000'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '2. Phép Tính Cộng Trừ', action: 'openAddSubMenu()', icon: '➕'}, {name: '2.2. Cộng Trừ Từ 100 Tới 1000', active: true, icon: '🔢'}])" class="card-hover bg-white border-3 border-purple-300 hover:border-purple-500 rounded-3xl p-5 text-center cursor-pointer shadow-md bg-gradient-to-b from-purple-50/60 to-white">
+              <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-3xl font-black mx-auto mb-2.5 shadow-inner">🔢</div>
+              <h3 class="text-base md:text-lg font-black text-purple-700 mb-1">2.2. Cộng Trừ Từ 100 Tới 1000</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Cộng trừ các số có 3 chữ số, đặt tính rồi tính, tìm số bí mật</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button onclick="openMathMenu()" class="btn-bounce bg-gray-100 hover:bg-gray-200 text-gray-800 font-black px-6 py-2 rounded-2xl text-sm border border-gray-300 shadow-sm">
+              ⬅️ Quay lại Menu Chính
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // MENU PHÂN MỤC CHO PHÉP NHÂN & CHIA
+    // ==========================================
+    function openMultDivMenu() {
+      stopAllSpeech();
+      renderBreadcrumb([
+        { name: 'Menu', action: 'openMathMenu()', icon: '🏠' },
+        { name: '3. Phép Nhân & Chia', active: true, icon: '✖️' }
+      ]);
+      currentTopicId = "topic_mult_div";
+      currentTopicName = "3. Phép Nhân & Chia";
+
+      container.innerHTML = `
+        <div class="my-auto w-full max-w-4xl flex flex-col items-center">
+          <div class="mb-3">
+            <h2 class="text-xl md:text-2xl font-black text-amber-600 font-cute">✖️ PHÉP NHÂN & PHÉP CHIA ➗</h2>
+            <p class="text-xs md:text-sm font-bold text-gray-500">Bé chọn học bảng cửu chương, đọc bài giảng hay luyện tập nhé!</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 w-full">
+            <div onclick="startTopic('topic_3', '3.1. Bảng Nhân 2 & 5', getExpandedQuestions(MATH_MULT, 'mult'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '3. Phép Nhân & Chia', action: 'openMultDivMenu()', icon: '✖️'}, {name: '3.1. Bảng Nhân 2 & 5', active: true, icon: '✖️'}])" class="card-hover bg-white border-2 border-amber-300 hover:border-amber-500 rounded-2xl p-3 text-center cursor-pointer shadow-sm bg-gradient-to-b from-amber-50/60 to-white">
+              <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-2xl font-black mx-auto mb-2 shadow-inner">✖️</div>
+              <h3 class="text-sm md:text-base font-black text-amber-700 mb-1">3.1. Bảng Nhân 2 & 5</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Luyện tập phép tính nhân, tính nhẩm và bài toán thực tế</p>
+            </div>
+
+            <div onclick="startTopic('topic_4', '3.2. Bảng Chia 2 & 5', getExpandedQuestions(MATH_DIV, 'div'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '3. Phép Nhân & Chia', action: 'openMultDivMenu()', icon: '✖️'}, {name: '3.2. Bảng Chia 2 & 5', active: true, icon: '➗'}])" class="card-hover bg-white border-2 border-teal-300 hover:border-teal-500 rounded-2xl p-3 text-center cursor-pointer shadow-sm bg-gradient-to-b from-teal-50/60 to-white">
+              <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-2xl font-black mx-auto mb-2 shadow-inner">➗</div>
+              <h3 class="text-sm md:text-base font-black text-teal-700 mb-1">3.2. Bảng Chia 2 & 5</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Chia đều các phần, tìm số nhóm và số quả kẹo</p>
+            </div>
+
+            <div onclick="openMultiplicationTableScreen()" class="card-hover bg-white border-2 border-pink-300 hover:border-pink-500 rounded-2xl p-3 text-center cursor-pointer shadow-sm bg-gradient-to-b from-pink-50/60 to-white ring-1 ring-pink-300">
+              <div class="w-12 h-12 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center text-2xl font-black mx-auto mb-2 shadow-inner">🦫</div>
+              <h3 class="text-sm md:text-base font-black text-pink-700 mb-1">3.3. Bảng Cửu Chương</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Toàn bộ 1x đến 10x kèm giọng đọc & mẹo nhớ siêu tốc</p>
+            </div>
+
+            <div onclick="openMultDivReadingScreen()" class="card-hover bg-white border-2 border-purple-300 hover:border-purple-500 rounded-2xl p-3 text-center cursor-pointer shadow-sm bg-gradient-to-b from-purple-50/60 to-white">
+              <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl font-black mx-auto mb-2 shadow-inner">📖</div>
+              <h3 class="text-sm md:text-base font-black text-purple-700 mb-1">3.4. Bài Đọc & Lý Thuyết</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Hiểu sâu bản chất phép nhân, phép chia qua tranh ảnh SGK</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button onclick="openMathMenu()" class="btn-bounce bg-gray-100 hover:bg-gray-200 text-gray-800 font-black px-6 py-2 rounded-2xl text-sm border border-gray-300 shadow-sm">
+              ⬅️ Quay lại Menu Chính
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // MENU PHÂN MỤC CHO ĐƠN VỊ ĐO VÀ THỜI GIAN
+    // =========================================================================
+    function openMeasurementTimeMenu() {
+      stopAllSpeech();
+      renderBreadcrumb([
+        { name: 'Menu', action: 'openMathMenu()', icon: '🏠' },
+        { name: '5. Đơn Vị Đo & Thời Gian', active: true, icon: '📏' }
+      ]);
+      currentTopicId = "topic_measure_time";
+      currentTopicName = "5. Đơn Vị Đo & Thời Gian";
+
+      container.innerHTML = `
+        <div class="my-auto w-full max-w-4xl flex flex-col items-center">
+          <div class="mb-4">
+            <h2 class="text-xl md:text-2xl font-black text-cyan-700 font-cute">📏 ĐƠN VỊ ĐO VÀ THỜI GIAN ⏰</h2>
+            <p class="text-sm font-bold text-gray-600">Các bài toán quy đổi đơn vị và cộng trừ khác đơn vị thực tế!</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+            <div onclick="startTopic('topic_5a', '5.1. Độ Dài & Khoảng Cách', getExpandedQuestions(MATH_LENGTH_CONVERT, 'len_conv'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '5. Đơn Vị Đo & Thời Gian', action: 'openMeasurementTimeMenu()', icon: '📏'}, {name: '5.1. Độ Dài & Khoảng Cách', active: true, icon: '📏'}])" class="card-hover bg-white border-3 border-cyan-300 hover:border-cyan-500 rounded-3xl p-5 text-center cursor-pointer shadow-md bg-gradient-to-b from-cyan-50/60 to-white">
+              <div class="w-14 h-14 bg-cyan-100 text-cyan-600 rounded-2xl flex items-center justify-center text-3xl font-black mx-auto mb-2.5 shadow-inner">📏</div>
+              <h3 class="text-base md:text-lg font-black text-cyan-800 mb-1">5.1. Độ Dài & Khoảng Cách</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Quy đổi mm, cm, dm, m, km; Tính toán cộng trừ khác đơn vị</p>
+            </div>
+
+            <div onclick="startTopic('topic_5b', '5.2. Khối Lượng & Dung Tích', getExpandedQuestions(MATH_MASS_LIT_CONVERT, 'mass_conv'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '5. Đơn Vị Đo & Thời Gian', action: 'openMeasurementTimeMenu()', icon: '📏'}, {name: '5.2. Khối Lượng & Dung Tích', active: true, icon: '⚖️'}])" class="card-hover bg-white border-3 border-emerald-300 hover:border-emerald-500 rounded-3xl p-5 text-center cursor-pointer shadow-md bg-gradient-to-b from-emerald-50/60 to-white">
+              <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl font-black mx-auto mb-2.5 shadow-inner">⚖️</div>
+              <h3 class="text-base md:text-lg font-black text-emerald-800 mb-1">5.2. Khối Lượng & Dung Tích</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Quy đổi g, kg, tấn, lít, ml; Tính toán khác đơn vị</p>
+            </div>
+
+            <div onclick="startTopic('topic_5c', '5.3. Thời Gian & Lịch', getExpandedQuestions(MATH_TIME_CONVERT, 'time_conv'), [{name: 'Menu', action: 'openMathMenu()', icon: '🏠'}, {name: '5. Đơn Vị Đo & Thời Gian', action: 'openMeasurementTimeMenu()', icon: '📏'}, {name: '5.3. Thời Gian & Lịch', active: true, icon: '⏰'}])" class="card-hover bg-white border-3 border-orange-300 hover:border-orange-500 rounded-3xl p-5 text-center cursor-pointer shadow-md bg-gradient-to-b from-orange-50/60 to-white">
+              <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-3xl font-black mx-auto mb-2.5 shadow-inner">⏰</div>
+              <h3 class="text-base md:text-lg font-black text-orange-800 mb-1">5.3. Thời Gian & Lịch</h3>
+              <p class="text-xs font-bold text-gray-500 leading-snug">Quy đổi giờ - phút - giây, ngày - tuần; Tính toán thời gian thực tế</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button onclick="openMathMenu()" class="btn-bounce bg-gray-100 hover:bg-gray-200 text-gray-800 font-black px-6 py-2 rounded-2xl text-sm border border-gray-300 shadow-sm">
+              ⬅️ Quay lại Menu Chính
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    const MULT_TABLES = [
+      { num: 1, color: 'border-pink-300 bg-pink-50/70 text-pink-700' },
+      { num: 2, color: 'border-amber-300 bg-amber-50/70 text-amber-800' },
+      { num: 3, color: 'border-emerald-300 bg-emerald-50/70 text-emerald-800' },
+      { num: 4, color: 'border-cyan-300 bg-cyan-50/70 text-cyan-800' },
+      { num: 5, color: 'border-teal-300 bg-teal-50/70 text-teal-800' },
+      { num: 6, color: 'border-indigo-300 bg-indigo-50/70 text-indigo-800' },
+      { num: 7, color: 'border-rose-300 bg-rose-50/70 text-rose-800' },
+      { num: 8, color: 'border-lime-300 bg-lime-50/70 text-lime-800' },
+      { num: 9, color: 'border-purple-300 bg-purple-50/70 text-purple-800' },
+      { num: 10, color: 'border-yellow-400 bg-yellow-50/80 text-yellow-800' }
+    ];
+
+    function openMultiplicationTableScreen() {
+      stopAllSpeech();
+      renderBreadcrumb([
+        { name: 'Menu', action: 'openMathMenu()', icon: '🏠' },
+        { name: '3. Phép Nhân & Chia', action: 'openMultDivMenu()', icon: '✖️' },
+        { name: '3.3. Bảng Cửu Chương & Mẹo Nhớ', active: true, icon: '🦫' }
+      ]);
+
+      let tablesHtml = MULT_TABLES.map(t => {
+        let lines = [];
+        for (let i = 1; i <= 10; i++) {
+          lines.push(`<div>${t.num} × ${i} = <b>${t.num * i}</b></div>`);
+        }
+        return `
+          <div class="bg-white border-2 ${t.color} rounded-2xl p-2.5 shadow-sm flex flex-col items-center">
+            <div class="flex items-center justify-between w-full border-b border-gray-200 pb-1 mb-1.5 px-1">
+              <span class="font-black text-sm md:text-base font-cute">Bảng ${t.num}</span>
+              <button onclick="speakTable(${t.num})" class="btn-bounce bg-white/90 hover:bg-white text-xs px-2 py-0.5 rounded-lg border shadow-sm font-bold">🔊 Đọc</button>
+            </div>
+            <div class="text-xs md:text-sm font-semibold leading-relaxed space-y-0.5 text-center w-full">
+              ${lines.join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="w-full max-w-5xl h-full flex flex-col justify-between overflow-hidden">
+          <div class="flex justify-between items-center mb-1 flex-shrink-0">
+            <h2 class="text-base md:text-lg font-black text-pink-600 font-cute flex items-center gap-1.5">
+              <span>🦫</span> BẢNG CỬU CHƯƠNG CAPYBARA & CÁCH GHI NHỚ SIÊU TỐC
+            </h2>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 overflow-y-auto max-h-[46vh] p-1 bg-pink-50/40 rounded-2xl border border-pink-100 flex-shrink-0">
+            ${tablesHtml}
+          </div>
+          <div class="pt-1 flex justify-center gap-3 flex-shrink-0">
+            <button onclick="openMultDivMenu()" class="btn-bounce bg-gray-100 hover:bg-gray-200 text-gray-800 font-black px-5 py-1.5 rounded-xl text-xs md:text-sm border border-gray-300 shadow-sm">
+              ⬅️ Quay lại Menu Nhân Chia
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function speakTable(n) {
+      stopAllSpeech();
+      let text = `Bảng nhân ${n}: `;
+      for (let i = 1; i <= 10; i++) {
+        text += `${n} nhân ${i} bằng ${n * i}. `;
+      }
+      speakClear(text, 'vi');
+    }
+
+    function openMultDivReadingScreen() {
+      stopAllSpeech();
+      renderBreadcrumb([
+        { name: 'Menu', action: 'openMathMenu()', icon: '🏠' },
+        { name: '3. Phép Nhân & Chia', action: 'openMultDivMenu()', icon: '✖️' },
+        { name: '3.4. Bài Đọc & Lý Thuyết', active: true, icon: '📖' }
+      ]);
+
+      container.innerHTML = `
+        <div class="w-full max-w-4xl h-full flex flex-col justify-between overflow-hidden">
+          <div class="flex justify-between items-center mb-1.5 flex-shrink-0">
+            <h2 class="text-base md:text-lg font-black text-purple-700 font-cute flex items-center gap-1.5">
+              <span>📖</span> BÀI ĐỌC: BẢN CHẤT PHÉP NHÂN VÀ PHÉP CHIA
+            </h2>
+          </div>
+          <div class="bg-white border-2 border-purple-200 rounded-2xl p-4 overflow-y-auto max-h-[56vh] text-left text-xs md:text-sm text-gray-800 space-y-3 font-semibold flex-shrink-0 shadow-inner leading-relaxed">
+            <div class="bg-pink-50/70 p-3 rounded-xl border border-pink-200">
+              <h3 class="font-black text-pink-700 text-sm md:text-base mb-1">1. Phép Nhân Là Gì? (Hình thành từ Phép Cộng)</h3>
+              <p>• Khi có nhiều nhóm đồ vật có số lượng bằng nhau được gộp lại, thay vì cộng dài dòng, ta dùng <b>Phép Nhân</b>.</p>
+              <p>• <b>Ví dụ SGK:</b> Có 4 nhóm bút chì, mỗi nhóm có 3 cây: <code>3 + 3 + 3 + 3 = 12</code>, viết gọn là <code>3 × 4 = 12</code>.</p>
+            </div>
+            <div class="bg-teal-50/70 p-3 rounded-xl border border-teal-200">
+              <h3 class="font-black text-teal-700 text-sm md:text-base mb-1">2. Phép Chia Là Gì? (Chia Đều & Chia Theo Nhóm)</h3>
+              <p>• <b>Chia thành các phần bằng nhau:</b> Có 12 cái kẹo chia đều cho 4 bạn. Mỗi bạn được: <code>12 : 4 = 3</code> (cái kẹo).</p>
+              <p>• <b>Chia theo nhóm:</b> Có 12 cái kẹo, chia cho mỗi bạn 3 cái. Ta có: <code>12 : 3 = 4</code> (bạn).</p>
+            </div>
+          </div>
+          <div class="pt-2 flex justify-center gap-3 flex-shrink-0">
+            <button onclick="openMultDivMenu()" class="btn-bounce bg-gray-100 hover:bg-gray-200 text-gray-800 font-black px-5 py-1.5 rounded-xl text-xs md:text-sm border border-gray-300 shadow-sm">
+              ⬅️ Quay lại Menu Nhân Chia
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    let currentBreadcrumbItems = [];
+
+    function startTopic(topicId, topicName, dataArray, breadcrumbItems = []) {
+      stopAllSpeech();
+      currentTopicId = topicId;
+      currentTopicName = topicName;
+      currentBreadcrumbItems = breadcrumbItems;
+
+      renderBreadcrumb(breadcrumbItems);
+      
+      const shuffledQuestions = shuffleArray(dataArray);
+
+      currentQuestionList = shuffledQuestions.map(q => {
+        return {
+          ...q,
+          choices: shuffleArray(q.choices)
+        };
+      });
+
+      currentQuestionIndex = 0;
+      selectedAnswerState = {};
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = currentQuestionList[currentQuestionIndex];
+      const isFirst = currentQuestionIndex === 0;
+      const isLast = currentQuestionIndex === currentQuestionList.length - 1;
+      const state = selectedAnswerState[currentQuestionIndex] || { isCorrect: false, wrongList: [] };
+
+      let centerContent = '';
+      if (q.sequence) {
+        const seqHtml = q.sequence.map(item => item === "?" ? `<div class="seq-box target">?</div>` : `<div class="seq-box">${item}</div>`).join('');
+        centerContent = `
+          <div class="flex flex-wrap gap-2.5 justify-center mb-2.5">${seqHtml}</div>
+          <div class="text-sm md:text-base font-extrabold text-purple-700 bg-purple-50 px-4 py-1.5 rounded-full border border-purple-200">💡 Quy luật: ${q.rule}</div>
+        `;
+      } else {
+        centerContent = `
+          ${q.visual ? `<div class="text-base md:text-lg font-black text-purple-900 bg-purple-50/90 px-5 py-2.5 rounded-2xl border-2 border-purple-200 mb-2.5 max-w-3xl shadow-sm leading-snug">${q.visual}</div>` : ''}
+          <div class="text-xl md:text-2xl font-black text-pink-700 font-cute leading-snug max-w-3xl px-2 drop-shadow-sm">
+            ${q.mathText || q.question}
+          </div>
+        `;
+      }
+
+      const speakPrompt = q.sequence ? q.sequence.join(', ').replace('?', 'chấm hỏi') : (q.visual ? `${q.visual}. ${q.mathText || q.question}` : (q.mathText || q.question));
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between w-full max-w-4xl pt-0.5 flex-shrink-0">
+          <div class="source-badge bg-pink-100 text-pink-800 border border-pink-300 font-black">${q.source}</div>
+          <div class="text-sm font-black text-gray-700 bg-gray-100 px-3.5 py-1 rounded-full border border-gray-200 shadow-inner">
+            Câu ${currentQuestionIndex + 1} / ${currentQuestionList.length}
+          </div>
+        </div>
+
+        <div class="text-base md:text-lg font-extrabold text-gray-800 flex items-center justify-center gap-2.5 max-w-3xl flex-shrink-0">
+          <span>${q.mathText ? q.question : "Bé hãy suy nghĩ và bấm chọn đáp án đúng nhất:"}</span>
+          <button class="btn-bounce bg-pink-100 hover:bg-pink-200 text-pink-800 text-sm md:text-base font-black px-3.5 py-1 rounded-xl flex items-center gap-1.5 border border-pink-300 shadow-sm flex-shrink-0" onclick="speakClear('${speakPrompt.replace(/'/g, "\\'")}', 'vi')">
+            🔊 Nghe đọc
+          </button>
+        </div>
+
+        <div class="bg-gradient-to-b from-pink-50/70 to-purple-50/50 border-2 border-pink-200 rounded-3xl p-4 w-full max-w-4xl flex flex-col items-center justify-center shadow-inner flex-shrink-0 min-h-[120px]">
+          ${centerContent}
+        </div>
+
+        <div id="feedback-msg" class="min-h-[28px] text-base md:text-lg font-black transition-all flex items-center justify-center flex-shrink-0"></div>
+
+        <div class="grid grid-cols-2 gap-3.5 w-full max-w-3xl flex-shrink-0">
+          ${q.choices.map(c => {
+            const isWrong = state.wrongList && state.wrongList.includes(String(c));
+            const isCorrect = state.isCorrect && String(c) === String(q.answer);
+
+            let btnClass = "bg-pink-50/40 border-2 border-pink-200 hover:bg-pink-100/60 hover:border-pink-400 text-pink-950";
+            let disabledAttr = "";
+
+            if (isCorrect) {
+              btnClass = "!bg-emerald-500 !text-white !border-emerald-600 shadow-md";
+              disabledAttr = "disabled";
+            } else if (isWrong) {
+              btnClass = "!bg-rose-500 !text-white !border-rose-600 opacity-60";
+              disabledAttr = "disabled";
+            } else if (state.isCorrect) {
+              disabledAttr = "disabled";
+            }
+
+            return `<button class="choice-btn btn-bounce ${btnClass} font-black text-xl md:text-2xl py-3 px-4 rounded-2xl shadow-sm transition leading-snug flex items-center justify-center text-center" onclick="checkChoiceAnswer(this, '${c}')" ${disabledAttr}>${c}</button>`;
+          }).join('')}
+        </div>
+
+        <div class="flex items-center justify-between w-full max-w-3xl pt-2 border-t border-pink-100 gap-4 pb-0.5 flex-shrink-0">
+          <button onclick="prevQuestion()" ${isFirst ? 'disabled' : ''} class="nav-btn btn-bounce flex-1 bg-white hover:bg-pink-50 text-pink-700 border-2 border-pink-300 font-black py-2.5 px-4 rounded-2xl text-base md:text-lg flex items-center justify-center space-x-1.5 shadow-sm">
+            <span>⬅️ Câu Trước</span>
+          </button>
+          
+          <button onclick="nextQuestion()" class="nav-btn btn-bounce flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black py-2.5 px-4 rounded-2xl text-base md:text-lg flex items-center justify-center space-x-1.5 shadow-md">
+            <span>${isLast ? '✨ Hoàn Thành' : 'Câu Sau ➡️'}</span>
+          </button>
+        </div>
+      `;
+
+      if (state.isCorrect) {
+        const fb = document.getElementById('feedback-msg');
+        fb.innerHTML = `<span class="text-emerald-600 font-black text-lg">🌟 Xuất sắc! Nhấn "Câu Sau ➡️" để tiếp tục!</span>`;
+      }
+    }
+
+    function checkChoiceAnswer(btnElement, selected) {
+      stopAllSpeech();
+      const q = currentQuestionList[currentQuestionIndex];
+      const isCorrect = String(selected) === String(q.answer);
+      const fb = document.getElementById('feedback-msg');
+
+      if (!selectedAnswerState[currentQuestionIndex]) {
+        selectedAnswerState[currentQuestionIndex] = { isCorrect: false, wrongList: [] };
+      }
+
+      if (isCorrect) {
+        selectedAnswerState[currentQuestionIndex].isCorrect = true;
+        btnElement.classList.remove('bg-pink-50/40', 'border-pink-200', 'hover:bg-pink-100/60', 'text-pink-950');
+        btnElement.classList.add('!bg-emerald-500', '!text-white', '!border-emerald-600');
+        playTone('correct');
+        addStars(1);
+        fb.innerHTML = `<span class="text-emerald-600 font-black text-lg">🌟 Xuất sắc! Nhấn "Câu Sau ➡️" để tiếp tục!</span>`;
+        speakClear("Xuất sắc!", "vi");
+
+        const allBtns = container.querySelectorAll('.choice-btn');
+        allBtns.forEach(b => b.disabled = true);
+      } else {
+        selectedAnswerState[currentQuestionIndex].wrongList.push(String(selected));
+        btnElement.classList.remove('bg-pink-50/40', 'border-pink-200', 'hover:bg-pink-100/60', 'text-pink-950');
+        btnElement.classList.add('!bg-rose-500', '!text-white', '!border-rose-600', 'opacity-60');
+        btnElement.disabled = true;
+        playTone('wrong');
+        fb.innerHTML = `<span class="text-rose-600 font-black text-lg">💡 Chưa đúng rồi! Bé hãy suy nghĩ và chọn lại nhé!</span>`;
+        speakClear("Chưa đúng rồi", "vi");
+      }
+    }
+
+    function prevQuestion() {
+      stopAllSpeech();
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      stopAllSpeech();
+      if (currentQuestionIndex < currentQuestionList.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } });
+        speakClear("Xuất sắc! Bé đã hoàn thành tất cả các câu hỏi rồi!", "vi");
+        container.innerHTML = `
+          <div class="bg-white border-3 border-pink-300 rounded-3xl p-6 max-w-md text-center shadow-xl my-auto">
+            <div class="text-5xl mb-2 animate-bounce">🏆</div>
+            <h2 class="text-2xl md:text-3xl font-black text-pink-600 font-cute mb-1.5">XUẤT SẮC QUÁ BÉ ƠI!</h2>
+            <p class="text-base font-bold text-gray-600 mb-4">Bé đã hoàn thành toàn bộ câu hỏi trong <span class="text-pink-600 font-black">"${currentTopicName}"</span>.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <button onclick="startTopic('${currentTopicId}', '${currentTopicName}', currentQuestionList, currentBreadcrumbItems)" class="btn-bounce bg-amber-400 hover:bg-amber-300 text-amber-950 font-black px-6 py-2.5 rounded-2xl text-base shadow-sm">
+                🔄 Luyện tập lại
+              </button>
+              <button onclick="openMathMenu()" class="btn-bounce bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black px-6 py-2.5 rounded-2xl text-base shadow-md">
+                🏠 Về Menu
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // =========================================================================
+    // NGÂN HÀNG DỮ LIỆU CỐT LÕI (MỤC 1 - 12 ĐẦY ĐỦ NGUYÊN BẢN SGK)
+    // =========================================================================
+
+    const MATH_LOGIC_BANK = [
+      { source: "Cánh Diều - Trang 84 (Bài 3b)", visual: "🔢 Lưới ma trận: Hàng ngang giảm 200, Hàng dọc giảm 100", question: "907 (-200) ➔ 707 (-200) ➔ 507 (-200) ➔ ? Số ở cuối hàng là số nào?", answer: 307, choices: [307, 407, 207, 300] },
+      { source: "Cánh Diều - Trang 84 (Bài 3b)", visual: "🔢 Lưới ma trận: Hàng ngang giảm 100, Hàng dọc giảm 200", question: "952 (-100) ➔ 852 (-100) ➔ 752 (-100) ➔ ? Số ở cuối hàng là số nào?", answer: 652, choices: [652, 552, 750, 650] },
+      { source: "Cánh Diều - Trang 84 (Bài 3b)", visual: "🔢 Lưới ma trận: Hàng dọc giảm 200 đơn vị", question: "752 (-200) ➔ 552 (-200) ➔ ? Số ở cuối cột dọc là số nào?", answer: 352, choices: [352, 452, 252, 350] },
+      { source: "CTST - Trang 58 (Thử thách)", visual: "🔺 + 🔺 = 14  |  🔺 + 🟦 = 12  |  🟦 + 🟦 = 🔴", question: "Hình tam giác = 7, Hình vuông = 5. Vậy Hình tròn 🔴 mang số mấy?", answer: 10, choices: [10, 12, 14, 8] },
+      { source: "KNTT - Trang 37 (Bài 3)", visual: "🟣 Khối trụ ➔ 🟠 Cầu ➔ 🟦 Hộp CN ➔ 🟩 Lập phương ➔ 🟣 Trụ ➔ 🟠 Cầu ➔ ?", question: "Theo quy luật lặp tuần hoàn, hình tiếp theo ở vị trí dấu ? là hình gì?", answer: "Khối hộp chữ nhật", choices: ["Khối hộp chữ nhật", "Khối lập phương", "Khối trụ", "Khối cầu"] },
+      { source: "CTST - Trang 14 (Bài 3)", visual: "🐢 Mê cung rùa biển: Ba số theo hàng hay theo cột đều có TỔNG BẰNG 10", question: "Hàng ngang có hai số 2 và 5. Số còn lại để tổng bằng 10 (2 + 5 + ?) là:", answer: 3, choices: [3, 4, 2, 5] },
+      { source: "CTST - Trang 14 (Bài 3)", visual: "🐢 Mê cung rùa biển: Ba số theo hàng hay theo cột đều có TỔNG BẰNG 10", question: "Hàng ngang có hai số 1 và 8. Số còn lại để tổng bằng 10 (1 + 8 + ?) là:", answer: 1, choices: [1, 2, 0, 3] },
+      { source: "CTST - Trang 22 (Bài 6a)", visual: "🏰 Tháp số 4 tầng: Đáy có 7, 10, 3, 2. Tầng 2 có 17, 13, 5. Tầng 3 có 30, 18.", question: "Đỉnh tháp cộng dồn của hai số 30 và 18 (30 + 18) là số mấy?", answer: 48, choices: [48, 47, 49, 38] },
+      { source: "KNTT - Trang 9 (Bài 4)", visual: "🧩 Bảng 100 số: Miếng bìa B che cụm 4 ô (Hàng trên là 47, 48)", question: "Trong bảng 100 số, hai ô nằm ngay phía dưới ô 47 và 48 là hai số nào?", answer: "57 và 58", choices: ["57 và 58", "49 và 50", "37 và 38", "56 và 57"] },
+      { source: "KNTT - Trang 9 (Bài 4)", visual: "🧩 Bảng 100 số: Miếng bìa A che cụm 4 ô (Hàng trên là 65, 66)", question: "Trong bảng 100 số, hai ô nằm ngay phía dưới ô 65 và 66 là hai số nào?", answer: "75 và 76", choices: ["75 và 76", "67 và 68", "55 và 56", "85 và 86"] },
+      { source: "KNTT - Trang 53 (Bài 1)", visual: "🐭 Chuột đi qua: 540 ➔ 700 ➔ [Số liền trước của 700] ➔ 1000 ➔ 🧀", question: "Số liền trước của số 700 là số nào?", answer: 699, choices: [699, 701, 690, 600] },
+      { source: "KNTT - Trang 61 (Bài 2)", visual: "📸 Tia số: 358, 359, [Ảnh Mai che], 361, [Ảnh Nam che], 363, 364", question: "Ảnh thẻ của bạn Mai đã che số nào trên tia số?", answer: 360, choices: [360, 362, 357, 361] },
+      { source: "CTST - Trang 116 (Bài 4)", visual: "🐜 Sâu 1 (2 kiến) ➔ Sâu 2 (4 kiến) ➔ Sâu 3 (6 kiến) ➔ Sâu 4 (8 kiến) ➔ 🍃 Chiếc lá", question: "Theo quy luật thêm 2, chiếc lá cuối cùng che bao nhiêu con kiến?", answer: "10 con kiến", choices: ["10 con kiến", "9 con kiến", "12 con kiến", "11 con kiến"] },
+      { source: "KNTT - Trang 110 (Bài 2c)", sequence: [590, 592, 594, "?", 598, 600, 602], rule: "Dãy số chẵn tăng 2 đơn vị qua mốc 600 (+2)", answer: 596, choices: [596, 595, 597, 600] },
+      { source: "CTST - Trang 116 (Bài 3c)", sequence: [43, 48, 53, 58, "?", 68, 73], rule: "Dãy số hình chữ nhật tăng cách 5 đơn vị (+5)", answer: 63, choices: [63, 62, 64, 60] },
+      { source: "CTST - Trang 116 (Bài 3d)", sequence: [7, 17, 27, "?", 47, 57, 67], rule: "Dãy số có tận cùng là 7 tăng cách 10 đơn vị (+10)", answer: 37, choices: [37, 30, 35, 40] },
+      { source: "CTST - Trang 15 (Bài 1)", sequence: [20, 18, "?", 14, 12, 10], rule: "Dãy số lùi cách 2 đơn vị (-2)", answer: 16, choices: [16, 15, 17, 14] },
+      { source: "KNTT - Trang 124 (Bài 3)", visual: "🌸 Chuỗi tính hoa nở: 8 (+5) ➔ 13 (-4) ➔ ? (-7) ➔ 2", question: "Tính nhẩm giá trị bông hoa thứ hai: 13 - 4 = ?", answer: 9, choices: [9, 8, 10, 7] }
+    ];
+
+    const MATH_ADD_SUB_100 = [
+      { source: "CTST - Trang 44", mathText: "7 + 4 = 7 + ? + 1", question: "Tách số để cộng tròn 10: 7 + 4 = 7 + ? + 1", answer: 3, choices: [3, 2, 4, 1] },
+      { source: "CTST - Trang 44", mathText: "6 + 5 = 6 + ? + 1", question: "Tách số để cộng tròn 10: 6 + 5 = 6 + ? + 1", answer: 4, choices: [4, 3, 2, 5] },
+      { source: "CTST - Trang 44", visual: "🐱 Mèo mẹ mang số: 9 + 6", question: "Mèo con nào có kết quả tương ứng với mèo mẹ 9 + 6?", answer: 15, choices: [15, 14, 16, 13] },
+      { source: "CTST - Trang 44", visual: "🐱 Mèo mẹ mang số: 8 + 6", question: "Mèo con nào có kết quả tương ứng với mèo mẹ 8 + 6?", answer: 14, choices: [14, 15, 13, 12] },
+      { source: "CTST - Trang 14", visual: "🏰 Tháp số cộng dồn: Tầng 2 có 4 và 5", question: "Đỉnh tháp cộng dồn của hai số 4 và 5 là số mấy?", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "CTST - Trang 47", mathText: "3 + 7 + 6 = ?", question: "Tính nhẩm nhanh: 3 + 7 + 6 = ?", answer: 16, choices: [16, 15, 17, 14] },
+      { source: "CTST - Trang 86", mathText: "29 + 5 = ?", question: "Đặt tính rồi tính: 29 + 5 = ?", answer: 34, choices: [34, 35, 33, 24] },
+      { source: "CTST - Trang 86", mathText: "29 + 25 = ?", question: "Đặt tính rồi tính: 29 + 25 = ?", answer: 54, choices: [54, 55, 44, 64] },
+      { source: "CTST - Trang 86", mathText: "49 + 34 = ?", question: "Đặt tính rồi tính: 49 + 34 = ?", answer: 83, choices: [83, 73, 84, 93] },
+      { source: "CTST - Trang 93", mathText: "34 - 5 = ?", question: "Đặt tính rồi tính: 34 - 5 = ?", answer: 29, choices: [29, 31, 28, 19] },
+      { source: "CTST - Trang 93", mathText: "54 - 25 = ?", question: "Đặt tính rồi tính: 54 - 25 = ?", answer: 29, choices: [29, 39, 31, 28] },
+      { source: "KNTT - Trang 38", mathText: "8 + 5 - 3 = ?", question: "Hoa quả mang phép tính: 8 + 5 - 3 = ?", answer: 10, choices: [10, 11, 9, 13] },
+      { source: "KNTT - Trang 76", visual: "🔋 Cháu có 36 cục pin và 17 cục pin", question: "Cả hai cháu có tất cả bao nhiêu cục pin (36 + 17)?", answer: 53, choices: [53, 43, 54, 63] },
+      { source: "KNTT - Trang 113", mathText: "40 + 60 = ?", question: "Gấu mang bảng gỗ: 40 + 60 = ?", answer: 100, choices: [100, 90, 80, 110] },
+      { source: "KNTT - Trang 113", mathText: "100 - 40 = ?", question: "Gấu mang bảng gỗ: 100 - 40 = ?", answer: 60, choices: [60, 50, 70, 40] },
+      { source: "Cánh Diều - Trang 66", mathText: "52 - 24 = ?", question: "Đặt tính rồi tính: 52 - 24 = ?", answer: 28, choices: [28, 38, 26, 32] },
+      { source: "Cánh Diều - Trang 74", mathText: "58 + 17 = ?", question: "Đặt tính rồi tính: 58 + 17 = ?", answer: 75, choices: [75, 74, 65, 85] },
+      { source: "Cánh Diều - Trang 74", mathText: "85 - 68 = ?", question: "Đặt tính rồi tính: 85 - 68 = ?", answer: 17, choices: [17, 27, 18, 19] },
+      { source: "Cánh Diều - Trang 74", mathText: "100 - 24 = ?", question: "Đặt tính rồi tính: 100 - 24 = ?", answer: 76, choices: [76, 86, 74, 66] },
+      { source: "Cánh Diều - Trang 70 (Bài 1)", mathText: "33 - 15 = ?", question: "Đặt tính rồi tính: 33 - 15 = ?", answer: 18, choices: [18, 28, 17, 22] },
+      { source: "Cánh Diều - Trang 70 (Bài 1)", mathText: "76 - 68 = ?", question: "Đặt tính rồi tính: 76 - 68 = ?", answer: 8, choices: [8, 18, 9, 6] },
+      { source: "Cánh Diều - Trang 70 (Bài 2)", mathText: "74 - 47 = ?", question: "Đặt tính rồi tính: 74 - 47 = ?", answer: 27, choices: [27, 37, 26, 33] },
+      { source: "Cánh Diều - Trang 70 (Bài 2)", mathText: "93 - 88 = ?", question: "Đặt tính rồi tính: 93 - 88 = ?", answer: 5, choices: [5, 15, 6, 4] },
+      { source: "KNTT - Trang 124 (Bài 1)", mathText: "7 + 7 = ?", question: "Tính nhẩm: 7 + 7 = ?", answer: 14, choices: [14, 15, 13, 16] },
+      { source: "KNTT - Trang 124 (Bài 1)", mathText: "14 - 5 = ?", question: "Tính nhẩm: 14 - 5 = ?", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "CTST - Trang 17 (Bài 2)", mathText: "Hiệu của 50 và 20", question: "Tính hiệu của hai số: 50 và 20 là bao nhiêu?", answer: 30, choices: [30, 70, 40, 20] },
+      { source: "CTST - Trang 17 (Bài 2)", mathText: "Hiệu của 62 và 0", question: "Tính hiệu của hai số: 62 và 0 là bao nhiêu?", answer: 62, choices: [62, 0, 60, 61] }
+    ];
+
+    const MATH_ADD_SUB_1000 = [
+      { source: "KNTT - Trang 79", visual: "📚 Tập 1 có 264 trang, Tập 2 có 312 trang", question: "Cả hai tập sách có tất cả bao nhiêu trang (264 + 312)?", answer: 576, choices: [576, 586, 566, 476] },
+      { source: "KNTT - Trang 84", mathText: "427 + 246 = ?", question: "Đặt tính rồi tính: 427 + 246 = ?", answer: 673, choices: [673, 663, 683, 773] },
+      { source: "KNTT - Trang 84", mathText: "607 + 143 = ?", question: "Đặt tính rồi tính: 607 + 143 = ?", answer: 750, choices: [750, 740, 760, 850] },
+      { source: "KNTT - Trang 84", mathText: "400 + 200 = ?", question: "Tính nhẩm tròn trăm: 400 + 200 = ?", answer: 600, choices: [600, 500, 700, 800] },
+      { source: "KNTT - Trang 84", mathText: "300 + 700 = ?", question: "Tính nhẩm tròn trăm: 300 + 700 = ?", answer: 1000, choices: [1000, 900, 800, 1100] },
+      { source: "KNTT - Trang 90", mathText: "372 - 251 + 437 = ?", question: "Tính giá trị biểu thức: 372 - 251 + 437 = ?", answer: 558, choices: [558, 358, 458, 548] },
+      { source: "KNTT - Trang 97", mathText: "267 + 731 = ?", question: "Đặt tính rồi tính: 267 + 731 = ?", answer: 998, choices: [998, 988, 997, 1000] },
+      { source: "KNTT - Trang 97", mathText: "721 - 350 = ?", question: "Đặt tính rồi tính: 721 - 350 = ?", answer: 371, choices: [371, 381, 471, 361] },
+      { source: "KNTT - Trang 117", mathText: "700 - 300 = ?", question: "Quả táo tính nhẩm: 700 - 300 = ?", answer: 400, choices: [400, 500, 300, 600] },
+      { source: "CTST - Trang 79", mathText: "263 + 4 = ?", question: "Tính cộng không nhớ: 263 + 4 = ?", answer: 267, choices: [267, 268, 257, 277] },
+      { source: "CTST - Trang 79", mathText: "213 + 224 = ?", question: "Tính cộng không nhớ: 213 + 224 = ?", answer: 437, choices: [437, 447, 427, 537] },
+      { source: "CTST - Trang 82", mathText: "437 - 224 = ?", question: "Tính trừ không nhớ: 437 - 224 = ?", answer: 213, choices: [213, 223, 113, 313] },
+      { source: "CTST - Trang 90", mathText: "652 + 139 = ?", question: "Tính tổng 2 số có 3 chữ số: 652 + 139 = ?", answer: 791, choices: [791, 781, 792, 801] },
+      { source: "CTST - Trang 92", mathText: "234 - 5 = ?", question: "Tính trừ có nhớ: 234 - 5 = ?", answer: 229, choices: [229, 231, 219, 239] },
+      { source: "CTST - Trang 92", mathText: "417 - 163 = ?", question: "Tính trừ có nhớ: 417 - 163 = ?", answer: 254, choices: [254, 264, 354, 244] },
+      { source: "CTST - Trang 103", visual: "🚌 Xe buýt số 555 đón các bạn mang phép tính nào?", question: "Xe buýt số 555 sẽ đón bạn mang phép tính nào?", answer: "324 + 231", choices: ["324 + 231", "251 + 637", "637 + 251", "400 + 200"] },
+      { source: "CTST - Trang 103 (Bài 4)", visual: "🚌 Xe buýt số 888 đón các bạn mang phép tính nào?", question: "Ở bến xe buýt còn có một xe mang số 888. Bạn nào mang phép tính 637 + 251 sẽ lên xe buýt số mấy?", answer: "Xe buýt số 888", choices: ["Xe buýt số 888", "Xe buýt số 555", "Xe buýt số 637", "Xe buýt số 251"] },
+      { source: "Cánh Diều - Trang 58", visual: "📖 Khối Một: 243 quyển, Khối Hai: 325 quyển", question: "Cả hai khối ủng hộ được bao nhiêu quyển sách (243 + 325)?", answer: 568, choices: [568, 558, 578, 468] },
+      { source: "Cánh Diều - Trang 71", visual: "📚 Có 362 quyển sách, cho mượn 145 quyển", question: "Trong thư viện còn lại bao nhiêu quyển sách (362 - 145)?", answer: 217, choices: [217, 227, 207, 117] },
+      { source: "CTST - Trang 89 (Bài 1)", mathText: "229 + 5 = ?", question: "Đặt tính rồi tính có nhớ: 229 + 5 = ?", answer: 234, choices: [234, 235, 224, 244] },
+      { source: "CTST - Trang 89 (Bài 1)", mathText: "254 + 163 = ?", question: "Đặt tính rồi tính có nhớ: 254 + 163 = ?", answer: 417, choices: [417, 407, 427, 317] },
+      { source: "KNTT - Trang 95 (Bài 1)", mathText: "346 - 128 = ?", question: "Đặt tính rồi tính có nhớ: 346 - 128 = ?", answer: 218, choices: [218, 228, 208, 318] },
+      { source: "KNTT - Trang 95 (Bài 1)", mathText: "673 - 280 = ?", question: "Đặt tính rồi tính có nhớ: 673 - 280 = ?", answer: 393, choices: [393, 493, 383, 403] },
+      { source: "KNTT - Trang 117 (Bài 2)", mathText: "236 + 528 = ?", question: "Đặt tính rồi tính: 236 + 528 = ?", answer: 764, choices: [764, 754, 774, 864] },
+      { source: "KNTT - Trang 117 (Bài 2)", mathText: "753 - 236 = ?", question: "Đặt tính rồi tính: 753 - 236 = ?", answer: 517, choices: [517, 527, 507, 617] }
+    ];
+
+    const MATH_MULT = [
+      { source: "KNTT - Trang 10", mathText: "2 × 7 = ?", question: "Sóc nhặt hạt dẻ: 2 × 7 bằng bao nhiêu?", answer: 14, choices: [14, 12, 16, 18] },
+      { source: "KNTT - Trang 10", mathText: "2 × 9 = ?", question: "Sóc nhặt hạt dẻ: 2 × 9 bằng bao nhiêu?", answer: 18, choices: [18, 16, 20, 14] },
+      { source: "CTST - Trang 15", visual: "🦆 Đàn vịt bơi hồ: 10 con vịt", question: "Mỗi con vịt có 2 cánh. Hỏi 10 con vịt có bao nhiêu cái cánh?", answer: 20, choices: [20, 10, 18, 12] },
+      { source: "Cánh Diều - Trang 11", visual: "🌸 5 chậu hoa, mỗi chậu có 2 bông", question: "Có 5 chậu hoa, mỗi chậu có 2 bông hoa đỏ. Phép nhân tính tổng số bông là:", answer: "2 × 5 = 10", choices: ["2 × 5 = 10", "2 × 4 = 8", "5 + 2 = 7", "2 × 6 = 12"] },
+      { source: "Cánh Diều - Trang 11", visual: "🏓 3 bạn chơi bóng bàn, mỗi bạn cầm 2 vợt", question: "3 bạn cầm vợt bóng bàn, mỗi bạn cầm 2 cái. Hỏi có tất cả mấy cái vợt?", answer: 6, choices: [6, 5, 8, 4] },
+      { source: "Cánh Diều - Trang 11", mathText: "2 kg × 6 = ?", question: "Tính: 2 kg × 6 = ?", answer: "12 kg", choices: ["12 kg", "10 kg", "14 kg", "8 kg"] },
+      { source: "Cánh Diều - Trang 11", mathText: "2 dm × 9 = ?", question: "Tính: 2 dm × 9 = ?", answer: "18 dm", choices: ["18 dm", "16 dm", "19 dm", "20 dm"] },
+      { source: "Cánh Diều - Trang 11", mathText: "2 l × 7 = ?", question: "Tính: 2 l × 7 = ?", answer: "14 l", choices: ["14 l", "12 l", "16 l", "9 l"] },
+      { source: "KNTT - Trang 27", visual: "🍎 4 đĩa, mỗi đĩa có 5 quả táo", question: "Có 4 đĩa táo, mỗi đĩa 5 quả. Phép nhân thích hợp là:", answer: "5 × 4 = 20", choices: ["5 × 4 = 20", "4 × 5 = 20", "5 + 4 = 9", "5 × 3 = 15"] },
+      { source: "KNTT - Trang 123", visual: "🥥 Mỗi chùm có 5 quả dừa", question: "Mỗi chùm có 5 quả dừa. Hỏi 4 chùm dừa như vậy có bao nhiêu quả?", answer: "20 quả", choices: ["20 quả", "15 quả", "25 quả", "16 quả"] },
+      { source: "KNTT - Trang 123", mathText: "5 × 8 = ?", question: "Bảng nhân 5: 5 × 8 bằng bao nhiêu?", answer: 40, choices: [40, 35, 45, 30] },
+      { source: "KNTT - Trang 11 (Bài 4)", visual: "🦀 Một con cua có 2 cái càng", question: "Một con cua có 2 cái càng. Hỏi 5 con cua có bao nhiêu cái càng?", answer: "10 cái càng", choices: ["10 cái càng", "12 cái càng", "8 cái càng", "7 cái càng"] },
+      { source: "KNTT - Trang 11 (Bài 4)", visual: "🦀 Một con cua có 2 cái càng", question: "Một con cua có 2 cái càng. Hỏi 7 con cua có bao nhiêu cái càng?", answer: "14 cái càng", choices: ["14 cái càng", "12 cái càng", "16 cái càng", "9 cái càng"] },
+      { source: "KNTT - Trang 17 (Bài 2)", mathText: "2 kg × 3 = ?", question: "Tính: 2 kg × 3 = ?", answer: "6 kg", choices: ["6 kg", "5 kg", "8 kg", "7 kg"] },
+      { source: "KNTT - Trang 17 (Bài 2)", mathText: "2 l × 4 = ?", question: "Tính: 2 l × 4 = ?", answer: "8 l", choices: ["8 l", "6 l", "10 l", "7 l"] }
+    ];
+
+    const MATH_DIV = [
+      { source: "CTST - Trang 24", visual: "🍬 Hũ kẹo có 14 cái kẹo", question: "Chia đều 14 cái kẹo trong hũ cho 2 bạn. Mỗi bạn được mấy cái kẹo?", answer: "7 cái", choices: ["7 cái", "6 cái", "8 cái", "5 cái"] },
+      { source: "CTST - Trang 24", visual: "🍬 Hũ kẹo có 16 cái kẹo", question: "Chia đều 16 cái kẹo trong hũ cho 2 bạn. Mỗi bạn được mấy cái kẹo?", answer: "8 cái", choices: ["8 cái", "7 cái", "9 cái", "6 cái"] },
+      { source: "CTST - Trang 24", visual: "🍬 Có 10 cái kẹo", question: "Lấy hết 10 cái kẹo chia cho mỗi bạn 2 cái. Hỏi có mấy bạn được chia?", answer: "5 bạn", choices: ["5 bạn", "4 bạn", "6 bạn", "2 bạn"] },
+      { source: "KNTT - Trang 22", visual: "🐥 Đàn gà bên đống rơm: 20 cái chân gà", question: "Đàn gà có 20 cái chân. Mỗi con gà có 2 chân. Hỏi đàn gà có bao nhiêu con?", answer: "10 con gà", choices: ["10 con gà", "8 con gà", "12 con gà", "5 con gà"] },
+      { source: "KNTT - Trang 22", mathText: "16 : 2 : 2 : 2 = ?", question: "Ong tìm tổ mật: 16 chia 2 rồi chia 2 rồi chia 2 bằng mấy?", answer: 2, choices: [2, 4, 1, 3] },
+      { source: "Cánh Diều - Trang 20", mathText: "18 cm : 2 = ?", question: "Tính: 18 cm : 2 = ?", answer: "9 cm", choices: ["9 cm", "8 cm", "7 cm", "10 cm"] },
+      { source: "Cánh Diều - Trang 20", mathText: "14 kg : 2 = ?", question: "Tính: 14 kg : 2 = ?", answer: "7 kg", choices: ["7 kg", "6 kg", "8 kg", "5 kg"] },
+      { source: "Cánh Diều - Trang 20", mathText: "16 l : 2 = ?", question: "Tính: 16 l : 2 = ?", answer: "8 l", choices: ["8 l", "7 l", "9 l", "6 l"] },
+      { source: "KNTT - Trang 123", visual: "🥮 Liên hoan Trung thu: 15 hộp bánh", question: "Cô giáo mua 15 hộp bánh chia đều cho 5 tổ. Hỏi mỗi tổ được mấy hộp bánh?", answer: "3 hộp", choices: ["3 hộp", "4 hộp", "2 hộp", "5 hộp"] },
+      { source: "KNTT - Trang 27", mathText: "45 : 5 = ?", question: "Bảng chia 5: 45 : 5 bằng bao nhiêu?", answer: 9, choices: [9, 8, 7, 10] },
+      { source: "Cánh Diều - Trang 25", visual: "🧹 Lớp 2C dọn vệ sinh: 20 học sinh", question: "20 học sinh chia thành các nhóm, mỗi nhóm 5 bạn. Hỏi có tất cả mấy nhóm?", answer: "4 nhóm", choices: ["4 nhóm", "5 nhóm", "3 nhóm", "2 nhóm"] },
+      { source: "KNTT - Trang 17 (Bài 3)", visual: "🌰 Sóc có 20 hạt dẻ, chia đều cho 5 bạn", question: "Sóc nhặt được 20 hạt dẻ chia đều cho 5 bạn. Mỗi bạn được mấy hạt dẻ?", answer: "4 hạt dẻ", choices: ["4 hạt dẻ", "5 hạt dẻ", "3 hạt dẻ", "6 hạt dẻ"] },
+      { source: "KNTT - Trang 17 (Bài 4)", visual: "🍚 Có 20 kg gạo chia vào các túi 5 kg", question: "Chia 20 kg gạo vào các túi, mỗi túi 5 kg. Hỏi được bao nhiêu túi gạo?", answer: "4 túi", choices: ["4 túi", "5 túi", "3 túi", "6 túi"] }
+    ];
+
+    const MATH_GEOMETRY_ALL = [
+      { source: "KNTT - Trang 97", visual: "🔺 Mai (332), ⏢ Rô-bốt (591), 🟡 Việt (542)", question: "Miếng bìa có kết quả phép tính lớn nhất mang hình gì?", answer: "Hình thang", choices: ["Hình thang", "Hình tam giác", "Hình tròn", "Hình vuông"] },
+      { source: "KNTT - Trang 137", visual: "📐 Hình vẽ gồm một hình thang có 1 đường cắt dọc và 1 đường chéo", question: "Hình vẽ gồm một hình thang có 1 đường cắt dọc và 1 đường chéo. Có tất cả bao nhiêu hình tứ giác?", answer: "3 hình", choices: ["3 hình", "2 hình", "4 hình", "5 hình"] },
+      { source: "KNTT - Trang 97", visual: "📦 Khối lập phương (523) & Khối cầu (365)", question: "Tính tổng của hai số ghi trên khối lập phương và khối cầu: 523 + 365 = ?", answer: 888, choices: [888, 878, 898, 988] },
+      { source: "KNTT - Trang 97", visual: "🧊 Khối hộp chữ nhật (572) & Khối trụ (416)", question: "Tính hiệu của hai số ghi trên khối hộp chữ nhật và khối trụ: 572 - 416 = ?", answer: 156, choices: [156, 166, 146, 150] },
+      { source: "SGK Toán 2", visual: "📐 Hình tam giác", question: "Hình tam giác có bao nhiêu cạnh và bao nhiêu đỉnh?", answer: "3 cạnh và 3 đỉnh", choices: ["3 cạnh và 3 đỉnh", "4 cạnh và 4 đỉnh", "2 cạnh và 3 đỉnh", "3 cạnh và 4 đỉnh"] },
+      { source: "SGK Toán 2", visual: "🟦 Hình tứ giác", question: "Hình tứ giác có tất cả bao nhiêu cạnh?", answer: "4 cạnh", choices: ["4 cạnh", "3 cạnh", "5 cạnh", "6 cạnh"] },
+      { source: "Cánh Diều - Trang 104 (Bài 4)", visual: "👧 Dây tạo hình căng góc", question: "Để tạo thành một hình tam giác căng bằng dây, cần tối thiểu bao nhiêu bạn cầm đỉnh góc?", answer: "3 bạn", choices: ["3 bạn", "4 bạn", "2 bạn", "5 bạn"] },
+      { source: "KNTT - Trang 34 (Bài 46, Khám phá)", visual: "🥫 Lon sữa, khúc gỗ tròn, ống nhựa", question: "Lon sữa, khúc gỗ tròn và ống nhựa đều có dạng khối gì?", answer: "Khối trụ", choices: ["Khối trụ", "Khối cầu", "Khối hộp chữ nhật", "Khối lập phương"] },
+      { source: "KNTT - Trang 34 (Bài 46, Khám phá)", visual: "⚽ Quả bóng đá, quả bóng chày", question: "Quả bóng đá và quả bóng chày đều có dạng khối gì?", answer: "Khối cầu", choices: ["Khối cầu", "Khối trụ", "Khối vuông", "Khối chóp"] },
+      { source: "KNTT - Trang 34 (Bài 46, HĐ1)", visual: "🔺A.Hình chóp  🔴B.Quả bóng đỏ  🥚C.Hình bầu dục  🟡D.Khối trụ vàng", question: "Trong 4 hình A, B, C, D, hình nào là khối trụ?", answer: "Hình D", choices: ["Hình D", "Hình A", "Hình B", "Hình C"] },
+      { source: "KNTT - Trang 34 (Bài 46, HĐ1)", visual: "🔺A.Hình chóp  🔴B.Quả bóng đỏ  🥚C.Hình bầu dục  🟡D.Khối trụ vàng", question: "Trong 4 hình A, B, C, D, hình nào là khối cầu?", answer: "Hình B", choices: ["Hình B", "Hình A", "Hình C", "Hình D"] },
+      { source: "KNTT - Trang 34 (Bài 46, HĐ2)", visual: "🏐 Quả bóng chuyền", question: "Quả bóng chuyền có dạng khối gì?", answer: "Khối cầu", choices: ["Khối cầu", "Khối trụ", "Khối hộp chữ nhật", "Khối lập phương"] },
+      { source: "KNTT - Trang 34 (Bài 46, HĐ2)", visual: "🧴 Ống nhựa dài, thân cây tre", question: "Ống nhựa dài và thân cây tre có dạng khối gì?", answer: "Khối trụ", choices: ["Khối trụ", "Khối cầu", "Khối lập phương", "Khối hộp chữ nhật"] },
+      { source: "KNTT - Trang 35 (Bài 47, LT1)", visual: "🏮 Dãy đèn lồng phố cổ Hội An", question: "Trong bức tranh phố cổ, ngoài đèn lồng dạng khối trụ, các đèn lồng còn lại thường có dạng khối gì?", answer: "Khối cầu", choices: ["Khối cầu", "Khối chóp", "Khối vuông", "Khối tam giác"] },
+      { source: "KNTT - Trang 35 (Bài 47, LT2)", visual: "🔴🔵🟩 Dãy hình lặp lại: cầu, trụ, hộp CN, cầu, trụ, hộp CN, cầu, ?", question: "Dãy hình lặp lại: khối cầu, khối trụ, khối hộp chữ nhật, khối cầu, khối trụ, khối hộp chữ nhật, khối cầu, ? Hình tiếp theo là hình gì?", answer: "Khối trụ", choices: ["Khối trụ", "Khối cầu", "Khối hộp chữ nhật", "Khối lập phương"] }
+    ];
+
+    const MATH_LENGTH_CONVERT = [
+      { source: "SGK Đo độ dài", mathText: "1 km = ? m", question: "1 ki-lô-mét (km) bằng bao nhiêu mét (m)?", answer: "1000 m", choices: ["1000 m", "100 m", "10 m", "10000 m"] },
+      { source: "SGK Đo độ dài", mathText: "1 m = ? cm", question: "1 mét (m) bằng bao nhiêu xăng-ti-mét (cm)?", answer: "100 cm", choices: ["100 cm", "10 cm", "1000 cm", "50 cm"] },
+      { source: "SGK Đo độ dài", mathText: "1 dm = ? cm", question: "1 đề-xi-mét (dm) bằng bao nhiêu xăng-ti-mét (cm)?", answer: "10 cm", choices: ["10 cm", "100 cm", "1 cm", "20 cm"] },
+      { source: "SGK Đo độ dài", mathText: "1 m + 20 cm = ? cm", question: "Tính đổi đơn vị: 1 m + 20 cm bằng bao nhiêu cm?", answer: "120 cm", choices: ["120 cm", "21 cm", "102 cm", "1200 cm"] },
+      { source: "SGK Đo độ dài", mathText: "1 km + 300 m = ? m", question: "Tính đổi đơn vị: 1 km + 300 m bằng bao nhiêu mét?", answer: "1300 m", choices: ["1300 m", "301 m", "1030 m", "400 m"] },
+      { source: "SGK Đo độ dài", mathText: "2 dm 5 cm = ? cm", question: "2 đề-xi-mét 5 xăng-ti-mét đổi ra xăng-ti-mét là:", answer: "25 cm", choices: ["25 cm", "205 cm", "7 cm", "52 cm"] },
+      { source: "SGK Đo độ dài", mathText: "1 m − 40 cm = ? cm", question: "1 mét trừ đi 40 xăng-ti-mét bằng bao nhiêu xăng-ti-mét?", answer: "60 cm", choices: ["60 cm", "50 cm", "40 cm", "140 cm"] },
+      { source: "SGK Đo độ dài", mathText: "1 km − 500 m = ? m", question: "1 ki-lô-mét bớt đi 500 mét còn lại bao nhiêu mét?", answer: "500 m", choices: ["500 m", "400 m", "600 m", "50 m"] },
+      { source: "SGK Đo độ dài", mathText: "40 dm = ? m", question: "40 đề-xi-mét bằng bao nhiêu mét?", answer: "4 m", choices: ["4 m", "40 m", "400 m", "14 m"] },
+      { source: "SGK Đo độ dài", mathText: "300 cm = ? m", question: "300 xăng-ti-mét bằng bao nhiêu mét?", answer: "3 m", choices: ["3 m", "30 m", "300 m", "13 m"] }
+    ];
+
+    const MATH_MASS_LIT_CONVERT = [
+      { source: "SGK Đo khối lượng", mathText: "1 kg = ? g", question: "1 ki-lô-gam (kg) bằng bao nhiêu gam (g)?", answer: "1000 g", choices: ["1000 g", "100 g", "10 g", "500 g"] },
+      { source: "SGK Đo khối lượng", mathText: "1 tấn = ? kg", question: "1 tấn bằng bao nhiêu ki-lô-gam (kg)?", answer: "1000 kg", choices: ["1000 kg", "100 kg", "500 kg", "10000 kg"] },
+      { source: "SGK Đo dung tích", mathText: "1 l = ? ml", question: "1 lít (l) bằng bao nhiêu mi-li-lít (ml)?", answer: "1000 ml", choices: ["1000 ml", "100 ml", "500 ml", "10 ml"] },
+      { source: "SGK Đo khối lượng", mathText: "1 kg + 250 g = ? g", question: "Tính: 1 kg + 250 g bằng bao nhiêu gam?", answer: "1250 g", choices: ["1250 g", "251 g", "1025 g", "350 g"] },
+      { source: "SGK Đo dung tích", mathText: "1 l − 300 ml = ? ml", question: "1 lít nước bớt đi 300 ml thì còn lại bao nhiêu ml?", answer: "700 ml", choices: ["700 ml", "800 ml", "600 ml", "200 ml"] },
+      { source: "SGK Đo khối lượng", mathText: "2 kg 500 g = ? g", question: "2 ki-lô-gam 500 gam đổi ra gam là:", answer: "2500 g", choices: ["2500 g", "2050 g", "700 g", "250 g"] },
+      { source: "SGK Đo khối lượng", mathText: "1 tấn + 200 kg = ? kg", question: "1 tấn cộng 200 kg bằng bao nhiêu kg?", answer: "1200 kg", choices: ["1200 kg", "201 kg", "300 kg", "1020 kg"] },
+      { source: "SGK Đo dung tích", mathText: "2 l + 500 ml = ? ml", question: "2 lít cộng 500 mi-li-lít bằng bao nhiêu mi-li-lít?", answer: "2500 ml", choices: ["2500 ml", "700 ml", "2050 ml", "502 ml"] },
+      { source: "SGK Đo khối lượng", visual: "🍈 Quả mít cân nặng 3 kg; Gói đường nặng 500 g", question: "Cả quả mít và gói đường nặng tất cả bao nhiêu gam?", answer: "3500 g", choices: ["3500 g", "3050 g", "800 g", "5300 g"] },
+      { source: "SGK Đo khối lượng", mathText: "2000 g = ? kg", question: "2000 gam bằng bao nhiêu ki-lô-gam?", answer: "2 kg", choices: ["2 kg", "20 kg", "200 kg", "1 kg"] }
+    ];
+
+    const MATH_TIME_CONVERT = [
+      { source: "SGK Thời gian", mathText: "1 giờ = ? phút", question: "1 giờ bằng bao nhiêu phút?", answer: "60 phút", choices: ["60 phút", "100 phút", "30 phút", "24 phút"] },
+      { source: "SGK Thời gian", mathText: "1 phút = ? giây", question: "1 phút bằng bao nhiêu giây?", answer: "60 giây", choices: ["60 giây", "100 giây", "30 giây", "10 giây"] },
+      { source: "SGK Thời gian", mathText: "1 ngày = ? giờ", question: "Một ngày có bao nhiêu giờ?", answer: "24 giờ", choices: ["24 giờ", "12 giờ", "60 giờ", "48 giờ"] },
+      { source: "SGK Thời gian", mathText: "1 tuần = ? ngày", question: "Một tuần lễ có bao nhiêu ngày?", answer: "7 ngày", choices: ["7 ngày", "5 ngày", "6 ngày", "8 ngày"] },
+      { source: "SGK Thời gian", mathText: "1 giờ + 20 phút = ? phút", question: "Tính đổi: 1 giờ + 20 phút bằng bao nhiêu phút?", answer: "80 phút", choices: ["80 phút", "21 phút", "70 phút", "120 phút"] },
+      { source: "SGK Thời gian", mathText: "1 giờ 30 phút = ? phút", question: "1 giờ 30 phút (hoặc 1 giờ rưỡi) bằng bao nhiêu phút?", answer: "90 phút", choices: ["90 phút", "40 phút", "130 phút", "60 phút"] },
+      { source: "SGK Thời gian", mathText: "1 phút + 15 giây = ? giây", question: "Tính: 1 phút + 15 giây bằng bao nhiêu giây?", answer: "75 giây", choices: ["75 giây", "16 giây", "65 giây", "115 giây"] },
+      { source: "SGK Thời gian", mathText: "2 ngày = ? giờ", question: "2 ngày có tất cả bao nhiêu giờ?", answer: "48 giờ", choices: ["48 giờ", "24 giờ", "36 giờ", "50 giờ"] },
+      { source: "SGK Thời gian", visual: "🕒 8 giờ tối", question: "8 giờ tối còn được gọi là mấy giờ trong ngày (8 + 12)?", answer: "20 giờ", choices: ["20 giờ", "18 giờ", "19 giờ", "21 giờ"] },
+      { source: "SGK Thời gian", mathText: "120 phút = ? giờ", question: "120 phút bằng mấy giờ (60 + 60)?", answer: "2 giờ", choices: ["2 giờ", "1 giờ", "3 giờ", "12 giờ"] }
+    ];
+
+    const MATH_WORD_PROBLEMS = [
+      { source: "KNTT - Trang 137", question: "Để ủng hộ các bạn vùng lũ lụt, lớp 2A quyên góp được 83 quyển sách, lớp 2B quyên góp ít hơn lớp 2A là 18 quyển sách. Hỏi lớp 2B quyên góp được bao nhiêu quyển sách?", answer: "65 quyển", choices: ["65 quyển", "75 quyển", "64 quyển", "101 quyển"] },
+      { source: "CTST - Trang 100", question: "Số hạc giấy của lớp 2A là 90 con. Lớp 2B gấp nhiều hơn lớp 2A là 5 con. Hỏi lớp 2B gấp được bao nhiêu con hạc giấy?", answer: "95 con", choices: ["95 con", "85 con", "100 con", "90 con"] },
+      { source: "CTST - Trang 100", question: "Số hạc giấy của lớp 2C là số liền trước của 110. Hỏi lớp 2C gấp được bao nhiêu con hạc giấy?", answer: "109 con", choices: ["109 con", "111 con", "108 con", "100 con"] },
+      { source: "CTST - Trang 100", question: "Số hạc giấy của lớp 2D là số liền sau của 110. Hỏi lớp 2D gấp được bao nhiêu con hạc giấy?", answer: "111 con", choices: ["111 con", "109 con", "112 con", "120 con"] },
+      { source: "KNTT - Trang 27", question: "Trong trò chơi Ô ăn quan, mỗi ô có 5 viên sỏi. Hỏi 10 ô như vậy có tất cả bao nhiêu viên sỏi?", answer: "50 viên", choices: ["50 viên", "45 viên", "55 viên", "40 viên"] },
+      { source: "CTST - Trang 90", question: "Gà nâu đẻ 168 quả trứng, gà trắng đẻ 207 quả trứng. Hỏi tổng số trứng của gà nâu và gà trắng là bao nhiêu quả?", answer: "375 quả", choices: ["375 quả", "365 quả", "385 quả", "370 quả"] },
+      { source: "Cánh Diều - Trang 100", question: "Khi tham gia ngày hội Bảo vệ môi trường, khối lớp Hai làm được 24 sản phẩm, khối lớp Ba làm nhiều hơn khối lớp Hai 16 sản phẩm. Hỏi khối lớp Ba làm được bao nhiêu sản phẩm?", answer: "40 sản phẩm", choices: ["40 sản phẩm", "38 sản phẩm", "42 sản phẩm", "30 sản phẩm"] }
+    ];
+
+    const MATH_WORD_ADVANCED = [
+      { source: "Nâng cao - phỏng theo KNTT Trang 93", visual: "🛗 Thang máy chở tối đa 600 kg, hiện đã chở 570 kg", question: "Một thang máy chở tối đa 600 kg. Hiện tại thang máy đã chở 570 kg. Bạn Lan cân nặng 35 kg muốn vào thêm. Hỏi bạn Lan có thể vào thang máy đó một cách an toàn không?", answer: "Không, vì thang máy chỉ còn chở được 30 kg", choices: ["Không, vì thang máy chỉ còn chở được 30 kg", "Có, vì thang máy còn chỗ trống", "Không, vì thang máy đã chở đủ 600 kg", "Có, vì bạn Lan nhẹ hơn 570 kg"] },
+      { source: "Nâng cao - phỏng theo Cánh Diều Trang 91", visual: "🍉 20 quả dưa hấu, tặng 5 quả, chia đều 5 rổ", question: "Nhà Nam thu hoạch được 20 quả dưa hấu, đem tặng hàng xóm 5 quả. Số dưa hấu còn lại đem chia đều vào 5 rổ. Hỏi mỗi rổ có mấy quả dưa hấu?", answer: "3 quả", choices: ["3 quả", "4 quả", "5 quả", "2 quả"] },
+      { source: "Nâng cao - phỏng theo KNTT Trang 137", visual: "📚 Lớp 2A: 83 quyển sách, lớp 2B quyên góp ít hơn 18 quyển", question: "Lớp 2A quyên góp được 83 quyển sách. Lớp 2B quyên góp ít hơn lớp 2A 18 quyển. Hỏi cả hai lớp quyên góp được tất cả bao nhiêu quyển sách?", answer: "148 quyển", choices: ["148 quyển", "138 quyển", "101 quyển", "158 quyển"] },
+      { source: "Nâng cao - dạng Trung thu", visual: "🥮 4 hộp bánh, mỗi hộp 5 cái, tặng thêm 3 cái lẻ", question: "Cô giáo mua 4 hộp bánh, mỗi hộp có 5 cái bánh, sau đó được tặng thêm 3 cái bánh lẻ. Hỏi cô giáo có tất cả bao nhiêu cái bánh?", answer: "23 cái", choices: ["23 cái", "20 cái", "22 cái", "25 cái"] },
+      { source: "Nâng cao - dạng Bảng chia 5", visual: "🔵 45 viên bi chia đều 5 bạn, mỗi bạn cho em 2 viên", question: "Có 45 viên bi chia đều cho 5 bạn. Sau đó, mỗi bạn cho em của mình 2 viên. Hỏi mỗi bạn còn lại bao nhiêu viên bi?", answer: "7 viên", choices: ["7 viên", "9 viên", "11 viên", "5 viên"] },
+      { source: "Nâng cao - dạng đo lường (Cánh Diều Trang 65)", visual: "🧵 Dây A: 7m + 3m | Dây B: 15m − 9m", question: "Đoạn dây A dài: 7 m + 3 m. Đoạn dây B dài: 15 m − 9 m. Hỏi đoạn dây nào dài hơn và dài hơn bao nhiêu mét?", answer: "Dây A dài hơn 4 m", choices: ["Dây A dài hơn 4 m", "Dây B dài hơn 4 m", "Hai dây dài bằng nhau", "Dây A dài hơn 6 m"] },
+      { source: "Nâng cao - phỏng theo CTST Trang 90", visual: "🥚 Gà nâu 168 quả, gà trắng 207 quả, đã bán 150 quả", question: "Gà nâu đẻ được 168 quả trứng, gà trắng đẻ được 207 quả trứng. Bác nông dân đã đem bán 150 quả. Hỏi còn lại bao nhiêu quả trứng?", answer: "225 quả", choices: ["225 quả", "235 quả", "215 quả", "375 quả"] },
+      { source: "Nâng cao - dạng gấp số lần", visual: "🦆 24 con vịt, số gà gấp đôi số vịt", question: "Nhà bác Lan nuôi 24 con vịt, số gà nuôi được gấp đôi số vịt. Hỏi nhà bác Lan nuôi tất cả bao nhiêu con gà và vịt?", answer: "72 con", choices: ["72 con", "48 con", "96 con", "60 con"] }
+    ];
+
+    const MATH_POLYLINE = [
+      { source: "Cánh Diều - Trang 88", visual: "📏 Đường gấp khúc ABCD: AB = 4cm, BC = 5cm, CD = 2cm", question: "Tính độ dài đường gấp khúc ABCD, biết AB = 4cm, BC = 5cm, CD = 2cm.", answer: "11 cm", choices: ["11 cm", "9 cm", "10 cm", "12 cm"] },
+      { source: "Cánh Diều - Trang 89", visual: "📏 Đường gấp khúc ABCD: AB = 4cm, BC = 2cm, CD = 4cm", question: "Tính độ dài đường gấp khúc ABCD, biết AB = 4cm, BC = 2cm, CD = 4cm.", answer: "10 cm", choices: ["10 cm", "8 cm", "11 cm", "6 cm"] },
+      { source: "Cánh Diều - Trang 86", visual: "🔺 Đường gấp khúc ABCD gồm các đoạn thẳng AB, BC, CD", question: "Đường gấp khúc ABCD gồm mấy đoạn thẳng?", answer: "3 đoạn thẳng", choices: ["3 đoạn thẳng", "2 đoạn thẳng", "4 đoạn thẳng", "1 đoạn thẳng"] },
+      { source: "Cánh Diều - Trang 88", visual: "💡 Quy tắc tính độ dài đường gấp khúc", question: "Muốn tính độ dài đường gấp khúc, ta làm thế nào?", answer: "Cộng độ dài tất cả các đoạn thẳng của đường gấp khúc", choices: ["Cộng độ dài tất cả các đoạn thẳng của đường gấp khúc", "Lấy đoạn dài nhất trừ đoạn ngắn nhất", "Nhân các đoạn thẳng với nhau", "Chỉ tính đoạn thẳng đầu và cuối"] },
+      { source: "Nâng cao - Mở rộng SGK", visual: "📏 Đường gấp khúc MNPQ: MN = 3cm, NP = 6cm, PQ = 5cm", question: "Tính độ dài đường gấp khúc MNPQ, biết MN = 3cm, NP = 6cm, PQ = 5cm.", answer: "14 cm", choices: ["14 cm", "13 cm", "15 cm", "12 cm"] },
+      { source: "Nâng cao - Mở rộng SGK", visual: "🔍 Đường gấp khúc ABCD dài 20cm, AB = 7cm, BC = 8cm", question: "Đường gấp khúc ABCD dài 20 cm. Biết AB = 7 cm, BC = 8 cm. Tính độ dài đoạn CD.", answer: "5 cm", choices: ["5 cm", "6 cm", "4 cm", "15 cm"] }
+    ];
+
+    const MATH_NUMBERS_1000 = [
+      { source: "KNTT - Trang 40 (Bài 48)", visual: "🍫 10 miếng sô-cô-la ghép thành 1 chục", question: "10 đơn vị bằng mấy chục?", answer: "1 chục", choices: ["1 chục", "2 chục", "10 chục", "1 trăm"] },
+      { source: "KNTT - Trang 40 (Bài 48)", visual: "🟦 Ghép 10 tấm vuông 1 chục thành 1 trăm", question: "10 chục bằng mấy trăm?", answer: "1 trăm", choices: ["1 trăm", "10 trăm", "1 chục", "2 trăm"] },
+      { source: "KNTT - Trang 40 (Bài 48)", visual: "🟩 Ghép 10 tấm trăm thành 1 nghìn", question: "10 trăm bằng mấy nghìn?", answer: "1 nghìn (1000)", choices: ["1 nghìn (1000)", "10 nghìn", "100", "1 trăm"] },
+      { source: "KNTT - Trang 42 (Bài 48, HĐ2a)", visual: "🍬 4 lọ kẹo, mỗi lọ 100 viên", question: "Mỗi lọ kẹo có 100 viên kẹo. Có 4 lọ kẹo như vậy. Hỏi có tất cả bao nhiêu viên kẹo?", answer: "400 viên", choices: ["400 viên", "40 viên", "4 viên", "300 viên"] },
+      { source: "KNTT - Trang 42 (Bài 48, HĐ3)", visual: "🎂 Bánh kem cầm biển số: 8 chục và 5 đơn vị", question: "Số gồm 8 chục và 5 đơn vị là số nào?", answer: 85, choices: [85, 58, 80, 805] },
+      { source: "KNTT - Trang 58 (Bài 53, HĐ1)", visual: "🚚 Xe tải ghi phép so sánh: 847 > 747", question: "Phép so sánh 847 > 747 trên xe tải là Đúng hay Sai?", answer: "Đúng", choices: ["Đúng", "Sai"] }
+    ];
+
+    const MATH_MONEY = [
+      { source: "KNTT - Trang 71 (Bài 56, Khám phá)", visual: "💵 Các tờ tiền Việt Nam: 100 đồng, 200 đồng, 500 đồng, 1000 đồng", question: "Bài học giới thiệu cho em những tờ tiền Việt Nam nào?", answer: "100 đồng, 200 đồng, 500 đồng, 1000 đồng", choices: ["100 đồng, 200 đồng, 500 đồng, 1000 đồng", "10 đồng, 20 đồng, 50 đồng", "1000 đồng, 2000 đồng, 5000 đồng", "100 đồng, 500 đồng, 5000 đồng"] },
+      { source: "KNTT - Trang 72 (Bài 56, HĐ2)", visual: "🍬 Bạn Mai mua kẹo hết 1 000 đồng", question: "Bạn Mai mua kẹo hết 1 000 đồng. Bạn Mai nên chọn tờ tiền nào để trả vừa đủ?", answer: "Tờ 1 000 đồng", choices: ["Tờ 1 000 đồng", "Tờ 100 đồng", "Tờ 500 đồng", "Tờ 200 đồng"] },
+      { source: "Vận dụng - phỏng theo KNTT Bài 56", visual: "💵 1 tờ 500 đồng + 1 tờ 200 đồng", question: "Bạn An có 1 tờ 500 đồng và 1 tờ 200 đồng. Hỏi bạn An có tất cả bao nhiêu tiền?", answer: "700 đồng", choices: ["700 đồng", "600 đồng", "800 đồng", "500 đồng"] },
+      { source: "Vận dụng - phỏng theo KNTT Bài 56", visual: "💵 2 tờ 200 đồng + 1 tờ 100 đồng", question: "Bạn Bình có 2 tờ 200 đồng và 1 tờ 100 đồng. Hỏi bạn Bình có tất cả bao nhiêu tiền?", answer: "500 đồng", choices: ["500 đồng", "400 đồng", "600 đồng", "300 đồng"] }
+    ];
+
+    const MATH_STATS_PROBABILITY = [
+      { source: "KNTT - Trang 102 (Bài 65, Khám phá)", visual: "🚗 Biểu đồ tranh Số ô tô theo màu: Vàng 5, Xanh 5, Đỏ 6", question: "Nhìn biểu đồ tranh về số ô tô theo màu, màu ô tô nào có nhiều chiếc nhất?", answer: "Màu đỏ", choices: ["Màu đỏ", "Màu vàng", "Màu xanh", "Bằng nhau cả 3 màu"] },
+      { source: "KNTT - Trang 102 (Bài 65, Khám phá)", visual: "🚗 Biểu đồ tranh: Ô tô vàng 5, xanh 5", question: "Theo biểu đồ tranh, số ô tô màu vàng và số ô tô màu xanh như thế nào với nhau?", answer: "Bằng nhau", choices: ["Bằng nhau", "Vàng nhiều hơn xanh", "Xanh nhiều hơn vàng", "Không so sánh được"] },
+      { source: "KNTT - Trang 106 (Bài 66, Khám phá)", visual: "🟢 Hộp của bạn Mai chỉ toàn quả bóng xanh", question: "Hộp của bạn Mai chỉ có toàn quả bóng xanh. Lấy ngẫu nhiên một quả, khả năng lấy được bóng xanh là gì?", answer: "Chắc chắn", choices: ["Chắc chắn", "Có thể", "Không thể", "Không xác định được"] },
+      { source: "KNTT - Trang 106 (Bài 66, Khám phá)", visual: "🟢🔴 Hộp của bạn Việt có cả bóng xanh và bóng đỏ", question: "Hộp của bạn Việt có cả bóng xanh và bóng đỏ. Lấy ngẫu nhiên một quả, khả năng lấy được bóng xanh là gì?", answer: "Có thể", choices: ["Có thể", "Chắc chắn", "Không thể", "Không xác định được"] }
+    ];
+
+    const MATH_LOGIC_ADVANCED_BANK = [
+      { source: "MathSpace 0009 - Suy luận tuổi tác", visual: "⏳ 5 năm trước, tổng số tuổi của An, Bình, Cường là 29 tuổi.", question: "5 năm trước tổng số tuổi của 3 bạn là 29 tuổi. Hỏi hiện nay tổng số tuổi của cả ba bạn là bao nhiêu?", answer: "44 tuổi", choices: ["44 tuổi", "34 tuổi", "39 tuổi", "49 tuổi"] },
+      { source: "MathSpace 0010 - Hiệu số ẩn", visual: "💬 Bình nói với Cường: 'Nếu bạn đưa tớ 5 que tính thì số que tính của hai đứa mình sẽ bằng nhau.'", question: "Cường có nhiều hơn Bình bao nhiêu que tính?", answer: "10 que tính", choices: ["10 que tính", "5 que tính", "15 que tính", "20 que tính"] },
+      { source: "MathSpace 0017 - Suy luận lịch ngày", visual: "📅 Sinh nhật của Nam là ngày hôm qua. Ngày mai là Thứ Bảy.", question: "Nếu ngày mai là Thứ Bảy, vậy sinh nhật của Nam (hôm qua) rơi vào thứ mấy?", answer: "Thứ Năm", choices: ["Thứ Năm", "Thứ Sáu", "Thứ Tư", "Chủ Nhật"] },
+      { source: "MathSpace 0031 - Cân thăng bằng bắc cầu", visual: "⚖️ Cân 1: 1 con gà = 2 con sóc  |  Cân 2: 1 con sóc = 4 quả trứng", question: "Cần bao nhiêu quả trứng ở đĩa cân bên phải để cân thăng bằng với 1 con gà?", answer: "8 quả trứng", choices: ["8 quả trứng", "6 quả trứng", "4 quả trứng", "10 quả trứng"] },
+      { source: "MathSpace 0033 - Cân thăng bằng bắc cầu", visual: "⚖️ Cân 1: 1 quả dứa = 3 quả cam  |  Cân 2: 1 quả cam = 2 quả táo", question: "Hỏi 1 quả dứa nặng thăng bằng với bao nhiêu quả táo?", answer: "6 quả táo", choices: ["6 quả táo", "5 quả táo", "8 quả táo", "4 quả táo"] },
+      { source: "MathSpace 0034 - Cân thăng bằng bắc cầu", visual: "⚖️ Cân 1: 2 quả táo = 6 quả dâu tây  |  Cân 2: 2 quả lê = 3 quả táo", question: "Hỏi 2 quả lê cân thăng bằng với bao nhiêu quả dâu tây?", answer: "9 quả dâu tây", choices: ["9 quả dâu tây", "6 quả dâu tây", "12 quả dâu tây", "8 quả dâu tây"] },
+      { source: "MathSpace 0032 - Tổng và Hiệu", visual: "⭕ + 🟦 = 14  và  ⭕ − 🟦 = 6", question: "Tìm giá trị của Hình tròn ⭕ và Hình vuông 🟦.", answer: "⭕ = 10, 🟦 = 4", choices: ["⭕ = 10, 🟦 = 4", "⭕ = 9, 🟦 = 5", "⭕ = 8, 🟦 = 6", "⭕ = 11, 🟦 = 3"] },
+      { source: "MathSpace 0035 - Khử đại lượng", visual: "🟦 + ⭕ + ⭕ = 14  và  🟦 + ⭕ + ⭕ + ⭕ + ⭕ = 24", question: "Quan sát hai biểu thức và tính giá trị của 1 Hình tròn ⭕:", answer: "⭕ = 5", choices: ["⭕ = 5", "⭕ = 4", "⭕ = 6", "⭕ = 10"] },
+      { source: "MathSpace 0006 - Tổ hợp lập số", visual: "🔢 Chỉ sử dụng hai chữ số 1 và 2.", question: "Chỉ dùng các chữ số 1 và 2, có thể viết được tất cả bao nhiêu số có 1 hoặc 2 chữ số?", answer: "6 số", choices: ["6 số", "4 số", "8 số", "5 số"] },
+      { source: "MathSpace 0007 - Cấu tạo số nhỏ nhất", visual: "🔢 Số tự nhiên có 3 chữ số và tổng các chữ số bằng 20.", question: "Số tự nhiên nhỏ nhất có 3 chữ số mà tổng các chữ số bằng 20 là số nào?", answer: 299, choices: [299, 199, 389, 289] },
+      { source: "MathSpace 0012 - Logic gia đình", visual: "👨‍👩‍👧‍👦 Mỗi đứa trẻ đều có ít nhất 1 anh/em trai và ít nhất 1 chị/em gái.", question: "Gia đình đó cần có ít nhất bao nhiêu đứa trẻ?", answer: "4 đứa trẻ (2 trai, 2 gái)", choices: ["4 đứa trẻ (2 trai, 2 gái)", "2 đứa trẻ", "3 đứa trẻ", "6 đứa trẻ"] },
+      { source: "MathSpace 0013 - Thứ ngày tháng", visual: "📅 Ngày mùng 1 của một tháng có 30 ngày là ngày Thứ Ba.", question: "Hỏi trong tháng 30 ngày đó có tất cả bao nhiêu ngày Thứ Tư?", answer: "5 ngày Thứ Tư", choices: ["5 ngày Thứ Tư", "4 ngày Thứ Tư", "6 ngày Thứ Tư", "3 ngày Thứ Tư"] },
+      { source: "MathSpace 0019 - Nguyên lý Dirichlet", visual: "🎒 Hộp có: 10 bi đỏ, 9 bi xanh, 7 bi vàng, 5 bi tím (giống hệt nhau).", question: "Không nhìn vào hộp, cần lấy ra ít nhất bao nhiêu viên bi để CHẮC CHẮN có đủ cả 4 màu?", answer: "27 viên bi", choices: ["27 viên bi", "26 viên bi", "4 viên bi", "31 viên bi"] },
+      { source: "MathSpace 0048 - Dãy số Fibonacci", sequence: [1, 1, 2, 3, 5, 8, 13, 21, "?"], rule: "Mỗi số bằng tổng hai số đứng ngay trước nó (13 + 21)", answer: 34, choices: [34, 32, 35, 29] },
+      { source: "MathSpace 0061 - Đuổi bắt trên tia số", visual: "🐱 Mèo ở ô số 1 (nhảy 2 ô/bước) đuổi 🐭 Chuột ở ô số 3 (nhảy 1 ô/bước).", question: "Hỏi Mèo sẽ đuổi kịp Chuột tại ô có số mấy?", answer: "Ô số 5", choices: ["Ô số 5", "Ô số 6", "Ô số 4", "Ô số 7"] },
+      { source: "MathSpace 0025 - Dãy tính đan dấu", mathText: "(99 - 98) + (97 - 96) + ... + (3 - 2) + 1 = ?", question: "Mỗi cặp số trừ nhau bằng 1. Có 49 cặp hiệu bằng 1 cộng thêm 1 số cuối. Tổng biểu thức là:", answer: 50, choices: [50, 49, 100, 51] },
+      { source: "MathSpace 0027 - Đồng hồ điện tử 24 giờ", visual: "⏰ Đồng hồ điện tử 24 giờ hiển thị từ 00:00 đến 23:59.", question: "Tổng các chữ số hiển thị lớn nhất có thể của đồng hồ là bao nhiêu (vào lúc 19:59)?", answer: 24, choices: [24, 28, 23, 19] },
+      { source: "MathSpace 0058 - Hệ quả ngọt", visual: "🍎 + 🍐 = 7  |  🍐 + 🍌 = 10  |  🍌 + 🍎 = 9", question: "Cộng cả 3 phương trình ta được 2 lần (Táo + Lê + Chuối) = 26. Vậy 1 quả Chuối 🍌 có giá trị là:", answer: 6, choices: [6, 4, 3, 5] },
+      { source: "39 Bài nâng cao - Cân 2 đĩa thông minh", visual: "⚖️ Có 1 túi cam nặng 9 kg, 1 quả cân 1 kg và 1 cân 2 đĩa.", question: "Chỉ với 1 lần cân duy nhất, làm thế nào để lấy ra đúng 5 kg cam?", answer: "Đặt quả cân 1kg vào 1 đĩa, chia 9kg cam sang 2 đĩa cho thăng bằng", choices: ["Đặt quả cân 1kg vào 1 đĩa, chia 9kg cam sang 2 đĩa cho thăng bằng", "Chia đôi túi cam 9kg thành 2 phần bằng nhau", "Cân 5 lần quả cân 1kg", "Không thể làm được trong 1 lần cân"] },
+      { source: "39 Bài nâng cao - Rót dầu san can", visual: "🛢️ Có 1 can 14 lít dầu đầy, cần rót hết sang các can loại 5 lít và loại 3 lít (đều rót đầy).", question: "Cần dùng bao nhiêu can 5 lít và can 3 lít để vừa vặn hết 14 lít dầu?", answer: "1 can 5 lít và 3 can 3 lít", choices: ["1 can 5 lít và 3 can 3 lít", "2 can 5 lít và 1 can 3 lít", "4 can 3 lít", "2 can 5 lít và 2 can 3 lít"] },
+      { source: "39 Bài nâng cao - Bắt tay chào nhau", visual: "🤝 Có 3 người khách: Hòa, Hải, Bình khi ra về bắt tay nhau (mỗi người bắt tay người khác 1 lần).", question: "Hỏi có tất cả bao nhiêu cái bắt tay?", answer: "3 cái bắt tay", choices: ["3 cái bắt tay", "6 cái bắt tay", "4 cái bắt tay", "2 cái bắt tay"] },
+      { source: "39 Bài nâng cao - Bắt tay 4 người", visual: "🤝 Có 4 bạn nhỏ khi gặp nhau đều bắt tay chào nhau một lần.", question: "Hỏi có tất cả bao nhiêu cái bắt tay diễn ra?", answer: "6 cái bắt tay", choices: ["6 cái bắt tay", "4 cái bắt tay", "8 cái bắt tay", "12 cái bắt tay"] },
+      { source: "Đề nâng cao khối 2 - Giá trị hàng số", visual: "🔢 Trong số 864, chữ số hàng chục là 6 (giá trị 60), chữ số hàng đơn vị là 4.", question: "Giá trị của chữ số hàng chục lớn hơn giá trị của chữ số hàng đơn vị bao nhiêu đơn vị?", answer: "56 đơn vị (60 - 4)", choices: ["56 đơn vị (60 - 4)", "2 đơn vị", "60 đơn vị", "50 đơn vị"] },
+      { source: "Đề nâng cao khối 2 - Thay đổi chữ số", visual: "🔢 Cho số 488, nếu chữ số hàng trăm bớt đi 2 và chữ số hàng chục bớt đi 6.", question: "Số 488 sẽ thay đổi như thế nào sau khi bớt?", answer: "Giảm 260 đơn vị", choices: ["Giảm 260 đơn vị", "Tăng 260 đơn vị", "Giảm 200 đơn vị", "Giảm 60 đơn vị"] },
+      { source: "Đề nâng cao khối 2 - Tổng và Hiệu bằng nhau", visual: "🔍 Tìm hai số mà có tổng bằng 6 và hiệu giữa chúng cũng bằng 6.", question: "Hai số đó là hai số nào?", answer: "6 và 0", choices: ["6 và 0", "3 và 3", "4 và 2", "5 và 1"] },
+      { source: "Đề nâng cao khối 2 - Vừa gà vừa thỏ", visual: "🐰 Đếm trong chuồng có 14 cái chân vừa gà (2 chân) vừa thỏ (4 chân), biết có 2 con thỏ.", question: "Trong chuồng có bao nhiêu con gà?", answer: "3 con gà", choices: ["3 con gà", "4 con gà", "2 con gà", "5 con gà"] },
+      { source: "Đề nâng cao khối 2 - Gói kẹo chia bớt", visual: "🍬 Có 5 gói kẹo như nhau. Lấy ở mỗi gói ra 8 cái thì số kẹo còn lại bằng đúng 3 gói nguyên.", question: "Hỏi ban đầu mỗi gói kẹo đựng bao nhiêu cái kẹo?", answer: "20 cái kẹo", choices: ["20 cái kẹo", "16 cái kẹo", "24 cái kẹo", "40 cái kẹo"] },
+      { source: "Toán tư duy SGK - Trồng cây 2 đầu", visual: "🌳 Đoạn đường dài 30 mét, cứ cách 5 mét trồng 1 cây (trồng ở cả 2 đầu đường).", question: "Có 30 : 5 = 6 khoảng cách. Hỏi có tất cả bao nhiêu cây?", answer: "7 cây", choices: ["7 cây", "6 cây", "5 cây", "8 cây"] },
+      { source: "Toán tư duy SGK - Xếp hàng đếm hai đầu", visual: "🚶 Nam đứng xếp hàng: đếm từ đầu hàng Nam đứng thứ 6, đếm từ cuối hàng Nam đứng thứ 7.", question: "Hỏi hàng đó có tất cả bao nhiêu bạn học sinh?", answer: "12 bạn", choices: ["12 bạn", "13 bạn", "11 bạn", "14 bạn"] },
+      { source: "39 Bài nâng cao - Dirichlet lồng chim", visual: "🕊️ Có 5 con chim nhốt vào 4 cái lồng.", question: "Có thể nói CHẮC CHẮN rằng có ít nhất một cái lồng chứa từ 2 con chim trở lên không?", answer: "Chắc chắn có", choices: ["Chắc chắn có", "Không thể", "Có thể không có", "Chưa xác định được"] }
+    ];
+
+    // =========================================================================
+    // 13. ĐỀ THI HỌC KÌ 1 (TOÀN BỘ 100% CÁC CÂU HỎI TỪ FILE PDF BMYC KNTT ĐỀ 1 -> ĐỀ 5)
+    // =========================================================================
+    const EXAM_SEMESTER_1 = [
+      // ĐỀ SỐ 1
+      { source: "Đề thi HK1 - Đề số 1 (Câu 1)", question: "Số lớn nhất trong dãy số: 66; 67; 68; 69 là số nào?", answer: 69, choices: [69, 68, 67, 66] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 2)", question: "21 giờ còn được gọi là mấy giờ?", answer: "9 giờ tối", choices: ["9 giờ tối", "9 giờ sáng", "4 giờ chiều", "3 giờ chiều"] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 3)", mathText: "35 + 55 = ?", question: "Tổng của 35 và 55 là:", answer: 90, choices: [90, 59, 11, 100] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 4a)", mathText: "50 ... 5 + 36", question: "Điền dấu thích hợp vào chỗ chấm: 50 ... 5 + 36 (5 + 36 = 41)", answer: ">", choices: [">", "<", "="] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 4b)", mathText: "45 + 24 ... 24 + 45", question: "Điền dấu thích hợp vào chỗ chấm: 45 + 24 ... 24 + 45", answer: "=", choices: ["=", ">", "<"] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 5a)", mathText: "28 + 35 = ?", question: "Đặt tính rồi tính: 28 + 35 = ?", answer: 63, choices: [63, 53, 64, 73] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 5b)", mathText: "43 + 48 = ?", question: "Đặt tính rồi tính: 43 + 48 = ?", answer: 91, choices: [91, 81, 92, 89] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 5c)", mathText: "63 − 28 = ?", question: "Đặt tính rồi tính: 63 − 28 = ?", answer: 35, choices: [35, 45, 36, 25] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 5d)", mathText: "91 − 43 = ?", question: "Đặt tính rồi tính: 91 − 43 = ?", answer: 48, choices: [48, 58, 47, 38] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 6a)", mathText: "19 kg + 25 kg = ?", question: "Tính: 19 kg + 25 kg = ?", answer: "44 kg", choices: ["44 kg", "45 kg", "34 kg", "54 kg"] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 6b)", mathText: "63 kg − 35 kg = ?", question: "Tính: 63 kg − 35 kg = ?", answer: "28 kg", choices: ["28 kg", "38 kg", "25 kg", "32 kg"] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 7a)", mathText: "96 − 30 + 23 = ?", question: "Tính giá trị biểu thức: 96 − 30 + 23 = ?", answer: 89, choices: [89, 50, 79, 99] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 7b)", mathText: "81 − 25 − 6 = ?", question: "Tính giá trị biểu thức: 81 − 25 − 6 = ?", answer: 50, choices: [50, 89, 40, 60] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 8)", question: "Nam có 38 viên bi. Rô-bốt có 34 viên bi. Hỏi Nam và Rô-bốt có tất cả bao nhiêu viên bi?", answer: "72 viên bi", choices: ["72 viên bi", "62 viên bi", "74 viên bi", "82 viên bi"] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 9)", visual: "📐 Hình tam giác lớn có 1 đường cắt dọc từ đỉnh và 1 đường cắt ngang đáy.", question: "Hình bên có mấy hình tứ giác?", answer: "3 hình", choices: ["3 hình", "2 hình", "4 hình", "5 hình"] },
+      { source: "Đề thi HK1 - Đề số 1 (Câu 10)", visual: "🔍 Số tròn chục lớn nhất có 2 chữ số (90) & Số nhỏ nhất có 2 chữ số giống nhau (11)", question: "Tìm hiệu của số tròn chục lớn nhất có 2 chữ số với số nhỏ nhất có 2 chữ số giống nhau:", answer: 79, choices: [79, 89, 70, 80] },
+
+      // ĐỀ SỐ 2
+      { source: "Đề thi HK1 - Đề số 2 (Câu 1)", question: "Số liền sau của 29 là số nào?", answer: 30, choices: [30, 28, 31, 40] },
+      { source: "Đề thi HK1 - Đề số 2 (Câu 2)", mathText: "4 kg + 5 kg + 16 kg = ? kg", question: "Tính: 4 kg + 5 kg + 16 kg = ? kg", answer: 25, choices: [25, 9, 20, 21] },
+      { source: "Đề thi HK1 - Đề số 2 (Câu 3)", question: "Tính tổng, biết các số hạng là 48 và 17:", answer: 65, choices: [65, 31, 41, 55] },
+      { source: "Đề thi HK1 - Đề số 2 (Câu 4)", visual: "🕒 Đồng hồ có kim ngắn và kim dài cùng chỉ vào số 12.", question: "Đồng hồ bên chỉ mấy giờ?", answer: "12 giờ", choices: ["12 giờ", "1 giờ", "6 giờ", "Không xác định"] },
+      { source: "Đề thi HK1 - Đề số 2 (Câu 5)", question: "Bàn học của em dài khoảng bao nhiêu đề-xi-mét?", answer: "11 dm", choices: ["11 dm", "30 dm", "2 dm", "100 cm"] },
+      { source: "Đề thi HK1 - Đề số 2 (Câu 6)", question: "Mẹ vắt được 67 lít sữa bò, chị vắt được 33 lít sữa bò. Hỏi mẹ và chị vắt được bao nhiêu lít sữa bò?", answer: "100 lít", choices: ["100 lít", "34 lít", "44 lít", "90 lít"] },
+      { source: "Đề thi HK1 - Đề số 2 (Câu 8)", visual: "📐 Hình thang có các đoạn thẳng chia thành các tam giác và tứ giác bên trong.", question: "Quan sát hình vẽ và cho biết hình bên có bao nhiêu hình tam giác và tứ giác?", answer: "4 tam giác, 3 tứ giác", choices: ["4 tam giác, 3 tứ giác", "3 tam giác, 2 tứ giác", "4 tam giác, 2 tứ giác", "4 tam giác, 4 tứ giác"] },
+      { source: "Đề thi HK1 - Đề số 2 (Tự luận 1a)", mathText: "26 + 35 = ?", question: "Đặt tính rồi tính: 26 + 35 = ?", answer: 61, choices: [61, 51, 62, 71] },
+      { source: "Đề thi HK1 - Đề số 2 (Tự luận 1b)", mathText: "26 + 59 = ?", question: "Đặt tính rồi tính: 26 + 59 = ?", answer: 85, choices: [85, 75, 86, 95] },
+      { source: "Đề thi HK1 - Đề số 2 (Tự luận 1c)", mathText: "75 − 17 = ?", question: "Đặt tính rồi tính: 75 − 17 = ?", answer: 58, choices: [58, 68, 48, 52] },
+      { source: "Đề thi HK1 - Đề số 2 (Tự luận 1d)", mathText: "60 − 43 = ?", question: "Đặt tính rồi tính: 60 − 43 = ?", answer: 17, choices: [17, 27, 16, 23] },
+      { source: "Đề thi HK1 - Đề số 2 (Tự luận 3)", question: "Năm nay bố 31 tuổi, con 8 tuổi. Hỏi bố hơn con bao nhiêu tuổi?", answer: "23 tuổi", choices: ["23 tuổi", "22 tuổi", "24 tuổi", "39 tuổi"] },
+
+      // ĐỀ SỐ 3
+      { source: "Đề thi HK1 - Đề số 3 (Câu 1)", question: "Số 59 được đọc là:", answer: "Năm mươi chín", choices: ["Năm mươi chín", "Năm chín", "Chín năm", "Chín mươi lăm"] },
+      { source: "Đề thi HK1 - Đề số 3 (Câu 2)", question: "Ngày 24 tháng 12 năm 2019 là thứ Ba. Ngày đầu tiên của năm 2020 (ngày 1 tháng 1) là thứ mấy?", answer: "Thứ Tư", choices: ["Thứ Tư", "Thứ Hai", "Thứ Ba", "Thứ Năm"] },
+      { source: "Đề thi HK1 - Đề số 3 (Câu 3)", question: "Số lớn nhất có 2 chữ số khác nhau là số nào?", answer: 98, choices: [98, 99, 89, 100] },
+      { source: "Đề thi HK1 - Đề số 3 (Câu 4)", question: "Số 92 bằng tổng của hai số nào trong các cặp số sau đây?", answer: "37 và 55", choices: ["37 và 55", "32 và 50", "55 và 47", "50 và 40"] },
+      { source: "Đề thi HK1 - Đề số 3 (Câu 6)", question: "An có 8 viên bi. Hùng có nhiều hơn An 2 viên bi. Hỏi Hùng có bao nhiêu viên bi?", answer: "10 viên bi", choices: ["10 viên bi", "6 viên bi", "11 viên bi", "8 viên bi"] },
+      { source: "Đề thi HK1 - Đề số 3 (Tự luận 1a)", mathText: "36 + 47 = ?", question: "Đặt tính rồi tính: 36 + 47 = ?", answer: 83, choices: [83, 73, 84, 93] },
+      { source: "Đề thi HK1 - Đề số 3 (Tự luận 1b)", mathText: "100 − 65 = ?", question: "Đặt tính rồi tính: 100 − 65 = ?", answer: 35, choices: [35, 45, 25, 34] },
+      { source: "Đề thi HK1 - Đề số 3 (Tự luận 1c)", mathText: "47 + 37 = ?", question: "Đặt tính rồi tính: 47 + 37 = ?", answer: 84, choices: [84, 74, 85, 94] },
+      { source: "Đề thi HK1 - Đề số 3 (Tự luận 1d)", mathText: "94 − 57 = ?", question: "Đặt tính rồi tính: 94 − 57 = ?", answer: 37, choices: [37, 47, 36, 27] },
+      { source: "Đề thi HK1 - Đề số 3 (Tự luận 2a)", mathText: "37 + y = 81", question: "Tìm y, biết: 37 + y = 81", answer: "y = 44", choices: ["y = 44", "y = 54", "y = 43", "y = 118"] },
+      { source: "Đề thi HK1 - Đề số 3 (Tự luận 2b)", mathText: "63 − y = 25 − 8", question: "Tìm y, biết: 63 − y = 25 − 8 (25 − 8 = 17)", answer: "y = 46", choices: ["y = 46", "y = 56", "y = 36", "y = 45"] },
+
+      // ĐỀ SỐ 4
+      { source: "Đề thi HK1 - Đề số 4 (Câu 1a)", mathText: "29 − 7 = ?", question: "Tính nhẩm: 29 − 7 = ?", answer: 22, choices: [22, 17, 33, 58] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 1b)", mathText: "43 − 26 = ?", question: "Tính: 43 − 26 = ?", answer: 17, choices: [17, 22, 33, 58] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 1c)", mathText: "52 − 19 = ?", question: "Tính: 52 − 19 = ?", answer: 33, choices: [33, 23, 17, 58] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 1d)", mathText: "90 − 32 = ?", question: "Tính: 90 − 32 = ?", answer: 58, choices: [58, 68, 48, 33] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 2)", visual: "📅 Tờ lịch tháng 9: Ngày 5 nằm ở cột Sun (Chủ Nhật).", question: "Xem tờ lịch tháng 9: Ngày 5 tháng 9 là ngày thứ mấy?", answer: "Chủ Nhật", choices: ["Chủ Nhật", "Thứ Hai", "Thứ Bảy", "Thứ Sáu"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 3a)", mathText: "18 kg − 9 kg = ?", question: "Tính: 18 kg − 9 kg = ?", answer: "9 kg", choices: ["9 kg", "8 kg", "10 kg", "7 kg"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 3b)", mathText: "52 km − 4 km = ?", question: "Tính: 52 km − 4 km = ?", answer: "48 km", choices: ["48 km", "46 km", "56 km", "47 km"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 3c)", mathText: "64 cm + 8 cm = ?", question: "Tính: 64 cm + 8 cm = ?", answer: "72 cm", choices: ["72 cm", "70 cm", "82 cm", "71 cm"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 4)", mathText: "35 + 15 ... 80 − 10 − 15", question: "Điền dấu thích hợp: 35 + 15 ... 80 − 10 − 15 (50 ... 55)", answer: "<", choices: ["<", ">", "="] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 5)", visual: "📐 Hình chữ nhật có điểm D ở giữa tạo các tam giác ABD, BCD.", question: "Trong hình vẽ bên có mấy hình tam giác?", answer: "2 hình", choices: ["2 hình", "3 hình", "4 hình", "5 hình"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 6a)", mathText: "24 + 16 = ?", question: "Đặt tính rồi tính: 24 + 16 = ?", answer: 40, choices: [40, 30, 50, 48] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 6b)", mathText: "37 + 55 = ?", question: "Đặt tính rồi tính: 37 + 55 = ?", answer: 92, choices: [92, 82, 93, 87] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 6c)", mathText: "97 − 9 = ?", question: "Đặt tính rồi tính: 97 − 9 = ?", answer: 88, choices: [88, 89, 78, 92] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 6d)", mathText: "51 − 28 = ?", question: "Đặt tính rồi tính: 51 − 28 = ?", answer: 23, choices: [23, 33, 22, 27] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 7)", mathText: "12 − 4 − 2 = 7", question: "Phép tính '12 − 4 − 2 = 7' là Đúng hay Sai?", answer: "Sai", choices: ["Sai", "Đúng"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 8a)", mathText: "x + 48 = 63", question: "Tìm x, biết: x + 48 = 63", answer: "x = 15", choices: ["x = 15", "x = 25", "x = 111", "x = 14"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 8b)", mathText: "x − 24 = 16", question: "Tìm x, biết: x − 24 = 16", answer: "x = 40", choices: ["x = 40", "x = 30", "x = 8", "x = 38"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 9)", question: "Nhà chú Ba nuôi 50 con gà. Nhà cô Tư nuôi nhiều hơn nhà chú Ba 17 con gà. Hỏi cả hai nhà nuôi tất cả bao nhiêu con gà?", answer: "117 con gà", choices: ["117 con gà", "67 con gà", "100 con gà", "127 con gà"] },
+      { source: "Đề thi HK1 - Đề số 4 (Câu 10)", question: "Tính hiệu của số nhỏ nhất có hai chữ số (10) và số lớn nhất có một chữ số (9):", answer: 1, choices: [1, 0, 19, 2] },
+
+      // ĐỀ SỐ 5
+      { source: "Đề thi HK1 - Đề số 5 (Bài 1a)", question: "Trong các số có 2 chữ số tận cùng là 9 (19, 29, 39, ..., 99), số bé nhất là số nào?", answer: 19, choices: [19, 9, 29, 99] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 1b)", question: "Trong các số có 2 chữ số tận cùng là 9, số lớn nhất là số nào?", answer: 99, choices: [99, 89, 109, 90] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 1c)", question: "Số có 2 chữ số tận cùng là 9, lớn hơn 50 nhưng nhỏ hơn 60 là số nào?", answer: 59, choices: [59, 49, 69, 50] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 2a)", mathText: "9 + 5 = ?", question: "Tính nhẩm: 9 + 5 = ?", answer: 14, choices: [14, 13, 15, 12] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 2b)", mathText: "8 + 8 = ?", question: "Tính nhẩm: 8 + 8 = ?", answer: 16, choices: [16, 15, 17, 14] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 2c)", mathText: "7 + 6 = ?", question: "Tính nhẩm: 7 + 6 = ?", answer: 13, choices: [13, 14, 12, 15] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 2d)", mathText: "14 − 5 = ?", question: "Tính nhẩm: 14 − 5 = ?", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 2e)", mathText: "17 − 8 = ?", question: "Tính nhẩm: 17 − 8 = ?", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 2g)", mathText: "13 − 6 = ?", question: "Tính nhẩm: 13 − 6 = ?", answer: 7, choices: [7, 6, 8, 9] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 3)", mathText: "16 + 14 = 20", question: "Phép tính '16 + 14 = 20' là Đúng hay Sai?", answer: "Sai", choices: ["Sai", "Đúng"] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 4a)", mathText: "54 + 17 = ?", question: "Đặt tính rồi tính: 54 + 17 = ?", answer: 71, choices: [71, 61, 72, 81] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 4b)", mathText: "29 + 28 = ?", question: "Đặt tính rồi tính: 29 + 28 = ?", answer: 57, choices: [57, 47, 58, 67] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 4c)", mathText: "85 − 48 = ?", question: "Đặt tính rồi tính: 85 − 48 = ?", answer: 37, choices: [37, 47, 38, 27] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 4d)", mathText: "66 − 37 = ?", question: "Đặt tính rồi tính: 66 − 37 = ?", answer: 29, choices: [29, 39, 28, 19] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 5)", question: "Trong vườn có 35 cây bưởi. Số cây cam nhiều hơn số cây bưởi là 18 cây. Hỏi trong vườn có tất cả bao nhiêu cây?", answer: "88 cây", choices: ["88 cây", "53 cây", "70 cây", "85 cây"] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 6)", visual: "🕒 Đồng hồ chỉ 4 giờ chiều.", question: "4 giờ chiều còn được viết là mấy giờ trên đồng hồ 24 giờ?", answer: "16:00", choices: ["16:00", "13:00", "23:00", "14:00"] },
+      { source: "Đề thi HK1 - Đề số 5 (Bài 7)", visual: "📏 Quân cao 9dm 4cm (94cm), Kiên thấp hơn Quân 5cm.", question: "Hỏi bạn Kiên cao bao nhiêu xăng-ti-mét?", answer: "89 cm", choices: ["89 cm", "99 cm", "85 cm", "90 cm"] }
+    ];
+
+    // =========================================================================
+    // 14. ĐỀ THI HỌC KÌ 2 (TOÀN BỘ 100% CÁC CÂU HỎI TỪ FILE PDF BMYC KNTT ĐỀ 1 -> ĐỀ 5)
+    // =========================================================================
+    const EXAM_SEMESTER_2 = [
+      // ĐỀ SỐ 1
+      { source: "Đề thi HK2 - Đề số 1 (Câu 1)", mathText: "245 − 59 = ?", question: "Kết quả của phép tính 245 − 59 là:", answer: 186, choices: [186, 304, 168, 286] },
+      { source: "Đề thi HK2 - Đề số 1 (Câu 2)", mathText: "1 m = ? cm", question: "Điền số thích hợp vào chỗ chấm: 1 m = ? cm", answer: 100, choices: [100, 10, 1000, 1] },
+      { source: "Đề thi HK2 - Đề số 1 (Câu 3)", mathText: "18 : 2 = ?", question: "Kết quả của phép tính 18 : 2 là:", answer: 9, choices: [9, 10, 0, 4] },
+      { source: "Đề thi HK2 - Đề số 1 (Câu 4)", mathText: "30 + 50 ... 20 + 60", question: "Dấu cần điền vào ô trống 30 + 50 ... 20 + 60 là:", answer: "=", choices: ["=", "<", ">"] },
+      { source: "Đề thi HK2 - Đề số 1 (Câu 5)", visual: "📐 Hình tứ giác có 4 cạnh: 3cm, 6cm, 4cm, 8cm", question: "Tính chu vi hình tứ giác có độ dài các cạnh 3cm, 6cm, 4cm, 8cm.", answer: "21 cm", choices: ["21 cm", "19 cm", "20 cm", "22 cm"] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 1a)", mathText: "465 + 213 = ?", question: "Đặt tính rồi tính: 465 + 213 = ?", answer: 678, choices: [678, 578, 688, 679] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 1b)", mathText: "857 − 432 = ?", question: "Đặt tính rồi tính: 857 − 432 = ?", answer: 425, choices: [425, 435, 415, 325] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 1c)", mathText: "459 − 19 = ?", question: "Đặt tính rồi tính: 459 − 19 = ?", answer: 440, choices: [440, 430, 450, 449] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 1d)", mathText: "234 + 296 = ?", question: "Đặt tính rồi tính: 234 + 296 = ?", answer: 530, choices: [530, 520, 540, 430] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 2a)", mathText: "10 kg + 36 kg − 21 kg = ?", question: "Tính: 10 kg + 36 kg − 21 kg = ?", answer: "25 kg", choices: ["25 kg", "26 kg", "24 kg", "35 kg"] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 2b)", mathText: "18 cm : 2 + 45 cm = ?", question: "Tính: 18 cm : 2 + 45 cm = ?", answer: "54 cm", choices: ["54 cm", "53 cm", "55 cm", "49 cm"] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 3)", question: "Lớp 2B quyên góp được 102 quyển truyện, lớp 2C quyên góp ít hơn lớp 2B 16 quyển. Hỏi cả hai lớp quyên góp được bao nhiêu quyển truyện?", answer: "188 quyển", choices: ["188 quyển", "86 quyển", "198 quyển", "200 quyển"] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 4)", visual: "📐 Hình thang chia thành 3 tam giác ghép lại.", question: "Hình bên có bao nhiêu hình tứ giác và tam giác?", answer: "3 hình tứ giác và 3 hình tam giác", choices: ["3 hình tứ giác và 3 hình tam giác", "2 tứ giác, 3 tam giác", "3 tứ giác, 4 tam giác", "4 tứ giác, 3 tam giác"] },
+      { source: "Đề thi HK2 - Đề số 1 (Tự luận 5)", question: "Một bác thợ may dùng 20 m vải để may 5 bộ quần áo giống nhau. Hỏi may một bộ quần áo cần bao nhiêu mét vải?", answer: "4 m", choices: ["4 m", "5 m", "15 m", "10 m"] },
+
+      // ĐỀ SỐ 2
+      { source: "Đề thi HK2 - Đề số 2 (Câu 1)", mathText: "2 × 5 = ?", question: "Kết quả của phép tính 2 × 5 bằng bao nhiêu?", answer: 10, choices: [10, 12, 14, 16] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 2)", question: "Số 'Ba trăm hai mươi bảy' được viết là:", answer: 327, choices: [327, 237, 27, 300] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 3)", question: "Số thích hợp điền vào chỗ chấm: 728 > ... là số nào?", answer: 702, choices: [702, 883, 740, 747] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 4)", mathText: "45 km + 13 km = ?", question: "Số thích hợp điền vào chỗ chấm: 45 km + 13 km = ? km là:", answer: 58, choices: [58, 60, 56, 54] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 5)", mathText: "x − 102 = 234", question: "Tìm giá trị của x thỏa mãn: x − 102 = 234", answer: "x = 336", choices: ["x = 336", "x = 405", "x = 318", "x = 324"] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 6)", mathText: "500 + 20 + 3 = ?", question: "Tổng 500 + 20 + 3 biểu thị số nào?", answer: 523, choices: [523, 532, 235, 253] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 7)", mathText: "3 dm 4 cm = ? cm", question: "Số thích hợp điền vào chỗ chấm: 3 dm 4 cm = ? cm", answer: 34, choices: [34, 403, 304, 340] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 8)", visual: "📐 Tứ giác có các cạnh: 14cm, 6dm (60cm), 19cm, 11cm", question: "Chu vi hình tứ giác có độ dài các cạnh: 14cm, 6dm, 19cm và 11cm bằng:", answer: "104 cm", choices: ["104 cm", "208 cm", "159 cm", "310 cm"] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 9)", mathText: "124 + 225 = ?", question: "Phép tính 124 + 225 có kết quả bằng:", answer: 349, choices: [349, 313, 351, 327] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 10)", visual: "📏 Đường gấp khúc ABCD: AB = 3cm, BC = 2cm, CD = 10cm", question: "Độ dài của đường gấp khúc ABCD là:", answer: "15 cm", choices: ["15 cm", "12 cm", "13 cm", "16 cm"] },
+      { source: "Đề thi HK2 - Đề số 2 (Câu 11)", visual: "📐 Hình tam giác có 2 đường kẻ từ 1 đỉnh chia thành 3 phần.", question: "Hình bên có tất cả bao nhiêu hình tam giác?", answer: "6 hình", choices: ["6 hình", "3 hình", "4 hình", "5 hình"] },
+      { source: "Đề thi HK2 - Đề số 2 (Tự luận 1a)", mathText: "123 + 245 = ?", question: "Đặt tính rồi tính: 123 + 245 = ?", answer: 368, choices: [368, 358, 378, 268] },
+      { source: "Đề thi HK2 - Đề số 2 (Tự luận 1b)", mathText: "562 − 228 = ?", question: "Đặt tính rồi tính: 562 − 228 = ?", answer: 334, choices: [334, 344, 324, 234] },
+      { source: "Đề thi HK2 - Đề số 2 (Tự luận 1c)", mathText: "503 − 324 = ?", question: "Đặt tính rồi tính: 503 − 324 = ?", answer: 179, choices: [179, 189, 169, 279] },
+      { source: "Đề thi HK2 - Đề số 2 (Tự luận 1d)", mathText: "635 − 437 = ?", question: "Đặt tính rồi tính: 635 − 437 = ?", answer: 198, choices: [198, 208, 188, 197] },
+      { source: "Đề thi HK2 - Đề số 2 (Tự luận 2)", question: "Buổi sáng mẹ thu hoạch được 142 kg dưa hấu, buổi chiều mẹ thu hoạch được ít hơn buổi sáng 27kg. Hỏi buổi chiều mẹ thu hoạch được bao nhiêu kg dưa hấu?", answer: "115 kg", choices: ["115 kg", "169 kg", "125 kg", "110 kg"] },
+
+      // ĐỀ SỐ 3
+      { source: "Đề thi HK2 - Đề số 3 (Câu 1)", question: "Số gồm 1 trăm, 8 chục và 6 đơn vị viết là:", answer: 186, choices: [186, 168, 681, 861] },
+      { source: "Đề thi HK2 - Đề số 3 (Câu 2)", question: "Số liền trước của số 910 là số nào?", answer: 909, choices: [909, 899, 900, 911] },
+      { source: "Đề thi HK2 - Đề số 3 (Câu 3)", question: "Số lớn nhất có 3 chữ số ghép được từ 4 chữ số 7, 3, 2, 9 là:", answer: 973, choices: [973, 379, 739, 297] },
+      { source: "Đề thi HK2 - Đề số 3 (Câu 4)", visual: "🌸 Mẹ cắm hoa vào 6 lọ, mỗi lọ 5 bông thì vừa đủ.", question: "Phép tính đúng để tính số hoa mẹ đã mua là:", answer: "5 × 6 = 30", choices: ["5 × 6 = 30", "6 × 5 = 30", "5 + 6 = 11", "6 − 5 = 1"] },
+      { source: "Đề thi HK2 - Đề số 3 (Câu 5)", visual: "📐 Hình thang chia làm 3 tầng màu: vàng, xanh lá, đỏ.", question: "Hình vẽ bên có bao nhiêu hình tứ giác?", answer: "4 hình tứ giác", choices: ["4 hình tứ giác", "3 hình tứ giác", "5 hình tứ giác", "6 hình tứ giác"] },
+      { source: "Đề thi HK2 - Đề số 3 (Câu 6)", question: "An nghĩ đến 1 số có 3 chữ số, khi giảm chữ số hàng chục đi 2 thì được số tròn trăm nhỏ nhất có 3 chữ số (100). Số An đang nghĩ là:", answer: 120, choices: [120, 250, 102, 330] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 1a)", mathText: "625 + 155 = ?", question: "Đặt tính rồi tính: 625 + 155 = ?", answer: 780, choices: [780, 770, 790, 880] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 1b)", mathText: "946 − 581 = ?", question: "Đặt tính rồi tính: 946 − 581 = ?", answer: 365, choices: [365, 355, 375, 465] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 2a)", mathText: "584 − 39 + 127 = ?", question: "Tính: 584 − 39 + 127 = ?", answer: 672, choices: [672, 662, 572, 682] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 2b)", mathText: "525 + 83 − 256 = ?", question: "Tính: 525 + 83 − 256 = ?", answer: 352, choices: [352, 362, 342, 452] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 3a)", mathText: "65 dm − 28 dm ... 195 cm + 160 cm", question: "Điền dấu: 65 dm − 28 dm ... 195 cm + 160 cm (370cm ... 355cm)", answer: ">", choices: [">", "<", "="] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 3b)", mathText: "525 − 217 ... 245 + 83", question: "Điền dấu: 525 − 217 ... 245 + 83 (308 ... 328)", answer: "<", choices: ["<", ">", "="] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 4a)", mathText: "5 × 2 + 3 = ?", question: "Tính: 5 × 2 + 3 = ?", answer: 13, choices: [13, 10, 15, 12] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 4b)", mathText: "5 × 9 = 345 − ?", question: "Điền số thích hợp: 5 × 9 = 345 − ? (45 = 345 − ?)", answer: 300, choices: [300, 310, 290, 45] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 5)", visual: "🐛 Đoạn đường: 200 cm + 20 dm + 2 m", question: "Nhà Kiến cách nhà Sâu: 200 cm + 20 dm + 2 m = ? mét", answer: "6 m", choices: ["6 m", "4 m", "8 m", "24 m"] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 6)", question: "Cửa hàng bán đi 256 lít mật ong thì còn lại 137 lít. Hỏi lúc đầu cửa hàng có bao nhiêu lít mật ong?", answer: "393 lít", choices: ["393 lít", "383 lít", "119 lít", "400 lít"] },
+      { source: "Đề thi HK2 - Đề số 3 (Tự luận 7)", question: "Các số tròn chục có ba chữ số mà tổng các chữ số của chúng bằng 4 là:", answer: "130; 310; 220; 400", choices: ["130; 310; 220; 400", "130; 310; 220", "103; 301; 400", "400; 220; 310"] },
+
+      // ĐỀ SỐ 4
+      { source: "Đề thi HK2 - Đề số 4 (Câu 1)", question: "Số gồm 4 trăm và 5 đơn vị đọc là:", answer: "bốn trăm linh năm", choices: ["bốn trăm linh năm", "bốn trăm năm mươi", "bốn trăm linh lăm", "bốn năm"] },
+      { source: "Đề thi HK2 - Đề số 4 (Câu 2)", question: "Số liền sau của số 479 là số nào?", answer: 480, choices: [480, 481, 490, 460] },
+      { source: "Đề thi HK2 - Đề số 4 (Câu 3)", question: "Từ 300 đến 400 có tất cả bao nhiêu số tròn chục?", answer: "11 số", choices: ["11 số", "9 số", "10 số", "12 số"] },
+      { source: "Đề thi HK2 - Đề số 4 (Câu 4)", question: "Trong các phép tính: A. 342−125; B. 151+339; C. 825−352; D. 185+190. Phép tính có kết quả lớn nhất là:", answer: "B. 151 + 339 (490)", choices: ["B. 151 + 339 (490)", "C. 825 − 352 (473)", "A. 342 − 125 (217)", "D. 185 + 190 (375)"] },
+      { source: "Đề thi HK2 - Đề số 4 (Câu 5)", question: "Hôm nay là thứ Sáu ngày 14 tháng 2. Còn đúng một tuần nữa là đến sinh nhật Hoa. Hỏi sinh nhật Hoa là thứ mấy?", answer: "Thứ Sáu", choices: ["Thứ Sáu", "Thứ Bảy", "Chủ Nhật", "Thứ Hai"] },
+      { source: "Đề thi HK2 - Đề số 4 (Câu 6)", question: "Trong túi có 5 viên bi đỏ và 6 viên bi xanh. Không nhìn vào túi, Bình lấy ra 4 viên bi. Vậy Bình có thể lấy nhiều nhất mấy viên bi đỏ?", answer: "4 viên bi", choices: ["4 viên bi", "3 viên bi", "5 viên bi", "2 viên bi"] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 1a)", mathText: "598 + 251 = ?", question: "Đặt tính rồi tính: 598 + 251 = ?", answer: 849, choices: [849, 839, 859, 749] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 1b)", mathText: "925 − 763 = ?", question: "Đặt tính rồi tính: 925 − 763 = ?", answer: 162, choices: [162, 152, 172, 262] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 2a)", mathText: "670 − 348 + 293 = ?", question: "Tính: 670 − 348 + 293 = ?", answer: 615, choices: [615, 605, 625, 515] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 2b)", mathText: "276 + 308 − 425 = ?", question: "Tính: 276 + 308 − 425 = ?", answer: 159, choices: [159, 169, 149, 259] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 3a)", mathText: "5 m × 2 ... 540 cm + 260 cm", question: "Điền dấu: 5 m × 2 ... 540 cm + 260 cm (10m = 1000cm > 800cm)", answer: ">", choices: [">", "<", "="] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 3b)", mathText: "156 + 524 ... 905 − 185", question: "Điền dấu: 156 + 524 ... 905 − 185 (680 < 720)", answer: "<", choices: ["<", ">", "="] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 4)", visual: "🥕 Có 4 luống cà rốt, mỗi luống có 5 củ cà rốt.", question: "Có tất cả bao nhiêu củ cà rốt?", answer: "5 × 4 = 20 củ cà rốt", choices: ["5 × 4 = 20 củ cà rốt", "4 × 5 = 20 củ cà rốt", "5 + 4 = 9 củ cà rốt", "5 × 5 = 25 củ cà rốt"] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 5)", visual: "📐 Hình chữ nhật chia làm 3 mảng màu: vàng, đỏ, xanh lá.", question: "Hình bên có bao nhiêu hình tứ giác?", answer: "3 hình tứ giác", choices: ["3 hình tứ giác", "2 hình tứ giác", "4 hình tứ giác", "5 hình tứ giác"] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 6)", mathText: "6 × 3 + 5 = ?", question: "Tính giá trị: 6 × 3 + 5 = ?", answer: 23, choices: [23, 21, 25, 18] },
+      { source: "Đề thi HK2 - Đề số 4 (Tự luận 7)", question: "Buổi chiều quán cô Ba bán được 124 cái bánh mỳ, ít hơn buổi sáng 16 cái. Hỏi buổi sáng quán cô Ba bán được bao nhiêu cái bánh mỳ?", answer: "140 cái bánh mỳ", choices: ["140 cái bánh mỳ", "108 cái bánh mỳ", "130 cái bánh mỳ", "150 cái bánh mỳ"] },
+
+      // ĐỀ SỐ 5
+      { source: "Đề thi HK2 - Đề số 5 (Câu 1)", question: "Số liền sau của số 679 là số nào?", answer: 680, choices: [680, 687, 800, 690] },
+      { source: "Đề thi HK2 - Đề số 5 (Câu 2)", mathText: "... cm = 80 dm", question: "Điền số thích hợp vào chỗ chấm: ... cm = 80 dm", answer: 800, choices: [800, 80, 8, 18] },
+      { source: "Đề thi HK2 - Đề số 5 (Câu 3)", question: "Trong các phép tính: A. 50:5; B. 48:4; C. 5×9; D. 63−15. Phép tính có kết quả lớn nhất là:", answer: "D. 63 − 15 (48)", choices: ["D. 63 − 15 (48)", "C. 5 × 9 (45)", "B. 48 : 4 (12)", "A. 50 : 5 (10)"] },
+      { source: "Đề thi HK2 - Đề số 5 (Câu 5)", question: "An đếm được trong chuồng gà có 18 cái chân gà. Mỗi con gà có 2 chân. Vậy số gà có trong chuồng là:", answer: "9 con gà", choices: ["9 con gà", "8 con gà", "7 con gà", "6 con gà"] },
+      { source: "Đề thi HK2 - Đề số 5 (Câu 6)", visual: "🐶 Cân đĩa thăng bằng: 1 con chó cân nặng bằng 3 con mèo (mỗi con mèo nặng 5kg).", question: "Con chó cân nặng bao nhiêu ki-lô-gam?", answer: "15 kg", choices: ["15 kg", "10 kg", "5 kg", "20 kg"] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 1a)", mathText: "56 + 44 = ?", question: "Tính: 56 + 44 = ?", answer: 100, choices: [100, 90, 110, 99] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 1b)", mathText: "82 − 37 = ?", question: "Tính: 82 − 37 = ?", answer: 45, choices: [45, 55, 46, 35] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 1c)", mathText: "528 + 365 = ?", question: "Tính: 528 + 365 = ?", answer: 893, choices: [893, 883, 903, 892] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 1d)", mathText: "905 − 450 = ?", question: "Tính: 905 − 450 = ?", answer: 455, choices: [455, 465, 445, 555] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 2a)", mathText: "185 + 221 − 326 = ?", question: "Tính: 185 + 221 − 326 = ?", answer: 80, choices: [80, 90, 70, 85] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 2b)", mathText: "632 − 315 + 256 = ?", question: "Tính: 632 − 315 + 256 = ?", answer: 573, choices: [573, 563, 583, 473] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 3a)", mathText: "... : 5 = 2 × 4", question: "Điền số thích hợp: ... : 5 = 2 × 4 (... : 5 = 8)", answer: 40, choices: [40, 20, 30, 45] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 3b)", mathText: "130 − ... = 60", question: "Điền số thích hợp: 130 − ... = 60", answer: 70, choices: [70, 60, 80, 50] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 4a)", mathText: "2 m × 10 ... 140 dm + 60 dm", question: "Điền dấu: 2 m × 10 ... 140 dm + 60 dm (20m = 200dm = 200dm)", answer: "=", choices: ["=", ">", "<"] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 4b)", mathText: "755 − 129 ... 182 + 463", question: "Điền dấu: 755 − 129 ... 182 + 463 (626 < 645)", answer: "<", choices: ["<", ">", "="] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 5)", visual: "📐 Hình chữ nhật chia làm 4 mảnh tam giác và tứ giác phối màu.", question: "Hình bên có bao nhiêu hình tứ giác?", answer: "3 hình tứ giác", choices: ["3 hình tứ giác", "2 hình tứ giác", "4 hình tứ giác", "5 hình tứ giác"] },
+      { source: "Đề thi HK2 - Đề số 5 (Tự luận 6)", visual: "🚗 Đi được 470 km, còn phải đi 280 km nữa", question: "Gia đình An về quê đã đi được 470 km và còn phải đi 280 km nữa mới tới. Hỏi cả quãng đường từ TP. Hồ Chí Minh đến Quảng Ngãi dài bao nhiêu km?", answer: "750 km", choices: ["750 km", "650 km", "700 km", "850 km"] }
+    ];
+
+    // =========================================================================
+    // 15. ĐỀ THI OLYMPIC & VIOLYMPIC TOÁN 2 - ĐẦY ĐỦ 100% CÁC CÂU HỎI TRONG FILE PDF
+    // =========================================================================
+    const EXAM_VIOLYMPIC = [
+      // ĐỀ ÔN LUYỆN SỐ 1
+      { source: "Olympic Đề 1 - Câu 1", mathText: "24 : 4 − ... = 3", question: "Điền số thích hợp vào chỗ chấm: 24 : 4 − ... = 3", answer: 3, choices: [3, 2, 4, 6] },
+      { source: "Olympic Đề 1 - Câu 2", mathText: "15 : 3 × 7 = ?", question: "Tính giá trị biểu thức: 15 : 3 × 7 = ?", answer: 35, choices: [35, 28, 42, 30] },
+      { source: "Olympic Đề 1 - Câu 3", mathText: "15 : 5 × 9 = ?", question: "Tính giá trị biểu thức: 15 : 5 × 9 = ?", answer: 27, choices: [27, 18, 36, 45] },
+      { source: "Olympic Đề 1 - Câu 4", mathText: "32 : 4 − ... = 5", question: "Điền số thích hợp vào chỗ chấm: 32 : 4 − ... = 5", answer: 3, choices: [3, 4, 2, 8] },
+      { source: "Olympic Đề 1 - Câu 5", question: "Số bé nhất có hai chữ số mà thương hai chữ số của số đó bằng 4 là số nào?", answer: 14, choices: [14, 41, 28, 12] },
+      { source: "Olympic Đề 1 - Câu 6", visual: "🎂 Hiện nay anh 25 tuổi, em 19 tuổi.", question: "Tính tổng số tuổi của hai anh em khi tuổi em bằng tuổi anh hiện nay.", answer: "56 tuổi", choices: ["56 tuổi", "50 tuổi", "44 tuổi", "62 tuổi"] },
+      { source: "Olympic Đề 1 - Câu 7", question: "Số bé nhất có hai chữ số mà thương hai chữ số của số đó bằng 8 là số nào?", answer: 18, choices: [18, 81, 24, 16] },
+      { source: "Olympic Đề 1 - Câu 8", question: "Số lớn nhất có hai chữ số mà thương hai chữ số của số đó bằng 2 là số nào?", answer: 84, choices: [84, 93, 63, 42] },
+      { source: "Olympic Đề 1 - Câu 9", question: "Số bé nhất mà khi đem nhân với 5 được kết quả vẫn lớn hơn 38 là số nào?", answer: 8, choices: [8, 7, 9, 6] },
+      { source: "Olympic Đề 1 - Câu 10", question: "Số lớn nhất có hai chữ số mà tích hai chữ số của số đó bằng 0 là số nào?", answer: 90, choices: [90, 99, 10, 80] },
+
+      // ĐỀ ÔN LUYỆN SỐ 2
+      { source: "Olympic Đề 2 - Câu 1", mathText: "20 : 4 × 5 = ?", question: "Tính giá trị biểu thức: 20 : 4 × 5 = ?", answer: 25, choices: [25, 20, 30, 15] },
+      { source: "Olympic Đề 2 - Câu 2", mathText: "16 : 4 × 6 = ?", question: "Tính giá trị biểu thức: 16 : 4 × 6 = ?", answer: 24, choices: [24, 20, 28, 18] },
+      { source: "Olympic Đề 2 - Câu 3", mathText: "30 : 3 + ... = 19", question: "Điền số thích hợp vào chỗ chấm: 30 : 3 + ... = 19", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "Olympic Đề 2 - Câu 4", mathText: "15 : 5 × 8 = ?", question: "Tính giá trị biểu thức: 15 : 5 × 8 = ?", answer: 24, choices: [24, 20, 28, 30] },
+      { source: "Olympic Đề 2 - Câu 5", visual: "🌾 Có một số lượng gạo, nếu có thêm 1 kg nữa thì sẽ vừa đủ chia vào 9 túi, mỗi túi 5kg.", question: "Hỏi số lượng gạo đó là bao nhiêu ki-lô-gam?", answer: "44 kg", choices: ["44 kg", "45 kg", "46 kg", "40 kg"] },
+      { source: "Olympic Đề 2 - Câu 6", visual: "👭 Ba bạn Lan, Huệ, Hồng bằng tuổi nhau và hiện nay đều 9 tuổi.", question: "Tính tổng số tuổi của cả ba bạn sau 3 năm nữa.", answer: "36 tuổi", choices: ["36 tuổi", "27 tuổi", "30 tuổi", "33 tuổi"] },
+      { source: "Olympic Đề 2 - Câu 7", visual: "🎂 Hiện nay anh 16 tuổi, em 8 tuổi.", question: "Tính tổng số tuổi của hai anh em khi tuổi em bằng tuổi anh hiện nay.", answer: "40 tuổi", choices: ["40 tuổi", "32 tuổi", "24 tuổi", "48 tuổi"] },
+      { source: "Olympic Đề 2 - Câu 8", question: "Số lớn nhất có hai chữ số mà tích hai chữ số của số đó bằng 24 là số nào?", answer: 83, choices: [83, 64, 46, 38] },
+      { source: "Olympic Đề 2 - Câu 9", question: "Số lớn nhất mà khi đem nhân với 5 được kết quả vẫn nhỏ hơn 30 là số nào?", answer: 5, choices: [5, 6, 4, 7] },
+      { source: "Olympic Đề 2 - Câu 10", question: "Số lớn nhất mà khi đem nhân với 3 được kết quả vẫn nhỏ hơn 25 là số nào?", answer: 8, choices: [8, 7, 9, 6] },
+
+      // ĐỀ ÔN LUYỆN SỐ 3
+      { source: "Olympic Đề 3 - Câu 1", mathText: "12 : 3 + ... = 20", question: "Điền số thích hợp: 12 : 3 + ... = 20", answer: 16, choices: [16, 15, 17, 14] },
+      { source: "Olympic Đề 3 - Câu 2", mathText: "32 : 4 − ... = 5", question: "Điền số thích hợp: 32 : 4 − ... = 5", answer: 3, choices: [3, 4, 2, 5] },
+      { source: "Olympic Đề 3 - Câu 3", mathText: "45 : 5 : 3 = ?", question: "Tính giá trị biểu thức: 45 : 5 : 3 = ?", answer: 3, choices: [3, 9, 1, 6] },
+      { source: "Olympic Đề 3 - Câu 4", mathText: "30 : 3 + ... = 19", question: "Điền số thích hợp: 30 : 3 + ... = 19", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "Olympic Đề 3 - Câu 5", question: "Số bé nhất có hai chữ số mà thương hai chữ số của số đó bằng 9 là số nào?", answer: 19, choices: [19, 91, 18, 90] },
+      { source: "Olympic Đề 3 - Câu 6", visual: "🌾 Có một số lượng gạo, nếu có thêm 2kg nữa thì vừa đủ chia vào 9 túi, mỗi túi 4kg.", question: "Hỏi số lượng gạo đó là bao nhiêu ki-lô-gam?", answer: "34 kg", choices: ["34 kg", "36 kg", "38 kg", "32 kg"] },
+      { source: "Olympic Đề 3 - Câu 7", visual: "🌾 Có một số lượng gạo, nếu có thêm 3kg nữa thì vừa đủ chia vào 10 túi, mỗi túi 4kg.", question: "Hỏi số lượng gạo đó là bao nhiêu ki-lô-gam?", answer: "37 kg", choices: ["37 kg", "40 kg", "43 kg", "35 kg"] },
+      { source: "Olympic Đề 3 - Câu 8", question: "Số lớn nhất mà khi đem nhân với 5 được kết quả vẫn nhỏ hơn 33 là số nào?", answer: 6, choices: [6, 5, 7, 8] },
+      { source: "Olympic Đề 3 - Câu 9", question: "Số lớn nhất có hai chữ số mà tích hai chữ số của số đó bằng 18 là số nào?", answer: 92, choices: [92, 63, 36, 29] },
+      { source: "Olympic Đề 3 - Câu 10", question: "Số lớn nhất có hai chữ số mà thương hai chữ số của số đó bằng 3 là số nào?", answer: 93, choices: [93, 62, 31, 96] },
+
+      // ĐỀ ÔN LUYỆN SỐ 4
+      { source: "Olympic Đề 4 - Câu 1", mathText: "35 : 5 + ... = 14", question: "Điền số: 35 : 5 + ... = 14", answer: 7, choices: [7, 6, 8, 5] },
+      { source: "Olympic Đề 4 - Câu 2", mathText: "15 : 3 × 8 = ?", question: "Tính giá trị biểu thức: 15 : 3 × 8 = ?", answer: 40, choices: [40, 35, 45, 30] },
+      { source: "Olympic Đề 4 - Câu 3", mathText: "20 : 4 × 8 = ?", question: "Tính giá trị biểu thức: 20 : 4 × 8 = ?", answer: 40, choices: [40, 32, 48, 30] },
+      { source: "Olympic Đề 4 - Câu 4", mathText: "15 : 3 × 9 = ?", question: "Tính giá trị biểu thức: 15 : 3 × 9 = ?", answer: 45, choices: [45, 40, 50, 35] },
+      { source: "Olympic Đề 4 - Câu 5", visual: "🌾 Có số gạo đựng vào mỗi túi 4kg thì được 10 túi.", question: "Hỏi số gạo đó nếu đem đựng vào mỗi túi 5kg thì được bao nhiêu túi?", answer: "8 túi", choices: ["8 túi", "10 túi", "6 túi", "9 túi"] },
+      { source: "Olympic Đề 4 - Câu 6", question: "Số bé nhất có hai chữ số mà thương hai chữ số của số đó bằng 9 là số nào?", answer: 19, choices: [19, 91, 18, 90] },
+      { source: "Olympic Đề 4 - Câu 7", visual: "🌾 Có một số lượng gạo nếu đem đựng vào mỗi túi 4kg thì được 6 túi.", question: "Hỏi số lượng gạo đó nếu đem đựng vào mỗi túi 3kg thì được bao nhiêu túi?", answer: "8 túi", choices: ["8 túi", "6 túi", "7 túi", "9 túi"] },
+      { source: "Olympic Đề 4 - Câu 8", question: "Số lớn nhất mà khi đem nhân với 5 được kết quả vẫn nhỏ hơn 33 là số nào?", answer: 6, choices: [6, 5, 7, 8] },
+      { source: "Olympic Đề 4 - Câu 9", question: "Số bé nhất mà khi đem nhân với 3 được kết quả vẫn lớn hơn 25 là số nào?", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "Olympic Đề 4 - Câu 10", question: "Số lớn nhất mà khi đem nhân với 4 được kết quả vẫn nhỏ hơn 34 là số nào?", answer: 8, choices: [8, 9, 7, 6] },
+
+      // ĐỀ ÔN LUYỆN SỐ 5
+      { source: "Olympic Đề 5 - Câu 1", mathText: "32 : 4 + ... = 31", question: "Điền số: 32 : 4 + ... = 31", answer: 23, choices: [23, 22, 24, 25] },
+      { source: "Olympic Đề 5 - Câu 2", mathText: "12 : 3 × 5 = ?", question: "Tính: 12 : 3 × 5 = ?", answer: 20, choices: [20, 15, 25, 10] },
+      { source: "Olympic Đề 5 - Câu 3", mathText: "40 : 4 : 5 = ?", question: "Tính: 40 : 4 : 5 = ?", answer: 2, choices: [2, 4, 1, 3] },
+      { source: "Olympic Đề 5 - Câu 4", mathText: "12 : 3 × 9 = ?", question: "Tính: 12 : 3 × 9 = ?", answer: 36, choices: [36, 30, 42, 27] },
+      { source: "Olympic Đề 5 - Câu 5", question: "Em hãy cho biết có tất cả bao nhiêu số có 2 chữ số khác nhau?", answer: "81 số", choices: ["81 số", "90 số", "72 số", "89 số"] },
+      { source: "Olympic Đề 5 - Câu 6", visual: "🎂 Hiện nay anh 25 tuổi, em 19 tuổi.", question: "Tính tổng số tuổi của hai anh em khi tuổi em bằng tuổi anh hiện nay.", answer: "56 tuổi", choices: ["56 tuổi", "50 tuổi", "44 tuổi", "62 tuổi"] },
+      { source: "Olympic Đề 5 - Câu 7", question: "Số bé nhất có hai chữ số mà thương hai chữ số của số đó bằng 5 là số nào?", answer: 15, choices: [15, 51, 10, 25] },
+      { source: "Olympic Đề 5 - Câu 8", question: "Số lớn nhất mà khi đem nhân với 5 được kết quả vẫn nhỏ hơn 48 là số nào?", answer: 9, choices: [9, 8, 10, 7] },
+      { source: "Olympic Đề 5 - Câu 9", question: "Số bé nhất mà khi đem nhân với 4 được kết quả vẫn lớn hơn 26 là số nào?", answer: 7, choices: [7, 6, 8, 9] },
+      { source: "Olympic Đề 5 - Câu 10", question: "Số bé nhất mà khi đem nhân với 3 được kết quả vẫn lớn hơn 25 là số nào?", answer: 9, choices: [9, 8, 10, 7] },
+
+      // ĐỀ ÔN LUYỆN SỐ 6 (HÃY ĐIỀN SỐ THÍCH HỢP)
+      { source: "Olympic Đề 6 - Câu 1", mathText: "15 : 3 × 5 = ?", question: "Tính: 15 : 3 × 5 = ?", answer: 25, choices: [25, 20, 30, 15] },
+      { source: "Olympic Đề 6 - Câu 2", mathText: "12 : 4 × 7 = ?", question: "Tính: 12 : 4 × 7 = ?", answer: 21, choices: [21, 24, 28, 18] },
+      { source: "Olympic Đề 6 - Câu 3", mathText: "16 : 4 × 10 = ?", question: "Tính: 16 : 4 × 10 = ?", answer: 40, choices: [40, 30, 50, 44] },
+      { source: "Olympic Đề 6 - Câu 4", mathText: "12 : 4 × 5 = ?", question: "Tính: 12 : 4 × 5 = ?", answer: 15, choices: [15, 20, 10, 25] },
+      { source: "Olympic Đề 6 - Câu 5", visual: "🌾 Có một số lượng gạo nếu đem đựng vào mỗi túi 4kg thì được 6 túi.", question: "Hỏi số lượng gạo đó nếu đem đựng vào mỗi túi 3kg thì được bao nhiêu túi?", answer: "8 túi", choices: ["8 túi", "6 túi", "7 túi", "9 túi"] },
+      { source: "Olympic Đề 6 - Câu 6", visual: "🌾 Có một số lượng gạo, nếu có thêm 2kg nữa thì sẽ vừa đủ chia vào 10 túi, mỗi túi 5kg.", question: "Hỏi số lượng gạo đó là bao nhiêu ki-lô-gam?", answer: "48 kg", choices: ["48 kg", "50 kg", "52 kg", "45 kg"] },
+      { source: "Olympic Đề 6 - Câu 7", visual: "🌾 Có một số lượng gạo, nếu có thêm 1kg nữa thì sẽ vừa đủ chia vào 9 túi, mỗi túi 5kg.", question: "Hỏi số lượng gạo đó là bao nhiêu ki-lô-gam?", answer: "44 kg", choices: ["44 kg", "45 kg", "46 kg", "40 kg"] },
+      { source: "Olympic Đề 6 - Câu 8", question: "Số lớn nhất mà khi đem nhân với 4 được kết quả vẫn nhỏ hơn 34 là số nào?", answer: 8, choices: [8, 9, 7, 6] },
+      { source: "Olympic Đề 6 - Câu 9", question: "Số lớn nhất mà khi đem nhân với 3 được kết quả vẫn nhỏ hơn 32 là số nào?", answer: 10, choices: [10, 9, 11, 8] },
+      { source: "Olympic Đề 6 - Câu 10", question: "Số bé nhất có hai chữ số mà tích hai chữ số của số đó bằng 8 là số nào?", answer: 18, choices: [18, 81, 24, 42] },
+
+      // ĐỀ ÔN LUYỆN SỐ 7
+      { source: "Olympic Đề 7 - Câu 1", mathText: "20 : 4 × 8 = ?", question: "Tính: 20 : 4 × 8 = ?", answer: 40, choices: [40, 32, 48, 30] },
+      { source: "Olympic Đề 7 - Câu 2", mathText: "15 : 3 + ... = 40", question: "Điền số: 15 : 3 + ... = 40", answer: 35, choices: [35, 30, 25, 45] },
+      { source: "Olympic Đề 7 - Câu 3", mathText: "35 : 5 − ... = 3", question: "Điền số: 35 : 5 − ... = 3", answer: 4, choices: [4, 3, 5, 2] },
+      { source: "Olympic Đề 7 - Câu 4", mathText: "15 : 3 × 8 = ?", question: "Tính: 15 : 3 × 8 = ?", answer: 40, choices: [40, 35, 45, 30] },
+      { source: "Olympic Đề 7 - Câu 5", visual: "🛢️ Có một số lượng dầu, nếu thêm 17 lít nữa thì sẽ vừa đủ để đựng vào 9 can, mỗi can 3 lít.", question: "Tính số lượng dầu ban đầu:", answer: "10 lít", choices: ["10 lít", "27 lít", "17 lít", "12 lít"] },
+      { source: "Olympic Đề 7 - Câu 6", visual: "🌾 Có một số lượng gạo nếu đem đựng vào mỗi túi 4kg thì được 6 túi.", question: "Hỏi số lượng gạo đó nếu đem đựng vào mỗi túi 3kg thì được bao nhiêu túi?", answer: "8 túi", choices: ["8 túi", "6 túi", "7 túi", "9 túi"] },
+      { source: "Olympic Đề 7 - Câu 7", visual: "🛢️ Có một số lượng dầu, nếu thêm 21 lít nữa thì sẽ vừa đủ để đựng vào 6 can, mỗi can 5 lít.", question: "Tính số lượng dầu ban đầu:", answer: "9 lít", choices: ["9 lít", "30 lít", "21 lít", "11 lít"] },
+      { source: "Olympic Đề 7 - Câu 8", question: "Số lớn nhất mà khi đem nhân với 4 được kết quả vẫn nhỏ hơn 30 là số nào?", answer: 7, choices: [7, 8, 6, 9] },
+      { source: "Olympic Đề 7 - Câu 9", question: "Số lớn nhất có hai chữ số mà thương hai chữ số của số đó bằng 3 là số nào?", answer: 93, choices: [93, 62, 31, 96] },
+      { source: "Olympic Đề 7 - Câu 10", question: "Số lớn nhất mà khi đem nhân với 3 được kết quả vẫn nhỏ hơn 32 là số nào?", answer: 10, choices: [10, 9, 11, 8] },
+
+      // BÀI TẬP TỰ LUYỆN 1 ĐẾN 47
+      { source: "Olympic Tự luyện - Bài 1", question: "Bốn năm trước tuổi hai anh em là bao nhiêu? Biết rằng hiện nay số tuổi của hai anh em cộng lại là 18 tuổi.", answer: "10 tuổi", choices: ["10 tuổi", "14 tuổi", "12 tuổi", "8 tuổi"] },
+      { source: "Olympic Tự luyện - Bài 2", question: "Hãy cho biết hiện nay tuổi của 2 bạn Hồng và Hà cộng lại là bao nhiêu tuổi? Biết sau 4 năm nữa tuổi của 2 bạn ấy cộng lại là 22 tuổi.", answer: "14 tuổi", choices: ["14 tuổi", "18 tuổi", "16 tuổi", "12 tuổi"] },
+      { source: "Olympic Tự luyện - Bài 3", question: "Biết hiện nay tuổi của 2 bạn Hồng và Hà cộng lại là 18 tuổi. Hãy cho biết sau 3 năm nữa tuổi của 2 bạn ấy cộng lại là bao nhiêu tuổi?", answer: "24 tuổi", choices: ["24 tuổi", "21 tuổi", "22 tuổi", "20 tuổi"] },
+      { source: "Olympic Tự luyện - Bài 4", question: "Việt có 19 con tem, Việt cho Mai và Lan mỗi bạn 4 con tem. Hỏi Việt còn lại bao nhiêu con tem?", answer: "11 con tem", choices: ["11 con tem", "15 con tem", "12 con tem", "10 con tem"] },
+      { source: "Olympic Tự luyện - Bài 5", visual: "🎨 Lan có 7 bức tranh gồm 3 loại màu xanh, đỏ, tím. Số bức tranh màu xanh là nhiều nhất, màu tím là ít nhất.", question: "Em hãy cho biết Lan có mấy bức tranh màu xanh?", answer: "4 bức", choices: ["4 bức", "3 bức", "5 bức", "2 bức"] },
+      { source: "Olympic Tự luyện - Bài 6", question: "Hà có 9 con tem, Mai và Lan mỗi bạn cho Hà thêm 3 con tem. Hỏi Hà có tất cả bao nhiêu con tem?", answer: "15 con tem", choices: ["15 con tem", "12 con tem", "16 con tem", "14 con tem"] },
+      { source: "Olympic Tự luyện - Bài 7", question: "Việt có 11 con tem, Việt cho Mai và Lan mỗi bạn 4 con tem. Hỏi Việt còn lại bao nhiêu con tem?", answer: "3 con tem", choices: ["3 con tem", "7 con tem", "4 con tem", "5 con tem"] },
+      { source: "Olympic Tự luyện - Bài 8", visual: "🔵 Lan có 6 viên bi gồm 3 loại màu xanh, đỏ, tím. Số viên bi màu xanh là nhiều nhất, màu tím là ít nhất.", question: "Em hãy cho biết Lan có mấy viên bi màu xanh?", answer: "3 viên", choices: ["3 viên", "4 viên", "2 viên", "5 viên"] },
+      { source: "Olympic Tự luyện - Bài 9", question: "Mẹ cho Lan và Hoa mỗi người 5 cái bánh. Sau đó mẹ cho thêm mỗi người 2 cái nữa. Hỏi Lan và Hoa có tất cả bao nhiêu cái bánh?", answer: "14 cái", choices: ["14 cái", "10 cái", "12 cái", "16 cái"] },
+      { source: "Olympic Tự luyện - Bài 10", visual: "🔴 Lan có 6 viên bi gồm 3 loại màu xanh, đỏ, tím. Số viên bi màu xanh nhiều nhất (3 viên), tím ít nhất (1 viên).", question: "Em hãy cho biết Lan có mấy viên bi màu đỏ?", answer: "2 viên", choices: ["2 viên", "3 viên", "1 viên", "4 viên"] },
+      { source: "Olympic Tự luyện - Bài 11", question: "Bốn năm nữa tuổi hai anh em là bao nhiêu? Biết rằng hiện nay số tuổi của hai anh em cộng lại là 18 tuổi.", answer: "26 tuổi", choices: ["26 tuổi", "22 tuổi", "24 tuổi", "28 tuổi"] },
+      { source: "Olympic Tự luyện - Bài 12", question: "Hãy cho biết hiện nay tuổi của 2 bạn Hồng và Hà cộng lại là bao nhiêu tuổi? Biết rằng 4 năm trước tuổi của 2 bạn ấy cộng lại là 19 tuổi.", answer: "27 tuổi", choices: ["27 tuổi", "23 tuổi", "25 tuổi", "31 tuổi"] },
+      { source: "Olympic Tự luyện - Bài 13", question: "Biết hiện nay tuổi của 2 bạn Hồng và Hà cộng lại là 18 tuổi. Hãy cho biết 4 năm trước tuổi của 2 bạn ấy cộng lại là bao nhiêu tuổi?", answer: "10 tuổi", choices: ["10 tuổi", "14 tuổi", "12 tuổi", "8 tuổi"] },
+      { source: "Olympic Tự luyện - Bài 14", question: "Cho các số sau 3, 5, 6. Hỏi có mấy số có hai chữ số được viết từ những số đó?", answer: "9 số", choices: ["9 số", "6 số", "8 số", "3 số"] },
+      { source: "Olympic Tự luyện - Bài 15", question: "Cho các số sau 3, 7, 6, 5. Hỏi có mấy số có hai chữ số được viết từ những số đó?", answer: "16 số", choices: ["16 số", "12 số", "14 số", "20 số"] },
+      { source: "Olympic Tự luyện - Bài 16", question: "Cho các số sau 3, 0, 6, 5. Hỏi có mấy số có hai chữ số được viết từ những số đó?", answer: "12 số", choices: ["12 số", "16 số", "9 số", "10 số"] },
+      { source: "Olympic Tự luyện - Bài 17", question: "Cho các số sau 3, 0, 1, 5. Hỏi số lớn nhất có hai chữ số được viết từ những số đó là số nào?", answer: 53, choices: [53, 51, 50, 35] },
+      { source: "Olympic Tự luyện - Bài 18", question: "Cho các số sau 3, 0, 1, 5. Hỏi số bé nhất có hai chữ số được viết từ những số đó là số nào?", answer: 10, choices: [10, 13, 15, 30] },
+      { source: "Olympic Tự luyện - Bài 19", question: "Hỏi có bao nhiêu số tự nhiên có hai chữ số lớn hơn 15 và nhỏ hơn 55?", answer: "39 số", choices: ["39 số", "40 số", "38 số", "41 số"] },
+      { source: "Olympic Tự luyện - Bài 20", question: "Hỏi có bao nhiêu số tự nhiên có hai chữ số lớn hơn 30?", answer: "69 số", choices: ["69 số", "70 số", "68 số", "60 số"] },
+      { source: "Olympic Tự luyện - Bài 21", question: "Hỏi có bao nhiêu số tự nhiên có hai chữ số nhỏ hơn 54?", answer: "44 số", choices: ["44 số", "45 số", "54 số", "43 số"] },
+      { source: "Olympic Tự luyện - Bài 22", question: "Từ số 11 đến số 56 có bao nhiêu số tự nhiên?", answer: "46 số", choices: ["46 số", "45 số", "47 số", "56 số"] },
+      { source: "Olympic Tự luyện - Bài 23", question: "Từ số 18 đến số 76 có bao nhiêu số tự nhiên?", answer: "59 số", choices: ["59 số", "58 số", "60 số", "57 số"] },
+      { source: "Olympic Tự luyện - Bài 24", question: "Từ số 18 đến số 76 có bao nhiêu số tròn chục?", answer: "6 số (20, 30, 40, 50, 60, 70)", choices: ["6 số (20, 30, 40, 50, 60, 70)", "5 số", "7 số", "8 số"] },
+      { source: "Olympic Tự luyện - Bài 25", question: "Từ số 18 đến số 76 có bao nhiêu số có hai chữ số khác nhau?", answer: "53 số", choices: ["53 số", "59 số", "50 số", "55 số"] },
+      { source: "Olympic Tự luyện - Bài 26a", question: "Cho các số sau 2, 3. Tính tổng các số có hai chữ số được viết từ những số đó (22 + 23 + 32 + 33):", answer: 110, choices: [110, 55, 100, 120] },
+      { source: "Olympic Tự luyện - Bài 26b", question: "Cho các số sau 2, 0, 1. Tính tổng các số có hai chữ số được viết từ những số đó:", answer: 132, choices: [132, 120, 140, 110] },
+      { source: "Olympic Tự luyện - Bài 26c", question: "Cho các số sau 1, 0, 2. Tính tổng các số có hai chữ số khác nhau được viết từ những số đó (10 + 12 + 20 + 21):", answer: 63, choices: [63, 60, 65, 70] },
+      { source: "Olympic Tự luyện - Bài 26d", question: "Cho các số sau 1, 3. Tính tổng các số có hai chữ số được viết từ những số đó (11 + 13 + 31 + 33):", answer: 88, choices: [88, 80, 90, 77] },
+      { source: "Olympic Tự luyện - Bài 27", question: "Cho các số sau 3, 6. Tính tổng các số có hai chữ số khác nhau được viết từ những số đó (36 + 63):", answer: 99, choices: [99, 90, 100, 96] },
+      { source: "Olympic Tự luyện - Bài 29", question: "Số A cộng với số 31 thì bằng số 78 trừ số 12. Số A là số nào?", answer: 35, choices: [35, 45, 25, 30] },
+      { source: "Olympic Tự luyện - Bài 30", question: "Số A cộng với số 31 thì bằng số 78 cộng số 12. Số A là số nào?", answer: 59, choices: [59, 69, 49, 58] },
+      { source: "Olympic Tự luyện - Bài 31", question: "Số A trừ với số 31 thì bằng số 25 cộng số 12. Số A là số nào?", answer: 68, choices: [68, 78, 58, 60] },
+      { source: "Olympic Tự luyện - Bài 32", question: "Số A trừ với số 31 thì bằng số 55 trừ số 12. Số A là số nào?", answer: 74, choices: [74, 84, 64, 70] },
+      { source: "Olympic Tự luyện - Bài 33", question: "Ba lớp 1A1, 1A2, 1A3 mỗi lớp có 32 học sinh. Tính tổng số học sinh của ba lớp trên.", answer: "96 học sinh", choices: ["96 học sinh", "94 học sinh", "98 học sinh", "90 học sinh"] },
+      { source: "Olympic Tự luyện - Bài 34a", question: "Tổng số học sinh của ba lớp 1A1, 1A2, 1A3 có 99 học sinh. Số học sinh của lớp 1A1 và 1A2 là 64 em. Tính số học sinh của lớp 1A3.", answer: "35 học sinh", choices: ["35 học sinh", "34 học sinh", "36 học sinh", "25 học sinh"] },
+      { source: "Olympic Tự luyện - Bài 34b", question: "Tổng số học sinh của ba lớp 1A1, 1A2, 1A3 có 99 học sinh. Số học sinh của lớp 1A1 và 1A2 mỗi lớp có 32 em. Tính số học sinh của lớp 1A3.", answer: "35 học sinh", choices: ["35 học sinh", "33 học sinh", "34 học sinh", "36 học sinh"] },
+      { source: "Olympic Tự luyện - Bài 35", question: "Tổng số học sinh của ba lớp 1A1, 1A2, 1A3 có 99 học sinh. Số học sinh của lớp 1A1 là 33 em và 1A2 có 32 em. Tính số học sinh của lớp 1A3.", answer: "34 học sinh", choices: ["34 học sinh", "35 học sinh", "33 học sinh", "32 học sinh"] },
+      { source: "Olympic Tự luyện - Bài 36", question: "Số liền trước số 35 là số nào?", answer: 34, choices: [34, 36, 33, 40] },
+      { source: "Olympic Tự luyện - Bài 37", question: "Số liền trước số 75 là số nào?", answer: 74, choices: [74, 76, 73, 70] },
+      { source: "Olympic Tự luyện - Bài 38", question: "Số liền sau số 66 là số nào?", answer: 67, choices: [67, 65, 68, 70] },
+      { source: "Olympic Tự luyện - Bài 39", question: "Số liền trước số 70 là số nào?", answer: 69, choices: [69, 71, 68, 60] },
+      { source: "Olympic Tự luyện - Bài 40", question: "Số liền trước là 90, vậy số đó là số nào?", answer: 91, choices: [91, 89, 92, 90] },
+      { source: "Olympic Tự luyện - Bài 41", question: "Số liền sau là 100, vậy số đó là số nào?", answer: 99, choices: [99, 101, 98, 100] },
+      { source: "Olympic Tự luyện - Bài 42", question: "Số liền trước số 99 là số nào?", answer: 98, choices: [98, 100, 97, 90] },
+      { source: "Olympic Tự luyện - Bài 43a", visual: "🎒 Mẹ mua cho em một cái cặp hết 41 ngàn đồng, một cây bút 11 ngàn và một cây kéo hết 21 ngàn đồng.", question: "Mẹ đã mua hết số tiền là bao nhiêu?", answer: "73 ngàn đồng", choices: ["73 ngàn đồng", "63 ngàn đồng", "75 ngàn đồng", "83 ngàn đồng"] },
+      { source: "Olympic Tự luyện - Bài 43b", question: "Hãy cho biết từ số 25 đến số 38 có bao nhiêu số tự nhiên?", answer: "14 số", choices: ["14 số", "13 số", "15 số", "12 số"] },
+      { source: "Olympic Tự luyện - Bài 44a", question: "Hãy cho biết có bao nhiêu số tự nhiên lớn hơn 25 và nhỏ hơn 58?", answer: "32 số", choices: ["32 số", "33 số", "34 số", "31 số"] },
+      { source: "Olympic Tự luyện - Bài 44b", question: "Hãy cho biết từ số 25 đến số 58 có bao nhiêu số tự nhiên?", answer: "34 số", choices: ["34 số", "33 số", "35 số", "32 số"] },
+      { source: "Olympic Tự luyện - Bài 45", question: "Đem 2 chữ số 5 và 7 viết thành các số có hai chữ số khác nhau (57 và 75) rồi cộng các kết quả lại với nhau thì bằng bao nhiêu?", answer: 132, choices: [132, 122, 142, 130] },
+      { source: "Olympic Tự luyện - Bài 46", visual: "🔢 Cho các số 0, 8, 5, 1, 9.", question: "Tổng của số lớn nhất có hai chữ số (98) và số bé nhất có hai chữ số (10) được viết từ các số đó là:", answer: 108, choices: [108, 109, 98, 110] },
+      { source: "Olympic Tự luyện - Bài 47", visual: "🔢 Cho các số 0, 8, 5, 1, 9.", question: "Tìm số lớn nhất và số nhỏ nhất có hai chữ số khác nhau được viết từ những số đó:", answer: "98 và 10", choices: ["98 và 10", "99 và 10", "98 và 15", "89 và 10"] }
+    ];
+
+    function getExpandedQuestions(baseArray, type, targetCount = 50) {
+      let result = [...baseArray];
+      let needed = targetCount - result.length;
+      if (needed <= 0) return result;
+
+      for (let i = 1; i <= needed; i++) {
+        let q = {};
+        if (type === 'logic') {
+          let start = 100 + i * 15;
+          let step = (i % 2 === 0) ? 2 : 5;
+          let seq = [start, start + step, start + step * 2, "?", start + step * 4];
+          let ans = start + step * 3;
+          q = {
+            source: "Luyện tập tư duy SGK",
+            sequence: seq,
+            rule: `Dãy số tăng cách đều ${step} đơn vị (+${step})`,
+            answer: ans,
+            choices: [ans, ans - 1, ans + 2, ans + step]
+          };
+        } else if (type === 'add_sub_100') {
+          let a = 20 + (i * 3) % 60;
+          let b = 15 + (i * 7) % 35;
+          if (i % 2 === 0) {
+            let ans = a + b;
+            q = {
+              source: "SGK Luyện tập phạm vi 100",
+              mathText: `${a} + ${b} = ?`,
+              question: `Tính tổng: ${a} + ${b} = ?`,
+              answer: ans,
+              choices: [ans, ans + 10, ans - 1, ans + 2]
+            };
+          } else {
+            let total = a + b;
+            q = {
+              source: "SGK Luyện tập phạm vi 100",
+              mathText: `${total} - ${a} = ?`,
+              question: `Tính hiệu: ${total} - ${a} = ?`,
+              answer: b,
+              choices: [b, b + 2, b - 1, b + 10]
+            };
+          }
+        } else if (type === 'add_sub_1000') {
+          let a = 150 + i * 12;
+          let b = 120 + (i * 9) % 200;
+          if (i % 2 === 0) {
+            let ans = a + b;
+            q = {
+              source: "SGK Luyện tập phạm vi 1000",
+              mathText: `${a} + ${b} = ?`,
+              question: `Đặt tính rồi tính: ${a} + ${b} = ?`,
+              answer: ans,
+              choices: [ans, ans + 10, ans - 10, ans + 100]
+            };
+          } else {
+            let total = a + b;
+            q = {
+              source: "SGK Luyện tập phạm vi 1000",
+              mathText: `${total} - ${a} = ?`,
+              question: `Đặt tính rồi tính: ${total} - ${a} = ?`,
+              answer: b,
+              choices: [b, b + 10, b - 10, b + 5]
+            };
+          }
+        } else if (type === 'mult') {
+          let base = (i % 2 === 0) ? 2 : 5;
+          let factor = (i % 10) + 1;
+          let ans = base * factor;
+          q = {
+            source: `Bảng nhân ${base} SGK`,
+            mathText: `${base} × ${factor} = ?`,
+            question: `Tính nhẩm: ${base} × ${factor} bằng bao nhiêu?`,
+            answer: ans,
+            choices: [ans, ans + base, Math.max(0, ans - base), ans + 1]
+          };
+        } else if (type === 'div') {
+          let base = (i % 2 === 0) ? 2 : 5;
+          let factor = (i % 10) + 1;
+          let total = base * factor;
+          q = {
+            source: `Bảng chia ${base} SGK`,
+            mathText: `${total} : ${base} = ?`,
+            question: `Tính nhẩm: ${total} : ${base} bằng bao nhiêu?`,
+            answer: factor,
+            choices: [factor, factor + 1, Math.max(1, factor - 1), factor + 2]
+          };
+        } else if (type === 'geom') {
+          let shapes = ["Hình tam giác", "Hình tứ giác", "Khối trụ", "Khối cầu", "Khối lập phương", "Khối hộp chữ nhật"];
+          let picked = shapes[i % shapes.length];
+          let desc = "";
+          if (picked === "Hình tam giác") desc = "Hình có 3 đỉnh và 3 cạnh thẳng";
+          else if (picked === "Hình tứ giác") desc = "Hình có 4 đỉnh và 4 cạnh thẳng";
+          else if (picked === "Khối trụ") desc = "Vật có 2 mặt đáy tròn và thân uốn cong (như lon nước, khúc gỗ tròn)";
+          else if (picked === "Khối cầu") desc = "Vật tròn đều về mọi phía, có thể lăn theo mọi hướng (như quả bóng bàn, bi ve)";
+          else if (picked === "Khối lập phương") desc = "Khối có 6 mặt đều là hình vuông bằng nhau";
+          else desc = "Khối có 6 mặt là hình chữ nhật (như bao diêm, viên gạch)";
+          
+          q = {
+            source: "SGK Hình học & Khối hình",
+            visual: `🔍 Đặc điểm: ${desc}`,
+            question: "Đặc điểm trên mô tả hình hoặc khối hình nào dưới đây?",
+            answer: picked,
+            choices: [picked, ...shapes.filter(s => s !== picked).slice(0, 3)]
+          };
+        } else if (type === 'len_conv') {
+          let mVal = 1 + (i % 8);
+          let cmVal = (i * 15) % 90 + 10;
+          let totalCm = mVal * 100 + cmVal;
+          q = {
+            source: "SGK Quy đổi độ dài",
+            mathText: `${mVal} m + ${cmVal} cm = ? cm`,
+            question: `Quy đổi: ${mVal} mét cộng ${cmVal} xăng-ti-mét bằng bao nhiêu xăng-ti-mét?`,
+            answer: `${totalCm} cm`,
+            choices: [`${totalCm} cm`, `${mVal * 10 + cmVal} cm`, `${totalCm + 10} cm`, `${mVal * 1000 + cmVal} cm`]
+          };
+        } else if (type === 'mass_conv') {
+          let kgVal = 1 + (i % 6);
+          let gVal = (i * 50) % 800 + 100;
+          let totalG = kgVal * 1000 + gVal;
+          q = {
+            source: "SGK Quy đổi khối lượng",
+            mathText: `${kgVal} kg + ${gVal} g = ? g`,
+            question: `Quy đổi: ${kgVal} ki-lô-gam cộng ${gVal} gam bằng bao nhiêu gam?`,
+            answer: `${totalG} g`,
+            choices: [`${totalG} g`, `${kgVal * 100 + gVal} g`, `${totalG + 100} g`, `${kgVal + gVal} g`]
+          };
+        } else if (type === 'time_conv') {
+          let hVal = 1 + (i % 4);
+          let minVal = (i * 5) % 45 + 10;
+          let totalMin = hVal * 60 + minVal;
+          q = {
+            source: "SGK Quy đổi thời gian",
+            mathText: `${hVal} giờ + ${minVal} phút = ? phút`,
+            question: `Quy đổi: ${hVal} giờ và ${minVal} phút bằng bao nhiêu phút?`,
+            answer: `${totalMin} phút`,
+            choices: [`${totalMin} phút`, `${hVal * 100 + minVal} phút`, `${totalMin + 10} phút`, `${hVal * 24 + minVal} phút`]
+          };
+        } else if (type === 'word' || type === 'word_adv') {
+          let a = 25 + i * 2;
+          let b = 10 + (i * 3) % 15;
+          let ans = a + b;
+          q = {
+            source: "SGK Bài toán lời văn",
+            question: `Bạn Nam có ${a} viên bi, bạn Hải có nhiều hơn bạn Nam ${b} viên bi. Hỏi bạn Hải có bao nhiêu viên bi?`,
+            answer: `${ans} viên`,
+            choices: [`${ans} viên`, `${ans - 5} viên`, `${ans + 5} viên`, `${ans - b} viên`]
+          };
+        } else if (type === 'polyline') {
+          let a = 3 + (i % 4);
+          let b = 4 + ((i + 1) % 5);
+          let c = 5 + ((i + 2) % 6);
+          let sum = a + b + c;
+          q = {
+            source: "SGK Đường gấp khúc",
+            visual: `📏 Đoạn 1 = ${a}cm, Đoạn 2 = ${b}cm, Đoạn 3 = ${c}cm`,
+            question: `Tính độ dài đường gấp khúc gồm 3 đoạn thẳng có độ dài ${a}cm, ${b}cm và ${c}cm.`,
+            answer: `${sum} cm`,
+            choices: [`${sum} cm`, `${sum + 2} cm`, `${sum - 1} cm`, `${sum + 3} cm`]
+          };
+        } else if (type === 'num1000') {
+          let tram = 2 + (i % 8);
+          let chuc = (i * 2) % 10;
+          let donvi = (i * 3) % 10;
+          let num = tram * 100 + chuc * 10 + donvi;
+          q = {
+            source: "SGK Số phạm vi 1000",
+            visual: `🔢 Số gồm ${tram} trăm, ${chuc} chục và ${donvi} đơn vị`,
+            question: `Số gồm ${tram} trăm, ${chuc} chục và ${donvi} đơn vị được viết là:`,
+            answer: num,
+            choices: [num, num + 10, num - 1, num + 100]
+          };
+        } else if (type === 'money') {
+          let ansVal = (i % 2 === 0) ? "2 tờ 500 đồng" : "5 tờ 200 đồng";
+          q = {
+            source: "SGK Tiền Việt Nam",
+            question: `Một tờ tiền 1 000 đồng đổi được bao nhiêu tờ tiền mệnh giá nhỏ hơn?`,
+            answer: ansVal,
+            choices: [ansVal, "3 tờ 500 đồng", "4 tờ 200 đồng", "1 tờ 500 đồng"]
+          };
+        } else if (type === 'stats') {
+          let red = 5 + (i % 4);
+          let blue = 3 + ((i + 1) % 3);
+          let total = red + blue;
+          q = {
+            source: "SGK Thống kê & Khả năng",
+            visual: `📊 Có ${red} bông hoa đỏ và ${blue} bông hoa xanh`,
+            question: `Có tất cả bao nhiêu bông hoa đỏ và xanh trong lọ?`,
+            answer: `${total} bông`,
+            choices: [`${total} bông`, `${total + 1} bông`, `${total - 1} bông`, `${total + 2} bông`]
+          };
+        } else if (type === 'logic_adv') {
+          let variant = i % 6;
+          if (variant === 0) {
+            let num = 10 + (i % 30);
+            q = {
+              source: `Toán tư duy - Bài toán tính ngược ${i}`,
+              visual: `🔮 Bạn Nam nghĩ ra một số: Lấy số đó cộng thêm 15 rồi trừ đi 8 thì được ${num + 7}.`,
+              question: `Hỏi ban đầu bạn Nam đã nghĩ ra số nào?`,
+              answer: num,
+              choices: [num, num + 2, num - 2, num + 5]
+            };
+          } else if (variant === 1) {
+            let trees = 4 + (i % 6);
+            let dist = (trees - 1) * 4;
+            q = {
+              source: `Toán tư duy - Trồng cây khoảng cách ${i}`,
+              visual: `🌳 Trồng ${trees} cây thẳng hàng cách đều nhau, khoảng cách giữa 2 cây liền nhau là 4 mét.`,
+              question: `Khoảng cách từ cây đầu tiên đến cây cuối cùng là bao nhiêu mét?`,
+              answer: `${dist} m`,
+              choices: [`${dist} m`, `${trees * 4} m`, `${dist - 4} m`, `${dist + 2} m`]
+            };
+          } else if (variant === 2) {
+            let ageFather = 32 + (i % 8);
+            let ageSon = 6 + (i % 4);
+            let diff = ageFather - ageSon;
+            q = {
+              source: `Toán tư duy - Hiệu số tuổi ${i}`,
+              visual: `🎂 Hiện nay bố ${ageFather} tuổi, con ${ageSon} tuổi.`,
+              question: `Hỏi sau 5 năm nữa, bố hơn con bao nhiêu tuổi?`,
+              answer: `${diff} tuổi`,
+              choices: [`${diff} tuổi`, `${diff + 5} tuổi`, `${diff - 5} tuổi`, `${diff + 10} tuổi`]
+            };
+          } else if (variant === 3) {
+            let startNum = 2 + (i % 5);
+            q = {
+              source: `Toán tư duy - Quy luật tăng khoảng cách ${i}`,
+              sequence: [startNum, startNum + 2, startNum + 5, startNum + 9, startNum + 14, "?"],
+              rule: "Khoảng cách tăng dần: +2, +3, +4, +5, +6",
+              answer: startNum + 20,
+              choices: [startNum + 20, startNum + 19, startNum + 21, startNum + 18]
+            };
+          } else if (variant === 4) {
+            let candies = 12 + (i % 8) * 2;
+            let half = candies / 2;
+            q = {
+              source: `Toán tư duy - Cho đi nhận lại ${i}`,
+              visual: `🍬 An có ${candies} cái kẹo. An cho Bình một số kẹo thì số kẹo của An giảm đi một nửa.`,
+              question: `Hỏi An đã cho Bình bao nhiêu cái kẹo?`,
+              answer: `${half} cái kẹo`,
+              choices: [`${half} cái kẹo`, `${half - 2} cái kẹo`, `${half + 2} cái kẹo`, `${candies} cái kẹo`]
+            };
+          } else {
+            let totalLegs = 10 + (i % 4) * 2;
+            let rab = 1 + (i % 2);
+            let chicken = (totalLegs - rab * 4) / 2;
+            q = {
+              source: `Toán tư duy - Đếm chân gà thỏ ${i}`,
+              visual: `🐾 Trong sân có ${rab} con thỏ (mỗi con 4 chân) và một số con gà (mỗi con 2 chân). Tổng số chân đếm được là ${totalLegs} chân.`,
+              question: `Hỏi trong sân có bao nhiêu con gà?`,
+              answer: `${chicken} con gà`,
+              choices: [`${chicken} con gà`, `${chicken + 1} con gà`, `${chicken - 1} con gà`, `${chicken + 2} con gà`]
+            };
+          }
+        }
+        result.push(q);
+      }
+      return result;
+    }
+  </script>
+</body>
+</html>
