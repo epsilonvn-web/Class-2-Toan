@@ -2,8 +2,8 @@
 // CẤU HÌNH 11 MỤC KHO HỌC LIỆU & MA TRẬN NĂNG LỰC TOAN_C1-C6 (TOÁN LỚP 2)
 // ==========================================
 const TOPICS_CONFIG = [
-    { id: 1, title: "1. Số học", desc: "Số trong phạm vi 100, 1000, so sánh & tia số", icon: "🔢", color: "pink" },
-    { id: 2, title: "2. Phép cộng và trừ", desc: "Không nhớ, có nhớ, đặt tính, tên gọi thành phần", icon: "➕", color: "purple" },
+    { id: 1, title: "1. Số học", desc: "Số trong phạm vi 100, 1000, so sánh & tia số", icon: "🔢", color: "sky" },
+    { id: 2, title: "2. Phép cộng và trừ", desc: "Không nhớ, có nhớ, đặt tính, tên gọi thành phần", icon: "➕", color: "teal" },
     { id: 3, title: "3. Phép nhân và chia", desc: "Ý nghĩa phép nhân/chia, bảng nhân chia 2 và 5", icon: "✖️", color: "indigo" },
     { id: 4, title: "4. Hình học", desc: "Đường thẳng, hình phẳng, khối hình, xếp hình", icon: "📐", color: "amber" },
     { id: 5, title: "5. Đơn vị đo và thời gian", desc: "Độ dài, khối lượng, dung tích, giờ, lịch, tiền", icon: "⏰", color: "emerald" },
@@ -12,13 +12,13 @@ const TOPICS_CONFIG = [
     { id: 8, title: "8. Toán có lời văn", desc: "Thêm bớt, nhiều hơn ít hơn, giải 2 bước tính", icon: "📝", color: "rose" },
     { id: 9, title: "9. Thống kê và xác suất", desc: "Kiểm đếm, biểu đồ tranh, khả năng xảy ra", icon: "📊", color: "blue" },
     { id: 10, title: "10. Toán nâng cao", desc: "Tính nhanh, cấu tạo số, hình học & IQ nâng cao", icon: "🧠", color: "yellow" },
-    { id: 11, title: "11. Ôn tập", desc: "Ôn tập học kỳ I, học kỳ II và Nhà thông thái nhí", icon: "📚", color: "purple" }
+    { id: 11, title: "11. Ôn tập", desc: "Ôn tập học kỳ I, học kỳ II và Nhà thông thái nhí", icon: "📚", color: "teal" }
 ];
 
 const SUBTOPIC_PALETTES = [
-    { card: "bg-pink-50/80 hover:bg-pink-100 border-pink-300 text-pink-800", num: "text-pink-600", badge: "bg-white text-pink-600 border-pink-200" },
+    { card: "bg-sky-50/80 hover:bg-sky-100 border-sky-300 text-sky-800", num: "text-sky-600", badge: "bg-white text-sky-600 border-sky-200" },
     { card: "bg-emerald-50/80 hover:bg-emerald-100 border-emerald-300 text-emerald-800", num: "text-emerald-600", badge: "bg-white text-emerald-600 border-emerald-200" },
-    { card: "bg-purple-50/80 hover:bg-purple-100 border-purple-300 text-purple-800", num: "text-purple-600", badge: "bg-white text-purple-600 border-purple-200" },
+    { card: "bg-teal-50/80 hover:bg-teal-100 border-teal-300 text-teal-800", num: "text-teal-600", badge: "bg-white text-teal-600 border-teal-200" },
     { card: "bg-amber-50/80 hover:bg-amber-100 border-amber-300 text-amber-800", num: "text-amber-600", badge: "bg-white text-amber-600 border-amber-200" },
     { card: "bg-indigo-50/80 hover:bg-indigo-100 border-indigo-300 text-indigo-800", num: "text-indigo-600", badge: "bg-white text-indigo-600 border-indigo-200" },
     { card: "bg-rose-50/80 hover:bg-rose-100 border-rose-300 text-rose-800", num: "text-rose-600", badge: "bg-white text-rose-600 border-rose-200" }
@@ -69,8 +69,8 @@ const TOTAL_ROADMAP_WEEKS = 35;
 // Toạ độ 35 mốc tuần dạng zigzag rắn bò (serpentine), 7 cột x 5 hàng, tự tính không cần khai báo tay từng điểm
 function getRoadmapCoord(weekNum) {
     const cols = 9;
-    const colWidth = 115, rowHeight = 115;
-    const startX = 90, startY = 75;
+    const colWidth = 100, rowHeight = 115;
+    const startX = 80, startY = 90;
     const idx = weekNum - 1;
     const row = Math.floor(idx / cols);
     const posInRow = idx % cols;
@@ -98,8 +98,8 @@ function buildRoadmapPathD(totalWeeks) {
 }
 
 const examFileMap = {
-    hocky1: { file: 'de_thi_toan_2.json', idPrefix: '12.1.', sheet: 'LichSuBaiThi_HK1', label: 'Học kỳ 1', color: 'pink' },
-    hocky2: { file: 'de_thi_toan_2.json', idPrefix: '12.2.', sheet: 'LichSuBaiThi_HK2', label: 'Học kỳ 2', color: 'purple' },
+    hocky1: { file: 'de_thi_toan_2.json', idPrefix: '12.1.', sheet: 'LichSuBaiThi_HK1', label: 'Học kỳ 1', color: 'sky' },
+    hocky2: { file: 'de_thi_toan_2.json', idPrefix: '12.2.', sheet: 'LichSuBaiThi_HK2', label: 'Học kỳ 2', color: 'teal' },
     hsg:    { file: 'de_thi_toan_2.json', idPrefix: '12.3.', sheet: 'LichSuBaiThi_HSG', label: 'Học sinh giỏi', color: 'amber' }
 };
 
@@ -362,7 +362,7 @@ async function renderDashboardGrid() {
                     ${iconHtml}
                     <h3 class="font-extrabold text-${t.color}-700 text-sm md:text-base leading-tight">${t.title}</h3>
                 </div>
-                <div class="flex justify-between items-center mt-1.5 pt-1 border-t border-pink-100 text-[11px] font-bold text-gray-500">
+                <div class="flex justify-between items-center mt-1.5 pt-1 border-t border-sky-100 text-[11px] font-bold text-gray-500">
                     <span>${t.desc}</span>
                     <span class="bg-${t.color}-50 text-${t.color}-600 px-2 py-0.5 rounded-full">${countLabel}</span>
                 </div>
@@ -479,35 +479,35 @@ async function renderExamHubGrid() {
     const countHSG = getCountForPrefix(examFileMap.hsg.idPrefix);
 
     let html = `
-        <div class="bg-pink-50/70 p-5 rounded-3xl border-2 border-pink-200 flex flex-col justify-between items-center text-center group min-h-[250px] pastel-card">
+        <div class="bg-sky-50/70 p-5 rounded-3xl border-2 border-sky-200 flex flex-col justify-between items-center text-center group min-h-[250px] pastel-card">
             <div>
                 <div class="text-4xl mb-1.5 group-hover:scale-110 transition-transform">🔢</div>
-                <h3 class="font-extrabold text-pink-600 text-lg mb-1">Học kỳ 1</h3>
+                <h3 class="font-extrabold text-sky-600 text-lg mb-1">Học kỳ 1</h3>
                 <p class="text-xs text-gray-500 font-bold mb-2">Kiểm tra kiến thức HK1</p>
-                <span class="inline-block bg-pink-100 text-pink-700 px-3 py-0.5 rounded-full text-xs font-black mb-3">${countHK1} đề thi chuẩn</span>
+                <span class="inline-block bg-sky-100 text-sky-700 px-3 py-0.5 rounded-full text-xs font-black mb-3">${countHK1} đề thi chuẩn</span>
             </div>
             <div class="w-full space-y-2">
-                <button onclick="startRandomExam('hocky1')" class="w-full py-2.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold rounded-xl text-xs pastel-btn shadow-sm">
+                <button onclick="startRandomExam('hocky1')" class="w-full py-2.5 bg-gradient-to-r from-sky-500 to-rose-500 text-white font-extrabold rounded-xl text-xs pastel-btn shadow-sm">
                     🚀 Vào thi thử
                 </button>
-                <button onclick="openHistoryModal('LichSuBaiThi_HK1')" class="w-full py-2 bg-white text-pink-700 border border-pink-300 font-extrabold rounded-xl text-xs pastel-btn hover:bg-pink-50">
+                <button onclick="openHistoryModal('LichSuBaiThi_HK1')" class="w-full py-2 bg-white text-sky-700 border border-sky-300 font-extrabold rounded-xl text-xs pastel-btn hover:bg-sky-50">
                     📊 Xem lịch sử thi
                 </button>
             </div>
         </div>
 
-        <div class="bg-purple-50/70 p-5 rounded-3xl border-2 border-purple-200 flex flex-col justify-between items-center text-center group min-h-[250px] pastel-card">
+        <div class="bg-teal-50/70 p-5 rounded-3xl border-2 border-teal-200 flex flex-col justify-between items-center text-center group min-h-[250px] pastel-card">
             <div>
                 <div class="text-4xl mb-1.5 group-hover:scale-110 transition-transform">⭐</div>
-                <h3 class="font-extrabold text-purple-600 text-lg mb-1">Học kỳ 2</h3>
+                <h3 class="font-extrabold text-teal-600 text-lg mb-1">Học kỳ 2</h3>
                 <p class="text-xs text-gray-500 font-bold mb-2">Kiểm tra kiến thức HK2</p>
-                <span class="inline-block bg-purple-100 text-purple-700 px-3 py-0.5 rounded-full text-xs font-black mb-3">${countHK2} đề thi chuẩn</span>
+                <span class="inline-block bg-teal-100 text-teal-700 px-3 py-0.5 rounded-full text-xs font-black mb-3">${countHK2} đề thi chuẩn</span>
             </div>
             <div class="w-full space-y-2">
-                <button onclick="startRandomExam('hocky2')" class="w-full py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-extrabold rounded-xl text-xs pastel-btn shadow-sm">
+                <button onclick="startRandomExam('hocky2')" class="w-full py-2.5 bg-gradient-to-r from-teal-500 to-indigo-500 text-white font-extrabold rounded-xl text-xs pastel-btn shadow-sm">
                     🚀 Vào thi thử
                 </button>
-                <button onclick="openHistoryModal('LichSuBaiThi_HK2')" class="w-full py-2 bg-white text-purple-700 border border-purple-300 font-extrabold rounded-xl text-xs pastel-btn hover:bg-purple-50">
+                <button onclick="openHistoryModal('LichSuBaiThi_HK2')" class="w-full py-2 bg-white text-teal-700 border border-teal-300 font-extrabold rounded-xl text-xs pastel-btn hover:bg-teal-50">
                     📊 Xem lịch sử thi
                 </button>
             </div>
@@ -610,8 +610,8 @@ function switchAuthTab(tab) {
     const isLogin = tab === 'login';
     document.getElementById('form-login').classList.toggle('hidden', !isLogin);
     document.getElementById('form-register').classList.toggle('hidden', isLogin);
-    document.getElementById('tab-btn-login').className = `py-2.5 rounded-xl font-extrabold text-sm pastel-btn ${isLogin ? 'bg-white text-pink-600 shadow-sm' : 'text-gray-400'}`;
-    document.getElementById('tab-btn-register').className = `py-2.5 rounded-xl font-extrabold text-sm pastel-btn ${!isLogin ? 'bg-white text-pink-600 shadow-sm' : 'text-gray-400'}`;
+    document.getElementById('tab-btn-login').className = `py-2.5 rounded-xl font-extrabold text-sm pastel-btn ${isLogin ? 'bg-white text-sky-600 shadow-sm' : 'text-gray-400'}`;
+    document.getElementById('tab-btn-register').className = `py-2.5 rounded-xl font-extrabold text-sm pastel-btn ${!isLogin ? 'bg-white text-sky-600 shadow-sm' : 'text-gray-400'}`;
     hideAuthError();
 }
 
@@ -809,7 +809,7 @@ function updateUserInfoBox() {
         box.innerHTML = `
             <div class="flex items-center space-x-2">
                 <div class="text-right">
-                    <div class="text-pink-600 font-extrabold text-xs md:text-sm leading-tight">${escapeHtml(currentUser.hoTen)}</div>
+                    <div class="text-sky-600 font-extrabold text-xs md:text-sm leading-tight">${escapeHtml(currentUser.hoTen)}</div>
                     <div class="text-gray-500 font-semibold text-[10px]">ID: ${escapeHtml(currentUser.maHS)} | Lớp ${escapeHtml(currentUser.lop)}</div>
                 </div>
                 <button onclick="logout()" title="Đăng xuất" class="w-8 h-8 flex items-center justify-center bg-rose-100 hover:bg-rose-200 text-rose-500 rounded-xl border border-rose-200 text-xs transition-shadow duration-200 hover:shadow-[0_0_12px_rgba(244,63,94,0.55)]"><i class="fa-solid fa-right-from-bracket"></i></button>
@@ -979,14 +979,14 @@ function renderRoadmapSVG() {
         const isCurrent = w === tuanHienTai;
         const isLocked = w > tuanHienTai;
 
-        let nodeColor = isDone ? "#10b981" : (isCurrent ? "#ec4899" : "#cbd5e1");
+        let nodeColor = isDone ? "#10b981" : (isCurrent ? "#0ea5e9" : "#cbd5e1");
         let strokeColor = isDone ? "#34d399" : (isCurrent ? "#f43f5e" : "#94a3b8");
         let badgeHtml = '';
 
         if (isDone) {
             badgeHtml = `<text x="${coord.x}" y="${coord.y + 40}" text-anchor="middle" font-size="16" fill="#f59e0b">⭐⭐⭐</text>`;
         } else if (isCurrent) {
-            badgeHtml = `<text x="${coord.x}" y="${coord.y + 40}" text-anchor="middle" font-size="12" font-weight="900" fill="#ec4899">Đang học</text>`;
+            badgeHtml = `<text x="${coord.x}" y="${coord.y + 40}" text-anchor="middle" font-size="12" font-weight="900" fill="#0ea5e9">Đang học</text>`;
         } else {
             badgeHtml = `<text x="${coord.x}" y="${coord.y + 38}" text-anchor="middle" font-size="14" fill="#94a3b8">🔒 Khóa</text>`;
         }
@@ -1007,9 +1007,9 @@ function renderRoadmapSVG() {
 
     const pathD = buildRoadmapPathD(TOTAL_ROADMAP_WEEKS);
     const svgHtml = `
-        <svg viewBox="0 0 1080 500" class="w-full max-h-[74vh] select-none" xmlns="http://www.w3.org/2000/svg">
-            <path d="${pathD}" fill="none" stroke="#fbcfe8" stroke-width="12" stroke-dasharray="14,14" stroke-linecap="round"/>
-            <path d="${pathD}" fill="none" stroke="#f472b6" stroke-width="4" stroke-dasharray="14,14" stroke-linecap="round"/>
+        <svg viewBox="0 0 980 540" class="w-full max-h-[74vh] select-none" xmlns="http://www.w3.org/2000/svg">
+            <path d="${pathD}" fill="none" stroke="#bae6fd" stroke-width="12" stroke-dasharray="14,14" stroke-linecap="round"/>
+            <path d="${pathD}" fill="none" stroke="#38bdf8" stroke-width="4" stroke-dasharray="14,14" stroke-linecap="round"/>
             ${nodesHtml}
         </svg>
     `;
@@ -1148,15 +1148,15 @@ function loadQuestion() {
     const isPoemLike = passageLines.length >= 4 && avgLineLen > 0 && avgLineLen < 35;
     const useTwoColumns = isPoemLike;
     const passageHtml = pText ? `
-        <div class="w-full max-w-3xl bg-pink-50/70 border-2 border-pink-200 rounded-2xl p-3 mb-1.5 text-left shadow-xs">
-            ${pTitle ? `<p class="font-black text-pink-700 text-sm md:text-base mb-1">${escapeHtml(pTitle)}</p>` : ''}
+        <div class="w-full max-w-3xl bg-sky-50/70 border-2 border-sky-200 rounded-2xl p-3 mb-1.5 text-left shadow-xs">
+            ${pTitle ? `<p class="font-black text-sky-700 text-sm md:text-base mb-1">${escapeHtml(pTitle)}</p>` : ''}
             <p class="text-gray-800 text-sm md:text-base font-bold whitespace-pre-line leading-relaxed ${useTwoColumns ? 'md:columns-2 md:gap-6' : ''}">${escapeHtml(pText)}</p>
         </div>` : '';
 
     const practiceSpeakerBtnHtml = !isEvaluationMode ? `
         <div class="flex items-center justify-center mt-1 mb-1">
-            <button onclick="speakCurrentQuestion()" class="px-4 py-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-2xl text-xs md:text-sm font-extrabold flex items-center space-x-1.5 pastel-btn shadow-xs">
-                <i class="fa-solid fa-volume-high text-pink-600"></i>
+            <button onclick="speakCurrentQuestion()" class="px-4 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 rounded-2xl text-xs md:text-sm font-extrabold flex items-center space-x-1.5 pastel-btn shadow-xs">
+                <i class="fa-solid fa-volume-high text-sky-600"></i>
                 <span>Nghe câu hỏi</span>
             </button>
         </div>
@@ -1168,7 +1168,7 @@ function loadQuestion() {
     if (isLetterListen) {
         html = `
             ${mediaHtml}
-            <div class="w-full max-w-3xl border-2 border-dashed border-pink-200 bg-pink-50/40 rounded-3xl px-4 py-4 md:py-5 flex flex-col items-center text-center mb-3">
+            <div class="w-full max-w-3xl border-2 border-dashed border-sky-200 bg-sky-50/40 rounded-3xl px-4 py-4 md:py-5 flex flex-col items-center text-center mb-3">
                 <div class="text-3xl md:text-4xl mb-1.5 space-x-2">
                     <span>🎧</span><span>👂</span><span>🔢</span>
                 </div>
@@ -1187,7 +1187,7 @@ function loadQuestion() {
         html += `</div>`;
         if (q.mascot_text) {
             html += `
-                <div class="mt-4 inline-flex items-center space-x-1.5 bg-pink-50 border border-pink-200 rounded-full px-3.5 py-1.5">
+                <div class="mt-4 inline-flex items-center space-x-1.5 bg-sky-50 border border-sky-200 rounded-full px-3.5 py-1.5">
                     <span>🐰</span>
                     <span class="text-xs md:text-sm font-extrabold text-rose-600">${escapeHtml(q.mascot_text)}</span>
                 </div>`;
@@ -1212,18 +1212,18 @@ function loadQuestion() {
 
         if (activeExamContext) {
             html += `
-                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full p-2.5 md:p-3 bg-white hover:bg-pink-50/50 border border-pink-200 rounded-2xl font-extrabold text-gray-800 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs">
+                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full p-2.5 md:p-3 bg-white hover:bg-sky-50/50 border border-sky-200 rounded-2xl font-extrabold text-gray-800 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs">
                     <div class="flex items-center space-x-2.5">
-                        <span class="opt-badge w-7 h-7 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-black text-sm shrink-0">${letter}</span>
+                        <span class="opt-badge w-7 h-7 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-black text-sm shrink-0">${letter}</span>
                         <span class="opt-text">${escapeHtml(formattedOpt)}</span>
                     </div>
-                    <span class="option-icon text-pink-500 text-base md:text-lg"></span>
+                    <span class="option-icon text-sky-500 text-base md:text-lg"></span>
                 </button>`;
         } else {
             html += `
-                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-2 border-pink-200 rounded-2xl font-extrabold text-gray-800 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs pastel-btn">
-                    <span><strong class="text-pink-600 mr-2 text-base md:text-lg">${letter}.</strong> ${escapeHtml(formattedOpt)}</span>
-                    <span class="option-icon text-pink-500 text-base md:text-lg"></span>
+                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full p-3 md:p-3.5 bg-sky-50/40 hover:bg-sky-100/70 border-2 border-sky-200 rounded-2xl font-extrabold text-gray-800 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs pastel-btn">
+                    <span><strong class="text-sky-600 mr-2 text-base md:text-lg">${letter}.</strong> ${escapeHtml(formattedOpt)}</span>
+                    <span class="option-icon text-sky-500 text-base md:text-lg"></span>
                 </button>`;
         }
     });
@@ -1236,7 +1236,9 @@ function loadQuestion() {
     updateNavButtons();
     updateQuizPalletUI();
 
-    speakCurrentQuestion();
+    setTimeout(() => {
+        speakCurrentQuestion();
+    }, 200);
 }
 
 function restoreQuestionState(q) {
@@ -1251,12 +1253,12 @@ function restoreQuestionState(q) {
             const iconSpan = b.querySelector('.option-icon');
 
             if (completedAnswer !== undefined && bOpt === completedAnswer) {
-                b.className = "option-btn w-full p-2.5 md:p-3 bg-pink-50/30 border-2 border-pink-500 rounded-2xl font-extrabold text-gray-900 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs";
-                if (badge) badge.className = "opt-badge w-7 h-7 rounded-xl bg-pink-500 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs";
-                if (iconSpan) iconSpan.innerHTML = '<i class="fa-regular fa-circle-check text-pink-600 text-lg"></i>';
+                b.className = "option-btn w-full p-2.5 md:p-3 bg-sky-50/30 border-2 border-sky-500 rounded-2xl font-extrabold text-gray-900 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs";
+                if (badge) badge.className = "opt-badge w-7 h-7 rounded-xl bg-sky-500 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs";
+                if (iconSpan) iconSpan.innerHTML = '<i class="fa-regular fa-circle-check text-sky-600 text-lg"></i>';
             } else {
-                b.className = "option-btn w-full p-2.5 md:p-3 bg-white hover:bg-pink-50/50 border border-pink-200 rounded-2xl font-extrabold text-gray-800 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs";
-                if (badge) badge.className = "opt-badge w-7 h-7 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-black text-sm shrink-0";
+                b.className = "option-btn w-full p-2.5 md:p-3 bg-white hover:bg-sky-50/50 border border-sky-200 rounded-2xl font-extrabold text-gray-800 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs";
+                if (badge) badge.className = "opt-badge w-7 h-7 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-black text-sm shrink-0";
                 if (iconSpan) iconSpan.innerHTML = '';
             }
         });
@@ -1270,10 +1272,10 @@ function restoreQuestionState(q) {
             b.disabled = true;
             const bOpt = b.getAttribute('data-opt');
             if (bOpt === q.answer) {
-                b.classList.remove('bg-pink-50/40', 'border-pink-200');
+                b.classList.remove('bg-sky-50/40', 'border-sky-200');
                 b.classList.add('bg-green-100', 'border-green-400', 'text-green-800');
             } else if (!isCorrect && bOpt === completedAnswer) {
-                b.classList.remove('bg-pink-50/40', 'border-pink-200');
+                b.classList.remove('bg-sky-50/40', 'border-sky-200');
                 b.classList.add('bg-red-200', 'border-red-500', 'text-red-900');
             }
         });
@@ -1284,7 +1286,7 @@ function restoreQuestionState(q) {
         document.querySelectorAll('.option-btn').forEach(b => {
             const bOpt = b.getAttribute('data-opt');
             if (wrongAttempts.includes(bOpt)) {
-                b.classList.remove('bg-pink-50/40', 'border-pink-200');
+                b.classList.remove('bg-sky-50/40', 'border-sky-200');
                 b.classList.add('bg-red-200', 'border-red-500', 'text-red-900');
                 b.disabled = true;
             }
@@ -1295,7 +1297,7 @@ function restoreQuestionState(q) {
         document.querySelectorAll('.option-btn').forEach(b => {
             const bOpt = b.getAttribute('data-opt');
             if (bOpt === completedAnswer) {
-                b.classList.remove('bg-pink-50/40', 'border-pink-200');
+                b.classList.remove('bg-sky-50/40', 'border-sky-200');
                 b.classList.add('bg-green-100', 'border-green-400', 'text-green-800');
                 b.disabled = true;
             }
@@ -1348,12 +1350,12 @@ function checkAnswer(selectedOpt) {
             const iconSpan = b.querySelector('.option-icon');
 
             if (bOpt === selectedOpt) {
-                b.className = "option-btn w-full p-2.5 md:p-3 bg-pink-50/30 border-2 border-pink-500 rounded-2xl font-extrabold text-gray-900 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs";
-                if (badge) badge.className = "opt-badge w-7 h-7 rounded-xl bg-pink-500 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs";
-                if (iconSpan) iconSpan.innerHTML = '<i class="fa-regular fa-circle-check text-pink-600 text-lg"></i>';
+                b.className = "option-btn w-full p-2.5 md:p-3 bg-sky-50/30 border-2 border-sky-500 rounded-2xl font-extrabold text-gray-900 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs";
+                if (badge) badge.className = "opt-badge w-7 h-7 rounded-xl bg-sky-500 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs";
+                if (iconSpan) iconSpan.innerHTML = '<i class="fa-regular fa-circle-check text-sky-600 text-lg"></i>';
             } else {
-                b.className = "option-btn w-full p-2.5 md:p-3 bg-white hover:bg-pink-50/50 border border-pink-200 rounded-2xl font-extrabold text-gray-800 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs";
-                if (badge) badge.className = "opt-badge w-7 h-7 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-black text-sm shrink-0";
+                b.className = "option-btn w-full p-2.5 md:p-3 bg-white hover:bg-sky-50/50 border border-sky-200 rounded-2xl font-extrabold text-gray-800 text-left transition-all flex items-center justify-between text-sm md:text-base shadow-xs";
+                if (badge) badge.className = "opt-badge w-7 h-7 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-black text-sm shrink-0";
                 if (iconSpan) iconSpan.innerHTML = '';
             }
         });
@@ -1382,10 +1384,10 @@ function checkAnswer(selectedOpt) {
             b.disabled = true;
             const bOpt = b.getAttribute('data-opt');
             if (bOpt === q.answer) {
-                b.classList.remove('bg-pink-50/40', 'border-pink-200');
+                b.classList.remove('bg-sky-50/40', 'border-sky-200');
                 b.classList.add('bg-green-100', 'border-green-400', 'text-green-800');
             } else if (bOpt === selectedOpt) {
-                b.classList.remove('bg-pink-50/40', 'border-pink-200');
+                b.classList.remove('bg-sky-50/40', 'border-sky-200');
                 b.classList.add('bg-red-200', 'border-red-500', 'text-red-900');
             }
         });
@@ -1415,7 +1417,7 @@ function checkAnswer(selectedOpt) {
         document.querySelectorAll('.option-btn').forEach(b => {
             b.disabled = true;
             if (b.getAttribute('data-opt') === q.answer) {
-                b.classList.remove('bg-pink-50/40', 'border-pink-200');
+                b.classList.remove('bg-sky-50/40', 'border-sky-200');
                 b.classList.add('bg-green-100', 'border-green-400', 'text-green-800');
             }
         });
@@ -1433,7 +1435,7 @@ function checkAnswer(selectedOpt) {
 
         document.querySelectorAll('.option-btn').forEach(b => {
             if (b.getAttribute('data-opt') === selectedOpt) {
-                b.classList.remove('bg-pink-50/40', 'border-pink-200');
+                b.classList.remove('bg-sky-50/40', 'border-sky-200');
                 b.classList.add('bg-red-200', 'border-red-500', 'text-red-900');
                 b.disabled = true;
             }
@@ -1614,13 +1616,13 @@ function renderReportTopicsBreakdown() {
         const isPassed = pct >= 50;
         const badgeClass = isPassed ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-rose-50 text-rose-700 border border-rose-200';
         const badgeText = isPassed ? 'Đạt yêu cầu' : 'Cần luyện tập thêm';
-        const barColor = isPassed ? 'bg-gradient-to-r from-amber-400 to-orange-400' : 'bg-gradient-to-r from-pink-400 to-rose-400';
+        const barColor = isPassed ? 'bg-gradient-to-r from-amber-400 to-orange-400' : 'bg-gradient-to-r from-sky-400 to-rose-400';
         const scoreLine = isRoadmap
-            ? `<span>Số câu đúng: <strong class="text-pink-600">${data.correct}/${data.total} câu</strong></span>`
-            : `<span>Điểm đạt: <strong class="text-pink-600">${data.earnedScore.toFixed(1)} / ${data.maxScore.toFixed(1)}đ</strong></span>`;
+            ? `<span>Số câu đúng: <strong class="text-sky-600">${data.correct}/${data.total} câu</strong></span>`
+            : `<span>Điểm đạt: <strong class="text-sky-600">${data.earnedScore.toFixed(1)} / ${data.maxScore.toFixed(1)}đ</strong></span>`;
 
         html += `
-            <div class="bg-pink-50/40 border border-pink-100 rounded-2xl p-3 flex flex-col justify-between space-y-2">
+            <div class="bg-sky-50/40 border border-sky-100 rounded-2xl p-3 flex flex-col justify-between space-y-2">
                 <div class="flex items-center justify-between">
                     <span class="font-black text-slate-800 text-xs sm:text-sm">${SKILL_TAXONOMY[k].name}</span>
                     <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${badgeClass}">${badgeText}</span>
@@ -1629,7 +1631,7 @@ function renderReportTopicsBreakdown() {
                     ${scoreLine}
                     <span class="font-math font-black">${pct}%</span>
                 </div>
-                <div class="w-full bg-pink-100 rounded-full h-2 overflow-hidden">
+                <div class="w-full bg-sky-100 rounded-full h-2 overflow-hidden">
                     <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
                 </div>
             </div>
@@ -1855,8 +1857,8 @@ function renderHistoryReport(rows, sheetName) {
             datasets: [{
                 label: 'Điểm số (/10)',
                 data: scores.length ? scores : [0],
-                borderColor: '#e11d48',
-                backgroundColor: 'rgba(254, 226, 226, 0.5)',
+                borderColor: '#0284c7',
+                backgroundColor: 'rgba(224, 242, 254, 0.5)',
                 borderWidth: 3.5,
                 pointBackgroundColor: '#be123c',
                 pointBorderColor: '#ffffff',
@@ -1935,7 +1937,7 @@ function renderHistoryReport(rows, sheetName) {
             datasets: [{
                 label: 'Độ thành thạo (%)',
                 data: skillKeys.map(k => skillAverages[k]),
-                backgroundColor: ['#f472b6', '#fb7185', '#f59e0b', '#a855f7', '#ec4899', '#e11d48'],
+                backgroundColor: ['#38bdf8', '#14b8a6', '#f59e0b', '#6366f1', '#0ea5e9', '#0284c7'],
                 borderRadius: 8,
                 borderSkipped: false,
                 barThickness: 16
@@ -2031,7 +2033,7 @@ function renderPedagogicalEvaluation(rows, skillAverages, touchedSkills) {
     box.innerHTML = `
         <div class="bg-white/80 p-3 rounded-xl border border-amber-200">
             <span class="text-amber-700 font-extrabold block mb-0.5">🌟 1. Đánh giá tổng quan năng lực & xu hướng tiến bộ:</span>
-            <p class="text-gray-700">Học sinh <strong>${escapeHtml(currentUser.hoTen)}</strong> đã hoàn thành <strong>${count} bài kiểm tra</strong> với điểm số trung bình tích lũy đạt <strong class="text-pink-600">${avgScoreStr}/10 điểm</strong>. ${overviewText}</p>
+            <p class="text-gray-700">Học sinh <strong>${escapeHtml(currentUser.hoTen)}</strong> đã hoàn thành <strong>${count} bài kiểm tra</strong> với điểm số trung bình tích lũy đạt <strong class="text-sky-600">${avgScoreStr}/10 điểm</strong>. ${overviewText}</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -2046,8 +2048,8 @@ function renderPedagogicalEvaluation(rows, skillAverages, touchedSkills) {
             </div>
         </div>
 
-        <div class="bg-white/80 p-3 rounded-xl border border-purple-200">
-            <span class="text-purple-700 font-extrabold block mb-0.5">💡 4. Kế hoạch bồi dưỡng & hướng dẫn phụ huynh:</span>
+        <div class="bg-white/80 p-3 rounded-xl border border-teal-200">
+            <span class="text-teal-700 font-extrabold block mb-0.5">💡 4. Kế hoạch bồi dưỡng & hướng dẫn phụ huynh:</span>
             <p class="text-gray-700">Ba mẹ nên dành 15 phút mỗi tối cùng con ôn lại các phép tính, đặt câu hỏi gợi mở và khen ngợi kịp thời để giúp ${studentName} giữ vững niềm yêu thích môn Toán nhé!</p>
         </div>
     `;
@@ -2109,7 +2111,7 @@ function renderHistoryTable(rows, sheetName) {
             });
 
             bodyRows += `
-                <tr class="hover:bg-pink-50/30 transition-colors">
+                <tr class="hover:bg-sky-50/30 transition-colors">
                     <td class="py-2.5 px-2">${idx + 1}</td>
                     <td class="py-2.5 px-2 font-black">Tuần ${r.tuan || (idx + 1)}</td>
                     <td class="py-2.5 px-2 font-black text-rose-600">${itemDiem}</td>
@@ -2136,7 +2138,7 @@ function renderHistoryTable(rows, sheetName) {
             });
 
             bodyRows += `
-                <tr class="hover:bg-pink-50/30 transition-colors">
+                <tr class="hover:bg-sky-50/30 transition-colors">
                     <td class="py-2.5 px-2">${idx + 1}</td>
                     <td class="py-2.5 px-2 font-black">${r.deSo ? `Đề ${r.deSo}` : `Tuần ${r.tuan || (idx + 1)}`}</td>
                     <td class="py-2.5 px-2 font-black text-rose-600">${itemDiem}</td>
@@ -2328,7 +2330,7 @@ function updateQuizPalletUI() {
         const answer = userAnswers[idx];
         const isAnswered = answer !== undefined;
         const isCurrent = idx === currentQIndex;
-        let cls = 'bg-white text-pink-400 border-pink-200 hover:bg-pink-50';
+        let cls = 'bg-white text-sky-400 border-sky-200 hover:bg-sky-50';
 
         if (isAnswered) {
             if (isRoadmap) {
@@ -2338,11 +2340,11 @@ function updateQuizPalletUI() {
                     : 'bg-red-200 text-red-800 border-red-400 hover:bg-red-300';
             } else {
                 // Chế độ thi: không lộ đúng/sai, nhưng câu ĐÃ TRẢ LỜI phải đổi màu KHÁC HẲN
-                // với câu ĐANG LÀM (đang dùng gradient pink->purple) để không bị lẫn khi nhìn nhanh.
+                // với câu ĐANG LÀM (đang dùng gradient sky->teal) để không bị lẫn khi nhìn nhanh.
                 cls = 'bg-emerald-500 text-white border-emerald-600 hover:bg-emerald-600';
             }
         }
-        if (isCurrent) cls = 'bg-gradient-to-br from-pink-500 to-purple-500 text-white border-pink-500 shadow-md';
+        if (isCurrent) cls = 'bg-gradient-to-br from-sky-500 to-teal-500 text-white border-sky-500 shadow-md';
         html += `<button onclick="jumpToQuestion(${idx})" class="${btnSize} shrink-0 rounded-xl border-2 font-black flex items-center justify-center transition-colors duration-150 ${cls}">${idx + 1}</button>`;
     });
     container.innerHTML = html;
@@ -2370,7 +2372,7 @@ function showLoadingOverlay(msg) {
         el = document.createElement('div');
         el.id = 'loading-overlay';
         el.className = 'fixed inset-0 bg-black/30 flex items-center justify-center z-50';
-        el.innerHTML = `<div class="bg-white px-6 py-4 rounded-2xl shadow-xl font-extrabold text-pink-600 flex items-center space-x-3"><i class="fa-solid fa-spinner fa-spin"></i><span id="loading-overlay-text"></span></div>`;
+        el.innerHTML = `<div class="bg-white px-6 py-4 rounded-2xl shadow-xl font-extrabold text-sky-600 flex items-center space-x-3"><i class="fa-solid fa-spinner fa-spin"></i><span id="loading-overlay-text"></span></div>`;
         document.body.appendChild(el);
     }
     document.getElementById('loading-overlay-text').textContent = msg;
