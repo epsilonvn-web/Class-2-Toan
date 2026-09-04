@@ -137,9 +137,6 @@ const GREETINGS_GUEST = [
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbycCVh4WjbjUrjn0UoHXWg6jeh8K2dwFW-a65HBozowSgQJ_orgiqWIkwHOO2P_sPE/exec";
 let allTopicsDataCache = null;
 let allQuestionsFlatCache = null;
-// Bật/tắt đọc câu hỏi TỰ ĐỘNG khi vào câu mới — nút "Nghe câu hỏi" thủ công vẫn luôn hoạt động
-// dù tắt tính năng này (đây chỉ tắt phần tự động phát, không tắt hẳn tính năng nghe).
-let autoSpeechEnabled = localStorage.getItem('autoSpeechEnabled') !== 'false';
 const examsCache = {};
 
 let currentUser = null;
@@ -1239,7 +1236,7 @@ function loadQuestion() {
     updateNavButtons();
     updateQuizPalletUI();
 
-    if (autoSpeechEnabled) speakCurrentQuestion();
+    speakCurrentQuestion();
 }
 
 function restoreQuestionState(q) {
@@ -2381,30 +2378,6 @@ function showLoadingOverlay(msg) {
 }
 function hideLoadingOverlay() { document.getElementById('loading-overlay')?.classList.add('hidden'); }
 
-function toggleAutoSpeech() {
-    autoSpeechEnabled = !autoSpeechEnabled;
-    localStorage.setItem('autoSpeechEnabled', autoSpeechEnabled ? 'true' : 'false');
-    if (!autoSpeechEnabled) stopSpeaking();
-    updateAutoSpeechButtonUI();
-}
-
-function updateAutoSpeechButtonUI() {
-    const btn = document.getElementById('btn-toggle-autospeech');
-    if (!btn) return;
-    const icon = btn.querySelector('i');
-    if (autoSpeechEnabled) {
-        icon.className = 'fa-solid fa-volume-high';
-        btn.title = 'Đang BẬT tự động đọc câu hỏi — bấm để tắt';
-        btn.classList.remove('bg-gray-100', 'text-gray-400', 'border-gray-200');
-        btn.classList.add('bg-pink-50', 'text-pink-600', 'border-pink-200');
-    } else {
-        icon.className = 'fa-solid fa-volume-xmark';
-        btn.title = 'Đang TẮT tự động đọc câu hỏi — bấm để bật';
-        btn.classList.remove('bg-pink-50', 'text-pink-600', 'border-pink-200');
-        btn.classList.add('bg-gray-100', 'text-gray-400', 'border-gray-200');
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('login-mapin')?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') doLogin();
@@ -2418,8 +2391,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!audioCtx && AudioContext) audioCtx = new AudioContext();
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
     }, { once: true });
-
-    updateAutoSpeechButtonUI();
 });
 
 tryAutoLogin();
