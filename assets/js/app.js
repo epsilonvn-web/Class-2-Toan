@@ -24,6 +24,59 @@ const SUBTOPIC_PALETTES = [
     { card: "bg-rose-50/80 hover:bg-rose-100 border-rose-300 text-rose-800", num: "text-rose-600", badge: "bg-white text-rose-600 border-rose-200" }
 ];
 
+// Tên hiển thị đầy đủ cho từng chủ đề con (sub_id "X.Y" -> tên bài học), theo đúng
+// "Đặc tả chi tiết khung chương trình Toán lớp 2" — vì kho học liệu chỉ gắn mã "X.Y"
+// trên mỗi câu (không có sẵn tên bài học), nên cần tra bảng này để hiển thị cho học sinh dễ hiểu.
+const SUBTOPIC_NAMES = {
+    "1.1": "Số trong phạm vi 100 (đọc, viết, cấu tạo chục/đơn vị)",
+    "1.2": "So sánh số và thứ tự số trên tia số (phạm vi 100)",
+    "1.3": "Số trong phạm vi 1000 (đọc, viết, cấu tạo trăm/chục/đơn vị)",
+    "1.4": "So sánh số và thứ tự số trên tia số (phạm vi 1000)",
+    "1.5": "Ước lượng số lượng",
+    "2.1": "Cộng, trừ không nhớ trong phạm vi 100",
+    "2.2": "Cộng, trừ có nhớ trong phạm vi 20",
+    "2.3": "Cộng, trừ có nhớ trong phạm vi 100 (đặt tính rồi tính)",
+    "2.4": "Cộng, trừ không nhớ trong phạm vi 1000",
+    "2.5": "Cộng, trừ có nhớ trong phạm vi 1000",
+    "2.6": "Tên gọi các thành phần của phép cộng và phép trừ",
+    "3.1": "Ý nghĩa trực quan của phép nhân và phép chia",
+    "3.2": "Bảng nhân 2 và bảng chia 2",
+    "3.3": "Bảng nhân 5 và bảng chia 5",
+    "4.1": "Đường thẳng, đường cong, đoạn thẳng, ba điểm thẳng hàng",
+    "4.2": "Đường gấp khúc và độ dài đường gấp khúc",
+    "4.3": "Nhận diện và đếm hình phẳng cơ bản",
+    "4.4": "Nhận diện khối hình trực quan",
+    "4.5": "Thực hành lắp ghép, xếp hình",
+    "5.1": "Độ dài: dm, cm, m, mm, km",
+    "5.2": "Khối lượng và dung tích (kg, l)",
+    "5.3": "Lịch, thứ, ngày, tháng",
+    "5.4": "Xem đồng hồ",
+    "5.5": "Tiền Việt Nam",
+    "5.6": "Ngày - giờ (khái niệm 24 giờ)",
+    "6.1": "Quy luật dãy số cách đều tăng/giảm dần",
+    "6.2": "Quy luật dãy số tăng dần khoảng cách (nâng cao)",
+    "6.3": "Quy luật nhóm số và sơ đồ liên kết số học",
+    "6.4": "Quy luật chuỗi hình vẽ và logic hình ảnh",
+    "7.1": "Tìm số hạng chưa biết trong một tổng",
+    "7.2": "Tìm số bị trừ, số trừ chưa biết trong một hiệu",
+    "7.3": "Tìm thừa số, tìm số bị chia chưa biết",
+    "7.4": "Tìm x nâng cao (2 bước tính)",
+    "8.1": "Bài toán đơn về thêm, bớt",
+    "8.2": "Bài toán về nhiều hơn, ít hơn",
+    "8.3": "Bài toán liên quan phép nhân, phép chia",
+    "8.4": "Bài toán giải bằng 2 bước tính",
+    "9.1": "Thu thập, phân loại và kiểm đếm",
+    "9.2": "Đọc hiểu và phân tích biểu đồ tranh",
+    "9.3": "Khả năng xảy ra của một sự kiện",
+    "10.1": "Tính nhanh và tính bằng cách thuận tiện nhất",
+    "10.2": "Cấu tạo số và lập số nâng cao",
+    "10.3": "Hình học nâng cao",
+    "10.4": "Suy luận logic (toán cân, toán đố IQ)",
+    "11.1": "Ôn tập Học kỳ I",
+    "11.2": "Ôn tập Học kỳ II",
+    "11.3": "Thử thách 'Nhà thông thái nhí'"
+};
+
 // Lộ trình 35 tuần (Tỷ lệ Vàng 30/60) — mapping tới đúng chủ đề con (sub_id dạng "X.Y")
 // Tuần 18 = Đấu trường thi Học kỳ I | Tuần 35 = Đấu trường thi Học kỳ II + Học sinh giỏi
 const roadmapConfig = {
@@ -68,9 +121,9 @@ const TOTAL_ROADMAP_WEEKS = 35;
 
 // Toạ độ 35 mốc tuần dạng zigzag rắn bò (serpentine), 7 cột x 5 hàng, tự tính không cần khai báo tay từng điểm
 function getRoadmapCoord(weekNum) {
-    const cols = 7;
-    const colWidth = 150, rowHeight = 190;
-    const startX = 110, startY = 130;
+    const cols = 9;
+    const colWidth = 100, rowHeight = 115;
+    const startX = 80, startY = 90;
     const idx = weekNum - 1;
     const row = Math.floor(idx / cols);
     const posInRow = idx % cols;
@@ -88,7 +141,9 @@ function buildRoadmapPathD(totalWeeks) {
         const dx = p1.x - p0.x, dy = p1.y - p0.y;
         const len = Math.hypot(dx, dy) || 1;
         const nx = -dy / len, ny = dx / len;
-        const bend = (i % 2 === 0 ? 1 : -1) * 16;
+        // Sóng uốn lượn xuống-lên LIÊN TỤC xuyên suốt toàn bộ đường đi (kể cả đoạn chuyển hàng),
+        // không để đoạn nào thẳng đơ xen giữa — giống hệt kiểu bản đồ lộ trình game (Duolingo-style).
+        const bend = (i % 2 === 0 ? 1 : -1) * 45;
         const cx = midX + nx * bend, cy = midY + ny * bend;
         d += ` Q ${cx},${cy} ${p1.x},${p1.y}`;
     }
@@ -259,6 +314,9 @@ function capitalizeFirstLetter(val) {
 function beautifySubtopicName(name) {
     if (!name) return '';
     let s = name.trim();
+    // Nếu đây là mã chủ đề con dạng "X.Y" (dữ liệu Toán 2), tra tên bài học đầy đủ,
+    // giữ lại mã số ở đầu để phụ huynh dễ đối chiếu với khung chương trình.
+    if (SUBTOPIC_NAMES[s]) return `${s} · ${SUBTOPIC_NAMES[s]}`;
     if (/đa giác quan/i.test(s)) return 'Trải nghiệm đa giác quan';
     if (/trái nghĩa.*đồng nghĩa/i.test(s) || /đồng nghĩa.*trái nghĩa/i.test(s)) return 'Trái nghĩa - đồng nghĩa';
     if (s.length > 25 && s.includes('(')) {
@@ -987,17 +1045,8 @@ function renderRoadmapSVG() {
         const cursorCls = isLocked ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:scale-105 transition-transform";
         const animCls = isCurrent ? "node-current" : "";
 
-        const [capLine1, capLine2, capLine3] = wrapCaptionLines(item.desc, 22, 3);
-        const capColor = isLocked ? '#1e293b' : '#7c3aed';
-        const captionHtml = `
-            <text x="${coord.x}" y="${coord.y - 96}" text-anchor="middle" font-size="18" font-weight="700" fill="${capColor}">${escapeHtml(capLine1)}</text>
-            <text x="${coord.x}" y="${coord.y - 76}" text-anchor="middle" font-size="18" font-weight="700" fill="${capColor}">${escapeHtml(capLine2)}</text>
-            <text x="${coord.x}" y="${coord.y - 56}" text-anchor="middle" font-size="18" font-weight="700" fill="${capColor}">${escapeHtml(capLine3)}</text>
-        `;
-
         nodesHtml += `
             <g class="${cursorCls} ${animCls}" onclick="selectRoadmapWeek(${w})" id="svg-node-week-${w}">
-                ${captionHtml}
                 <circle cx="${coord.x}" cy="${coord.y}" r="40" fill="#ffffff" stroke="${strokeColor}" stroke-width="4" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.08))"/>
                 <circle cx="${coord.x}" cy="${coord.y}" r="34" fill="${nodeColor}" opacity="${isLocked ? '0.25' : '0.15'}"/>
                 <text x="${coord.x}" y="${coord.y - 4}" text-anchor="middle" font-size="24">${item.icon || '🔢'}</text>
@@ -1009,7 +1058,7 @@ function renderRoadmapSVG() {
 
     const pathD = buildRoadmapPathD(TOTAL_ROADMAP_WEEKS);
     const svgHtml = `
-        <svg viewBox="0 0 1110 990" class="w-full max-h-[74vh] select-none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 980 540" class="w-full max-h-[74vh] select-none" xmlns="http://www.w3.org/2000/svg">
             <path d="${pathD}" fill="none" stroke="#bae6fd" stroke-width="12" stroke-dasharray="14,14" stroke-linecap="round"/>
             <path d="${pathD}" fill="none" stroke="#38bdf8" stroke-width="4" stroke-dasharray="14,14" stroke-linecap="round"/>
             ${nodesHtml}
@@ -1120,8 +1169,8 @@ function loadQuestion() {
         document.getElementById('q-badge-index').textContent = `CÂU ${currentQIndex + 1} / ${activeQuestionsList.length}`;
         const isRoadmap = !!activeRoadmapContext;
         const skillName = isRoadmap
-            ? (q.sub_topic || 'Kiến thức tổng hợp')
-            : (SKILL_TAXONOMY[q.skill_tag]?.name || q.sub_topic || 'Kiến thức tổng hợp');
+            ? (beautifySubtopicName(q.sub_topic) || 'Kiến thức tổng hợp')
+            : (SKILL_TAXONOMY[q.skill_tag]?.name || beautifySubtopicName(q.sub_topic) || 'Kiến thức tổng hợp');
         document.getElementById('q-skill-text').textContent = skillName;
 
         const scoreBadge = document.getElementById('q-badge-score');
@@ -1656,7 +1705,7 @@ function openReviewWrongModal() {
                 <div class="bg-rose-50/40 border border-rose-200 rounded-2xl p-3.5 space-y-2">
                     <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 bg-rose-100 text-rose-800 font-black text-xs rounded-lg">CÂU ${item.question_number || (idx + 1)}</span>
-                        <span class="text-xs font-bold text-slate-500">${escapeHtml(item.sub_topic || 'Chủ đề tổng hợp')}</span>
+                        <span class="text-xs font-bold text-slate-500">${escapeHtml(beautifySubtopicName(item.sub_topic) || 'Chủ đề tổng hợp')}</span>
                     </div>
                     <p class="font-extrabold text-slate-800 text-sm">${escapeHtml(item.question_text)}</p>
                     <div class="text-xs space-y-1 font-semibold">
