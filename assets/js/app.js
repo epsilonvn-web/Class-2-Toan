@@ -344,8 +344,8 @@ async function renderDashboardGrid() {
     let html = '';
     TOPICS_CONFIG.forEach(t => {
         const topicObj = topicsData.find(item => Number(item.topic_id) === Number(t.id));
-        const totalCount = topicObj && topicObj.questions ? topicObj.questions.length : (t.id === 1 ? 29 : 0);
-        const countLabel = totalCount > 0 ? `${totalCount} câu` : t.desc;
+        const totalCount = topicObj && topicObj.questions ? topicObj.questions.length : 0;
+        const countLabel = totalCount > 0 ? `${totalCount} câu` : 'Đang cập nhật';
 
         const iconHtml = t.isCustomTextIcon 
             ? `<div class="w-8 h-8 bg-rose-100 rounded-xl flex items-center justify-center text-[11px] font-black text-rose-600 shadow-inner group-hover:scale-110 transition-transform shrink-0 tracking-tight">S/X</div>`
@@ -844,6 +844,9 @@ function openTopic(topicNum, topicName, icon) {
         showLectureAndSubtopics(topicNum, topicName, topicObj);
     }).catch(err => {
         hideLoadingOverlay();
+        // Tải lỗi thì đưa header về đúng trạng thái trang chủ (không để lại tab/gạch breadcrumb thừa)
+        activeTopicId = null;
+        updateNavTabs(null, null, null);
         alert(`Không thể tải chủ đề: ${err.message}`);
     });
 }
