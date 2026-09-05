@@ -59,8 +59,8 @@ const TOTAL_ROADMAP_WEEKS = 24;
 // Toạ độ 35 mốc tuần dạng zigzag rắn bò (serpentine), 7 cột x 5 hàng, tự tính không cần khai báo tay từng điểm
 function getRoadmapCoord(weekNum) {
     const cols = 6;
-    const colWidth = 150, rowHeight = 140;
-    const startX = 100, startY = 90;
+    const colWidth = 140, rowHeight = 105;
+    const startX = 90, startY = 80;
     const idx = weekNum - 1;
     const row = Math.floor(idx / cols);
     const posInRow = idx % cols;
@@ -1000,7 +1000,7 @@ function renderRoadmapSVG() {
 
     const pathD = buildRoadmapPathD(TOTAL_ROADMAP_WEEKS);
     const svgHtml = `
-        <svg viewBox="0 0 1000 640" class="w-full max-h-[74vh] select-none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 900 500" class="w-full max-h-[74vh] select-none" xmlns="http://www.w3.org/2000/svg">
             <path d="${pathD}" fill="none" stroke="#fbcfe8" stroke-width="12" stroke-dasharray="14,14" stroke-linecap="round"/>
             <path d="${pathD}" fill="none" stroke="#f472b6" stroke-width="4" stroke-dasharray="14,14" stroke-linecap="round"/>
             ${nodesHtml}
