@@ -24,53 +24,43 @@ const SUBTOPIC_PALETTES = [
     { card: "bg-rose-50/80 hover:bg-rose-100 border-rose-300 text-rose-800", num: "text-rose-600", badge: "bg-white text-rose-600 border-rose-200" }
 ];
 
-// Lộ trình 35 tuần (Tỷ lệ Vàng 30/60) — mapping tới đúng chủ đề con (sub_id dạng "X.Y")
+// Lộ trình 24 tuần (Tỷ lệ Vàng 30/60) — mapping tới đúng chủ đề con (sub_id dạng "X.Y")
 // Tuần 18 = Đấu trường thi Học kỳ I | Tuần 35 = Đấu trường thi Học kỳ II + Học sinh giỏi
 const roadmapConfig = {
-    1:  { name: "Tuần 1: Ôn tập lớp 1 & Khởi động", subIds: ["1.1", "2.1", "2.6"], desc: "Ôn tập số đến 100, cấu tạo chục/đơn vị và tính nhẩm cộng trừ không nhớ.", icon: "🔟" },
-    2:  { name: "Tuần 2: Phép cộng qua 10 phạm vi 20", subIds: ["2.2"], desc: "Kỹ năng tính nhẩm các bảng cộng có nhớ qua 10 trong phạm vi 20.", icon: "➕" },
-    3:  { name: "Tuần 3: Phép trừ qua 10 phạm vi 20", subIds: ["2.2"], desc: "Kỹ năng tính nhẩm các bảng trừ có nhớ qua 10 trong phạm vi 20.", icon: "➖" },
-    4:  { name: "Tuần 4: Đơn vị Đề-xi-mét (dm)", subIds: ["5.1"], desc: "Làm quen đơn vị đo dm, thực hành ước lượng độ dài và cộng trừ danh số dm, cm.", icon: "📏" },
-    5:  { name: "Tuần 5: Điểm và các loại Đường", subIds: ["4.1"], desc: "Nhận biết điểm, đoạn thẳng, đường thẳng, đường cong và ba điểm thẳng hàng.", icon: "📍" },
-    6:  { name: "Tuần 6: Đặt tính cộng có nhớ phạm vi 100", subIds: ["2.3"], desc: "Thực hiện đặt tính rồi tính cộng có nhớ dạng số có 2 chữ số.", icon: "➕" },
-    7:  { name: "Tuần 7: Đặt tính trừ có nhớ phạm vi 100", subIds: ["2.3"], desc: "Thực hiện đặt tính rồi tính trừ có nhớ dạng số có 2 chữ số.", icon: "➖" },
-    8:  { name: "Tuần 8: Toán Nhiều hơn, Ít hơn", subIds: ["8.2"], desc: "Đọc hiểu đề bài và giải các bài toán đố về nhiều hơn, ít hơn, hơn kém nhau.", icon: "⚖️" },
-    9:  { name: "Tuần 9: Đi tìm ẩn số x - Phép cộng", subIds: ["7.1"], desc: "Giải các bài toán tìm thành phần chưa biết (tìm số hạng) trong một tổng.", icon: "❓" },
-    10: { name: "Tuần 10: Đi tìm ẩn số x - Phép trừ", subIds: ["7.2"], desc: "Giải các bài toán tìm số bị trừ, tìm số trừ chưa biết trong một hiệu.", icon: "❓" },
-    11: { name: "Tuần 11: Khối lượng và Dung tích (kg, l)", subIds: ["5.2"], desc: "Làm quen đơn vị Ki-lô-gam (kg), Lít (l) và thực hành tính toán kèm danh số.", icon: "⚖️" },
-    12: { name: "Tuần 12: Hình tam giác, hình tứ giác", subIds: ["4.3"], desc: "Nhận biết trực quan và rèn luyện kỹ năng đếm số lượng hình phẳng ghép đơn giản.", icon: "🔺" },
-    13: { name: "Tuần 13: Độ dài đường gấp khúc", subIds: ["4.2"], desc: "Nhận diện đường gấp khúc và thực hành tính độ dài đường gấp khúc.", icon: "📐" },
-    14: { name: "Tuần 14: Lịch tờ và Ngày tháng", subIds: ["5.3"], desc: "Thực hành đọc tờ lịch tháng, xác định thứ, ngày, tuần lễ và chu kỳ lịch.", icon: "📅" },
-    15: { name: "Tuần 15: Phân loại và Kiểm đếm", subIds: ["9.1", "9.2"], desc: "Rèn luyện kỹ năng thu thập, phân loại, kiểm đếm và phân tích biểu đồ tranh.", icon: "🗂️" },
-    16: { name: "Tuần 16: Ôn tập tổng hợp số học HK1", subIds: ["11.1"], desc: "Luyện tập tổng hợp đặt tính cộng trừ có nhớ và bài toán tìm x của học kỳ I.", icon: "📘" },
-    17: { name: "Tuần 17: Ôn tập hình học & đại lượng HK1", subIds: ["11.1"], desc: "Luyện tập tổng hợp đếm hình, đo lường dm, kg, lít và xem lịch tờ.", icon: "📘" },
-    18: { name: "Tuần 18: ĐẤU TRƯỜNG THI HỌC KỲ I", isExam: true, subIds: [], desc: "Bé tham gia làm bài thi thử cuối kì I chuẩn ma trận 13 câu (40 phút).", icon: "🏆" },
-    19: { name: "Tuần 19: Khái niệm Nhân và Chia", subIds: ["3.1"], desc: "Làm quen ý nghĩa trực quan của phép nhân và phép chia.", icon: "✖️" },
-    20: { name: "Tuần 20: Bảng nhân 2 và Bảng chia 2", subIds: ["3.2", "7.3"], desc: "Thuộc lòng bảng tính nhẩm 2; giải toán tìm thừa số, tìm số bị chia cơ bản.", icon: "2️⃣" },
-    21: { name: "Tuần 21: Bảng nhân 5 và Bảng chia 5", subIds: ["3.3", "8.3"], desc: "Thuộc lòng bảng tính nhẩm 5; giải toán gấp/giảm số lần và chia đều đồ vật.", icon: "5️⃣" },
-    22: { name: "Tuần 22: Thế giới hàng trăm", subIds: ["1.3"], desc: "Khám phá đơn vị, chục, trăm; cách đọc viết cấu tạo số có 3 chữ số.", icon: "💯" },
-    23: { name: "Tuần 23: So sánh số có 3 chữ số", subIds: ["1.4"], desc: "So sánh số trong phạm vi 1000, thứ tự số lớn/nhỏ và điền số trên tia số.", icon: "🔢" },
-    24: { name: "Tuần 24: Cộng, trừ không nhớ phạm vi 1000", subIds: ["2.4"], desc: "Rèn luyện kỹ năng nhẩm nhanh và đặt tính cộng, trừ số có 3 chữ số không nhớ.", icon: "➕" },
-    25: { name: "Tuần 25: Đơn vị đo độ dài mới (m, mm, km)", subIds: ["5.1"], desc: "Làm quen đơn vị m, mm, km; quy đổi đơn vị đo và tính toán kèm danh số.", icon: "📏" },
-    26: { name: "Tuần 26: Đọc đồng hồ chính xác", subIds: ["5.4"], desc: "Thực hành đọc giờ, phút chính xác đến 5 phút; tính khoảng cách thời gian.", icon: "⏰" },
-    27: { name: "Tuần 27: Thanh toán tiền Việt Nam", subIds: ["5.5"], desc: "Nhận diện các mệnh giá tiền giấy và thực hành giải bài toán mua bán, thối tiền.", icon: "💵" },
-    28: { name: "Tuần 28: Nhận biết Khối hình & Xếp hình", subIds: ["4.4", "4.5"], desc: "Khối lập phương, hộp chữ nhật, khối trụ, khối cầu và xếp hình Tangram.", icon: "🧊" },
-    29: { name: "Tuần 29: Cộng, trừ có nhớ phạm vi 1000", subIds: ["2.5"], desc: "Kỹ năng đặt tính cộng, trừ có nhớ (không quá 1 lần) số có 3 chữ số.", icon: "➕" },
-    30: { name: "Tuần 30: Bài toán giải bằng 2 phép tính", subIds: ["8.4"], desc: "Đọc hiểu ngữ cảnh thực tế phức tạp và giải quyết bài toán qua 2 bước tính.", icon: "📝" },
-    31: { name: "Tuần 31: Khả năng xảy ra sự kiện", subIds: ["9.3"], desc: "Thực hành tư duy xác suất cơ bản: chắc chắn, có thể, không thể.", icon: "🎲" },
-    32: { name: "Tuần 32: Dãy số & Quy luật logic", subIds: ["6.1", "6.2", "6.3", "6.4"], desc: "Rèn luyện tư duy tìm quy luật dãy số cách đều, khoảng cách tăng dần, nhóm số.", icon: "🔗" },
-    33: { name: "Tuần 33: Toán nâng cao & Tư duy", subIds: ["10.1", "10.2", "10.3", "10.4"], desc: "Thử thách tính nhanh thuận tiện nhất, cấu tạo số khó, đếm hình phức tạp.", icon: "🧠" },
-    34: { name: "Tuần 34: Ôn tập tổng hợp cuối năm", subIds: ["11.2", "11.3"], desc: "Bài tổng hợp ngắt quãng 30 câu quét sạch toàn bộ kiến thức lớp 2.", icon: "📚" },
-    35: { name: "Tuần 35: ĐẤU TRƯỜNG THI CUỐI NĂM", isExam: true, subIds: [], desc: "Bé thực hiện bài thi thử Học kỳ II và Học sinh giỏi chuẩn ma trận 13 câu.", icon: "🏆" }
+    1:  { name: "Tuần 1: Khởi Động Số Học", subIds: ["1.1", "1.2", "1.5"], desc: "Đọc viết số đến 100, cấu tạo số chục/đơn vị, so sánh lớn bé, điền số tia số, ước lượng số lượng trực quan.", icon: "🔟" },
+    2:  { name: "Tuần 2: Phép Cộng Trừ Nhẩm", subIds: ["2.1", "2.6"], desc: "Cộng trừ không nhớ phạm vi 100. Đọc gọi tên thành phần phép tính: số hạng, tổng, số bị trừ, số trừ, hiệu.", icon: "➕" },
+    3:  { name: "Tuần 3: Cộng Trừ Có Nhớ 20", subIds: ["2.2"], desc: "Các phép tính nhẩm có nhớ qua 10 trong phạm vi 20 (9, 8, 7 cộng một số; 11, 12, 13 trừ đi một số).", icon: "➕" },
+    4:  { name: "Tuần 4: Độ Dài & Đường Thẳng", subIds: ["5.1", "4.1"], desc: "Làm quen Đề-xi-mét (dm), thực hành quy đổi cm-dm; nhận diện đường thẳng, đường cong, đoạn thẳng, ba điểm thẳng hàng.", icon: "📏" },
+    5:  { name: "Tuần 5: Đặt Tính Cộng Trừ 100", subIds: ["2.3"], desc: "Đặt tính rồi tính cộng, trừ có nhớ phạm vi 100 (số có 2 chữ số với số có 1 hoặc 2 chữ số).", icon: "➕" },
+    6:  { name: "Tuần 6: Khối Lượng & Khối Hình", subIds: ["5.2", "4.4"], desc: "Đại lượng Ki-lô-gam (kg), Lít (l), tính danh số thực tế; nhận diện khối lập phương, hộp chữ nhật, trụ, cầu.", icon: "🧊" },
+    7:  { name: "Tuần 7: Đường Gấp Khúc & Hình", subIds: ["4.3", "4.2", "4.5"], desc: "Nhận dạng đếm hình tam giác, tứ giác; tính độ dài đường gấp khúc; xếp hình Tangram, gấp giấy.", icon: "📐" },
+    8:  { name: "Tuần 8: Thế Giới Hàng Trăm", subIds: ["1.3", "1.4"], desc: "Các số trong phạm vi 1000 (đọc, viết, cấu tạo số trăm/chục/đơn vị, so sánh thứ tự lớn bé và tia số).", icon: "💯" },
+    9:  { name: "Tuần 9: Tính Toán 1000 & Nhân Chia", subIds: ["2.4", "2.5", "3.1"], desc: "Cộng trừ không nhớ & có nhớ (1 lần) phạm vi 1000; ý nghĩa phép nhân (tổng bằng nhau), phép chia (chia đều).", icon: "✖️" },
+    10: { name: "Tuần 10: Thời Gian & Tiền Tệ", subIds: ["5.3", "5.4", "5.5", "5.6"], desc: "Đọc đồng hồ chính xác đến 5 phút, quy tắc ngày giờ 24h, lịch tờ, lịch tháng; mệnh giá tiền giấy và mua bán nhỏ.", icon: "⏰" },
+    11: { name: "Tuần 11: Bảng Tính 2 & 5 & Ôn Tập", subIds: ["3.2", "3.3", "11.1"], desc: "Thuộc lòng bảng nhân/chia 2 và 5; ôn tập tổng hợp kiến thức số học, đo lường và hình học Học kỳ I.", icon: "🔢" },
+    12: { name: "Tuần 12: Đấu Trường Học Kỳ I", isExam: true, subIds: [], desc: "Bé thực hành làm đề kiểm tra cuối kì I tổng hợp chuẩn ma trận 13 câu (40 phút, đạt >= 80% vượt ải).", icon: "🏆" },
+    13: { name: "Tuần 13: Quy Luật & Dãy Số", subIds: ["6.1", "6.2", "6.3", "6.4"], desc: "Tìm quy luật dãy số cách đều tăng/giảm, dãy số tăng khoảng cách, nhóm sơ đồ liên kết, chuỗi hình IQ tuần hoàn.", icon: "🔗" },
+    14: { name: "Tuần 14: Tìm Số Chưa Biết Cơ Bản", subIds: ["7.1", "7.2"], desc: "Đi tìm ẩn số x trong phép tính cộng (tìm số hạng) và phép tính trừ (tìm số bị trừ, tìm số trừ chưa biết).", icon: "❓" },
+    15: { name: "Tuần 15: Tìm x Nâng Cao", subIds: ["7.3", "7.4"], desc: "Tìm thừa số chưa biết, tìm số bị chia; giải bài toán tìm x nâng cao chứa 2 phép tính phức tạp.", icon: "❓" },
+    16: { name: "Tuần 16: Toán Lời Văn Thêm Bớt", subIds: ["8.1", "8.2"], desc: "Bài toán đơn có lời văn dạng thêm, bớt một số đơn vị; bài toán nhiều hơn, ít hơn và chênh lệch hơn kém.", icon: "📝" },
+    17: { name: "Tuần 17: Toán Nhân Chia Thực Tế", subIds: ["8.3"], desc: "Bài toán đố liên quan phép nhân, phép chia trong đời sống (gấp lên/giảm đi một số lần, chia đều đồ vật).", icon: "✖️" },
+    18: { name: "Tuần 18: Thống Kê Biểu Đồ", subIds: ["9.1", "9.2"], desc: "Thu thập dữ liệu trực quan, phân loại và kiểm đếm số lượng vật thể; đọc hiểu phân tích thông tin biểu đồ tranh.", icon: "📊" },
+    19: { name: "Tuần 19: Toán Lời Văn 2 Bước Tính", subIds: ["8.4"], desc: "Đọc hiểu phân tích ngữ cảnh phức tạp và thực hiện giải toán bằng chính xác 2 bước tính tích hợp.", icon: "📝" },
+    20: { name: "Tuần 20: Xác Suất & Hình Học Khó", subIds: ["9.3", "10.3"], desc: "Khả năng xảy ra sự kiện (chắc chắn/có thể/không thể); đếm hình tam giác/tứ giác lồng nhau và khối chồng xếp phức tạp.", icon: "🎲" },
+    21: { name: "Tuần 21: Siêu Tư Duy Số Học", subIds: ["10.1", "10.2", "10.4"], desc: "Tính nhanh thuận tiện gộp số tròn chục, tròn trăm; cấu tạo số và lập số có ràng buộc kép; toán cân thăng bằng logic.", icon: "🧠" },
+    22: { name: "Tuần 22: Ôn Tập Tổng Hợp HK2", subIds: ["11.2"], desc: "Hệ thống hóa toàn bộ kiến thức tính toán nâng cao học kỳ II, các dạng toán tìm x và toán đố có lời văn cả năm.", icon: "📘" },
+    23: { name: "Tuần 23: Thử Thách Học Sinh Giỏi", subIds: ["11.3"], desc: "Thử thách trí tuệ bứt phá giới hạn dành cho học sinh giỏi xuất sắc; luyện tập tổng hợp toán IQ nâng cao.", icon: "🎓" },
+    24: { name: "Tuần 24: Đấu Trường Cuối Năm", isExam: true, subIds: [], desc: "Làm bài kiểm tra cuối năm chuẩn hóa ma trận 13 câu (40 phút). Đạt >= 80% chính thức phá đảo khóa học Toán lớp 2.", icon: "🏆" }
 };
 
-const TOTAL_ROADMAP_WEEKS = 35;
+const TOTAL_ROADMAP_WEEKS = 24;
+
 
 // Toạ độ 35 mốc tuần dạng zigzag rắn bò (serpentine), 7 cột x 5 hàng, tự tính không cần khai báo tay từng điểm
 function getRoadmapCoord(weekNum) {
-    const cols = 9;
-    const colWidth = 115, rowHeight = 115;
-    const startX = 90, startY = 75;
+    const cols = 6;
+    const colWidth = 150, rowHeight = 140;
+    const startX = 100, startY = 90;
     const idx = weekNum - 1;
     const row = Math.floor(idx / cols);
     const posInRow = idx % cols;
@@ -182,7 +172,7 @@ function normalizeQuestion(q) {
     return {
         question_id: q.id ?? q.question_id ?? q.question_no ?? 0,
         // Kho dữ liệu Toán 2 (bản mới) đã tách riêng "sub" = TÊN đầy đủ chủ đề con và "sub_code" = MÃ "X.Y"
-        // (dùng để khớp roadmap 35 tuần). Vẫn dự phòng cho định dạng cũ (chỉ có "sub" là mã) để không vỡ dữ liệu cũ.
+        // (dùng để khớp roadmap 24 tuần). Vẫn dự phòng cho định dạng cũ (chỉ có "sub" là mã) để không vỡ dữ liệu cũ.
         sub_topic: String(q.sub_code ?? q.sub ?? q.sub_topic ?? 'Câu hỏi chung').trim(),
         sub_topic_label: String(q.sub ?? q.sub_code ?? q.sub_topic ?? 'Câu hỏi chung').trim(),
         week: q.week ?? q.w ?? null,
@@ -1010,7 +1000,7 @@ function renderRoadmapSVG() {
 
     const pathD = buildRoadmapPathD(TOTAL_ROADMAP_WEEKS);
     const svgHtml = `
-        <svg viewBox="0 0 1080 500" class="w-full max-h-[74vh] select-none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 1000 640" class="w-full max-h-[74vh] select-none" xmlns="http://www.w3.org/2000/svg">
             <path d="${pathD}" fill="none" stroke="#fbcfe8" stroke-width="12" stroke-dasharray="14,14" stroke-linecap="round"/>
             <path d="${pathD}" fill="none" stroke="#f472b6" stroke-width="4" stroke-dasharray="14,14" stroke-linecap="round"/>
             ${nodesHtml}
@@ -1790,7 +1780,7 @@ async function openHistoryModal(sheetName = 'LichSuTienTrinhTuan') {
     document.getElementById('hist-report-date').textContent = new Date().toLocaleDateString('vi-VN');
 
     const titleMap = {
-        LichSuTienTrinhTuan: "Báo cáo tiến trình 35 tuần học tập",
+        LichSuTienTrinhTuan: "Báo cáo tiến trình 24 tuần học tập",
         LichSuBaiThi_HK1: "Báo cáo kết quả đấu trường — Học kỳ 1",
         LichSuBaiThi_HK2: "Báo cáo kết quả đấu trường — Học kỳ 2",
         LichSuBaiThi_HSG: "Báo cáo kết quả đấu trường — Học sinh giỏi"
