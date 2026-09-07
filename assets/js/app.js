@@ -1776,7 +1776,7 @@ async function openHistoryModal(sheetName = 'LichSuTienTrinhTuan') {
     document.getElementById('hist-info-name').textContent = currentUser.hoTen || '--';
     document.getElementById('hist-info-class').textContent = currentUser.lop || '--';
     document.getElementById('hist-info-code').textContent = currentUser.maHS || '--';
-    document.getElementById('hist-info-dob').textContent = currentUser.ngaySinh || '03/09/2019';
+    document.getElementById('hist-info-dob').textContent = formatDateOnly(currentUser.ngaySinh) !== '--' ? formatDateOnly(currentUser.ngaySinh) : (currentUser.ngaySinh || '03/09/2019');
     document.getElementById('hist-report-date').textContent = new Date().toLocaleDateString('vi-VN');
 
     const titleMap = {
@@ -2178,6 +2178,14 @@ function exportReportToPDF() {
 // ==========================================
 // ĐỘNG CƠ ÂM THANH: GOOGLE TTS CHỊ BAN MAI
 // ==========================================
+function speakPedagogicalEvaluation() {
+    const box = document.getElementById('pedagogical-evaluation-box');
+    if (!box) return;
+    const text = box.innerText || box.textContent || '';
+    if (!text.trim()) return alert('Chưa có dữ liệu nhận xét để đọc, bé làm bài rồi quay lại xem nhé!');
+    speakVietnamese(text, 0.96);
+}
+
 function stopSpeaking() {
     try {
         if (banMaiAudio) {
