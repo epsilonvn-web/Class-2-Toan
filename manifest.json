@@ -1,0 +1,15 @@
+{
+  "name": "Toán 2 - Cô giáo Thỏ Ngọc",
+  "short_name": "Toán 2",
+  "description": "Ứng dụng luyện Toán lớp 2 cùng Cô giáo Thỏ Ngọc",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fdf2f8",
+  "theme_color": "#f472b6",
+  "lang": "vi",
+  "icons": [
+    {"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ]
+}
