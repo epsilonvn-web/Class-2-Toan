@@ -138,6 +138,7 @@ let starRedCount = 0;
 let activeTopicId = null;
 let activeExamContext = null;
 let activeRoadmapContext = null;
+let inMiniGameFlow = false;
 let activeQuestionsList = [];
 let practiceCycleRawPool = [];
 let pendingTopicQuiz = null;
@@ -200,8 +201,13 @@ function isAdminUser() {
 }
 
 function refreshAccessUI() {
+    const unlocked = isPremiumUser();
     const lock = document.getElementById('progress-lock-icon');
-    if (lock) lock.classList.toggle('hidden', isPremiumUser());
+    if (lock) lock.classList.toggle('hidden', unlocked);
+    const mobile = document.getElementById('minigame-label-mobile');
+    const desktop = document.getElementById('minigame-label-desktop');
+    if (mobile) mobile.textContent = unlocked ? 'Game' : 'Game 🔒';
+    if (desktop) desktop.textContent = unlocked ? 'Mini Game' : 'Mini Game 🔒';
 }
 
 function openAuthFromGuest(tab = 'login') {
@@ -652,6 +658,67 @@ async function renderExamHubGrid() {
 }
 
 // ==========================================
+// MINI GAME TOÁN 2 — HUB 12 GAME + LAZY LOAD
+// ==========================================
+const MINIGAME_LIST = [
+    { id: 'balance-scale', title: '1. Balance Scale', desc: 'Cân bằng hai vế bằng tư duy phép tính', icon: '⚖️', ready: true },
+    { id: 'number-hunt', title: '2. Number Hunt', desc: 'Săn con số đúng theo yêu cầu', icon: '🔎', ready: false },
+    { id: 'math-train', title: '3. Math Train', desc: 'Ghép toa để hoàn thành phép tính', icon: '🚂', ready: false },
+    { id: 'target-number', title: '4. Target Number', desc: 'Tính nhanh để chạm số mục tiêu', icon: '🎯', ready: false },
+    { id: 'number-river', title: '5. Number River', desc: 'Nhảy qua đúng kết quả để qua sông', icon: '🐸', ready: false },
+    { id: 'missing-number', title: '6. Missing Number', desc: 'Tìm số còn thiếu trong phép tính', icon: '🧩', ready: false },
+    { id: 'pattern-detective', title: '7. Pattern Detective', desc: 'Phá án quy luật dãy số', icon: '🕵️', ready: false },
+    { id: 'shape-builder', title: '8. Shape Builder', desc: 'Ghép hình và khám phá hình học', icon: '📐', ready: false },
+    { id: 'time-master', title: '9. Time Master', desc: 'Chinh phục đồng hồ và thời gian', icon: '🕐', ready: false },
+    { id: 'little-shop', title: '10. Little Shop', desc: 'Mua bán, tính tiền và tiền thừa', icon: '🛒', ready: false },
+    { id: 'math-factory', title: '11. Math Factory', desc: 'Phân loại số và phép tính vào đúng máy', icon: '🏭', ready: false },
+    { id: 'math-race', title: '12. Math Race', desc: 'Đua xe bằng phản xạ tính toán', icon: '🏎️', ready: false }
+];
+const MINIGAME_PALETTES = [
+    ['bg-rose-50/80','border-rose-300','text-rose-600'], ['bg-sky-50/80','border-sky-300','text-sky-600'],
+    ['bg-violet-50/80','border-violet-300','text-violet-600'], ['bg-amber-50/80','border-amber-300','text-amber-600'],
+    ['bg-indigo-50/80','border-indigo-300','text-indigo-600'], ['bg-emerald-50/80','border-emerald-300','text-emerald-600'],
+    ['bg-fuchsia-50/80','border-fuchsia-300','text-fuchsia-600'], ['bg-orange-50/80','border-orange-300','text-orange-600'],
+    ['bg-cyan-50/80','border-cyan-300','text-cyan-600'], ['bg-lime-50/80','border-lime-300','text-lime-700'],
+    ['bg-purple-50/80','border-purple-300','text-purple-600'], ['bg-teal-50/80','border-teal-300','text-teal-600']
+];
+const GAME_SCRIPT_MAP = {
+    'balance-scale': 'assets/js/games/balance-scale.js', 'number-hunt': 'assets/js/games/number-hunt.js',
+    'math-train': 'assets/js/games/math-train.js', 'target-number': 'assets/js/games/target-number.js',
+    'number-river': 'assets/js/games/number-river.js', 'missing-number': 'assets/js/games/missing-number.js',
+    'pattern-detective': 'assets/js/games/pattern-detective.js', 'shape-builder': 'assets/js/games/shape-builder.js',
+    'time-master': 'assets/js/games/time-master.js', 'little-shop': 'assets/js/games/little-shop.js',
+    'math-factory': 'assets/js/games/math-factory.js', 'math-race': 'assets/js/games/math-race.js'
+};
+const loadedGameScripts = {};
+function openMiniGameHub() {
+    if (!isPremiumUser()) { showPremiumAccessModal('Mini Game'); return; }
+    stopSpeaking(); inMiniGameFlow = true; activeExamContext = null; activeRoadmapContext = null; activeTopicId = null; pendingTopicQuiz = null;
+    updateNavTabs('Mini Game', '🎮', null);
+    const grid = document.getElementById('minigame-grid'); if (!grid) return;
+    grid.innerHTML = MINIGAME_LIST.map((g, idx) => { const p = MINIGAME_PALETTES[idx % MINIGAME_PALETTES.length]; return `
+        <div onclick="openGamePlay('${g.id}')" class="${p[0]} ${p[1]} border-2 rounded-[26px] p-3.5 md:p-4 min-h-[132px] flex flex-col items-center justify-between text-center cursor-pointer relative shadow-sm pastel-btn group">
+            ${!g.ready ? '<span class="absolute top-2 right-2 bg-slate-100 text-slate-500 text-[10px] font-black px-2 py-0.5 rounded-full border border-slate-200">Sắp ra mắt</span>' : '<span class="absolute top-2 right-2 bg-emerald-100 text-emerald-700 text-[10px] font-black px-2 py-0.5 rounded-full border border-emerald-200">Chơi ngay</span>'}
+            <div class="text-4xl group-hover:scale-110 transition-transform mt-1">${g.icon}</div><div class="w-full"><h3 class="font-extrabold ${p[2]} text-base leading-tight">${g.title}</h3><p class="text-sm text-gray-700 font-bold mt-1 leading-snug">${g.desc}</p></div>
+        </div>`; }).join('');
+    switchAppView('view-minigame-hub');
+}
+function loadGameScript(src) {
+    if (loadedGameScripts[src]) return Promise.resolve();
+    return new Promise((resolve, reject) => { const script = document.createElement('script'); script.src = src; script.onload = () => { loadedGameScripts[src] = true; resolve(); }; script.onerror = () => reject(new Error(`Không tải được file game: ${src}`)); document.body.appendChild(script); });
+}
+async function openGamePlay(gameId) {
+    if (!isPremiumUser()) { showPremiumAccessModal('Mini Game'); return; }
+    stopSpeaking(); inMiniGameFlow = true; const game = MINIGAME_LIST.find(g => g.id === gameId); if (!game) return;
+    if (!game.ready) { alert(`Game "${game.title}" đang được xây dựng. Cô Thỏ Ngọc sẽ mở game này ở bản cập nhật sau nhé!`); return; }
+    const title = document.getElementById('game-play-title'); if (title) title.innerHTML = `<span>${game.icon}</span><span class="truncate">${game.title}</span>`;
+    updateNavTabs('Mini Game', '🎮', game.title); switchAppView('view-game-play');
+    const container = document.getElementById('game-play-container'); if (container) container.innerHTML = '<p class="text-center text-gray-400 font-bold py-8"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải game...</p>';
+    try { await loadGameScript(GAME_SCRIPT_MAP[gameId]); } catch (e) { if (container) container.innerHTML = '<p class="text-center text-rose-500 font-bold py-8">Không tải được game, bé thử lại nhé!</p>'; return; }
+    if (gameId === 'balance-scale' && typeof startBalanceScaleGame === 'function') startBalanceScaleGame();
+}
+
+// ==========================================
 // ĐIỀU HƯỚNG VIEW & BREADCRUMB
 // ==========================================
 function updateNavTabs(level2Title, level2Icon, level3Title, level4Title) {
@@ -701,12 +768,14 @@ function returnToTopicLecture() {
     } else if (pendingTopicQuiz) {
         updateNavTabs(pendingTopicQuiz.topicName, TOPICS_CONFIG.find(t => t.id === pendingTopicQuiz.topicNum)?.icon, null);
         switchAppView('view-lecture');
+    } else if (inMiniGameFlow) {
+        openMiniGameHub();
     }
 }
 
 function switchAppView(viewId) {
     stopSpeaking();
-    ['view-dashboard-grid', 'view-lecture', 'view-quiz', 'view-roadmap', 'view-exam-hub', 'view-result'].forEach(id => {
+    ['view-dashboard-grid', 'view-lecture', 'view-quiz', 'view-roadmap', 'view-minigame-hub', 'view-game-play', 'view-exam-hub', 'view-result'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
         if (id === viewId) el.classList.remove('hidden');
@@ -717,6 +786,7 @@ function switchAppView(viewId) {
 function goHome() {
     stopSpeaking();
     clearInterval(quizTimerInterval);
+    inMiniGameFlow = false;
     updateNavTabs(null, null, null);
     switchAppView('view-dashboard-grid');
 }
