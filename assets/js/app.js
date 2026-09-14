@@ -791,9 +791,12 @@ async function doLogin() {
             alert(errMsg);
             return;
         }
-        currentUser = hydrateAccountFields({ ...result.student, isGuest: false });
-        // Giữ phiên đăng nhập khi F5/reload. Chỉ lưu thông tin phiên, tuyệt đối không lưu PIN.
-        localStorage.setItem('toan2_current_user', JSON.stringify(currentUser));
+        currentUser = hydrateAccountFields({ ...result.student, isGuest: false, token: result.token });
+        // Giữ phiên đăng nhập khi F5/reload bằng TOKEN (server xác minh lại), không lưu thẳng cả
+        // object currentUser (bao gồm cả vaiTro) như trước - vì trước đây khôi phục phiên chỉ đọc lại
+        // đúng object đã lưu mà không hỏi lại server, nên ai sửa được localStorage là tự phong quyền
+        // admin được luôn. Giờ chỉ lưu token, mỗi lần khôi phục phiên đều phải hỏi lại server qua whoAmI.
+        localStorage.setItem('toan2_token', result.token);
         enterDashboard();
     } catch (err) {
         const connErr = 'Lỗi kết nối máy chủ: ' + err.message;
@@ -853,33 +856,43 @@ async function doRegister() {
 }
 
 async function tryAutoLogin() {
-    // Không lưu PIN. F5/reload chỉ khôi phục thông tin phiên người dùng đã đăng nhập.
+    // Không lưu PIN. F5/reload chỉ khôi phục phiên qua TOKEN, luôn hỏi lại server (whoAmI) để xác
+    // nhận còn hợp lệ và lấy đúng thông tin mới nhất - không tin thẳng dữ liệu cũ lưu trong trình duyệt.
     localStorage.removeItem('tv1_mahs');
     localStorage.removeItem('tv1_mapin');
+    localStorage.removeItem('toan2_current_user'); // dọn dữ liệu phiên kiểu cũ (không an toàn) nếu còn sót
 
-    try {
-        const savedUserRaw = localStorage.getItem('toan2_current_user');
-        if (savedUserRaw) {
-            const savedUser = JSON.parse(savedUserRaw);
-            if (savedUser && savedUser.maHS && !savedUser.isGuest) {
-                currentUser = hydrateAccountFields({ ...savedUser, isGuest: false });
-                enterDashboard(true);
-                return;
-            }
-        }
-    } catch (e) {
-        localStorage.removeItem('toan2_current_user');
+    const token = localStorage.getItem('toan2_token');
+    if (!token) {
+        handleGuestMode(true);
+        return;
     }
 
+    try {
+        const res = await callAppsScript('whoAmI', { token });
+        if (res.ok && res.student) {
+            currentUser = hydrateAccountFields({ ...res.student, isGuest: false, token });
+            enterDashboard(true);
+            return;
+        }
+    } catch (e) {}
+
+    localStorage.removeItem('toan2_token');
     handleGuestMode(true);
 }
 
 function logout() {
     stopSpeaking();
+    const tokenToRevoke = currentUser && currentUser.token;
     // Chỉ nút Đăng xuất mới xóa phiên đăng nhập đã lưu.
-    localStorage.removeItem('toan2_current_user');
+    localStorage.removeItem('toan2_token');
     currentUser = { name: "Khách (Guest)", isGuest: true, tuanHienTai: 1, hoTen: "Bé Khách", lop: "", maHS: "KHACH" };
     enterDashboard(true);
+    // Hủy token thật trên server (best-effort) - tránh trường hợp ai đó lỡ có được token này vẫn dùng
+    // tiếp được cho tới khi tự hết hạn dù bé đã bấm đăng xuất.
+    if (tokenToRevoke) {
+        callAppsScript('logout', { token: tokenToRevoke }).catch(() => {});
+    }
 }
 
 function handleGuestMode(isSilent = false) {
@@ -967,7 +980,7 @@ async function loadAdminAccounts() {
     const body = document.getElementById('admin-account-body');
     if (body) body.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400 font-bold">Đang tải...</td></tr>';
     try {
-        const res = await callAppsScript('adminListAccounts', { maHS: currentUser?.maHS });
+        const res = await callAppsScript('adminListAccounts', { token: currentUser?.token });
         if (!res?.ok) throw new Error(res?.error || 'Không tải được danh sách tài khoản');
         adminAccountCache = res.accounts || res.students || res.data || [];
         renderAdminAccounts(adminAccountCache);
@@ -1054,7 +1067,7 @@ function filterAdminAccountRows() {
 async function changeAdminAccountType(maHS, loaiTaiKhoan, selectEl) {
     selectEl.disabled = true;
     try {
-        const res = await callAppsScript('adminSetAccountType', { adminMaHS: currentUser?.maHS, maHS, loaiTaiKhoan });
+        const res = await callAppsScript('adminSetAccountType', { token: currentUser?.token, maHS, loaiTaiKhoan });
         if (!res?.ok) throw new Error(res?.error || 'Không cập nhật được tài khoản');
         await loadAdminAccounts();
     } catch (err) { alert(err.message); await loadAdminAccounts(); }
@@ -1940,6 +1953,7 @@ async function saveExamResultToSheet() {
 
     const payload = {
         maHS: currentUser.maHS,
+        token: currentUser.token, // bắt buộc để server xác nhận đúng chủ tài khoản mới cho ghi điểm
         hoTen: currentUser.hoTen,
         lop: currentUser.lop,
         examCategory: categoryKey,
@@ -1985,6 +1999,7 @@ async function saveWeeklyProgressToSheet(percent, starCount, scoreVal) {
     const payload = {
         student_id: currentUser.maHS,
         maHS: currentUser.maHS,
+        token: currentUser.token, // bắt buộc để server xác nhận đúng chủ tài khoản mới cho ghi điểm
         hoTen: currentUser.hoTen,
         lop: currentUser.lop,
         sheetName: 'LichSuTienTrinhTuan',
@@ -2041,8 +2056,15 @@ async function openHistoryModal(sheetName = 'LichSuTienTrinhTuan') {
 
     showLoadingOverlay('Đang trích xuất dữ liệu và vẽ biểu đồ năng lực...');
     try {
-        const res = await callAppsScript('getHistory', { maHS: currentUser.maHS, sheetName });
+        const res = await callAppsScript('getHistory', { maHS: currentUser.maHS, sheetName, token: currentUser.token });
         hideLoadingOverlay();
+        if (res && res.ok === false) {
+            // Token hết hạn/không hợp lệ hoặc không đúng chủ - đóng modal, báo rõ thay vì âm thầm
+            // hiện báo cáo trống (dễ gây hiểu lầm là bé chưa học gì).
+            closeHistoryModal();
+            alert(res.error || 'Không thể tải lịch sử - bé đăng nhập lại nhé!');
+            return;
+        }
         const rows = (res && res.history) ? res.history : [];
         renderHistoryReport(rows, sheetName);
     } catch (err) {
