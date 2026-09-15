@@ -1,5 +1,5 @@
-const CACHE_NAME = 'toan2-static-v1';
-const APP_SHELL = ['./', './index.html', './manifest.json', './favicon.svg'];
+const CACHE_NAME = 'toan2-static-v2-logo';
+const APP_SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).catch(() => {}));
@@ -11,15 +11,16 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
+self.addEventListener('message', event => {
+  if (event.data === 'SKIP_WAITING') self.skipWaiting();
+});
+
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-
-  // Không cache hay can thiệp request ngoài domain: Google TTS, Apps Script, CDN...
   if (url.origin !== self.location.origin) return;
 
-  // Network-first để bản cập nhật mới luôn được ưu tiên; cache chỉ dùng khi offline.
   event.respondWith(
     fetch(req).then(res => {
       if (res && res.ok) {
