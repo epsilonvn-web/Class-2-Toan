@@ -861,12 +861,12 @@ async function doLogin() {
             alert(errMsg);
             return;
         }
-        currentUser = hydrateAccountFields({ ...result.student, isGuest: false, token: result.token });
-        // Giữ phiên đăng nhập khi F5/reload bằng TOKEN (server xác minh lại), không lưu thẳng cả
-        // object currentUser (bao gồm cả vaiTro) như trước - vì trước đây khôi phục phiên chỉ đọc lại
-        // đúng object đã lưu mà không hỏi lại server, nên ai sửa được localStorage là tự phong quyền
-        // admin được luôn. Giờ chỉ lưu token, mỗi lần khôi phục phiên đều phải hỏi lại server qua whoAmI.
-        localStorage.setItem('toan2_token', result.token);
+        const sessionToken = result.sessionToken || result.token;
+        if (!sessionToken) throw new Error('Máy chủ không trả về session token.');
+        currentUser = hydrateAccountFields({ ...result.student, isGuest: false, token: sessionToken });
+        // Persistent session: client CHỈ lưu token; role/tier luôn lấy từ backend khi login/restoreSession.
+        localStorage.setItem('toan2_token', sessionToken);
+        localStorage.removeItem('toan2_pending_logout_token');
         enterDashboard();
     } catch (err) {
         const connErr = 'Lỗi kết nối máy chủ: ' + err.message;
@@ -925,44 +925,94 @@ async function doRegister() {
     }
 }
 
-async function tryAutoLogin() {
-    // Không lưu PIN. F5/reload chỉ khôi phục phiên qua TOKEN, luôn hỏi lại server (whoAmI) để xác
-    // nhận còn hợp lệ và lấy đúng thông tin mới nhất - không tin thẳng dữ liệu cũ lưu trong trình duyệt.
+let sessionRestoreRetryTimer = null;
+let sessionRestoreInFlight = false;
+
+function showSessionRestorePending(message) {
+    // Có token nhưng mạng tạm thời lỗi: GIỮ NGUYÊN token, không chuyển sang Khách và không tự đăng xuất.
+    // Vì client không được phép tin role/tier lưu cục bộ, app chờ backend xác thực lại rồi mới vào dashboard.
+    document.getElementById('screen-dashboard')?.classList.add('hidden');
+    document.getElementById('screen-login')?.classList.remove('hidden');
+    showAuthError(message || 'Chưa kết nối được máy chủ. Phiên đăng nhập của bé vẫn được giữ và app sẽ tự thử lại.');
+}
+
+function scheduleSessionRestoreRetry(delayMs = 5000) {
+    clearTimeout(sessionRestoreRetryTimer);
+    sessionRestoreRetryTimer = setTimeout(() => tryAutoLogin(true), delayMs);
+}
+
+async function tryAutoLogin(isRetry = false) {
+    // Client chỉ lưu SESSION TOKEN. Tuyệt đối không lưu PIN/mật khẩu hay object quyền Admin/Trial/VIP.
     localStorage.removeItem('tv1_mahs');
     localStorage.removeItem('tv1_mapin');
-    localStorage.removeItem('toan2_current_user'); // dọn dữ liệu phiên kiểu cũ (không an toàn) nếu còn sót
+    localStorage.removeItem('toan2_current_user');
 
     const token = localStorage.getItem('toan2_token');
     if (!token) {
+        clearTimeout(sessionRestoreRetryTimer);
         handleGuestMode(true);
         return;
     }
+    if (sessionRestoreInFlight) return;
+    sessionRestoreInFlight = true;
 
     try {
-        const res = await callAppsScript('whoAmI', { token });
+        const res = await callAppsScript('restoreSession', { token });
         if (res.ok && res.student) {
+            clearTimeout(sessionRestoreRetryTimer);
+            hideAuthError();
             currentUser = hydrateAccountFields({ ...res.student, isGuest: false, token });
             enterDashboard(true);
             return;
         }
-    } catch (e) {}
 
-    localStorage.removeItem('toan2_token');
-    handleGuestMode(true);
+        // Backend đã trả lời rõ token không còn hợp lệ (ví dụ token bị thu hồi/tài khoản bị xóa).
+        // Chỉ trường hợp xác thực thất bại rõ ràng này mới bỏ token; lỗi mạng KHÔNG đi vào nhánh này.
+        if (res && (res.code === 'SESSION_INVALID' || res.code === 'ACCOUNT_NOT_FOUND')) {
+            localStorage.removeItem('toan2_token');
+            currentUser = null;
+            document.getElementById('screen-dashboard')?.classList.add('hidden');
+            document.getElementById('screen-login')?.classList.remove('hidden');
+            showAuthError('Phiên đăng nhập không còn hợp lệ. Bé đăng nhập lại nhé!');
+            return;
+        }
+
+        showSessionRestorePending(res?.error || 'Chưa xác thực được phiên. Phiên vẫn được giữ và app sẽ tự thử lại.');
+        scheduleSessionRestoreRetry();
+    } catch (err) {
+        // Lỗi mạng/HTTP tạm thời: giữ token, giữ trạng thái "đang chờ restore", tuyệt đối không về Khách.
+        showSessionRestorePending('Mạng đang gián đoạn. Phiên đăng nhập vẫn được giữ; app sẽ tự kết nối lại.');
+        scheduleSessionRestoreRetry(isRetry ? 7000 : 5000);
+    } finally {
+        sessionRestoreInFlight = false;
+    }
 }
 
-function logout() {
+async function flushPendingLogout() {
+    const pendingToken = localStorage.getItem('toan2_pending_logout_token');
+    if (!pendingToken) return;
+    try {
+        const res = await callAppsScript('logout', { token: pendingToken });
+        if (res?.ok) localStorage.removeItem('toan2_pending_logout_token');
+    } catch (e) {
+        // Giữ token thu hồi chờ lần có mạng tiếp theo; KHÔNG dùng token này để restore session.
+    }
+}
+
+async function logout() {
     stopSpeaking();
-    const tokenToRevoke = currentUser && currentUser.token;
-    // Chỉ nút Đăng xuất mới xóa phiên đăng nhập đã lưu.
+    clearTimeout(sessionRestoreRetryTimer);
+    const tokenToRevoke = currentUser?.token || localStorage.getItem('toan2_token');
+
+    // Người dùng đã chủ động bấm Đăng xuất: xóa token phiên hoạt động trên client ngay lập tức.
     localStorage.removeItem('toan2_token');
+    if (tokenToRevoke) localStorage.setItem('toan2_pending_logout_token', tokenToRevoke);
+
     currentUser = { name: "Khách (Guest)", isGuest: true, tuanHienTai: 1, hoTen: "Bé Khách", lop: "", maHS: "KHACH" };
     enterDashboard(true);
-    // Hủy token thật trên server (best-effort) - tránh trường hợp ai đó lỡ có được token này vẫn dùng
-    // tiếp được cho tới khi tự hết hạn dù bé đã bấm đăng xuất.
-    if (tokenToRevoke) {
-        callAppsScript('logout', { token: tokenToRevoke }).catch(() => {});
-    }
+
+    // Thu hồi token trên backend. Nếu đang mất mạng, flushPendingLogout() sẽ thử lại khi app chạy lần sau.
+    await flushPendingLogout();
 }
 
 function handleGuestMode(isSilent = false) {
@@ -2764,4 +2814,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateAutoSpeechButtonUI();
 });
 
+flushPendingLogout();
 tryAutoLogin();
