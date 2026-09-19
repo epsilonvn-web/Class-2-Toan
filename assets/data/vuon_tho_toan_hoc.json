@@ -1,0 +1,935 @@
+{
+  "schema_version": "TOAN2_POETRY_GARDEN_V2",
+  "title": "12. Vườn thơ Toán học",
+  "description": "50 bài thơ Toán học lớp 2, chia thành 5 chủ đề theo tài liệu người dùng cung cấp.",
+  "total_poems": 50,
+  "categories": [
+    {
+      "id": 1,
+      "name": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "icon": "🔢"
+    },
+    {
+      "id": 2,
+      "name": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "icon": "📐"
+    },
+    {
+      "id": 3,
+      "name": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "icon": "📏"
+    },
+    {
+      "id": 4,
+      "name": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "icon": "✖️"
+    },
+    {
+      "id": 5,
+      "name": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "icon": "🧠"
+    }
+  ],
+  "poems": [
+    {
+      "id": "THO_01",
+      "no": 1,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Đếm Số Hàng Chục",
+      "lines": [
+        "Mười đơn vị gộp lại,",
+        "Thành một chục tròn xoe.",
+        "Hai chục thành hai mươi,",
+        "Lớp học rộn tiếng ve.",
+        "Cô Thỏ Ngọc mỉm cười,",
+        "Khen bé đếm thật tài.",
+        "Ba chục rồi bốn chục,",
+        "Tương lai sáng sớm mai!"
+      ]
+    },
+    {
+      "id": "THO_02",
+      "no": 2,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Tia Số Đáng Yêu",
+      "lines": [
+        "Tia số thẳng tắp tắp,",
+        "Vạch xuất phát số không.",
+        "Bước qua từng vạch một,",
+        "Nối tiếp như dòng sông.",
+        "Càng tiến xa về trước,",
+        "Số càng lớn bé ơi!",
+        "Nhìn tia số chăm chỉ,",
+        "Học toán vui tuyệt vời!"
+      ]
+    },
+    {
+      "id": "THO_03",
+      "no": 3,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Ước Lượng Nhóm Chục",
+      "lines": [
+        "Táo chín đỏ trên cành,",
+        "Nhóm thành các nhóm chục.",
+        "Ước lượng thật nhanh tay,",
+        "Không cần đếm từng mục.",
+        "Bốn nhóm khoảng bốn chục,",
+        "Mắt bé sáng lung linh.",
+        "Cô Thỏ Ngọc khen thưởng,",
+        "Bé thông minh xinh xinh!"
+      ]
+    },
+    {
+      "id": "THO_04",
+      "no": 4,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Liền Trước Và Liền Sau",
+      "lines": [
+        "Số đứng ngay phía trước,",
+        "Bớt đi một đơn vị.",
+        "Số đứng ngay phía sau,",
+        "Thêm một, thật dịu kỳ!",
+        "Số liền trước của năm,",
+        "Là số bốn nhỏ nhắn.",
+        "Số liền sau của năm,",
+        "Là số sáu xinh xắn!"
+      ]
+    },
+    {
+      "id": "THO_05",
+      "no": 5,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Phép Cộng Không Nhớ",
+      "lines": [
+        "Hai mươi cộng ba mươi,",
+        "Bằng năm mươi dễ quá!",
+        "Hàng chục cộng hàng chục,",
+        "Cả lớp reo rộn rã.",
+        "Hàng đơn vị giữ nguyên,",
+        "Tính nhẩm thật nhanh tay.",
+        "Bài toán xinh hé nở,",
+        "Điểm mười trên tay này!"
+      ]
+    },
+    {
+      "id": "THO_06",
+      "no": 6,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Phép Trừ Không Nhớ",
+      "lines": [
+        "Sáu mươi trừ hai mươi,",
+        "Bằng bốn mươi chuẩn xác.",
+        "Lấy hàng chục bớt đi,",
+        "Vang tiếng ca r rác.",
+        "Đơn vị không thay đổi,",
+        "Tính toán thật nhẹ nhàng.",
+        "Bé làm xong bài tập,",
+        "Nụ cười vui rộn ràng!"
+      ]
+    },
+    {
+      "id": "THO_07",
+      "no": 7,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Phép Cộng Qua 10",
+      "lines": [
+        "Chín cộng năm bằng mấy?",
+        "Tách năm thành một, bốn.",
+        "Chín cộng một bằng mười,",
+        "Thêm bốn thành mười bốn!",
+        "Mẹo gộp cho tròn chục,",
+        "Giúp bé tính thật nhanh.",
+        "Cô Thỏ Ngọc gật đầu,",
+        "Mắt bé sáng long lanh!"
+      ]
+    },
+    {
+      "id": "THO_08",
+      "no": 8,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Phép Trừ Qua 10",
+      "lines": [
+        "Mười ba mà trừ sáu,",
+        "Trừ ba còn mười tròn.",
+        "Lấy mười trừ ba nữa,",
+        "Còn lại bảy bé ngoan!",
+        "Tách số ra thật khéo,",
+        "Bài toán hóa dễ dàng.",
+        "Bé mỉm cười tự tin,",
+        "Làm bài thi nhịp nhàng!"
+      ]
+    },
+    {
+      "id": "THO_09",
+      "no": 9,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Đặt Tính Thẳng Cột",
+      "lines": [
+        "Viết số nhớ thẳng cột,",
+        "Đơn vị dưới đơn vị.",
+        "Hàng chục dưới hàng chục,",
+        "Cẩn thận từng chút đi!",
+        "Cộng từ phải sang trái,",
+        "Nếu có nhớ thì thêm.",
+        "Chữ viết ngay ngắn đẹp,",
+        "Bài toán nhìn thật êm!"
+      ]
+    },
+    {
+      "id": "THO_10",
+      "no": 10,
+      "category_no": 1,
+      "category": "SỐ HỌC & PHÉP CỘNG TRỪ TRONG PHẠM VI 100",
+      "category_icon": "🔢",
+      "title": "Tên Gọi Phép Tính",
+      "lines": [
+        "Phép cộng có Số hạng,",
+        "Cộng lại thành Tổng ngay.",
+        "Phép trừ có Số trừ,",
+        "Đứng sau Số bị trừ này!",
+        "Kết quả phép trừ ấy,",
+        "Gọi là Hiệu bé ơi.",
+        "Nhớ rõ tên thành phần,",
+        "Giỏi toán nhất trên đời!"
+      ]
+    },
+    {
+      "id": "THO_11",
+      "no": 11,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Đoạn Thẳng Và Đường Thẳng",
+      "lines": [
+        "Nối hai điểm lại gần,",
+        "Ta được một đoạn thẳng.",
+        "Kéo dài về hai phía,",
+        "Là đường thẳng thẳng tắp.",
+        "Cầm thước kẻ đo đạc,",
+        "Ngay ngắn vạch chỉ màu.",
+        "Bé vẽ hình xinh xắn,",
+        "Cùng bạn bè thi nhau!"
+      ]
+    },
+    {
+      "id": "THO_12",
+      "no": 12,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Ba Điểm Thẳng Hàng",
+      "lines": [
+        "Cùng nằm trên đường thẳng,",
+        "Là ba điểm thẳng hàng.",
+        "Như hàng cây xanh mát,",
+        "Đứng xếp hàng nhịp nhàng.",
+        "Thước kẻ làm trọng tài,",
+        "Đặt lên kiểm tra ngay.",
+        "Ba điểm xinh liền lối,",
+        "Bé vỗ nhịp đôi tay!"
+      ]
+    },
+    {
+      "id": "THO_13",
+      "no": 13,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Đường Gấp Khúc Xinh",
+      "lines": [
+        "Gồm nhiều đoạn nối tiếp,",
+        "Tạo đường gấp khúc xinh.",
+        "Muốn tính độ dài nó,",
+        "Bé cộng lại hết mình!",
+        "Đoạn một cộng đoạn hai,",
+        "Cộng đoạn ba tiếp theo.",
+        "Ra độ dài tổng cộng,",
+        "Thật vui vút tiếng reo!"
+      ]
+    },
+    {
+      "id": "THO_14",
+      "no": 14,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Hình Tam Giác Nhỏ",
+      "lines": [
+        "Ba đỉnh và ba cạnh,",
+        "Tạo hình tam giác xinh.",
+        "Như mái nhà nho nhỏ,",
+        "Đón ánh nắng bình minh.",
+        "Bé tô màu đỏ thắm,",
+        "Vẽ thêm cánh buồm buông.",
+        "Hình tam giác ngộ nghĩnh,",
+        "Trôi trên sóng dịu luồng!"
+      ]
+    },
+    {
+      "id": "THO_15",
+      "no": 15,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Hình Tứ Giác Ngoan",
+      "lines": [
+        "Bốn cạnh và bốn đỉnh,",
+        "Là hình tứ giác nhé.",
+        "Như chiếc bảng góc vuông,",
+        "Như cuốn sổ xinh xắn.",
+        "Bé phân biệt từng hình,",
+        "Không nhầm lẫn tí nào.",
+        "Cô Thỏ Ngọc mỉm cười,",
+        "Khen bé thật tự hào!"
+      ]
+    },
+    {
+      "id": "THO_16",
+      "no": 16,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Khối Lập Phương Vuông",
+      "lines": [
+        "Bảng mặt đều vuông vức,",
+        "Là Khối lập phương đây.",
+        "Giống con súc sắc nhỏ,",
+        "Xoay xoay trong lòng tay.",
+        "Sáu mặt bằng nhau hết,",
+        "Đứng vững vàng thật ngoan.",
+        "Bé xếp thành ngôi nhà,",
+        "Đẹp đẽ và đàng hoàng!"
+      ]
+    },
+    {
+      "id": "THO_17",
+      "no": 17,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Khối Hộp Chữ Nhật",
+      "lines": [
+        "Chiếc hộp phấn xinh xắn,",
+        "Khối hộp chữ nhật rồi.",
+        "Mặt dài và mặt ngắn,",
+        "Xếp chồng lên thanh thơi.",
+        "Khối hình trong cuộc sống,",
+        "Bé nhận biết thật nhanh.",
+        "Yêu toán học biết mấy,",
+        "Như bầu trời bao la!"
+      ]
+    },
+    {
+      "id": "THO_18",
+      "no": 18,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Khối Trụ Cao Cao",
+      "lines": [
+        "Lon nước ngọt xinh xắn,",
+        "Hộp chè tròn cao cao.",
+        "Hai đáy là hình tròn,",
+        "Khối trụ đẹp làm sao!",
+        "Lăn tròn trên mặt phẳng,",
+        "Hay đứng thẳng trang nghiêm.",
+        "Bé nhận ra khối trụ,",
+        "Nụ cười rạng bừng lên!"
+      ]
+    },
+    {
+      "id": "THO_19",
+      "no": 19,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Khối Cầu Tròn Xoe",
+      "lines": [
+        "Quả bóng đá trên sân,",
+        "Khối cầu tròn xoe nhé.",
+        "Lăn tròn khắp mọi nơi,",
+        "Bé đuổi theo vui vẻ.",
+        "Không góc cũng không cạnh,",
+        "Tròn trịa thật đáng yêu.",
+        "Hình khối quanh bé đó,",
+        "Mỗi ngày thêm thương nhiều!"
+      ]
+    },
+    {
+      "id": "THO_20",
+      "no": 20,
+      "category_no": 2,
+      "category": "HÌNH HỌC TRỰC QUAN & LẮP GHÉP TẠO HÌNH",
+      "category_icon": "📐",
+      "title": "Xếp Hình Tangram",
+      "lines": [
+        "Bảy mảnh ghép sắc màu,",
+        "Tạo bao hình sinh động.",
+        "Con thuyền vươn sóng lớn,",
+        "Chú thiên nga bay cao.",
+        "Lắp hình vuông, hình cá,",
+        "Tư duy bé mở ra.",
+        "Toán học thật diệu kỳ,",
+        "Như khúc hát dân ca!"
+      ]
+    },
+    {
+      "id": "THO_21",
+      "no": 21,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Xăng-ti-mét & Đề-xi-mét",
+      "lines": [
+        "Thước kẻ chia vạch nhỏ,",
+        "Xăng-ti-mét (cm) viết nhanh.",
+        "Mười cm gộp lại,",
+        "Một đề-xi-mét (dm) thành!",
+        "Đo độ dài cuốn sách,",
+        "Đo chiếc bút chì xinh.",
+        "Đổi đơn vị chuẩn xác,",
+        "Bé học bằng lòng mình!"
+      ]
+    },
+    {
+      "id": "THO_22",
+      "no": 22,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Thước Đo Mới Ngoan",
+      "lines": [
+        "Đo khoảng cách sân trường,",
+        "Dùng đơn vị Mét (m) nhé.",
+        "Đo đồ vật li ti,",
+        "Mi-li-mét (mm) nhẹ.",
+        "Con đường dài xa xa,",
+        "Tính bằng Ki-lô-mét (km).",
+        "Đơn vị đo độ dài,",
+        "Bé nhớ lâu không quên!"
+      ]
+    },
+    {
+      "id": "THO_23",
+      "no": 23,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Ki-lô-gam (kg) Nặng Nhẹ",
+      "lines": [
+        "Cân quả dưa, túi táo,",
+        "Dùng Ki-lô-gam (kg) nè.",
+        "Đĩa cân thăng bằng đứng,",
+        "Xem kim chỉ bao nhiêu.",
+        "Bé Nhi nặng hai mươi,",
+        "Ki-lô-gam tròn xoe.",
+        "Học đo lường thực tế,",
+        "Vui rộn rã tiếng ve!"
+      ]
+    },
+    {
+      "id": "THO_24",
+      "no": 24,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Ca Đo Lít (l) Nước Ngọt",
+      "lines": [
+        "Đong mắm, đong sữa tươi,",
+        "Dùng đơn vị Lít (l) nhé.",
+        "Rót đầy ca một lít,",
+        "Bé giúp mẹ vui vẻ.",
+        "Hai lít cộng ba lít,",
+        "Bằng năm lít tròn xoe.",
+        "Toán học gắn cuộc sống,",
+        "Yêu sao những mùa hè!"
+      ]
+    },
+    {
+      "id": "THO_25",
+      "no": 25,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Lịch Tờ Lịch Tháng",
+      "lines": [
+        "Tờ lịch treo trên tường,",
+        "Mỗi ngày bóc một tờ.",
+        "Một tuần có bảy ngày,",
+        "Trôi qua tựa bài thơ.",
+        "Thứ Hai đến Chủ Nhật,",
+        "Xem ngày tháng thi đua.",
+        "Bé chăm ngoan học giỏi,",
+        "Chẳng sợ chi nắng mưa!"
+      ]
+    },
+    {
+      "id": "THO_26",
+      "no": 26,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Ngày Và Giờ (24h)",
+      "lines": [
+        "Một ngày có hai bốn,",
+        "Giờ đồng hồ quay quay.",
+        "Tám giờ sáng đi học,",
+        "Mười hai giờ trưa nay.",
+        "Bốn giờ chiều tan lớp,",
+        "Mười sáu giờ hệ mới.",
+        "Bé biết quy đổi giờ,",
+        "Rạng rỡ nụ cười tươi!"
+      ]
+    },
+    {
+      "id": "THO_27",
+      "no": 27,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Đồng Hồ Chỉ Giờ",
+      "lines": [
+        "Kim ngắn chỉ số giờ,",
+        "Kim dài chỉ phút nhé.",
+        "Kim ngắn chỉ số tám,",
+        "Kim dài số mười hai.",
+        "Đúng tám giờ sáng rồi,",
+        "Bé vào lớp hăng hái.",
+        "Xem đồng hồ chuẩn xác,",
+        "Không bao giờ đi trễ!"
+      ]
+    },
+    {
+      "id": "THO_28",
+      "no": 28,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Đồng Hồ Chỉ Phút",
+      "lines": [
+        "Kim dài chỉ số ba,",
+        "Là mười lăm phút đó.",
+        "Kim dài chỉ số sáu,",
+        "Ba mươi phút tròn xoe.",
+        "Tích tắc tiếng đồng hồ,",
+        "Thúc giục bé chăm ngoan.",
+        "Quý trọng từng phút giây,",
+        "Thì công việc đàng hoàng!"
+      ]
+    },
+    {
+      "id": "THO_29",
+      "no": 29,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Tiền Việt Nam Xinh",
+      "lines": [
+        "Tờ tiền năm trăm đồng,",
+        "Một nghìn, hai nghìn nữa.",
+        "Bé nhận biết mệnh giá,",
+        "Giúp mẹ đi chợ trưa.",
+        "Mua cuốn sổ hai nghìn,",
+        "Đưa tiền chuẩn không sai.",
+        "Bé làm quen giao dịch,",
+        "Thật thông minh tự tin!"
+      ]
+    },
+    {
+      "id": "THO_30",
+      "no": 30,
+      "category_no": 3,
+      "category": "ĐƠN VỊ ĐO LƯỜNG VÀ THỜI GIAN",
+      "category_icon": "📏",
+      "title": "Mua Sắm Cùng Cô Thỏ",
+      "lines": [
+        "Ghé góc chợ học tập,",
+        "Của cô giáo Thỏ Ngọc.",
+        "Mua bút chì, thước kẻ,",
+        "Bé tính tiền nhanh tay.",
+        "Thưởng điểm mười hoa thắm,",
+        "Cho bé ngoan chăm làm.",
+        "Môn toán học dễ thương,",
+        "Nụ cười vui chan hòa!"
+      ]
+    },
+    {
+      "id": "THO_31",
+      "no": 31,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Ý Nghĩa Phép Nhân",
+      "lines": [
+        "Bốn nhóm, mỗi nhóm ba,",
+        "Lấy ba cộng bốn lần.",
+        "Viết gọn thành phép nhân:",
+        "Ba nhân bốn bằng mười hai!",
+        "Tổng các số bằng nhau,",
+        "Đổi thành nhân tiện lợi.",
+        "Bé khám phá điều mới,",
+        "Lòng hân hoan rạng ngời!"
+      ]
+    },
+    {
+      "id": "THO_32",
+      "no": 32,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Ý Nghĩa Phép Chia",
+      "lines": [
+        "Mười cái kẹo thơm ngon,",
+        "Chia đều cho hai bạn.",
+        "Mỗi bạn được mấy cái?",
+        "Lấy mười chia hai ngay!",
+        "Được năm cái kẹo ngọt,",
+        "Bạn nào cũng mỉm cười.",
+        "Phép chia là chia đều,",
+        "Vui rộn rã khắp nơi!"
+      ]
+    },
+    {
+      "id": "THO_33",
+      "no": 33,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Bảng Nhân 2 Nhịp Nhàng",
+      "lines": [
+        "Hai nhân một là hai,",
+        "Hai nhân hai là bốn.",
+        "Hai nhân ba là sáu,",
+        "Không bao giờ lo lộn!",
+        "Cứ cộng thêm hai nữa,",
+        "Ra kết quả tiếp theo.",
+        "Bảng nhân hai thuộc lòng,",
+        "Vang rộn ràng tiếng reo!"
+      ]
+    },
+    {
+      "id": "THO_34",
+      "no": 34,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Bảng Chia 2 Chia Đều",
+      "lines": [
+        "Hai chia hai được một,",
+        "Bốn chia hai được hai.",
+        "Sáu chia hai được ba,",
+        "Bé nhẩm tính không sai!",
+        "Từ bảng nhân suy ra,",
+        "Phép chia thật đơn giản.",
+        "Cô Thỏ Ngọc khen bé,",
+        "Học toán thật tài ba!"
+      ]
+    },
+    {
+      "id": "THO_35",
+      "no": 35,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Bảng Nhân 5 Bàn Tay",
+      "lines": [
+        "Bàn tay năm ngón xòe,",
+        "Năm nhân một là năm.",
+        "Năm nhân hai là mười,",
+        "Năm nhân ba mười lăm!",
+        "Đếm cách năm đơn vị,",
+        "Thật dễ nhớ bé ơi.",
+        "Thuộc làu bảng nhân năm,",
+        "Miệng bé cười rạng rỡ!"
+      ]
+    },
+    {
+      "id": "THO_36",
+      "no": 36,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Bảng Chia 5 Ngọt Ngào",
+      "lines": [
+        "Năm chia năm được một,",
+        "Mười chia năm được hai.",
+        "Mười lăm chia năm được ba,",
+        "Tính nhẩm thật hăng hái!",
+        "Chia đều quả dâu tây,",
+        "Cho các bạn ngoan ngoãn.",
+        "Bảng chia năm nhẹ nhàng,",
+        "Toán học thật xinh xắn!"
+      ]
+    },
+    {
+      "id": "THO_37",
+      "no": 37,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Thừa Số Và Tích",
+      "lines": [
+        "Trong phép tính nhân nhé,",
+        "Các số đem nhân vào.",
+        "Gọi là Thừa số đó,",
+        "Kết quả Tích ngọt ngào!",
+        "Hai nhân năm bằng mười,",
+        "Tích là mười tròn xoe.",
+        "Bé thuộc tên thành phần,",
+        "Vui đón tiếng ve hè!"
+      ]
+    },
+    {
+      "id": "THO_38",
+      "no": 38,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Thành Phần Phép Chia",
+      "lines": [
+        "Số bị chia đứng trước,",
+        "Dấu chia đến Số chia.",
+        "Kết quả gọi là Thương,",
+        "Rõ ràng không san chia!",
+        "Mười chia hai bằng năm,",
+        "Thương chính là số năm.",
+        "Nhớ kĩ tên thành phần,",
+        "Học tập thật siêng năng!"
+      ]
+    },
+    {
+      "id": "THO_39",
+      "no": 39,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Phép Nhân Trong Đời Sống",
+      "lines": [
+        "Mỗi bàn có hai bạn,",
+        "Năm bàn có mấy ai?",
+        "Lấy hai nhân với năm,",
+        "Mười bạn đứng thành hàng!",
+        "Toán ứng dụng thực tế,",
+        "Giúp bé tính thật nhanh.",
+        "Mọi bài toán rắc rối,",
+        "Đều giải quyết an lành!"
+      ]
+    },
+    {
+      "id": "THO_40",
+      "no": 40,
+      "category_no": 4,
+      "category": "BẢNG NHÂN VÀ BẢNG CHIA 2, 5",
+      "category_icon": "✖️",
+      "title": "Phần Thưởng Phép Chia",
+      "lines": [
+        "Có mười lăm bông hoa,",
+        "Cắm đều vào ba lọ.",
+        "Mỗi lọ mấy bông hoa?",
+        "Lấy mười lăm chia ba!",
+        "Được năm bông hoa thắm,",
+        "Rực rỡ cả căn phòng.",
+        "Bé mỉm cười tự hào,",
+        "Thỏa niềm vui ước mong!"
+      ]
+    },
+    {
+      "id": "THO_41",
+      "no": 41,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Bài Toán Nhiều Hơn",
+      "lines": [
+        "Nai Nhỏ có năm táo,",
+        "Sóc Nhỏ nhiều hơn hai.",
+        "Hỏi Sóc có mấy quả?",
+        "Lấy năm cộng hai ngay!",
+        "Bằng bảy quả táo ngọt,",
+        "Bài toán 'nhiều hơn' nè.",
+        "Cộng thêm phần chênh lệch,",
+        "Vui rộn rã tiếng ve!"
+      ]
+    },
+    {
+      "id": "THO_42",
+      "no": 42,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Bài Toán Ít Hơn",
+      "lines": [
+        "Gấu Con có tám kẹo,",
+        "Cún Con ít hơn ba.",
+        "Hỏi Cún có mấy cái?",
+        "Lấy tám trừ ba ra!",
+        "Bằng năm cái kẹo thơm,",
+        "Bài toán 'ít hơn' đó.",
+        "Trừ đi phần chênh lệch,",
+        "Giải nhanh không do dự!"
+      ]
+    },
+    {
+      "id": "THO_43",
+      "no": 43,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Hơn Kém Bao Nhiêu",
+      "lines": [
+        "Vy nặng hai mươi cân,",
+        "Nga nặng mười lăm cân.",
+        "Hỏi Vy hơn bao nhiêu?",
+        "Trừ đi số cân Nga!",
+        "Hai mươi trừ mười lăm,",
+        "Bằng năm kg chênh lệch.",
+        "Tìm phần hơn phần kém,",
+        "Phép trừ thật diệu kỳ!"
+      ]
+    },
+    {
+      "id": "THO_44",
+      "no": 44,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Hai Bước Tính Ngoan",
+      "lines": [
+        "Bước một tìm số vịt,",
+        "Bước hai tính tổng số.",
+        "Giải toán hai bước tính,",
+        "Đọc kĩ đề bài cho!",
+        "Suy luận thật logic,",
+        "Viết lời giải đàng hoàng.",
+        "Cô Thỏ Ngọc cho điểm,",
+        "Mười đỏ thắm rạng rỡ!"
+      ]
+    },
+    {
+      "id": "THO_45",
+      "no": 45,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Thu Thập & Kiểm Đếm",
+      "lines": [
+        "Kiểm đếm các đồ chơi,",
+        "Búp bê, ô tô nhỏ.",
+        "Phân loại thành từng nhóm,",
+        "Ghi số lượng vào ô.",
+        "Thống kê thật khoa học,",
+        "Giúp bé bớt nhầm lẫn.",
+        "Kỹ năng mới tuyệt vời,",
+        "Học toán thật cẩn thận!"
+      ]
+    },
+    {
+      "id": "THO_46",
+      "no": 46,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Biểu Đồ Tranh Sắc Màu",
+      "lines": [
+        "Mỗi ngôi sao đại diện,",
+        "Cho một bông hoa ngoan.",
+        "Nhìn biểu đồ tranh vẽ,",
+        "Đọc dữ liệu dễ dàng.",
+        "Bạn nào nhiều hoa nhất?",
+        "Đếm ngôi sao biết ngay.",
+        "Toán thống kê trực quan,",
+        "Vui thích mỗi ngày này!"
+      ]
+    },
+    {
+      "id": "THO_47",
+      "no": 47,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Xác Suất Khả Năng",
+      "lines": [
+        "'Chắc chắn' mặt trời mọc,",
+        "'Có thể' trời mưa rào.",
+        "'Không thể' cá bay bổng,",
+        "Lên bầu trời trời cao!",
+        "Nhận biết các sự kiện,",
+        "Quanh cuộc sống hàng ngày.",
+        "Tư duy xác suất mới,",
+        "Bé hiểu ngay tức thì!"
+      ]
+    },
+    {
+      "id": "THO_48",
+      "no": 48,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Quy Luật Dãy Số",
+      "lines": [
+        "Hai, bốn, sáu, tám, mười,",
+        "Dãy số cộng thêm hai.",
+        "Số tiếp theo là mấy?",
+        "Mười hai chuẩn không sai!",
+        "Tìm quy luật ẩn giấu,",
+        "Của dãy số thông minh.",
+        "Bé giải nhanh xuất sắc,",
+        "Tỏa sáng ánh bình minh!"
+      ]
+    },
+    {
+      "id": "THO_49",
+      "no": 49,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Cân Thăng Bằng IQ",
+      "lines": [
+        "Đĩa cân đứng thăng bằng,",
+        "Một quả cam bằng hai quả táo.",
+        "Hỏi hai quả cam béo,",
+        "Bằng mấy quả táo nào?",
+        "Bằng bốn quả táo đỏ,",
+        "Bé suy luận thật tài.",
+        "Toán IQ thông thái,",
+        "Tương lai rộng đường dài!"
+      ]
+    },
+    {
+      "id": "THO_50",
+      "no": 50,
+      "category_no": 5,
+      "category": "GIẢI TOÁN LỜI VĂN, THỐNG KÊ & TƯ DUY IQ",
+      "category_icon": "🧠",
+      "title": "Nhà Thông Thái Nhí",
+      "lines": [
+        "Năm mươi bài thơ toán,",
+        "Bé học thuộc nằm lòng.",
+        "Toán Lớp Hai thật đẹp,",
+        "Thỏa bao niềm ước mong.",
+        "Cùng cô giáo Thỏ Ngọc,",
+        "Vững bước tiến lên lớp Ba.",
+        "Xứng danh Nhà Thông Thái,",
+        "Khắp nơi cùng reo ca!"
+      ]
+    }
+  ]
+}
