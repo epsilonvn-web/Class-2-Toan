@@ -3,13 +3,13 @@
 // ==========================================
 const TOPICS_CONFIG = [
     { id: 1, title: "1. Cấu tạo số", desc: "Đọc viết số, giá trị hàng, tách – gộp và ước lượng", icon: "🔢", color: "pink" },
-    { id: 2, title: "2. Tia số và phép so sánh", desc: "Tia số, liền trước/sau, > < = và sắp xếp số", icon: "↔️", color: "cyan" },
+    { id: 2, title: "2. Dãy số và phép so sánh", desc: "Số liền trước/sau, phép so sánh, sắp xếp và quy luật dãy số", icon: "🔢", color: "cyan" },
     { id: 3, title: "3. Phép cộng và trừ", desc: "Không nhớ, có nhớ, đặt tính, tên gọi thành phần", icon: "➕", color: "purple" },
     { id: 4, title: "4. Phép nhân và chia", desc: "Ý nghĩa phép nhân/chia, bảng nhân chia 2 và 5", icon: "✖️", color: "indigo" },
     { id: 5, title: "5. Hình học", desc: "Đường thẳng, hình phẳng, khối hình, xếp hình", icon: "📐", color: "amber" },
     { id: 6, title: "6. Đơn vị đo và thời gian", desc: "Độ dài, khối lượng, dung tích, giờ, lịch, tiền", icon: "⏰", color: "emerald" },
-    { id: 7, title: "7. Dãy số và quy luật", desc: "Quy luật dãy số, nhóm số, chuỗi hình ảnh IQ", icon: "🔗", color: "cyan" },
-    { id: 8, title: "8. Tìm số chưa biết", desc: "Tìm x trong phép cộng, trừ, nhân, chia", icon: "❓", color: "violet" },
+    { id: 7, title: "7. Tìm số chưa biết", desc: "Tìm x trong phép cộng, trừ, nhân, chia", icon: "❓", color: "violet" },
+    { id: 8, title: "8. Quy luật nâng cao & IQ", desc: "Khoảng cách biến đổi, sơ đồ liên kết và chuỗi hình ảnh IQ", icon: "🔗", color: "cyan" },
     { id: 9, title: "9. Toán có lời văn", desc: "Thêm bớt, nhiều hơn ít hơn, giải 2 bước tính", icon: "📝", color: "rose" },
     { id: 10, title: "10. Thống kê và xác suất", desc: "Kiểm đếm, biểu đồ tranh, khả năng xảy ra", icon: "📊", color: "blue" },
     { id: 11, title: "11. Toán nâng cao", desc: "Tính nhanh, cấu tạo số, hình học và IQ nâng cao", icon: "🧠", color: "yellow" },
@@ -166,6 +166,7 @@ let currentQIndex = 0;
 let score = 0;
 let userAnswers = {};
 let wrongAttemptsByQ = {};
+let orderInteractionState = {};
 let quizWrongAnswers = [];
 let quizAnsweredLog = [];
 let quizStartTime = null;
@@ -389,7 +390,10 @@ function normalizeQuestion(q) {
         explore_group_label: q.explore_group_label ?? '',
         explore_level: Number(q.explore_level ?? 0),
         explore_type: q.explore_type ?? '',
+        explore_branch: q.explore_branch ?? '',
+        explore_hidden: Boolean(q.explore_hidden ?? false),
         visual_data: q.visual_data ?? null,
+        lesson_refs: Array.isArray(q.lesson_refs) ? q.lesson_refs.map(String) : [],
         diem: Number(q.diem ?? q.score ?? 0.5),
         explanation: q.explanation ?? q.h ?? 'Không có giải thích chi tiết.'
     };
@@ -470,7 +474,7 @@ function beautifySubtopicName(name) {
     return s;
 }
 
-const DATA_VERSION = '20260919-1435-explore12';
+const DATA_VERSION = '20260919-2232-topic2-pattern30';
 const TOPICS_DATA_FILES = [
     'assets/data/kho_hoc_toan_2_hk1.json',
     'assets/data/kho_hoc_toan_2_hk2.json'
@@ -487,7 +491,13 @@ function inferExploreTopicIdFromSubCode_(subCode) {
         if ([2, 4].includes(minor)) return 2;    // Tia số + so sánh
         return 0;
     }
-    if (major >= 2 && major <= 10) return major + 1;
+    // Sau khi đổi vị trí Mục 7 và 8:
+    // sub 6.x = Quy luật nâng cao & IQ -> Mục 8
+    // sub 7.x = Tìm số chưa biết       -> Mục 7
+    if (major === 6) return 8;
+    if (major === 7) return 7;
+    if (major >= 2 && major <= 5) return major + 1;
+    if (major >= 8 && major <= 10) return major + 1;
     return 0;
 }
 
@@ -521,7 +531,7 @@ async function fetchAllTopicsData() {
         // Khám phá dùng explore_topic_id riêng để tách "Số học" thành 2 mục lớn,
         // trong khi sub_code gốc vẫn giữ nguyên cho Bài tập/Roadmap/Bài học.
         const mucNum = Number(q.explore_topic_id || inferExploreTopicIdFromSubCode_(q.sub_id || q.sub_topic) || 0);
-        if (!mucNum) return;
+        if (!mucNum || q.explore_hidden) return;
         if (!byMuc[mucNum]) byMuc[mucNum] = [];
         byMuc[mucNum].push(q);
     });
@@ -901,6 +911,9 @@ function returnToLevel3FromHeader() {
         if (Number(pendingTopicQuiz.topicNum) === 1 && pendingTopicQuiz.selectedNumberScope && pendingTopicQuiz.selectedNumberScopePool) {
             return renderExploreNumberActivities(pendingTopicQuiz.selectedNumberScopeLabel, pendingTopicQuiz.selectedNumberScopePool);
         }
+        if (Number(pendingTopicQuiz.topicNum) === 2) {
+            return renderExploreComparisonBranches(2, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
+        }
         const label = document.getElementById('header-level3-title')?.textContent || '';
         const idx = (pendingTopicQuiz.groups || []).findIndex(k => beautifySubtopicName(pendingTopicQuiz.groupLabels?.[k] || k) === label);
         if (idx >= 0) return selectSubtopic(idx);
@@ -931,12 +944,7 @@ function returnToTopicLecture() {
         if (Number(pendingTopicQuiz.topicNum) === 1) {
             renderExploreNumberScopes(pendingTopicQuiz.topicNum, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
         } else if (Number(pendingTopicQuiz.topicNum) === 2) {
-            // Mục 2 luôn quay về đúng 4 nhánh, tuyệt đối không rơi về màn phân nhóm 1.2 / 1.4 cũ.
-            renderExploreComparisonBranches(
-                pendingTopicQuiz.topicNum,
-                pendingTopicQuiz.topicName,
-                pendingTopicQuiz.topic2AllPool || pendingTopicQuiz.questions || []
-            );
+            renderExploreComparisonBranches(2, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
         } else if (pendingTopicQuiz.selectedExploreGroup) {
             const pool = pendingTopicQuiz.groupMap?.[pendingTopicQuiz.selectedExploreGroup] || [];
             renderExploreLevelsForGroup(pendingTopicQuiz.selectedExploreGroup, pendingTopicQuiz.selectedExploreGroupLabel, pool);
@@ -1467,7 +1475,7 @@ function openTopic(topicNum, topicName, icon) {
             // Cấu tạo số: chọn phạm vi trước, sau đó vào các hoạt động phù hợp từng phạm vi.
             renderExploreNumberScopes(Number(topicNum), topicName, topicObj.questions);
         } else if (Number(topicNum) === 2) {
-            // Mục 2 chỉ học trong phạm vi 100 và chia thành 4 nhánh năng lực rõ ràng.
+            // Mục 2 dùng 4 nhánh: liền trước/sau, so sánh, sắp xếp dãy số, dãy số quy luật.
             renderExploreComparisonBranches(Number(topicNum), topicName, topicObj.questions);
         } else {
             renderExploreSubtopics(topicNum, topicName, topicObj);
@@ -1484,100 +1492,50 @@ function openTopic(topicNum, topicName, icon) {
 
 const EXPLORE_COMPARE_BRANCHES = [
     {
-        key: 'number-line',
-        label: 'Tia số',
-        icon: '📍',
-        desc: 'Điền số còn thiếu · xác định vị trí · đọc thứ tự trên tia số.',
-        types: ['number_line_missing']
-    },
-    {
         key: 'neighbors',
-        label: 'Số liền trước – số liền sau',
+        label: '2.1 Số liền trước, số liền sau',
         icon: '🚂',
-        desc: 'Tìm số đứng ngay trước, ngay sau và nhận biết các số liên tiếp.',
+        desc: 'Nhận biết số đứng ngay trước, ngay sau và các số liên tiếp.',
         types: ['number_line_neighbor']
     },
     {
         key: 'compare',
-        label: 'So sánh số',
+        label: '2.2 Phép so sánh',
         icon: '⚖️',
-        desc: 'Chọn >, <, = · nhận biết số lớn hơn, bé hơn trong phạm vi 100.',
+        desc: 'So sánh hai số, chọn >, <, = và nhận biết số lớn hơn, bé hơn.',
         types: ['compare_pair']
     },
     {
-        key: 'order-find',
-        label: 'Sắp xếp và tìm số',
+        key: 'order',
+        label: '2.3 Sắp xếp dãy số',
         icon: '🧩',
-        desc: 'Tìm số ở giữa · tìm số theo điều kiện · sắp xếp từ bé đến lớn hoặc ngược lại.',
-        types: ['between_number', 'range_reasoning', 'order_numbers']
+        desc: 'Sắp xếp các số theo thứ tự từ bé đến lớn hoặc từ lớn đến bé.',
+        types: ['order_numbers', 'between_number', 'range_reasoning']
+    },
+    {
+        key: 'pattern',
+        label: '2.4 Điền theo quy luật',
+        icon: '🔗',
+        desc: 'Khởi động với dãy số tăng/giảm đều và dãy emoji lặp lại.',
+        types: ['sequence_missing']
     }
 ];
 
-function getTopic2Range100Pool_(pool) {
-    return (pool || []).filter(q => String(q.sub_id || q.sub_topic || q.sub_code || '').trim() === '1.2');
-}
-
-function makeTopic2OrderQuestions_() {
-    const sets = [
-        [18, 12, 15, 19], [27, 23, 29, 25], [34, 31, 38, 36], [42, 49, 45, 41],
-        [53, 58, 51, 56], [64, 61, 69, 66], [72, 79, 74, 77], [83, 81, 88, 85]
-    ];
-    return sets.flatMap((nums, i) => {
-        const asc = [...nums].sort((a,b)=>a-b);
-        const desc = [...asc].reverse();
-        const mkOpts = (correct, direction) => {
-            const wrong1 = direction === 'asc'
-                ? `${asc[0]} < ${asc[2]} < ${asc[1]} < ${asc[3]}`
-                : `${desc[0]} > ${desc[2]} > ${desc[1]} > ${desc[3]}`;
-            const wrong2 = direction === 'asc'
-                ? `${asc[3]} < ${asc[2]} < ${asc[1]} < ${asc[0]}`
-                : `${desc[3]} > ${desc[2]} > ${desc[1]} > ${desc[0]}`;
-            const wrong3 = direction === 'asc'
-                ? `${asc[1]} < ${asc[0]} < ${asc[2]} < ${asc[3]}`
-                : `${desc[1]} > ${desc[0]} > ${desc[2]} > ${desc[3]}`;
-            return shuffleArray([correct, wrong1, wrong2, wrong3]);
-        };
-        const ascAns = asc.join(' < '), descAns = desc.join(' > ');
-        return [
-            {
-                question_id: 29000 + i*2,
-                sub_topic: '1.2', sub_id: '1.2', sub_topic_label: 'So sánh số và tia số phạm vi 100',
-                question_text: 'Bé ơi, dãy nào được xếp từ bé đến lớn đúng nhỉ?',
-                options: mkOpts(ascAns, 'asc'), answer: ascAns,
-                hint: `Thứ tự đúng là ${ascAns}.`, skill_tag: 'TOAN_C1', explore_topic_id: 2,
-                explore_topic: 'Tia số và phép so sánh', explore_level: 0, explore_type: 'order_numbers',
-                visual_data: { numbers: nums, direction: 'asc' }, explanation: `Thứ tự đúng là ${ascAns}.`
-            },
-            {
-                question_id: 29001 + i*2,
-                sub_topic: '1.2', sub_id: '1.2', sub_topic_label: 'So sánh số và tia số phạm vi 100',
-                question_text: 'Bé ơi, dãy nào được xếp từ lớn đến bé đúng nhỉ?',
-                options: mkOpts(descAns, 'desc'), answer: descAns,
-                hint: `Thứ tự đúng là ${descAns}.`, skill_tag: 'TOAN_C1', explore_topic_id: 2,
-                explore_topic: 'Tia số và phép so sánh', explore_level: 0, explore_type: 'order_numbers',
-                visual_data: { numbers: nums, direction: 'desc' }, explanation: `Thứ tự đúng là ${descAns}.`
-            }
-        ];
-    });
+function getTopic2BranchPool_(pool, key) {
+    const branchMap = { neighbors: '2.1', compare: '2.2', order: '2.3', pattern: '2.4' };
+    const branchId = branchMap[key] || '';
+    if (!branchId) return [];
+    // Kiến trúc mới hoàn toàn data-driven: mỗi câu trong JSON tự khai báo explore_branch.
+    // Không còn sinh câu, không còn tách 100/1000 bằng logic trong JS.
+    return (pool || []).filter(q => String(q.explore_branch || '').trim() === branchId);
 }
 
 function renderExploreComparisonBranches(topicNum, topicName, pool) {
-    // Kiến trúc chuẩn Mục 2:
-    // - Không có màn chọn phạm vi 100 / 1000 ở bên ngoài.
-    // - 1.2 (phạm vi 100) cấp dữ liệu cho cả 4 nhánh.
-    // - 1.4 (phạm vi 1000) CHỈ được ghép vào nhánh "So sánh số".
-    const allPool = [...(pool || [])];
-    const range100Pool = getTopic2Range100Pool_(allPool);
-    const range1000ComparePool = allPool.filter(q => String(q.sub_id || q.sub_topic || q.sub_code || '').trim() === '1.4');
-    const extraOrder = makeTopic2OrderQuestions_();
+    const allPool = Array.isArray(pool) ? pool : [];
     pendingTopicQuiz = {
         topicNum,
         topicName,
         questions: allPool,
-        topic2AllPool: allPool,
-        topic2Range100Pool: range100Pool,
-        topic2Range1000ComparePool: range1000ComparePool,
-        topic2OrderPool: extraOrder,
         selectedCompareBranch: null,
         selectedCompareBranchLabel: null
     };
@@ -1588,9 +1546,7 @@ function renderExploreComparisonBranches(topicNum, topicName, pool) {
 
     container.innerHTML = EXPLORE_COMPARE_BRANCHES.map((item, idx) => {
         const palette = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
-        let count = range100Pool.filter(q => item.types.includes(q.explore_type)).length;
-        if (item.key === 'compare') count += range1000ComparePool.length;
-        if (item.key === 'order-find') count += extraOrder.length;
+        const count = getTopic2BranchPool_(allPool, item.key).length;
         return `
             <button onclick="selectExploreComparisonBranch('${item.key}')" class="p-4 ${palette.card} border-2 rounded-2xl text-left shadow-sm pastel-btn min-h-[118px] flex flex-col justify-between">
                 <div class="flex items-start justify-between gap-3">
@@ -1601,7 +1557,7 @@ function renderExploreComparisonBranches(topicNum, topicName, pool) {
             </button>`;
     }).join('');
 
-    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '↔️', null);
+    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', null);
     switchAppView('view-dashboard-grid');
 }
 
@@ -1611,11 +1567,7 @@ function selectExploreComparisonBranch(key) {
     const meta = EXPLORE_COMPARE_BRANCHES.find(x => x.key === key);
     if (!meta) return;
 
-    const base = pendingTopicQuiz.topic2Range100Pool || [];
-    let pool = base.filter(q => meta.types.includes(q.explore_type));
-    // Kiến thức phạm vi 1000 chỉ xuất hiện bên trong nhánh So sánh số.
-    if (key === 'compare') pool = [...pool, ...(pendingTopicQuiz.topic2Range1000ComparePool || [])];
-    if (key === 'order-find') pool = [...pool, ...(pendingTopicQuiz.topic2OrderPool || [])];
+    const pool = getTopic2BranchPool_(pendingTopicQuiz.questions || [], key);
     if (!pool.length) return showAppNotice('Mục này đang được cập nhật thêm câu hỏi nhé bé!');
 
     pendingTopicQuiz.selectedCompareBranch = key;
@@ -1623,17 +1575,17 @@ function selectExploreComparisonBranch(key) {
     practiceCycleRawPool = [...pool];
     const firstCycleQuestions = shuffleArray([...pool]);
     const { topicNum, topicName } = pendingTopicQuiz;
-    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '↔️', meta.label);
+    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', meta.label);
     startTopicQuiz(topicNum, `${topicName} - ${meta.label}`, firstCycleQuestions, `topic2-${key}`);
 }
 
 function renderExploreSubtopics(topicNum, topicName, topicObj) {
-    // Guard dứt điểm: Mục 2 không bao giờ dùng màn subtopic cũ (1.2 / 1.4).
+    const sourceQuestions = topicObj?.questions || pendingTopicQuiz?.questions || [];
+    // Mục 2 đã có kiến trúc 4 nhánh riêng. Chặn tuyệt đối luồng cũ
+    // (gom 1.2/1.4 thành các thẻ phạm vi) để không thể xuất hiện lại.
     if (Number(topicNum) === 2) {
-        const source = topicObj?.topic2AllPool || topicObj?.questions || pendingTopicQuiz?.topic2AllPool || pendingTopicQuiz?.questions || [];
-        return renderExploreComparisonBranches(Number(topicNum), topicName, source);
+        return renderExploreComparisonBranches(Number(topicNum), topicName, sourceQuestions);
     }
-    const sourceQuestions = topicObj.questions || pendingTopicQuiz?.questions || [];
     pendingTopicQuiz = { topicNum, topicName, questions: sourceQuestions };
 
     const groups = [], groupMap = {}, groupLabels = {};
@@ -1646,6 +1598,19 @@ function renderExploreSubtopics(topicNum, topicName, topicObj) {
         }
         groupMap[k].push(q);
     });
+    // Mục 3 · Phép cộng và trừ: cho "Tên gọi thành phần phép cộng và phép trừ" lên đầu.
+    // Dữ liệu gốc vẫn giữ sub_code 2.6 để không làm vỡ roadmap/bài tập cũ; chỉ đổi thứ tự hiển thị Khám phá.
+    if (Number(topicNum) === 3) {
+        const preferredOrder = ['2.6', '2.1', '2.2', '2.3', '2.4', '2.5'];
+        groups.sort((a, b) => {
+            const ai = preferredOrder.indexOf(String(a));
+            const bi = preferredOrder.indexOf(String(b));
+            const ar = ai === -1 ? 999 : ai;
+            const br = bi === -1 ? 999 : bi;
+            return ar - br;
+        });
+    }
+
     pendingTopicQuiz.groups = groups;
     pendingTopicQuiz.groupMap = groupMap;
     pendingTopicQuiz.groupLabels = groupLabels;
@@ -1685,9 +1650,6 @@ function getExploreNumberScopePool_(pool, scope) {
 }
 
 function renderExploreNumberScopes(topicNum, topicName, pool) {
-    // Guard dứt điểm: màn chọn phạm vi chỉ thuộc Mục 1 - Cấu tạo số.
-    // Nếu bất kỳ luồng cũ nào gọi nhầm Mục 2 vào đây, tự chuyển về 4 nhánh chuẩn.
-    if (Number(topicNum) === 2) return renderExploreComparisonBranches(Number(topicNum), topicName, pool || []);
     pendingTopicQuiz = {
         topicNum,
         topicName,
@@ -1738,157 +1700,28 @@ function selectExploreNumberScope(scope) {
 
 function getNumberComposePool_(scope, pool) {
     const targetSub = String(scope) === '1000' ? '1.3' : '1.1';
-    const compose = (pool || []).filter(q => String(q.sub_id || q.sub_topic || '') === targetSub && q.explore_type === 'compose_words');
-    const base = compose.length ? compose : (pool || []).filter(q => String(q.sub_id || q.sub_topic || '') === targetSub);
-
-    // Phạm vi 100 cần đủ 50 câu Ghép số. Nếu JSON hiện tại chưa đủ,
-    // tự bổ sung câu mới theo đúng renderer compose_words thay vì nhân bản câu cũ.
-    if (String(scope) !== '100' || base.length >= 50) return base;
-
-    const result = [...base];
-    const used = new Set(result.map(q => Number(q.a)).filter(Number.isFinite));
-    const candidates = [
-        12,14,16,18,23,25,27,29,31,32,35,38,41,43,45,49,52,54,56,58,
-        61,64,67,69,71,73,75,78,81,83,85,87,91,93,95,97,30,40,50,60,70,80,90
-    ];
-
-    for (const n of candidates) {
-        if (result.length >= 50 || used.has(n)) continue;
-        used.add(n);
-        const tens = Math.floor(n / 10);
-        const ones = n % 10;
-        const distractors = [];
-        const push = v => {
-            if (v >= 10 && v <= 99 && v !== n && !distractors.includes(v)) distractors.push(v);
-        };
-        // Nhiễu ưu tiên lỗi đảo chữ số, nhầm hàng và số lân cận.
-        push(ones * 10 + tens);
-        push(tens * 10);
-        push((Math.min(9, tens + 1)) * 10 + ones);
-        push((Math.max(1, tens - 1)) * 10 + ones);
-        push(n + 1);
-        push(n - 1);
-        while (distractors.length < 3) push(10 + ((n + distractors.length * 7) % 90));
-
-        result.push(normalizeQuestion({
-            id: 192000 + n,
-            sub: 'Số trong phạm vi 100',
-            sub_code: '1.1',
-            q: 'Bé ơi, ghép các giá trị hàng thành số đúng nhé!',
-            o: shuffleArray([String(n), ...distractors.slice(0, 3).map(String)]),
-            a: String(n),
-            h: `Con đọc từng giá trị hàng rồi ghép lại nhé: ${tens} chục + ${ones} đơn vị tạo thành số ${n}.`,
-            tag: 'TOAN_C1',
-            explore_topic_id: 1,
-            explore_topic: 'Cấu tạo số',
-            explore_type: 'compose_words',
-            visual_data: {
-                parts: [{ count: tens, place: 'chục' }, { count: ones, place: 'đơn vị' }],
-                shuffle: true,
-                display_style: 'inline_words'
-            }
-        }));
-    }
-    return result.slice(0, 50);
+    return (pool || []).filter(q =>
+        String(q.sub_id || q.sub_topic || '').trim() === targetSub &&
+        q.explore_type === 'compose_words'
+    );
 }
 
-function makeQuantityEstimateQuestion_(id, total, emoji, label) {
-    const tens = Math.max(1, Math.round(total / 10));
-    const answer = `${tens} chục`;
-    const choices = [tens - 1, tens, tens + 1, tens + 2]
-        .filter(v => v >= 1 && v <= 10);
-    let k = 1;
-    while (choices.length < 4) {
-        const v = Math.max(1, tens - k++);
-        if (!choices.includes(v)) choices.push(v);
-    }
-    return normalizeQuestion({
-        id,
-        sub: 'Ước lượng số lượng trong phạm vi 100',
-        sub_code: '1.5',
-        q: `Bé ơi, hãy ước lượng xem có khoảng mấy chục ${label} nhé!`,
-        o: shuffleArray(choices.slice(0, 4).map(v => `${v} chục`)),
-        a: answer,
-        h: `Con nhìn nhanh theo từng nhóm khoảng 10 ${label}. Không cần đếm từng ${label} ngay nhé!`,
-        tag: 'TOAN_C1',
-        explore_topic_id: 1,
-        explore_group: '1A',
-        explore_type: 'quantity_estimate',
-        visual_data: { total, emoji, label, tens }
-    });
-}
-
-function buildNumberEstimatePool_(scope) {
+function getNumberEstimatePool_(scope, pool) {
     if (String(scope) === '1000') return [];
-    const specs = [
-        [18,'🍎','quả táo'], [19,'🍊','quả cam'], [28,'🍓','quả dâu'], [29,'🍒','quả cherry'],
-        [37,'⭐','ngôi sao'], [38,'⚽','quả bóng'], [39,'🟠','viên bi'], [47,'🍪','chiếc bánh'],
-        [48,'🌼','bông hoa'], [49,'🥕','củ cà rốt'], [57,'🐟','con cá'], [58,'✏️','chiếc bút chì'],
-        [59,'📘','quyển sách'], [67,'🧸','chú gấu bông'], [68,'🚗','chiếc ô tô'], [69,'🟣','hạt cườm'],
-        [77,'🍇','quả nho'], [78,'🌟','ngôi sao'], [79,'🧩','mảnh ghép'], [88,'🍬','viên kẹo']
-    ];
-    return specs.map((x,i) => makeQuantityEstimateQuestion_(190000+i, x[0], x[1], x[2]));
+    return (pool || []).filter(q => q.explore_type === 'quantity_estimate');
 }
 
-function buildFindNumberPool_(scope) {
+function getFindNumberPool_(scope, pool) {
     if (String(scope) !== '100') return [];
-    const specs = [
-        ['Số lớn nhất có hai chữ số là số nào?', 99, [98, 90, 89]],
-        ['Số bé nhất có hai chữ số là số nào?', 10, [1, 11, 20]],
-        ['Số lẻ bé nhất có hai chữ số là số nào?', 11, [10, 12, 21]],
-        ['Số lẻ lớn nhất có hai chữ số là số nào?', 99, [97, 98, 89]],
-        ['Số chẵn bé nhất có hai chữ số là số nào?', 10, [11, 12, 20]],
-        ['Số chẵn lớn nhất có hai chữ số là số nào?', 98, [99, 96, 88]],
-        ['Số tròn chục bé nhất có hai chữ số là số nào?', 10, [20, 0, 11]],
-        ['Số tròn chục lớn nhất có hai chữ số là số nào?', 90, [80, 99, 100]],
-        ['Số chẵn lớn nhất có hai chữ số giống nhau là số nào?', 88, [99, 66, 98]],
-        ['Số lẻ bé nhất có hai chữ số giống nhau là số nào?', 11, [22, 33, 10]],
-        ['Số lớn nhất có hai chữ số giống nhau là số nào?', 99, [88, 98, 90]],
-        ['Số bé nhất có hai chữ số giống nhau là số nào?', 11, [10, 22, 1]],
-        ['Số lớn nhất có hàng chục là 7 là số nào?', 79, [70, 77, 89]],
-        ['Số bé nhất có hàng chục là 7 là số nào?', 70, [71, 17, 7]],
-        ['Số lớn nhất có hàng đơn vị là 5 là số nào?', 95, [85, 59, 99]],
-        ['Số bé nhất có hai chữ số và hàng đơn vị là 5 là số nào?', 15, [5, 25, 50]],
-        ['Số chẵn lớn nhất bé hơn 50 là số nào?', 48, [49, 46, 50]],
-        ['Số lẻ bé nhất lớn hơn 60 là số nào?', 61, [59, 60, 63]],
-        ['Số tròn chục lớn hơn 60 nhưng bé hơn 80 là số nào?', 70, [60, 80, 71]],
-        ['Số chẵn lớn nhất bé hơn 70 và có hai chữ số giống nhau là số nào?', 66, [55, 68, 44]],
-        ['Số chẵn bé nhất có hai chữ số giống nhau là số nào?', 22, [11, 20, 33]],
-        ['Số lẻ lớn nhất có hai chữ số giống nhau nhưng bé hơn 90 là số nào?', 77, [88, 79, 66]],
-        ['Số tròn chục bé nhất lớn hơn 30 là số nào?', 40, [30, 31, 50]],
-        ['Số tròn chục lớn nhất bé hơn 70 là số nào?', 60, [50, 69, 70]],
-        ['Số chẵn bé nhất lớn hơn 50 là số nào?', 52, [50, 51, 54]],
-        ['Số lẻ lớn nhất bé hơn 80 là số nào?', 79, [77, 78, 81]],
-        ['Số lớn nhất có hàng chục là 4 và hàng đơn vị là số chẵn là số nào?', 48, [46, 49, 58]],
-        ['Số bé nhất có hàng chục là 6 và hàng đơn vị là số lẻ là số nào?', 61, [60, 63, 51]],
-        ['Số lớn nhất bé hơn 60 và có hai chữ số khác nhau là số nào?', 59, [58, 55, 60]],
-        ['Số bé nhất lớn hơn 70 và có hàng đơn vị bằng 2 là số nào?', 72, [62, 71, 82]]
-    ];
-    return specs.map((x, i) => normalizeQuestion({
-        id: 191000 + i,
-        sub: 'Tìm số đặc biệt trong phạm vi 100',
-        sub_code: '1.1',
-        q: `🔎 ${x[0]}`,
-        // Các đáp án trong UI phải là chuỗi: loadQuestion tạo onclick bằng .replace(),
-        // nếu để number sẽ lỗi render và màn hình giữ lại câu của nhánh trước.
-        o: shuffleArray([x[1], ...x[2]]).map(String),
-        a: String(x[1]),
-        h: `Con hãy đọc từng điều kiện rồi loại dần những số chưa phù hợp nhé!`,
-        explanation: `Đáp án đúng là ${x[1]}.`,
-        tag: 'TOAN_C1',
-        explore_topic_id: 1,
-        explore_group: '1A',
-        explore_type: 'find_number',
-        visual_data: { clue: x[0], answer: x[1] }
-    }));
+    return (pool || []).filter(q => q.explore_type === 'find_number');
 }
 
 function renderExploreNumberActivities(scopeLabel, pool) {
     if (!pendingTopicQuiz) return;
     const scope = pendingTopicQuiz.selectedNumberScope || (String(scopeLabel).includes('1000') ? '1000' : '100');
     const composeCount = getNumberComposePool_(scope, pool).length;
-    const estimateCount = buildNumberEstimatePool_(scope).length;
-    const findNumberCount = buildFindNumberPool_(scope).length;
+    const estimateCount = getNumberEstimatePool_(scope, pool).length;
+    const findNumberCount = getFindNumberPool_(scope, pool).length;
     const container = document.getElementById('view-dashboard-grid');
     if (!container) return;
     container.className = 'w-full grid grid-cols-1 sm:grid-cols-2 gap-2.5';
@@ -1908,7 +1741,7 @@ function renderExploreNumberActivities(scopeLabel, pool) {
                 <span class="text-lg md:text-xl font-black"><span class="mr-2">${item.icon}</span>${item.title}</span>
                 ${item.count ? `<span class="text-xs font-extrabold ${palette.badge} px-2.5 py-0.5 rounded-full border shrink-0">${item.count}</span>` : ''}
             </div>
-            <span class="mt-2 text-xs md:text-sm font-bold text-slate-500 leading-snug">${item.desc}</span>
+            <span class="mt-2 text-sm md:text-base font-bold text-slate-500 leading-snug">${item.desc}</span>
         </button>`;
     }).join('');
 
@@ -1933,10 +1766,10 @@ function selectExploreNumberActivity(activity) {
         questions = getNumberComposePool_(scope, pool);
     } else if (activity === 'estimate') {
         label = 'Ước lượng số lượng';
-        questions = buildNumberEstimatePool_(scope);
+        questions = getNumberEstimatePool_(scope, pool);
     } else if (activity === 'find-number') {
         label = 'Tìm số';
-        questions = buildFindNumberPool_(scope);
+        questions = getFindNumberPool_(scope, pool);
     }
     if (!questions.length) return showAppNotice('Phần này đang được cập nhật thêm câu hỏi nhé bé!');
     practiceCycleRawPool = [...questions];
@@ -1986,9 +1819,15 @@ function renderNumberPlaceValueLecture_(scope, scopeLabel) {
         : `Bé ơi, một số có <b>2 chữ số</b> gồm <b>hàng chục</b> và <b>hàng đơn vị</b>. Chữ số bên trái là hàng chục, chữ số bên phải là hàng đơn vị. Mỗi chữ số mang giá trị theo hàng của mình. Ví dụ: <b>36 = 30 + 6</b>. Với số tròn chục như <b>10</b> hay <b>80</b>, hàng đơn vị là <b>0</b>, nên <b>10 = 10 + 0</b> và <b>80 = 80 + 0</b>.`;
 
     container.innerHTML = `<div class="w-full pastel-card p-4 md:p-6">
-        <div class="text-center"><div class="text-4xl mb-1">🧮</div><h2 class="text-2xl md:text-3xl font-black text-purple-700">Bài giảng · ${scopeLabel}</h2></div>
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-3">
+            <div class="hidden md:block"></div>
+            <div class="text-center"><div class="text-4xl mb-1">🧮</div><h2 class="text-2xl md:text-3xl font-black text-purple-700">Bài giảng · ${scopeLabel}</h2></div>
+            <div class="flex justify-center md:justify-end">
+                <button onclick="speakVietnamese(${JSON.stringify(speech)})" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm md:text-base font-black shadow-md pastel-btn whitespace-nowrap">🔊 Nghe Cô Thỏ Ngọc đọc</button>
+            </div>
+        </div>
         <div class="mt-4 rounded-2xl border-2 border-pink-200 bg-gradient-to-r from-pink-50/80 to-purple-50/80 p-4 md:p-5">
-            <div class="flex items-start gap-3 max-w-4xl mx-auto"><div class="text-3xl shrink-0">🐰</div><div><div class="font-black text-pink-600 mb-1">Cô Thỏ Ngọc giảng bài</div><p class="text-sm md:text-base font-bold leading-relaxed text-slate-600">${visibleLesson}</p></div></div>
+            <div class="flex items-start gap-3 max-w-4xl mx-auto"><div class="text-3xl shrink-0">🐰</div><div><div class="text-base md:text-lg font-black text-pink-600 mb-1">Cô Thỏ Ngọc giảng bài</div><p class="text-base md:text-lg font-bold leading-relaxed text-slate-600">${visibleLesson}</p></div></div>
         </div>
         <div class="mt-4 rounded-3xl border-2 border-pink-200 bg-white/80 p-4 md:p-5">
             <div class="text-center text-lg md:text-xl font-black text-slate-700">Quan sát vị trí các chữ số</div>
@@ -1997,12 +1836,15 @@ function renderNumberPlaceValueLecture_(scope, scopeLabel) {
             ${exampleCards}
             <div class="mt-4 rounded-2xl bg-emerald-50 border-2 border-emerald-200 p-3 text-center text-base md:text-lg font-black text-emerald-700">💡 ${is1000 ? 'Chữ số 0 vẫn giữ chỗ cho hàng của nó.' : 'Số tròn chục có hàng đơn vị bằng 0.'}</div>
         </div>
-        <div class="flex justify-center mt-4"><button onclick="speakVietnamese(${JSON.stringify(speech)})" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black shadow-md pastel-btn">🔊 Nghe Cô Thỏ Ngọc giảng</button></div>
     </div>`;
 
     const { topicName, topicNum } = pendingTopicQuiz;
     updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', scopeLabel, 'Bài giảng');
     switchAppView('view-dashboard-grid');
+
+    // Mở bài giảng là Cô Thỏ Ngọc đọc luôn. Lệnh này chạy ngay trong thao tác bấm mở bài
+    // để trình duyệt vẫn coi đây là phát âm thanh do người dùng khởi tạo.
+    speakVietnamese(speech, 0.96);
 }
 
 const EXPLORE_LEVELS = {
@@ -2086,6 +1928,9 @@ function selectExploreLevel(level) {
 function selectSubtopic(idx) {
     stopSpeaking();
     if (!pendingTopicQuiz) return;
+    if (Number(pendingTopicQuiz.topicNum) === 2) {
+        return renderExploreComparisonBranches(2, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
+    }
     const { topicNum, topicName, questions, groups, groupMap, groupLabels } = pendingTopicQuiz;
     const subLabel = idx !== null ? groups[idx] : null;
     const pool = idx !== null ? groupMap[subLabel] : questions;
@@ -2414,6 +2259,7 @@ function startTopicQuiz(topicNum, topicName, questions, subLabel) {
     score = 0;
     userAnswers = {};
     wrongAttemptsByQ = {};
+    orderInteractionState = {};
     quizWrongAnswers = []; 
     quizAnsweredLog = []; 
     quizStartTime = Date.now();
@@ -2484,7 +2330,7 @@ function getExploreMathPresentation(q) {
         return out;
     };
     const placePhrase = (count, place, tone) =>
-        `<span class="inline-flex items-center justify-center rounded-2xl border-2 border-${tone}-200 bg-${tone}-50/85 px-4 py-3 md:px-5 md:py-3.5 text-xl md:text-2xl font-black text-${tone}-700 whitespace-nowrap shadow-sm">${digitWords[count] || String(count)} ${place}</span>`;
+        `<span class="inline-flex items-center justify-center rounded-2xl border-2 border-${tone}-200 bg-${tone}-50/85 px-3.5 py-2.5 md:px-4 md:py-3 text-lg md:text-xl font-black text-${tone}-700 whitespace-nowrap shadow-sm">${digitWords[count] || String(count)} ${place}</span>`;
     const vd = q.visual_data || {};
     let prompt = raw, visual = '';
 
@@ -2501,7 +2347,14 @@ function getExploreMathPresentation(q) {
                     return { html: placePhrase(Number(p.count), p.place, tone), place: p.place };
                 }) : [];
                 if (vd.shuffle) parts = seededShuffle(parts);
-                visual = card(`<div class="flex flex-wrap items-center justify-center gap-2.5 md:gap-4">${parts.map((part,i)=>`${i?'<span class="text-3xl md:text-4xl font-black text-fuchsia-400">+</span>':''}${part.html}`).join('')}<span class="text-3xl md:text-4xl font-black text-slate-500 ml-1">=</span><span class="inline-flex min-w-[72px] items-center justify-center rounded-2xl border-2 border-dashed border-fuchsia-300 bg-white px-4 py-3 text-3xl md:text-4xl font-black text-fuchsia-500">?</span></div>`);
+                // Hai chữ số và ba chữ số dùng cùng một bố cục. Nút loa nằm ngay trong
+                // thẻ Ghép số để không tạo thêm một hàng trống phía trên.
+                visual = `<div class="relative w-full max-w-2xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/70 to-purple-50/70 shadow-sm px-4 py-4 md:px-6 md:py-5 text-center">
+                    <button onclick="speakCurrentQuestion()" class="absolute top-3 right-3 w-9 h-9 md:w-10 md:h-10 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe phép ghép số" aria-label="Nghe phép ghép số">
+                        <i class="fa-solid fa-volume-high text-pink-600 text-sm md:text-base"></i>
+                    </button>
+                    <div class="flex flex-wrap md:flex-nowrap items-center justify-center gap-2 md:gap-2.5 pr-10 md:pr-11">${parts.map((part,i)=>`${i?'<span class="text-xl md:text-2xl font-black text-fuchsia-400 shrink-0">+</span>':''}${part.html}`).join('')}<span class="text-xl md:text-2xl font-black text-slate-500 ml-1 shrink-0">=</span><span class="inline-flex min-w-[58px] items-center justify-center rounded-2xl border-2 border-dashed border-fuchsia-300 bg-white px-3 py-2.5 text-xl md:text-2xl font-black text-fuchsia-500 shrink-0">?</span></div>
+                </div>`;
                 break;
             }
             case 'expanded_form_missing': {
@@ -2527,7 +2380,15 @@ function getExploreMathPresentation(q) {
             case 'find_number': {
                 prompt = 'Bé hãy tìm số phù hợp với câu đố nhé!';
                 const clue = vd.clue || raw.replace(/^🔎\s*/, '');
-                visual = card(`<div class="inline-flex items-center gap-2 rounded-full bg-amber-100 border-2 border-amber-200 px-4 py-1.5 text-sm md:text-base font-black text-amber-700">🔎 THÁM TỬ SỐ</div><div class="mt-4 text-2xl md:text-3xl font-black leading-snug text-slate-800">${escapeHtml(clue)}</div><div class="mt-3 text-sm md:text-base font-bold text-purple-500">Đọc thật kỹ từng điều kiện rồi chọn số đúng nhé!</div>`);
+                // Nút loa nằm ngay trong thẻ câu đố để tiết kiệm chiều cao và tạo bố cục gọn hơn.
+                visual = `<div class="relative w-full max-w-2xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/70 to-purple-50/70 shadow-sm px-4 py-4 md:px-6 md:py-5 text-center">
+                    <button onclick="speakCurrentQuestion()" class="absolute top-3 right-3 w-9 h-9 md:w-10 md:h-10 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe nội dung câu đố" aria-label="Nghe nội dung câu đố">
+                        <i class="fa-solid fa-volume-high text-pink-600 text-sm md:text-base"></i>
+                    </button>
+                    <div class="inline-flex items-center gap-2 rounded-full bg-amber-100 border-2 border-amber-200 px-3 py-1 text-xs md:text-sm font-black text-amber-700">🔎 THÁM TỬ SỐ</div>
+                    <div class="mt-3 px-7 md:px-10 text-lg md:text-xl lg:text-2xl font-black leading-snug text-slate-800">${escapeHtml(clue)}</div>
+                    <div class="mt-2 text-xs md:text-sm font-bold text-purple-500">Đọc thật kỹ từng điều kiện rồi chọn số đúng nhé!</div>
+                </div>`;
                 break;
             }
             case 'quantity_estimate': {
@@ -2540,8 +2401,10 @@ function getExploreMathPresentation(q) {
                 const rows = [];
                 for (let r = 0; r < fullRows; r++) rows.push(10);
                 if (remain) rows.push(remain);
-                visual = card(`<div class="text-lg md:text-xl font-black text-purple-700 mb-4">Nhìn nhanh rồi ước lượng nhé!</div><div class="max-w-2xl mx-auto space-y-2">${rows.map((count,ri)=>`<div class="flex justify-center gap-1.5 md:gap-2 flex-wrap" aria-label="hàng ${ri+1}">${Array.from({length:count},()=>`<span class="text-2xl md:text-3xl">${emoji}</span>`).join('')}</div>`).join('')}</div><div class="mt-4 text-sm md:text-base font-bold text-slate-500">Có bao nhiêu ${label}? Con hãy ước lượng theo chục, chưa cần đếm từng ${label}.</div>`);
-                break;
+                // Chỉ dựng phần minh hoạ bên trái. loadQuestion() sẽ ghép minh hoạ,
+                // câu hỏi và đáp án vào cùng một khung hai cột trên desktop.
+                visual = `<div class="w-full"><div class="text-base md:text-lg font-black text-purple-700 mb-3 text-center">Nhìn nhanh rồi ước lượng nhé!</div><div class="mx-auto space-y-1.5 md:space-y-2">${rows.map((count,ri)=>`<div class="flex justify-center gap-1.5 flex-wrap" aria-label="hàng ${ri+1}">${Array.from({length:count},()=>`<span class="text-xl md:text-2xl">${emoji}</span>`).join('')}</div>`).join('')}</div><div class="mt-3 text-xs md:text-sm font-bold leading-snug text-slate-500 text-center">Nhìn theo từng nhóm chục, chưa cần đếm từng ${label}.</div></div>`;
+                return { prompt, visual, layout: 'estimate_split' };
             }
             case 'round_estimate': {
                 prompt = raw;
@@ -2591,6 +2454,18 @@ function getExploreMathPresentation(q) {
                 visual = card(`<div class="flex items-center justify-center gap-2"><span class="w-14 h-14 rounded-full bg-white border-2 border-purple-200 flex items-center justify-center text-2xl font-black">${vd.left}</span><span class="w-10 h-[3px] bg-purple-200"></span><span class="w-14 h-14 rounded-full bg-pink-50 border-2 border-dashed border-pink-400 flex items-center justify-center text-3xl font-black text-pink-500">?</span><span class="w-10 h-[3px] bg-purple-200"></span><span class="w-14 h-14 rounded-full bg-white border-2 border-purple-200 flex items-center justify-center text-2xl font-black">${vd.right}</span></div>`);
                 break;
             }
+            case 'sequence_missing': {
+                prompt = raw;
+                const seq = Array.isArray(vd.sequence) ? vd.sequence : [];
+                const isEmojiPattern = String(vd.kind || '') === 'emoji';
+                if (isEmojiPattern) {
+                    visual = card(`<div class="flex flex-wrap items-center justify-center gap-2 md:gap-3">${seq.map((x)=>`<span class="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center ${x===null?'bg-pink-50 border-2 border-dashed border-pink-400 text-pink-500 text-2xl':'bg-white border-2 border-purple-200 text-3xl md:text-4xl'}">${x===null?'?':x}</span>`).join('')}</div><div class="mt-3 text-xs md:text-sm font-bold text-slate-500">Nhìn mẫu lặp lại rồi chọn emoji còn thiếu nhé!</div>`);
+                } else {
+                    const dir = String(vd.direction || 'asc') === 'desc' ? 'giảm' : 'tăng';
+                    visual = card(`<div class="flex flex-wrap items-center justify-center gap-2 md:gap-3">${seq.map((x,i)=>`<span class="min-w-[58px] h-14 px-3 rounded-2xl flex items-center justify-center font-black text-xl md:text-2xl ${x===null?'bg-pink-50 border-2 border-dashed border-pink-400 text-pink-500':'bg-white border-2 border-purple-200 text-purple-700'}">${x===null?'?':x}</span>${i<seq.length-1?'<span class="text-xl font-black text-purple-300">→</span>':''}`).join('')}</div><div class="mt-3 text-xs md:text-sm font-bold text-slate-500">Dãy số ${dir} theo một quy luật đều. Con hãy tìm số còn thiếu nhé!</div>`);
+                }
+                break;
+            }
             case 'number_line_missing': {
                 prompt = raw;
                 const seq=Array.isArray(vd.sequence)?vd.sequence:[];
@@ -2628,6 +2503,186 @@ function getExploreMathPresentation(q) {
     return {prompt,visual};
 }
 
+function getComposeSpeechText(q) {
+    if (!q || q.explore_type !== 'compose_words') return '';
+    const vd = q.visual_data || {};
+    const digitWords = ['không','một','hai','ba','bốn','năm','sáu','bảy','tám','chín'];
+    let parts = Array.isArray(vd.parts) ? vd.parts.map(p => ({ count: Number(p.count), place: String(p.place || '') })) : [];
+    if (!parts.length) return '';
+    if (vd.shuffle) {
+        const sub = String(q?.sub_topic || q?.sub_id || '');
+        const seedText = `${q?.question_id ?? q?.id ?? ''}|${q?.question_text ?? ''}|${sub}`;
+        let seed = 0;
+        for (let i = 0; i < seedText.length; i++) seed = ((seed << 5) - seed + seedText.charCodeAt(i)) | 0;
+        let x = Math.abs(seed) + 1;
+        const out = parts.slice();
+        for (let i = out.length - 1; i > 0; i--) {
+            x = (x * 1664525 + 1013904223) >>> 0;
+            const j = x % (i + 1);
+            [out[i], out[j]] = [out[j], out[i]];
+        }
+        parts = out;
+    }
+    return parts.map(p => `${digitWords[p.count] || p.count} ${p.place}`).join(' cộng ');
+}
+
+
+function isTopic2Practice_() {
+    return !activeExamContext && !activeRoadmapContext && Number(pendingTopicQuiz?.topicNum) === 2;
+}
+
+function isTopic2OrderInteractive_(q) {
+    return isTopic2Practice_()
+        && pendingTopicQuiz?.selectedCompareBranch === 'order'
+        && q?.explore_type === 'order_numbers_interactive';
+}
+
+function getOrderInteractiveState_(q) {
+    const key = currentQIndex;
+    const nums = Array.isArray(q?.visual_data?.numbers)
+        ? q.visual_data.numbers.map(Number).filter(Number.isFinite)
+        : [];
+    const qid = String(q?.question_id ?? q?.id ?? key);
+    let state = orderInteractionState[key];
+    if (!state || state.questionId !== qid) {
+        state = {
+            questionId: qid,
+            selected: [],
+            remaining: shuffleArray(nums),
+            locked: false,
+            feedback: ''
+        };
+        orderInteractionState[key] = state;
+    }
+    return state;
+}
+
+function getOrderDirection_(q) {
+    return String(q?.visual_data?.direction || 'asc').toLowerCase() === 'desc' ? 'desc' : 'asc';
+}
+
+function renderOrderInteractiveQuestion_(q) {
+    const dir = getOrderDirection_(q);
+    const dirLabel = dir === 'desc' ? 'từ lớn đến bé' : 'từ bé đến lớn';
+    return `
+        <div class="w-full max-w-4xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/65 to-purple-50/65 shadow-sm px-4 py-4 md:px-6 md:py-5">
+            <div class="flex items-start justify-between gap-3 mb-2">
+                <div class="text-left">
+                    <div class="inline-flex items-center gap-2 rounded-full bg-amber-50 border border-amber-200 px-3 py-1 text-xs md:text-sm font-black text-amber-700">🧩 SẮP XẾP DÃY SỐ</div>
+                    <h3 class="mt-2 text-lg md:text-xl font-black text-purple-800 leading-snug">Bé hãy chọn lần lượt để xếp ${dirLabel} nhé!</h3>
+                </div>
+                <button onclick="speakCurrentQuestion()" class="shrink-0 w-9 h-9 md:w-10 md:h-10 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
+                    <i class="fa-solid fa-volume-high text-pink-600 text-sm md:text-base"></i>
+                </button>
+            </div>
+
+            <div class="mt-3 rounded-2xl border-2 border-purple-100 bg-white/75 p-3 md:p-4">
+                <div class="text-xs md:text-sm font-black text-slate-500 mb-2">Dãy số bé đang xếp</div>
+                <div id="order-selected-row" class="flex items-center justify-center gap-1.5 md:gap-2 min-h-[62px]"></div>
+            </div>
+
+            <div class="mt-3 text-sm md:text-base font-extrabold text-slate-500">Chạm vào từng số. Số được chọn sẽ nhảy lên trên.</div>
+            <div id="order-available-row" class="grid grid-cols-5 gap-2 md:gap-3 mt-3"></div>
+
+            <div class="mt-3 min-h-[34px] flex items-center justify-center gap-3">
+                <button onclick="resetOrderInteractiveCurrent_()" class="px-3 py-1.5 rounded-xl border border-purple-200 bg-white text-purple-700 text-xs md:text-sm font-black pastel-btn">↶ Làm lại</button>
+                <span id="order-feedback" class="text-sm md:text-base font-black"></span>
+            </div>
+        </div>`;
+}
+
+function renderOrderInteractiveState_() {
+    const q = activeQuestionsList[currentQIndex];
+    if (!q || !isTopic2OrderInteractive_(q)) return;
+    const state = getOrderInteractiveState_(q);
+    const dir = getOrderDirection_(q);
+    const symbol = dir === 'desc' ? '>' : '<';
+    const total = Array.isArray(q?.visual_data?.numbers) ? q.visual_data.numbers.length : 5;
+    const selectedRow = document.getElementById('order-selected-row');
+    const availableRow = document.getElementById('order-available-row');
+    const feedback = document.getElementById('order-feedback');
+    if (!selectedRow || !availableRow) return;
+
+    const slots = [];
+    for (let i = 0; i < total; i++) {
+        const value = state.selected[i];
+        slots.push(`<span class="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center border-2 ${value !== undefined ? 'border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700' : 'border-dashed border-purple-200 bg-white text-purple-200'} text-xl md:text-2xl font-black shadow-xs">${value !== undefined ? value : '•'}</span>`);
+        if (i < total - 1) slots.push(`<span class="text-lg md:text-xl font-black text-purple-300">${symbol}</span>`);
+    }
+    selectedRow.innerHTML = slots.join('');
+
+    availableRow.innerHTML = state.remaining.map(n => `
+        <button onclick="handleOrderNumberPick_(${Number(n)})" ${state.locked ? 'disabled' : ''}
+            class="min-h-[58px] md:min-h-[64px] rounded-2xl border-2 border-purple-200 bg-white hover:bg-purple-50 text-purple-800 text-xl md:text-2xl font-black shadow-xs pastel-btn disabled:opacity-50">
+            ${Number(n)}
+        </button>`).join('');
+
+    if (feedback) {
+        feedback.className = `text-sm md:text-base font-black ${state.feedback?.type === 'ok' ? 'text-emerald-600' : state.feedback?.type === 'bad' ? 'text-rose-600' : 'text-slate-500'}`;
+        feedback.textContent = state.feedback?.text || '';
+    }
+}
+
+function resetOrderInteractiveCurrent_() {
+    const q = activeQuestionsList[currentQIndex];
+    if (!q || !isTopic2OrderInteractive_(q)) return;
+    const nums = Array.isArray(q?.visual_data?.numbers) ? q.visual_data.numbers.map(Number) : [];
+    orderInteractionState[currentQIndex] = {
+        questionId: String(q?.question_id ?? q?.id ?? currentQIndex),
+        selected: [],
+        remaining: shuffleArray(nums),
+        locked: false,
+        feedback: ''
+    };
+    renderOrderInteractiveState_();
+}
+
+function handleOrderNumberPick_(value) {
+    const q = activeQuestionsList[currentQIndex];
+    if (!q || !isTopic2OrderInteractive_(q)) return;
+    const state = getOrderInteractiveState_(q);
+    if (state.locked) return;
+    const idx = state.remaining.indexOf(Number(value));
+    if (idx < 0) return;
+
+    state.selected.push(Number(value));
+    state.remaining.splice(idx, 1);
+    renderOrderInteractiveState_();
+
+    const nums = Array.isArray(q?.visual_data?.numbers) ? q.visual_data.numbers.map(Number) : [];
+    if (state.selected.length !== nums.length) return;
+
+    const dir = getOrderDirection_(q);
+    const expected = [...nums].sort((a, b) => dir === 'desc' ? b - a : a - b);
+    const isCorrect = expected.every((n, i) => n === state.selected[i]);
+    state.locked = true;
+
+    if (isCorrect) {
+        userAnswers[currentQIndex] = q.answer || expected.join(dir === 'desc' ? ' > ' : ' < ');
+        score += (q.diem ?? 0.5);
+        starGreenCount++;
+        const greenEl = document.getElementById('star-green-count');
+        if (greenEl) greenEl.textContent = starGreenCount;
+        state.feedback = { type: 'ok', text: '🎉 Chính xác! Bé xếp dãy số rất giỏi!' };
+        renderOrderInteractiveState_();
+        playAudio('correct');
+        confetti({ particleCount: 45, spread: 65, origin: { y: 0.68 } });
+        setTimeout(() => speakVietnamese('Giỏi lắm! Dãy số đã được sắp xếp chính xác.'), 120);
+        updateQuizPalletUI();
+        setTimeout(() => {
+            if (userAnswers[currentQIndex] !== undefined) nextQuestion();
+        }, 1050);
+    } else {
+        starRedCount++;
+        const redEl = document.getElementById('star-red-count');
+        if (redEl) redEl.textContent = starRedCount;
+        state.feedback = { type: 'bad', text: 'Chưa đúng rồi. Bé thử xếp lại nhé!' };
+        renderOrderInteractiveState_();
+        playAudio('wrong');
+        setTimeout(() => resetOrderInteractiveCurrent_(), 900);
+    }
+}
+
 function loadQuestion() {
     stopSpeaking();
     const q = activeQuestionsList[currentQIndex];
@@ -2635,6 +2690,12 @@ function loadQuestion() {
 
     const isEvaluationMode = !!activeExamContext || !!activeRoadmapContext;
     const exploreMath = !isEvaluationMode ? getExploreMathPresentation(q) : null;
+    const isNumberCompose = !isEvaluationMode && q.explore_type === 'compose_words';
+    const isFindNumber = !isEvaluationMode && q.explore_type === 'find_number';
+    // Mục 3 (Cộng - trừ) và Mục 4 (Nhân - chia) có đáp án ngắn,
+    // nên dùng bố cục gọn: 4 đáp án trên một hàng ở desktop.
+    const isCompactTopic34 = !isEvaluationMode && [3, 4].includes(Number(pendingTopicQuiz?.topicNum));
+    const isOrderInteractive = isTopic2OrderInteractive_(q);
 
     if (isEvaluationMode) {
         document.getElementById('q-badge-index').textContent = `CÂU ${currentQIndex + 1} / ${activeQuestionsList.length}`;
@@ -2675,7 +2736,7 @@ function loadQuestion() {
             <p class="text-gray-800 text-base md:text-lg font-bold whitespace-pre-line leading-relaxed ${useTwoColumns ? 'md:columns-2 md:gap-6' : ''}">${escapeHtml(pText)}</p>
         </div>` : '';
 
-    const practiceSpeakerBtnHtml = !isEvaluationMode ? `
+    const practiceSpeakerBtnHtml = !isEvaluationMode && !isNumberCompose && !isFindNumber ? `
         <div class="flex items-center justify-center mt-1 mb-1">
             <button onclick="speakCurrentQuestion()" class="px-4 py-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-2xl text-xs md:text-sm font-extrabold flex items-center space-x-1.5 pastel-btn shadow-xs">
                 <i class="fa-solid fa-volume-high text-pink-600"></i>
@@ -2683,8 +2744,23 @@ function loadQuestion() {
             </button>
         </div>
     ` : '';
+    // Riêng Ghép số, nút loa đã nằm bên trong thẻ biểu thức.
+    const composeSpeakerBtnHtml = '';
+    // Riêng Tìm số, nút loa đã được đặt bên trong thẻ câu đố.
+    const findNumberSpeakerBtnHtml = '';
 
     const isLetterListen = q.render_style === 'letter_listen';
+
+    if (isOrderInteractive) {
+        document.getElementById('question-box').innerHTML = renderOrderInteractiveQuestion_(q);
+        renderOrderInteractiveState_();
+        const practiceNav = document.getElementById('nav-group-practice');
+        if (practiceNav) practiceNav.style.marginTop = '0.75rem';
+        updateNavButtons();
+        updateQuizPalletUI();
+        if (autoSpeechEnabled) speakCurrentQuestion();
+        return;
+    }
 
     let html;
     if (isLetterListen) {
@@ -2714,19 +2790,48 @@ function loadQuestion() {
                     <span class="text-xs md:text-sm font-extrabold text-rose-600">${escapeHtml(q.mascot_text)}</span>
                 </div>`;
         }
+    } else if (exploreMath?.layout === 'estimate_split') {
+        // Ước lượng số lượng: toàn bộ hình + câu hỏi + đáp án nằm trong một khung.
+        html = `
+        ${mediaHtml}
+        ${passageHtml}
+        <div class="w-full max-w-5xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/65 to-purple-50/65 shadow-sm p-4 md:p-5">
+            <div class="grid grid-cols-1 md:grid-cols-[1.15fr_0.85fr] gap-4 md:gap-6 items-stretch">
+                <div class="rounded-2xl border border-pink-100 bg-white/70 px-3 py-3 md:px-4 md:py-4 flex items-center justify-center min-h-[250px]">
+                    ${exploreMath.visual || ''}
+                </div>
+                <div class="flex flex-col justify-center rounded-2xl border border-purple-100 bg-white/70 px-3 py-4 md:px-5 md:py-5">
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <h3 class="text-lg md:text-xl font-black leading-snug text-purple-700 text-left">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
+                        <button onclick="speakCurrentQuestion()" class="shrink-0 px-2.5 py-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl text-xs font-extrabold flex items-center gap-1 pastel-btn shadow-xs" title="Nghe câu hỏi">
+                            <i class="fa-solid fa-volume-high text-pink-600"></i><span class="hidden lg:inline">Nghe</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 md:gap-3 mt-1" id="estimate-options-grid">`;
+
+        q.options.forEach((opt) => {
+            const formattedOpt = capitalizeFirstLetter(opt);
+            html += `
+                        <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full p-3 md:p-3.5 bg-white hover:bg-purple-50 border-2 border-purple-200 rounded-2xl font-black text-purple-800 text-center text-base md:text-lg transition-all flex items-center justify-center shadow-xs pastel-btn">
+                            <span>${escapeHtml(formattedOpt)}</span><span class="option-icon text-pink-500 text-base md:text-lg"></span>
+                        </button>`;
+        });
+        html += `</div></div></div></div>`;
     } else {
         html = `
         ${mediaHtml}
         ${passageHtml}
+        ${composeSpeakerBtnHtml}
+        ${findNumberSpeakerBtnHtml}
         ${exploreMath?.visual || ''}
         <div class="flex flex-col items-center justify-center max-w-3xl text-center px-2 mt-2 mb-0.5">
-            <h3 class="${exploreMath ? 'text-xl md:text-2xl lg:text-2xl text-purple-700' : 'text-sm md:text-base lg:text-lg text-slate-900'} font-black leading-snug">
+            <h3 class="${isFindNumber ? 'text-base md:text-lg text-purple-700' : (exploreMath ? (isCompactTopic34 ? 'text-lg md:text-xl text-purple-700' : 'text-xl md:text-2xl lg:text-2xl text-purple-700') : 'text-sm md:text-base lg:text-lg text-slate-900')} font-black leading-snug">
                 ${escapeHtml(exploreMath?.prompt || q.question_text)}
             </h3>
             ${practiceSpeakerBtnHtml}
         </div>
         
-        <div class="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-2.5 mt-1">
+        <div class="w-full ${isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl'} grid ${isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-1 md:grid-cols-2 gap-2.5')} mt-1">
     `;
 
     q.options.forEach((opt, idx) => {
@@ -2744,7 +2849,7 @@ function loadQuestion() {
                 </button>`;
         } else {
             html += `
-                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
+                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-2.5 md:p-3 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-sm md:text-base' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))) : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
                     <span>${exploreMath ? '' : `<strong class="text-pink-600 mr-2 text-base md:text-lg">${letter}.</strong>`} ${escapeHtml(formattedOpt)}</span>
                     <span class="option-icon text-pink-500 text-base md:text-lg"></span>
                 </button>`;
@@ -2758,8 +2863,8 @@ function loadQuestion() {
     // Riêng phần Ghép số: tách thanh điều hướng khỏi khối đáp án để giao diện thoáng hơn.
     const practiceNav = document.getElementById('nav-group-practice');
     if (practiceNav) {
-        const isNumberCompose = !activeExamContext && !activeRoadmapContext && pendingTopicQuiz?.selectedNumberActivity === 'compose';
-        practiceNav.style.marginTop = isNumberCompose ? '1rem' : '';
+        const isComposeNav = !activeExamContext && !activeRoadmapContext && (pendingTopicQuiz?.selectedNumberActivity === 'compose' || q.explore_type === 'compose_words');
+        practiceNav.style.marginTop = isComposeNav ? '1rem' : '';
     }
 
     restoreQuestionState(q);
@@ -2954,9 +3059,11 @@ function checkAnswer(selectedOpt) {
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
         setTimeout(() => speakVietnamese(`${q.answer}`), 180);
 
-        // Ghép số là dạng phản xạ ngắn: đúng thì tự chuyển sang câu kế tiếp.
-        // Giữ một nhịp ngắn để bé kịp nhận phản hồi xanh trước khi chuyển.
-        if (pendingTopicQuiz?.selectedNumberActivity === 'compose') {
+        // Ghép số và toàn bộ Mục 2 là các hoạt động phản xạ ngắn:
+        // làm đúng thì tự chuyển câu sau, không bắt bé bấm thêm một lần.
+        const shouldAutoAdvance = pendingTopicQuiz?.selectedNumberActivity === 'compose'
+            || Number(pendingTopicQuiz?.topicNum) === 2;
+        if (shouldAutoAdvance) {
             setTimeout(() => {
                 if (userAnswers[currentQIndex] !== undefined) nextQuestion();
             }, 850);
@@ -3798,8 +3905,18 @@ function speakVietnamese(text, rate = 0.96) {
 function speakCurrentQuestion() {
     const q = activeQuestionsList[currentQIndex];
     if (!q) return;
+    if (q.explore_type === 'find_number') {
+        const clue = q.visual_data?.clue || String(q.question_text || '').replace(/^🔎\s*/, '');
+        speakVietnamese(clue, 0.96);
+        return;
+    }
+    const composeSpeech = getComposeSpeechText(q);
+    if (composeSpeech) {
+        speakVietnamese(composeSpeech, 0.94);
+        return;
+    }
     const exploreMath = (!activeExamContext && !activeRoadmapContext) ? getExploreMathPresentation(q) : null;
-    const textToRead = exploreMath?.prompt || q.audio_text || q.reading_passage || q.question_text;
+    const textToRead = q.audio_text || exploreMath?.prompt || q.reading_passage || q.question_text;
     speakVietnamese(textToRead, 0.96);
 }
 
@@ -4113,6 +4230,29 @@ function openBaiHocPageToan2_(pageIndex) {
     renderBaiHocDetailToan2_();
 }
 
+function speakLessonTeacherToan2_() {
+    const lesson = activeBaiHocToan2_?.lesson;
+    const idx = Number(activeBaiHocToan2_?.pageIndex || 0);
+    const page = lesson?.pages?.[idx];
+    const text = String(page?.teacher_script || page?.intro || '').trim();
+    if (text) speakVietnamese(text, 0.92);
+}
+
+function renderLessonPedagogyPanelToan2_(page) {
+    const safe = escapeHtml;
+    const scene = String(page?.visual_scene || '').trim();
+    const steps = Array.isArray(page?.micro_steps) ? page.micro_steps : [];
+    if (!scene && !steps.length) return '';
+    return `<div class="rounded-3xl border-2 border-fuchsia-200 bg-gradient-to-br from-fuchsia-50 via-white to-sky-50 p-4 md:p-5">
+      <div class="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-4 items-stretch">
+        <div class="rounded-2xl bg-white border-2 border-pink-100 min-h-[126px] p-4 flex items-center justify-center text-center">
+          <div class="whitespace-pre-line text-lg md:text-xl font-black text-slate-700 leading-relaxed">${safe(scene)}</div>
+        </div>
+        <div class="grid grid-cols-1 gap-2">${steps.slice(0,3).map((x,i)=>`<div class="rounded-2xl border border-violet-100 bg-white px-3.5 py-3 flex gap-3 items-start"><span class="shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white flex items-center justify-center font-black">${i+1}</span><div><div class="text-[11px] uppercase tracking-wide font-black text-violet-500">${['Nhìn','Hiểu','Làm'][i]||'Bước'}</div><div class="text-sm md:text-base font-extrabold text-slate-700 leading-snug">${safe(x)}</div></div></div>`).join('')}</div>
+      </div>
+    </div>`;
+}
+
 function renderBaiHocPageBodyToan2_(page) {
     const safe = escapeHtml;
     const lesson = activeBaiHocToan2_?.lesson || {};
@@ -4136,20 +4276,24 @@ function renderBaiHocPageBodyToan2_(page) {
         }
         return `<div class="space-y-4">
           ${page.intro?`<div class="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50 p-4 text-base md:text-lg font-extrabold text-pink-700">${safe(page.intro)}</div>`:''}
+          ${page.teacher_script?`<div class="rounded-2xl border border-purple-200 bg-white p-3 flex items-center justify-between gap-3"><div class="flex items-center gap-2 min-w-0"><span class="text-2xl">🐰</span><div><div class="font-black text-purple-700">Cô Thỏ Ngọc giảng bài</div><div class="text-xs md:text-sm font-semibold text-slate-500">Phần nghe được giảng kỹ hơn phần chữ hiển thị.</div></div></div><button onclick="speakLessonTeacherToan2_()" class="shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md font-black" title="Nghe Cô Thỏ Ngọc giảng">🔊</button></div>`:''}
+          ${renderLessonPedagogyPanelToan2_(page)}
           ${page.story?`<div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-4"><div class="font-black text-amber-700 mb-1">🌟 Câu chuyện mở đầu</div><div class="text-base md:text-lg font-semibold text-slate-700 leading-relaxed">${safe(page.story)}</div></div>`:''}
           ${visual}
           ${questions.length?`<div class="rounded-2xl border border-violet-200 bg-violet-50/50 p-4"><div class="font-black text-violet-700 mb-2">🤔 Con thử nghĩ xem</div><div class="grid grid-cols-1 md:grid-cols-3 gap-2">${questions.map((q,i)=>`<div class="rounded-xl bg-white border border-violet-100 p-3 text-base md:text-lg font-bold text-slate-700"><span class="text-violet-500">${i+1}.</span> ${safe(q)}</div>`).join('')}</div></div>`:''}
           ${cards.length?`<div><div class="font-black text-emerald-700 mb-2">📚 Kiến thức mới</div><div class="grid grid-cols-1 md:grid-cols-${Math.min(cards.length,3)} gap-2">${cards.map(c=>`<div class="rounded-2xl border-2 border-emerald-200 bg-emerald-50/60 p-4"><div class="font-black text-emerald-700 mb-1">${safe(c.title)}</div><div class="text-base md:text-lg font-semibold text-slate-700">${safe(c.text)}</div></div>`).join('')}</div></div>`:''}
           ${worked.length?`<div class="rounded-2xl border border-orange-200 bg-orange-50/60 p-4"><div class="font-black text-orange-700 mb-2">✏️ Cô làm mẫu</div><div class="space-y-2">${worked.map(x=>`<div class="rounded-xl bg-white border border-orange-100 px-3 py-2 text-base md:text-lg font-bold text-slate-700">${safe(x)}</div>`).join('')}</div></div>`:''}
+          ${(page.common_mistake||page.self_check)?`<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${page.common_mistake?`<div class="rounded-2xl border-2 border-rose-200 bg-rose-50/70 p-4"><div class="font-black text-rose-700 mb-1">⚠️ Bé hay nhầm ở đâu?</div><div class="text-sm md:text-base font-bold text-slate-700 leading-relaxed">${safe(page.common_mistake)}</div></div>`:''}${page.self_check?`<div class="rounded-2xl border-2 border-emerald-200 bg-emerald-50/70 p-4"><div class="font-black text-emerald-700 mb-1">✅ Tự kiểm trước khi sang trang</div><div class="text-sm md:text-base font-bold text-slate-700 leading-relaxed">${safe(page.self_check)}</div></div>`:''}</div>`:''}
         </div>`;
     }
     if (page.page_type === 'practice') {
         const items=page.items||[], extra=page.extra_examples||[];
-        return `<div class="space-y-4"><div class="rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 p-3 text-center font-black text-purple-700">🎯 Làm từng thử thách rồi bấm “Xem đáp án” để tự kiểm tra</div><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${items.map((it,i)=>`<div class="rounded-2xl border-2 border-purple-200 bg-white p-4"><div class="flex items-center gap-2 mb-2"><span class="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center font-black">${i+1}</span><span class="font-black text-purple-700">Thử thách ${i+1}</span></div><div class="text-base md:text-lg font-semibold text-slate-700 leading-relaxed min-h-[48px]">${safe(it.prompt||'')}</div>${it.answer?`<button onclick="this.nextElementSibling.classList.toggle('hidden')" class="mt-3 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 text-sm md:text-base font-black">👀 Xem đáp án</button><div class="hidden mt-2 rounded-xl bg-emerald-50 border border-emerald-200 p-2 text-base md:text-lg font-black text-emerald-700">✓ ${safe(it.answer)}</div>`:''}</div>`).join('')}</div>${extra.length?`<div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4"><div class="font-black text-emerald-700 mb-2">🌱 Mẹo của Cô Thỏ Ngọc</div><ul class="list-disc pl-5 space-y-1 text-base md:text-lg font-semibold text-slate-700">${extra.map(x=>`<li>${safe(x)}</li>`).join('')}</ul></div>`:''}</div>`;
+        const strategy=Array.isArray(page.practice_strategy)?page.practice_strategy:[];
+        return `<div class="space-y-4"><div class="rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 p-3 text-center font-black text-purple-700">🎯 Làm từng thử thách rồi bấm “Xem đáp án” để tự kiểm tra</div>${strategy.length?`<div class="grid grid-cols-1 md:grid-cols-3 gap-2">${strategy.slice(0,3).map((x,i)=>`<div class="rounded-xl border border-purple-100 bg-white p-3"><div class="text-[11px] uppercase font-black text-purple-500">Bước ${i+1}</div><div class="text-sm md:text-base font-extrabold text-slate-700">${safe(x)}</div></div>`).join('')}</div>`:''}<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${items.map((it,i)=>`<div class="rounded-2xl border-2 border-purple-200 bg-white p-4"><div class="flex items-center gap-2 mb-2"><span class="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center font-black">${i+1}</span><span class="font-black text-purple-700">Thử thách ${i+1}</span></div><div class="text-base md:text-lg font-semibold text-slate-700 leading-relaxed min-h-[48px]">${safe(it.prompt||'')}</div>${it.answer?`<button onclick="this.nextElementSibling.classList.toggle('hidden')" class="mt-3 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 text-sm md:text-base font-black">👀 Xem đáp án</button><div class="hidden mt-2 rounded-xl bg-emerald-50 border border-emerald-200 p-2 text-base md:text-lg font-black text-emerald-700">✓ ${safe(it.answer)}</div>`:''}</div>`).join('')}</div>${page.feedback_on_wrong?`<div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-4"><div class="font-black text-amber-700 mb-1">🧭 Nếu con chưa đúng</div><div class="text-sm md:text-base font-bold text-slate-700">${safe(page.feedback_on_wrong)}</div></div>`:''}${extra.length?`<div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4"><div class="font-black text-emerald-700 mb-2">🌱 Mẹo của Cô Thỏ Ngọc</div><ul class="list-disc pl-5 space-y-1 text-base md:text-lg font-semibold text-slate-700">${extra.map(x=>`<li>${safe(x)}</li>`).join('')}</ul></div>`:''}</div>`;
     }
     if (page.page_type === 'summary') {
         const points=page.key_points||[], connections=page.connections||[];
-        return `<div class="space-y-4"><div class="rounded-3xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-4 md:p-5"><div class="text-center font-black text-emerald-700 text-lg mb-3">⭐ Ghi nhớ thật nhanh</div><div class="grid grid-cols-1 md:grid-cols-${Math.min(points.length,3)} gap-2">${points.map((x,i)=>`<div class="rounded-2xl bg-white border border-emerald-200 p-3 text-center"><div class="text-2xl mb-1">${['①','②','③'][i]||'✓'}</div><div class="text-base md:text-lg font-bold text-slate-700">${safe(x)}</div></div>`).join('')}</div></div>${connections.length?`<div class="rounded-2xl border border-sky-200 bg-sky-50/60 p-4"><div class="font-black text-sky-700 mb-2">🔗 Nhìn là nhớ</div>${connections.map(x=>`<div class="rounded-xl bg-white border border-sky-100 px-3 py-2 mb-2 last:mb-0 text-base md:text-lg font-bold text-slate-700">${safe(x)}</div>`).join('')}</div>`:''}${page.finish_prompt?`<div class="rounded-2xl border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50 p-4 text-center"><div class="text-2xl mb-1">🐰</div><div class="font-black text-pink-700">${safe(page.finish_prompt)}</div></div>`:''}</div>`;
+        return `<div class="space-y-4"><div class="rounded-3xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-4 md:p-5"><div class="text-center font-black text-emerald-700 text-lg mb-3">⭐ Ghi nhớ thật nhanh</div><div class="grid grid-cols-1 md:grid-cols-${Math.min(points.length,3)} gap-2">${points.map((x,i)=>`<div class="rounded-2xl bg-white border border-emerald-200 p-3 text-center"><div class="text-2xl mb-1">${['①','②','③'][i]||'✓'}</div><div class="text-base md:text-lg font-bold text-slate-700">${safe(x)}</div></div>`).join('')}</div></div>${connections.length?`<div class="rounded-2xl border border-sky-200 bg-sky-50/60 p-4"><div class="font-black text-sky-700 mb-2">🔗 Nhìn là nhớ</div>${connections.map(x=>`<div class="rounded-xl bg-white border border-sky-100 px-3 py-2 mb-2 last:mb-0 text-base md:text-lg font-bold text-slate-700">${safe(x)}</div>`).join('')}</div>`:''}${Array.isArray(page.quick_check)&&page.quick_check.length?`<div class="rounded-2xl border border-violet-200 bg-violet-50/60 p-4"><div class="font-black text-violet-700 mb-2">🧠 Con tự kiểm nhé</div><div class="grid grid-cols-1 md:grid-cols-2 gap-2">${page.quick_check.map(x=>`<div class="rounded-xl bg-white border border-violet-100 p-3 text-sm md:text-base font-bold text-slate-700">${safe(x)}</div>`).join('')}</div></div>`:''}${page.finish_prompt?`<div class="rounded-2xl border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50 p-4 text-center"><div class="text-2xl mb-1">🐰</div><div class="font-black text-pink-700">${safe(page.finish_prompt)}</div></div>`:''}</div>`;
     }
     return `<div class="text-sm font-bold text-slate-500">Chưa có nội dung cho trang này.</div>`;
 }
@@ -4229,8 +4373,17 @@ function showLockedBaiTapToan2_(bai) {
 }
 function getQuestionsForBaiTapToan2_(bt) {
     if (!bt || !allQuestionsFlatCache) return [];
+    const lessonId = String(bt.lesson_id || '').trim();
     const subIds = (bt.sub_ids || []).map(String);
-    let scoped = allQuestionsFlatCache.filter(q => subIds.length && subIds.includes(String(q.sub_id || q.sub_topic || '')));
+    // Kiến trúc mới: câu hỏi tự khai báo lesson_refs. Nhờ vậy một sub_code có thể dùng cho nhiều bài
+    // mà không kéo nhầm phép cộng sang phép trừ, hay câu 2 chữ số sang bài 3 chữ số.
+    let scoped = lessonId
+        ? allQuestionsFlatCache.filter(q => Array.isArray(q.lesson_refs) && q.lesson_refs.includes(lessonId))
+        : [];
+    // Fallback chỉ để tương thích kho dữ liệu cũ chưa migrate lesson_refs.
+    if (!scoped.length) {
+        scoped = allQuestionsFlatCache.filter(q => subIds.length && subIds.includes(String(q.sub_id || q.sub_topic || '')));
+    }
     if (!scoped.length) return [];
     const candidateTarget = Math.max(20, Number(bt.candidate_pool_target || 30));
     const candidate = shuffleArray(scoped).slice(0, Math.min(candidateTarget, scoped.length));
