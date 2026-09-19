@@ -80,14 +80,6 @@
         ::-webkit-scrollbar-thumb:hover { background: #ec4899; }
 
 
-
-        /* Header breadcrumb: text-only, no icon, never overlap the right-side controls. */
-        #header-nav-zone { min-width: 0; flex: 1 1 auto; overflow: hidden; }
-        #header-learning-tabs { min-width: 0; flex-wrap: nowrap; overflow: hidden; white-space: nowrap; }
-        #header-learning-tabs > div { flex: 0 0 auto; }
-        #header-level2-icon { display: none !important; }
-        #header-level3-tab, #header-level4-tab { min-width: 0; }
-
         @media (max-width: 767px) {
             .app-main-header {
                 display: grid !important;
@@ -112,7 +104,7 @@
                 grid-row: 1;
                 grid-column: 2;
                 min-width: 0;
-                overflow-x: hidden;
+                overflow-x: auto;
                 overflow-y: hidden;
                 scrollbar-width: none;
                 margin-left: 0;
@@ -175,6 +167,41 @@
                 padding-left: 0.625rem !important;
                 padding-right: 0.625rem !important;
             }
+        }
+
+
+        /* Breadcrumb header: text only, never overlap the account/info area.
+           If the deepest tab is too long, clip it instead of pushing/chồng tab khác. */
+        #header-nav-zone {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+            justify-content: flex-start !important;
+        }
+        #header-learning-tabs {
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+        #header-learning-tabs > div { flex: 0 0 auto; min-width: 0; }
+        #header-learning-tabs button { min-width: 0; }
+        #header-info-zone { flex: 0 0 auto !important; }
+        #header-level2-icon { display: none !important; }
+        #header-level3-tab {
+            /* Breadcrumb là các chip nối tiếp nhau; không cho tầng 3 giãn chiếm hết khoảng trống. */
+            flex: 0 0 auto !important;
+            min-width: 0;
+            overflow: hidden;
+        }
+        #header-level3-tab > button {
+            max-width: 210px !important;
+            overflow: hidden;
+        }
+        #header-level4-tab {
+            flex: 0 0 auto !important;
+            min-width: 0;
         }
 
         @media print {
@@ -326,12 +353,12 @@
         <div id="screen-dashboard" class="w-full hidden flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2" style="max-width: 72rem !important;">
             
             <header class="app-main-header w-full bg-white/95 backdrop-blur-md px-2 py-1 rounded-2xl shadow-sm border-2 border-pink-200 flex flex-col md:flex-row justify-between items-center gap-2">
-                <div id="header-nav-zone" class="flex items-center space-x-2 w-full md:flex-1 min-w-0 justify-between md:justify-start overflow-hidden">
+                <div id="header-nav-zone" class="flex items-center space-x-2 w-full md:w-auto justify-between md:justify-start overflow-x-auto">
                     <button id="btn-header-home" onclick="goHome()" title="Về trang chủ" class="w-[78px] h-[52px] flex items-center justify-center bg-white rounded-xl border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]">
                         <img src="log-home.png" alt="Trang chủ Toán 2" class="w-full h-full object-cover">
                     </button>
 
-                    <div id="header-learning-tabs" class="flex items-center flex-nowrap space-x-1 min-w-0 overflow-hidden">
+                    <div id="header-learning-tabs" class="flex items-center space-x-1 min-w-0">
                         <div id="header-discover-tab" class="hidden items-center">
                             <button onclick="openMainTab('discover')" class="h-10 px-3 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-extrabold rounded-xl text-xs md:text-sm flex items-center space-x-1.5 shadow-sm border border-fuchsia-300 shrink-0 transition-shadow duration-200 hover:shadow-[0_0_14px_rgba(168,85,247,0.55)]">
                                 <span>Khám phá</span>
@@ -340,6 +367,7 @@
                         <div id="header-level2-tab" class="hidden items-center space-x-1">
                             <span class="text-pink-300 font-bold text-xs">/</span>
                             <button onclick="returnToTopicLecture()" class="h-10 px-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold rounded-xl text-xs md:text-sm flex items-center space-x-1.5 shadow-sm border border-pink-300 shrink-0 max-w-[200px] md:max-w-[260px] transition-shadow duration-200 hover:shadow-[0_0_14px_rgba(244,63,94,0.65)]">
+                                <span id="header-level2-icon">🔢</span>
                                 <span id="header-level2-title" class="truncate">Chủ đề học</span>
                             </button>
                         </div>
@@ -397,29 +425,7 @@
                 <!-- VIEW 1: TRANG CHỦ 12 CHỦ ĐỀ -->
                 <div id="view-dashboard-grid" class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5"></div>
 
-                <!-- VIEW 2: BÀI GIẢNG -->
-                <div id="view-lecture" class="w-full hidden pastel-card p-4 md:p-6 flex flex-col justify-between items-center min-h-[480px]">
-                    <div class="w-full max-w-4xl flex flex-col items-center">
-                        <h2 id="lecture-title" class="hidden"></h2>
-                        <div class="w-full bg-pink-50/40 p-3.5 md:p-4 rounded-2xl border-2 border-pink-100 mb-3">
-                            <p id="lecture-content" class="text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-line text-center"></p>
-                        </div>
-
-                        <button onclick="speakLecture()" class="w-full max-w-xs py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-extrabold rounded-xl text-sm md:text-base pastel-btn flex items-center justify-center space-x-2 border-2 border-purple-200 shadow-sm mb-2.5">
-                            <i class="fa-solid fa-volume-high text-base"></i><span>Nghe cô đọc</span>
-                        </button>
-
-                        <div class="w-full pt-2 border-t border-pink-100 flex flex-col items-center">
-                            <div id="lecture-subtopics-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-2xl"></div>
-                        </div>
-                    </div>
-
-                    <div class="w-full flex justify-center mt-2.5 pt-1">
-                        <button onclick="selectSubtopic(null)" class="w-full max-w-xs py-2 bg-gradient-to-r from-purple-400 to-indigo-400 text-white font-extrabold rounded-xl text-xs md:text-sm pastel-btn shadow-md">
-                            🌟 Học trộn tất cả các mục
-                        </button>
-                    </div>
-                </div>
+                <!-- Khám phá dùng trực tiếp view-dashboard-grid để hiển thị chủ đề/mục con; không còn view lecture trung gian. -->
 
                 <!-- VIEW 3: PHÒNG LÀM BÀI / THI CHUẨN 16:9 -->
                 <div id="view-quiz" class="w-full hidden flex flex-col space-y-1.5">
@@ -793,7 +799,7 @@
     </footer>
 
     <!-- NẠP ENGINE JAVASCRIPT ĐỒNG BỘ -->
-    <script src="assets/js/app.js?v=10.0.0"></script>
+    <script src="assets/js/app.js?v=10.0.1"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
