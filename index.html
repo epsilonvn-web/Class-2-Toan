@@ -80,6 +80,14 @@
         ::-webkit-scrollbar-thumb:hover { background: #ec4899; }
 
 
+
+        /* Header breadcrumb: text-only, no icon, never overlap the right-side controls. */
+        #header-nav-zone { min-width: 0; flex: 1 1 auto; overflow: hidden; }
+        #header-learning-tabs { min-width: 0; flex-wrap: nowrap; overflow: hidden; white-space: nowrap; }
+        #header-learning-tabs > div { flex: 0 0 auto; }
+        #header-level2-icon { display: none !important; }
+        #header-level3-tab, #header-level4-tab { min-width: 0; }
+
         @media (max-width: 767px) {
             .app-main-header {
                 display: grid !important;
@@ -104,7 +112,7 @@
                 grid-row: 1;
                 grid-column: 2;
                 min-width: 0;
-                overflow-x: auto;
+                overflow-x: hidden;
                 overflow-y: hidden;
                 scrollbar-width: none;
                 margin-left: 0;
@@ -185,6 +193,62 @@
             .page-break-2 { page-break-before: always; break-before: page; page-break-after: always; break-after: page; }
             .page-break-3 { page-break-before: always; break-before: page; }
         }
+
+
+        /* UI chuẩn 6 tab chính: Khám phá | Bài học | Bài tập | Ôn tập | Đề thi | Mini games */
+        .main-module-tab {
+            position: relative;
+            min-height: 46px;
+            padding: 7px 8px;
+            border-radius: 14px;
+            border: 1.5px solid #f5c5df;
+            background: linear-gradient(180deg,#fff,#fff8fc);
+            color: #7e3bb8;
+            font-weight: 900;
+            font-size: 13px;
+            line-height: 1.05;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 7px rgba(109,40,217,.07);
+            transition: box-shadow .18s,border-color .18s,background .18s,color .18s;
+        }
+        .main-module-tab:hover { border-color:#e879f9; box-shadow:0 0 13px rgba(217,70,239,.22); }
+        .main-module-tab.is-active {
+            color:#fff;
+            border-color:#d946ef;
+            background:linear-gradient(135deg,#ec4899 0%,#a855f7 55%,#7c3aed 100%);
+            box-shadow:0 5px 14px rgba(168,85,247,.28);
+        }
+        @media (min-width:768px) { .main-module-tab { min-height:50px; font-size:14px; } }
+
+        .semester-switch-btn {
+            min-width: 88px;
+            height: 34px;
+            padding: 0 14px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 12px;
+            transform: none !important;
+            transition: background .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease;
+        }
+        .semester-switch-btn.is-active {
+            color:#fff !important;
+            background:linear-gradient(135deg,#ec4899 0%,#a855f7 100%) !important;
+            border:2px solid #c026d3 !important;
+            box-shadow:0 5px 12px rgba(168,85,247,.28) !important;
+        }
+        .semester-switch-btn.is-inactive {
+            color:#7e22ce !important;
+            background:linear-gradient(135deg,#fff1f7 0%,#f5f3ff 100%) !important;
+            border:1.5px solid #e9d5ff !important;
+            box-shadow:0 2px 6px rgba(126,34,206,.08) !important;
+        }
+        @media (max-width:900px) {
+            .semester-switch-btn { min-width:78px; height:32px; padding:0 10px; font-size:11px; }
+        }
+
     </style>
 </head>
 <body class="p-1 md:p-2 w-full" style="padding-top:max(0.25rem,env(safe-area-inset-top));padding-bottom:max(0.25rem,env(safe-area-inset-bottom));padding-left:max(0.25rem,env(safe-area-inset-left));padding-right:max(0.25rem,env(safe-area-inset-right));">
@@ -259,34 +323,39 @@
         </div>
 
         <!-- 2. KHUNG CHÍNH CHUẨN TỶ LỆ 16:9 / 16:10 -->
-        <div id="screen-dashboard" class="w-full max-w-5xl hidden flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2">
+        <div id="screen-dashboard" class="w-full hidden flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2" style="max-width: 72rem !important;">
             
             <header class="app-main-header w-full bg-white/95 backdrop-blur-md px-2 py-1 rounded-2xl shadow-sm border-2 border-pink-200 flex flex-col md:flex-row justify-between items-center gap-2">
-                <div id="header-nav-zone" class="flex items-center space-x-2 w-full md:w-auto justify-between md:justify-start overflow-x-auto">
-                    <button id="btn-header-home" onclick="goHome()" title="Về trang chủ" class="w-[62px] h-[62px] flex items-center justify-center bg-white rounded-xl border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]">
-                        <img src="icon-192.png" alt="Trang chủ Toán 2" class="w-full h-full object-cover">
+                <div id="header-nav-zone" class="flex items-center space-x-2 w-full md:flex-1 min-w-0 justify-between md:justify-start overflow-hidden">
+                    <button id="btn-header-home" onclick="goHome()" title="Về trang chủ" class="w-[78px] h-[52px] flex items-center justify-center bg-white rounded-xl border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]">
+                        <img src="log-home.png" alt="Trang chủ Toán 2" class="w-full h-full object-cover">
                     </button>
 
-                    <div id="header-learning-tabs" class="flex items-center space-x-1 min-w-0">
-                        <div id="header-level2-tab" class="hidden items-center">
+                    <div id="header-learning-tabs" class="flex items-center flex-nowrap space-x-1 min-w-0 overflow-hidden">
+                        <div id="header-discover-tab" class="hidden items-center">
+                            <button onclick="openMainTab('discover')" class="h-10 px-3 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-extrabold rounded-xl text-xs md:text-sm flex items-center space-x-1.5 shadow-sm border border-fuchsia-300 shrink-0 transition-shadow duration-200 hover:shadow-[0_0_14px_rgba(168,85,247,0.55)]">
+                                <span>Khám phá</span>
+                            </button>
+                        </div>
+                        <div id="header-level2-tab" class="hidden items-center space-x-1">
+                            <span class="text-pink-300 font-bold text-xs">/</span>
                             <button onclick="returnToTopicLecture()" class="h-10 px-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold rounded-xl text-xs md:text-sm flex items-center space-x-1.5 shadow-sm border border-pink-300 shrink-0 max-w-[200px] md:max-w-[260px] transition-shadow duration-200 hover:shadow-[0_0_14px_rgba(244,63,94,0.65)]">
-                                <span id="header-level2-icon">🔢</span>
                                 <span id="header-level2-title" class="truncate">Chủ đề học</span>
                             </button>
                         </div>
 
                         <div id="header-level3-tab" class="hidden items-center space-x-1">
                             <span class="text-pink-300 font-bold text-xs">/</span>
-                            <div class="h-10 px-2.5 bg-purple-50 border border-purple-200 text-purple-700 font-extrabold rounded-xl text-xs md:text-sm max-w-[170px] md:max-w-[210px] truncate shadow-inner flex items-center">
+                            <button onclick="returnToLevel3FromHeader()" class="h-10 px-2.5 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-extrabold rounded-xl text-xs md:text-sm max-w-[170px] md:max-w-[210px] truncate shadow-inner flex items-center">
                                 <span id="header-level3-title" class="truncate">Mục nhỏ</span>
-                            </div>
+                            </button>
                         </div>
 
                         <div id="header-level4-tab" class="hidden items-center space-x-1">
                             <span class="text-pink-300 font-bold text-xs">/</span>
-                            <div class="h-10 px-2.5 bg-amber-50 border border-amber-200 text-amber-700 font-extrabold rounded-xl text-xs md:text-sm max-w-[200px] md:max-w-[260px] truncate shadow-inner flex items-center">
-                                <span id="header-level4-title" class="truncate">Chủ đề tuần</span>
-                            </div>
+                            <button onclick="returnToLevel4FromHeader()" class="h-10 px-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 font-extrabold rounded-xl text-xs md:text-sm max-w-[200px] md:max-w-[260px] truncate shadow-inner flex items-center">
+                                <span id="header-level4-title" class="truncate">Chủ đề</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -308,21 +377,20 @@
                     </div>
 
                     <div id="user-info-box" class="text-xs font-bold text-gray-600 text-right"></div>
-
-                    <button id="btn-progress-map" onclick="clickProgressOrExam('progress')" class="relative overflow-visible h-10 px-2.5 md:px-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-extrabold rounded-xl text-xs md:text-sm shadow-md hover:from-purple-600 hover:to-indigo-600 flex items-center space-x-1 md:space-x-1.5 shrink-0 transition-shadow duration-200 hover:shadow-[0_0_14px_rgba(129,74,240,0.65)]">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        <span class="md:hidden">Tuần</span>
-                        <span class="hidden md:inline">Bản đồ tuần</span>
-                        <i id="progress-lock-icon" class="fa-solid fa-lock text-[10px]"></i>
-                    </button>
-
-                    <button id="btn-mini-game" onclick="openMiniGameHub()" class="relative overflow-visible h-10 px-2.5 md:px-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-extrabold rounded-xl text-xs md:text-sm shadow-md hover:from-teal-600 hover:to-emerald-600 flex items-center space-x-1 md:space-x-1.5 shrink-0 transition-shadow duration-200 hover:shadow-[0_0_14px_rgba(20,184,166,0.65)]">
-                        <i class="fa-solid fa-gamepad"></i>
-                        <span id="minigame-label-mobile" class="md:hidden">Game 🔒</span>
-                        <span id="minigame-label-desktop" class="hidden md:inline">Mini Game 🔒</span>
-                    </button>
-                </div>
+</div>
             </header>
+
+            <!-- ĐIỀU HƯỚNG CHÍNH 6 TAB -->
+            <nav id="main-module-tabs" class="w-full bg-white/95 border-2 border-pink-200 rounded-2xl p-1.5 shadow-sm" aria-label="Điều hướng chính">
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-1.5">
+                    <button id="main-tab-discover" onclick="openMainTab('discover')" class="main-module-tab" data-tab="discover"><span class="text-lg">🧭</span><span>Khám phá</span></button>
+                    <button id="main-tab-lessons" onclick="openMainTab('lessons')" class="main-module-tab" data-tab="lessons"><span class="text-lg">📖</span><span>Bài học</span><span id="bai-hoc-lock-icon" class="hidden absolute -top-1 -right-1 text-[12px]">🔒</span></button>
+                    <button id="main-tab-exercises" onclick="openMainTab('exercises')" class="main-module-tab" data-tab="exercises"><span class="text-lg">✏️</span><span>Bài tập</span><span id="roadmap-lock-icon" class="hidden absolute -top-1 -right-1 text-[12px]">🔒</span></button>
+                    <button id="main-tab-review" onclick="openMainTab('review')" class="main-module-tab" data-tab="review"><span class="text-lg">🧠</span><span>Ôn tập</span><span id="review-lock-icon" class="hidden absolute -top-1 -right-1 text-[12px]">🔒</span></button>
+                    <button id="main-tab-exams" onclick="openMainTab('exams')" class="main-module-tab" data-tab="exams"><span class="text-lg">🏆</span><span>Đề thi</span><span id="exam-lock-icon" class="hidden absolute -top-1 -right-1 text-[12px]">🔒</span></button>
+                    <button id="main-tab-games" onclick="openMainTab('games')" class="main-module-tab" data-tab="games"><span class="text-lg">🎮</span><span>Mini games</span><span id="minigame-lock-icon" class="hidden absolute -top-1 -right-1 text-[12px]">🔒</span></button>
+                </div>
+            </nav>
 
             <main id="app-viewport" class="w-full">
                 
@@ -444,20 +512,36 @@
                         <div class="flex flex-col sm:flex-row items-center justify-between w-full px-2 mb-2 gap-2">
                             <div>
                                 <h2 class="text-base md:text-lg font-extrabold text-indigo-600 flex items-center space-x-2">
-                                    <span>🗺️</span><span>Bản đồ lộ trình 24 tuần bứt phá</span>
+                                    <span>✏️</span><span>Bài tập</span>
                                 </h2>
-                                <p class="text-[11px] md:text-xs text-gray-500 font-bold">Mỗi tuần 30 câu (tỷ lệ 3:4:3). Đạt từ 80% trở lên để mở khóa tuần kế tiếp!</p>
+                                <p class="text-[11px] md:text-xs text-gray-500 font-bold">20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo · đánh giá theo 6 năng lực.</p>
                             </div>
                             
                             <div class="flex items-center space-x-2 shrink-0">
                                 <button onclick="openHistoryModal('LichSuTienTrinhTuan')" class="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold rounded-xl border border-indigo-200 text-xs pastel-btn flex items-center space-x-1.5 shadow-sm">
                                     <i class="fa-solid fa-chart-line text-indigo-600"></i>
-                                    <span>📊 Xem lịch sử tiến trình</span>
+                                    <span>📊 Lịch sử Bài tập</span>
                                 </button>
                             </div>
                         </div>
 
+                        <div id="roadmap-semester-tabs" class="w-full flex items-center justify-center gap-2 mb-2"></div>
                         <div id="roadmap-svg-container" class="w-full flex justify-center items-center overflow-hidden bg-gradient-to-b from-pink-50/30 to-purple-50/30 rounded-2xl border-2 border-pink-100 p-1"></div>
+                    </div>
+                </div>
+
+                <!-- VIEW: CHI TIẾT BÀI HỌC TOÁN 2 -->
+                <div id="view-bai-hoc-detail" class="w-full hidden pastel-card p-3 md:p-5">
+                    <div class="w-full max-w-5xl mx-auto space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="min-w-0">
+                                <div id="bai-hoc-detail-meta" class="text-xs md:text-sm font-black text-sky-600 mb-1">Bài học</div>
+                                <h2 id="bai-hoc-detail-title" class="text-lg md:text-xl font-black text-slate-800 leading-snug"></h2>
+                            </div>
+                            <button onclick="backToBaiHocHubToan2_()" class="shrink-0 px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 rounded-xl text-xs font-extrabold">← Danh sách bài</button>
+                        </div>
+                        <div id="bai-hoc-detail-tabs" class="flex flex-wrap items-center justify-center gap-2 border-y border-pink-100 py-2.5"></div>
+                        <div id="bai-hoc-detail-body" class="w-full"></div>
                     </div>
                 </div>
 
@@ -709,7 +793,7 @@
     </footer>
 
     <!-- NẠP ENGINE JAVASCRIPT ĐỒNG BỘ -->
-    <script src="assets/js/app.js?v=7.1-minigame"></script>
+    <script src="assets/js/app.js?v=10.0.0"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
