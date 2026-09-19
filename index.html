@@ -190,18 +190,12 @@
         #header-info-zone { flex: 0 0 auto !important; }
         #header-level2-icon { display: none !important; }
         #header-level3-tab {
-            /* Breadcrumb là các chip nối tiếp nhau; không cho tầng 3 giãn chiếm hết khoảng trống. */
-            flex: 0 0 auto !important;
-            min-width: 0;
+            flex: 1 1 auto !important;
             overflow: hidden;
         }
         #header-level3-tab > button {
-            max-width: 210px !important;
+            max-width: 100% !important;
             overflow: hidden;
-        }
-        #header-level4-tab {
-            flex: 0 0 auto !important;
-            min-width: 0;
         }
 
         @media print {
@@ -799,7 +793,7 @@
     </footer>
 
     <!-- NẠP ENGINE JAVASCRIPT ĐỒNG BỘ -->
-    <script src="assets/js/app.js?v=10.0.1"></script>
+    <script src="assets/js/app.js?v=10.0.3"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
