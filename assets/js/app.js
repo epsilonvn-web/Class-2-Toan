@@ -132,6 +132,23 @@ let allQuestionsFlatCache = null;
 let autoSpeechEnabled = localStorage.getItem('autoSpeechEnabled') !== 'false';
 const examsCache = {};
 
+// ==========================================
+// BÀI HỌC <-> BÀI TẬP THEO SGK TOÁN 2
+// 48 bài học chính; bỏ Luyện tập chung và Ôn tập khỏi module Bài học/Bài tập.
+// Khung TOAN_C1-C6 phía trên vẫn là trục đánh giá xuyên suốt.
+// ==========================================
+const BAI_HOC_DATA_FILE = 'assets/data/bai_hoc_toan_2.json';
+let baiHocDataCache = null;
+
+async function loadBaiHocData() {
+    if (baiHocDataCache) return baiHocDataCache;
+    const res = await fetch(BAI_HOC_DATA_FILE);
+    if (!res.ok) throw new Error('Không thể tải dữ liệu Bài học/Bài tập Toán 2');
+    baiHocDataCache = await res.json();
+    return baiHocDataCache;
+}
+
+
 let currentUser = null;
 let starGreenCount = 0;
 let starRedCount = 0;
@@ -202,12 +219,10 @@ function isAdminUser() {
 
 function refreshAccessUI() {
     const unlocked = isPremiumUser();
-    const lock = document.getElementById('progress-lock-icon');
-    if (lock) lock.classList.toggle('hidden', unlocked);
-    const mobile = document.getElementById('minigame-label-mobile');
-    const desktop = document.getElementById('minigame-label-desktop');
-    if (mobile) mobile.textContent = unlocked ? 'Game' : 'Game 🔒';
-    if (desktop) desktop.textContent = unlocked ? 'Mini Game' : 'Mini Game 🔒';
+    ['bai-hoc-lock-icon','roadmap-lock-icon','review-lock-icon','exam-lock-icon','minigame-lock-icon'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', unlocked);
+    });
 }
 
 function openAuthFromGuest(tab = 'login') {
@@ -284,6 +299,59 @@ function formatAccountTierLabel() {
     return t === 'vip' ? 'VIP' : (t === 'trial' ? 'Trial' : 'Regular');
 }
 
+
+
+// ==========================================
+// THÔNG BÁO TRONG APP - KHÔNG DÙNG HỘP THOẠI TRÌNH DUYỆT
+// ==========================================
+function ensureAppDialog() {
+    let modal = document.getElementById('app-dialog-modal');
+    if (modal) return modal;
+    modal = document.createElement('div');
+    modal.id = 'app-dialog-modal';
+    modal.className = 'hidden fixed inset-0 z-[120] bg-slate-900/55 backdrop-blur-sm flex items-center justify-center p-3';
+    modal.innerHTML = `
+        <div class="w-full max-w-[380px] bg-white rounded-[28px] border-[3px] border-pink-200 shadow-2xl overflow-hidden text-center">
+            <div class="px-5 pt-5 pb-4 bg-gradient-to-b from-pink-50 via-purple-50/40 to-white">
+                <div id="app-dialog-icon" class="text-5xl leading-none mb-2">🐰</div>
+                <h3 id="app-dialog-title" class="text-xl font-black text-purple-600 mb-2">Cô Thỏ Ngọc nhắn bé</h3>
+                <div id="app-dialog-message" class="text-sm leading-6 font-bold text-slate-600 whitespace-pre-line"></div>
+            </div>
+            <div id="app-dialog-actions" class="px-4 py-3.5 border-t border-pink-100 bg-white"></div>
+        </div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal && modal.dataset.dismissible === '1') closeAppDialog(); });
+    return modal;
+}
+function closeAppDialog() {
+    document.getElementById('app-dialog-modal')?.classList.add('hidden');
+}
+function showAppNotice(message, options = {}) {
+    const modal = ensureAppDialog();
+    modal.dataset.dismissible = '1';
+    document.getElementById('app-dialog-icon').textContent = options.icon || (String(message).includes('🎉') ? '🎉' : '🐰');
+    document.getElementById('app-dialog-title').textContent = options.title || (String(message).includes('🎉') ? 'Giỏi lắm!' : 'Cô Thỏ Ngọc nhắn bé');
+    document.getElementById('app-dialog-message').textContent = String(message ?? '');
+    document.getElementById('app-dialog-actions').innerHTML = `<button id="app-dialog-ok" class="w-full py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-sm shadow-sm pastel-btn">${options.okText || 'Đã hiểu'}</button>`;
+    document.getElementById('app-dialog-ok').onclick = () => { closeAppDialog(); if (typeof options.onClose === 'function') options.onClose(); };
+    modal.classList.remove('hidden');
+}
+function showAppConfirm(message, onConfirm, options = {}) {
+    const modal = ensureAppDialog();
+    modal.dataset.dismissible = '0';
+    document.getElementById('app-dialog-icon').textContent = options.icon || '📝';
+    document.getElementById('app-dialog-title').textContent = options.title || 'Xác nhận nộp bài';
+    document.getElementById('app-dialog-message').textContent = String(message ?? '');
+    document.getElementById('app-dialog-actions').innerHTML = `
+        <div class="grid grid-cols-2 gap-2">
+            <button id="app-dialog-cancel" class="py-3 rounded-2xl border-2 border-pink-200 bg-pink-50 text-pink-600 font-black text-sm pastel-btn">${options.cancelText || 'Làm tiếp'}</button>
+            <button id="app-dialog-confirm" class="py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-sm shadow-sm pastel-btn">${options.confirmText || 'Đồng ý'}</button>
+        </div>`;
+    document.getElementById('app-dialog-cancel').onclick = closeAppDialog;
+    document.getElementById('app-dialog-confirm').onclick = () => { closeAppDialog(); if (typeof onConfirm === 'function') onConfirm(); };
+    modal.classList.remove('hidden');
+}
+
 // ==========================================
 // HÀM TIỆN ÍCH DỮ LIỆU
 // ==========================================
@@ -300,6 +368,7 @@ function normalizeQuestion(q) {
         // Kho dữ liệu Toán 2 (bản mới) đã tách riêng "sub" = TÊN đầy đủ chủ đề con và "sub_code" = MÃ "X.Y"
         // (dùng để khớp roadmap 24 tuần). Vẫn dự phòng cho định dạng cũ (chỉ có "sub" là mã) để không vỡ dữ liệu cũ.
         sub_topic: String(q.sub_code ?? q.sub ?? q.sub_topic ?? 'Câu hỏi chung').trim(),
+        sub_id: String(q.sub_code ?? q.sub_id ?? q.sub ?? q.sub_topic ?? '').trim(),
         sub_topic_label: String(q.sub ?? q.sub_code ?? q.sub_topic ?? 'Câu hỏi chung').trim(),
         week: q.week ?? q.w ?? null,
         question_text: q.q ?? q.question_text ?? '',
@@ -466,7 +535,7 @@ async function renderDashboardGrid() {
     try { topicsData = await fetchAllTopicsData(); } catch (e) {}
 
     let html = '';
-    TOPICS_CONFIG.forEach(t => {
+    TOPICS_CONFIG.filter(t => Number(t.id) <= 10).forEach(t => {
         const topicObj = topicsData.find(item => Number(item.topic_id) === Number(t.id));
         const totalCount = topicObj && topicObj.questions ? topicObj.questions.length : 0;
         const countLabel = totalCount > 0 ? `${totalCount} câu` : 'Đang cập nhật';
@@ -491,26 +560,7 @@ async function renderDashboardGrid() {
         `;
     });
 
-    let totalExamsCount = 3;
-    try {
-        const examData = await loadExamDataFile('de_thi_toan_2.json');
-        if (examData && examData.exams) totalExamsCount = examData.exams.length;
-    } catch (e) {}
-
-    const examLocked = !isPremiumUser();
-    html += `
-        <div onclick="openExamHub()" class="pastel-card relative p-3 flex flex-col justify-between cursor-pointer hover:border-amber-400 transition-all group bg-gradient-to-br from-white to-amber-50/50 min-h-[92px]">
-            ${examLocked ? '<i class="fa-solid fa-lock absolute top-2.5 right-3 text-slate-400 text-xs"></i>' : ''}
-            <div class="flex items-center space-x-2.5">
-                <div class="w-8 h-8 bg-amber-100 rounded-xl flex items-center justify-center text-sm font-extrabold text-amber-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">🏆</div>
-                <h3 class="font-extrabold text-amber-700 text-sm md:text-base leading-tight">12. Đấu trường đề thi</h3>
-            </div>
-            <div class="flex justify-between items-center mt-1.5 pt-1 border-t border-amber-100 text-[11px] font-bold text-gray-500">
-                <span>HK1, HK2, HSG</span>
-                <span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">${totalExamsCount} đề thi</span>
-            </div>
-        </div>
-    `;
+    // Khám phá chỉ hiển thị 10 chuyên đề học tự do; Ôn tập và Đề thi có tab riêng.
     container.innerHTML = html;
 }
 
@@ -528,7 +578,7 @@ async function startRandomExam(categoryKey) {
 
         const pool = (examData && Array.isArray(examData.exams)) ? examData.exams : [];
         let candidates = pool.filter(e => String(e.exam_id || '').startsWith(idPrefix));
-        if (!candidates.length) return alert('Đang cập nhật thêm đề thi cho mục này, bé quay lại sau nhé!');
+        if (!candidates.length) return showAppNotice('Đang cập nhật thêm đề thi cho mục này, bé quay lại sau nhé!');
 
         const exam = candidates[Math.floor(Math.random() * candidates.length)];
         const examIndex = pool.indexOf(exam);
@@ -540,13 +590,13 @@ async function startRandomExam(categoryKey) {
         pendingTopicQuiz = null;
 
         const questions = Array.isArray(exam.questions) && exam.questions.length ? exam.questions : [];
-        if (!questions.length) return alert('Đề thi này chưa có câu hỏi, bé chọn đề khác nhé!');
+        if (!questions.length) return showAppNotice('Đề thi này chưa có câu hỏi, bé chọn đề khác nhé!');
 
-        updateNavTabs("12. Đấu trường đề thi", "🏆", examTitle);
+        updateNavTabs(examTitle, '🏆', null);
         startTopicQuiz(0, examTitle, shuffleArray(questions), null);
     } catch (err) {
         hideLoadingOverlay();
-        alert(`Không thể tải đề thi: ${err.message}`);
+        showAppNotice(`Không thể tải đề thi: ${err.message}`);
     }
 }
 
@@ -559,7 +609,7 @@ function startExamCountdown() {
         updateExamTimerDisplay();
         if (quizRemainingSeconds <= 0) {
             clearInterval(quizTimerInterval);
-            alert('Đã hết giờ làm bài! Bài thi sẽ được nộp lại nhé bé.');
+            showAppNotice('Đã hết giờ làm bài! Bài thi sẽ được nộp lại nhé bé.');
             showResultScreen();
         }
     }, 1000);
@@ -576,11 +626,12 @@ function updateExamTimerDisplay() {
 function openExamHub() {
     stopSpeaking();
     if (!isPremiumUser()) { showPremiumAccessModal('Đấu trường đề thi'); return; }
+    setMainTabActive_('exams');
     activeExamContext = null;
     activeRoadmapContext = null;
     activeTopicId = null;
     pendingTopicQuiz = null;
-    updateNavTabs("12. Đấu trường đề thi", "🏆", null);
+    updateNavTabs(null, null, null);
     switchAppView('view-exam-hub');
     showLoadingOverlay("Đang tải kho đề thi...");
     renderExamHubGrid().finally(() => hideLoadingOverlay());
@@ -608,7 +659,7 @@ async function renderExamHubGrid() {
                 <div class="text-4xl mb-1.5 group-hover:scale-110 transition-transform">🔢</div>
                 <h3 class="font-extrabold text-pink-600 text-lg mb-1">Học kỳ 1</h3>
                 <p class="text-xs text-gray-500 font-bold mb-2">Kiểm tra kiến thức HK1</p>
-                <span class="inline-block bg-pink-100 text-pink-700 px-3 py-0.5 rounded-full text-xs font-black mb-3">${countHK1} đề thi chuẩn</span>
+                <span class="inline-block bg-pink-100 text-pink-700 px-3 py-0.5 rounded-full text-sm md:text-base font-black mb-3">${countHK1} đề thi chuẩn</span>
             </div>
             <div class="w-full space-y-2">
                 <button onclick="startRandomExam('hocky1')" class="w-full py-2.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold rounded-xl text-xs pastel-btn shadow-sm">
@@ -625,7 +676,7 @@ async function renderExamHubGrid() {
                 <div class="text-4xl mb-1.5 group-hover:scale-110 transition-transform">⭐</div>
                 <h3 class="font-extrabold text-purple-600 text-lg mb-1">Học kỳ 2</h3>
                 <p class="text-xs text-gray-500 font-bold mb-2">Kiểm tra kiến thức HK2</p>
-                <span class="inline-block bg-purple-100 text-purple-700 px-3 py-0.5 rounded-full text-xs font-black mb-3">${countHK2} đề thi chuẩn</span>
+                <span class="inline-block bg-purple-100 text-purple-700 px-3 py-0.5 rounded-full text-sm md:text-base font-black mb-3">${countHK2} đề thi chuẩn</span>
             </div>
             <div class="w-full space-y-2">
                 <button onclick="startRandomExam('hocky2')" class="w-full py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-extrabold rounded-xl text-xs pastel-btn shadow-sm">
@@ -642,7 +693,7 @@ async function renderExamHubGrid() {
                 <div class="text-4xl mb-1.5 group-hover:scale-110 transition-transform">🏆</div>
                 <h3 class="font-extrabold text-amber-600 text-lg mb-1">Học sinh giỏi</h3>
                 <p class="text-xs text-gray-500 font-bold mb-2">Thử thách nâng cao IQ</p>
-                <span class="inline-block bg-amber-100 text-amber-700 px-3 py-0.5 rounded-full text-xs font-black mb-3">${countHSG} đề thi tuyển chọn</span>
+                <span class="inline-block bg-amber-100 text-amber-700 px-3 py-0.5 rounded-full text-sm md:text-base font-black mb-3">${countHSG} đề thi tuyển chọn</span>
             </div>
             <div class="w-full space-y-2">
                 <button onclick="startRandomExam('hsg')" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-extrabold rounded-xl text-xs pastel-btn shadow-sm">
@@ -693,8 +744,9 @@ const GAME_SCRIPT_MAP = {
 const loadedGameScripts = {};
 function openMiniGameHub() {
     if (!isPremiumUser()) { showPremiumAccessModal('Mini Game'); return; }
+    setMainTabActive_('games');
     stopSpeaking(); inMiniGameFlow = true; activeExamContext = null; activeRoadmapContext = null; activeTopicId = null; pendingTopicQuiz = null;
-    updateNavTabs('Mini Game', '🎮', null);
+    updateNavTabs(null, null, null);
     const grid = document.getElementById('minigame-grid'); if (!grid) return;
     grid.innerHTML = MINIGAME_LIST.map((g, idx) => { const p = MINIGAME_PALETTES[idx % MINIGAME_PALETTES.length]; return `
         <div onclick="openGamePlay('${g.id}')" class="${p[0]} ${p[1]} border-2 rounded-[26px] p-3.5 md:p-4 min-h-[132px] flex flex-col items-center justify-between text-center cursor-pointer relative shadow-sm pastel-btn group">
@@ -710,9 +762,9 @@ function loadGameScript(src) {
 async function openGamePlay(gameId) {
     if (!isPremiumUser()) { showPremiumAccessModal('Mini Game'); return; }
     stopSpeaking(); inMiniGameFlow = true; const game = MINIGAME_LIST.find(g => g.id === gameId); if (!game) return;
-    if (!game.ready) { alert(`Game "${game.title}" đang được xây dựng. Cô Thỏ Ngọc sẽ mở game này ở bản cập nhật sau nhé!`); return; }
+    if (!game.ready) { showAppNotice(`Game "${game.title}" đang được xây dựng. Cô Thỏ Ngọc sẽ mở game này ở bản cập nhật sau nhé!`); return; }
     const title = document.getElementById('game-play-title'); if (title) title.innerHTML = `<span>${game.icon}</span><span class="truncate">${game.title}</span>`;
-    updateNavTabs('Mini Game', '🎮', game.title); switchAppView('view-game-play');
+    updateNavTabs(game.title, '🎮', null); switchAppView('view-game-play');
     const container = document.getElementById('game-play-container'); if (container) container.innerHTML = '<p class="text-center text-gray-400 font-bold py-8"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải game...</p>';
     try { await loadGameScript(GAME_SCRIPT_MAP[gameId]); } catch (e) { if (container) container.innerHTML = '<p class="text-center text-rose-500 font-bold py-8">Không tải được game, bé thử lại nhé!</p>'; return; }
     if (gameId === 'balance-scale' && typeof startBalanceScaleGame === 'function') startBalanceScaleGame();
@@ -721,41 +773,102 @@ async function openGamePlay(gameId) {
 // ==========================================
 // ĐIỀU HƯỚNG VIEW & BREADCRUMB
 // ==========================================
+function getActiveMainModuleMeta_() {
+    const active = document.querySelector('.main-module-tab.is-active')?.dataset?.tab || 'discover';
+    const map = {
+        discover:  { label: 'Khám phá',   icon: '🧭', target: 'discover' },
+        lessons:   { label: 'Bài học',    icon: '📖', target: 'lessons' },
+        exercises: { label: 'Bài tập',    icon: '✏️', target: 'exercises' },
+        review:    { label: 'Ôn tập',     icon: '🧠', target: 'review' },
+        exams:     { label: 'Đề thi',     icon: '🏆', target: 'exams' },
+        games:     { label: 'Mini games', icon: '🎮', target: 'games' }
+    };
+    return map[active] || map.discover;
+}
+
+// Breadcrumb chỉ dùng khi đi sâu vào nội dung.
+// Nút đầu tiên luôn bám theo module đang active, tránh bị sót "Khám phá"
+// khi người dùng đã chuyển sang Bài học/Bài tập/Đề thi/Mini games.
 function updateNavTabs(level2Title, level2Icon, level3Title, level4Title) {
+    const rootTab = document.getElementById('header-discover-tab');
     const tab2 = document.getElementById('header-level2-tab');
     const tab3 = document.getElementById('header-level3-tab');
     const tab4 = document.getElementById('header-level4-tab');
     const homeBtn = document.getElementById('btn-header-home');
+    const meta = getActiveMainModuleMeta_();
 
-    if (level2Title) {
-        document.getElementById('header-level2-title').textContent = level2Title;
-        document.getElementById('header-level2-icon').textContent = level2Icon || '🔢';
-        tab2.classList.remove('hidden');
-        tab2.classList.add('flex');
-        homeBtn.classList.add('opacity-80', 'hover:opacity-100');
-    } else {
-        tab2.classList.add('hidden');
-        tab2.classList.remove('flex');
-        homeBtn.classList.remove('opacity-80');
+    // Không có tầng con => đang ở màn root của module.
+    // Header vẫn hiển thị đúng 1 chip của module hiện tại (Khám phá/Bài học/...)
+    // để nhất quán giữa tất cả 6 tab; các tầng con phía sau được ẩn.
+    if (!level2Title) {
+        if (rootTab) {
+            const btn = rootTab.querySelector('button');
+            if (btn) {
+                btn.setAttribute('onclick', `openMainTab('${meta.target}')`);
+                btn.innerHTML = `<span>${meta.label}</span>`;
+            }
+            rootTab.classList.remove('hidden');
+            rootTab.classList.add('flex');
+        }
+        if (tab2) { tab2.classList.add('hidden'); tab2.classList.remove('flex'); }
+        if (tab3) { tab3.classList.add('hidden'); tab3.classList.remove('flex'); }
+        if (tab4) { tab4.classList.add('hidden'); tab4.classList.remove('flex'); }
+        if (homeBtn) homeBtn.classList.remove('opacity-80');
+        return;
     }
 
+    // Breadcrumb root luôn là module hiện tại.
+    if (rootTab) {
+        const btn = rootTab.querySelector('button');
+        if (btn) {
+            btn.setAttribute('onclick', `openMainTab('${meta.target}')`);
+            btn.innerHTML = `<span>${meta.label}</span>`;
+        }
+        rootTab.classList.remove('hidden');
+        rootTab.classList.add('flex');
+    }
+
+    if (tab2) {
+        const t2 = document.getElementById('header-level2-title');
+        if (t2) t2.textContent = level2Title;
+        tab2.classList.remove('hidden');
+        tab2.classList.add('flex');
+    }
+    if (homeBtn) homeBtn.classList.add('opacity-80', 'hover:opacity-100');
+
     if (level3Title) {
-        document.getElementById('header-level3-title').textContent = level3Title;
-        tab3.classList.remove('hidden');
-        tab3.classList.add('flex');
-    } else {
-        tab3.classList.add('hidden');
-        tab3.classList.remove('flex');
+        const t3 = document.getElementById('header-level3-title');
+        if (t3) t3.textContent = level3Title;
+        if (tab3) { tab3.classList.remove('hidden'); tab3.classList.add('flex'); }
+    } else if (tab3) {
+        tab3.classList.add('hidden'); tab3.classList.remove('flex');
     }
 
     if (level4Title && tab4) {
-        document.getElementById('header-level4-title').textContent = level4Title;
-        tab4.classList.remove('hidden');
-        tab4.classList.add('flex');
+        const t4 = document.getElementById('header-level4-title');
+        if (t4) t4.textContent = level4Title;
+        tab4.classList.remove('hidden'); tab4.classList.add('flex');
     } else if (tab4) {
-        tab4.classList.add('hidden');
-        tab4.classList.remove('flex');
+        tab4.classList.add('hidden'); tab4.classList.remove('flex');
     }
+}
+
+function returnToLevel3FromHeader() {
+    stopSpeaking();
+    if (pendingTopicQuiz) {
+        const label = document.getElementById('header-level3-title')?.textContent || '';
+        const idx = (pendingTopicQuiz.groups || []).findIndex(k => beautifySubtopicName(pendingTopicQuiz.groupLabels?.[k] || k) === label);
+        if (idx >= 0) return selectSubtopic(idx);
+        return returnToTopicLecture();
+    }
+    if (activeRoadmapContext) return openRoadmap(activeRoadmapContext.semester || 1);
+    return returnToTopicLecture();
+}
+
+function returnToLevel4FromHeader() {
+    stopSpeaking();
+    if (activeRoadmapContext) return openRoadmap(activeRoadmapContext.semester || 1);
+    return returnToLevel3FromHeader();
 }
 
 function returnToTopicLecture() {
@@ -775,7 +888,7 @@ function returnToTopicLecture() {
 
 function switchAppView(viewId) {
     stopSpeaking();
-    ['view-dashboard-grid', 'view-lecture', 'view-quiz', 'view-roadmap', 'view-minigame-hub', 'view-game-play', 'view-exam-hub', 'view-result'].forEach(id => {
+    ['view-dashboard-grid', 'view-lecture', 'view-quiz', 'view-roadmap', 'view-bai-hoc-detail', 'view-minigame-hub', 'view-game-play', 'view-exam-hub', 'view-result'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
         if (id === viewId) el.classList.remove('hidden');
@@ -783,10 +896,51 @@ function switchAppView(viewId) {
     });
 }
 
+function setMainTabActive_(tabName) {
+    document.querySelectorAll('.main-module-tab').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.tab === tabName);
+    });
+}
+
+function openMainTab(tabName) {
+    stopSpeaking();
+    clearInterval(quizTimerInterval);
+    switch (tabName) {
+        case 'discover':
+            goHome();
+            break;
+        case 'lessons':
+            if (!isPremiumUser()) { showPremiumAccessModal('Bài học'); return; }
+            openBaiHocHub(1);
+            break;
+        case 'exercises':
+            openRoadmap(1);
+            break;
+        case 'review':
+            if (!isPremiumUser()) { showPremiumAccessModal('Ôn tập'); return; }
+            setMainTabActive_('review');
+            openTopic(11, '11. Ôn tập', '📚');
+            break;
+        case 'exams':
+            openExamHub();
+            break;
+        case 'games':
+            openMiniGameHub();
+            break;
+        default:
+            goHome();
+    }
+}
+
 function goHome() {
     stopSpeaking();
     clearInterval(quizTimerInterval);
     inMiniGameFlow = false;
+    activeTopicId = null;
+    activeExamContext = null;
+    activeRoadmapContext = null;
+    pendingTopicQuiz = null;
+    setMainTabActive_('discover');
     updateNavTabs(null, null, null);
     switchAppView('view-dashboard-grid');
 }
@@ -845,7 +999,7 @@ async function doLogin() {
     if (!maHS || !maPin) {
         const msg = 'Bé nhập đủ mã ID và mã PIN nhé!';
         showAuthError(msg);
-        alert(msg);
+        showAppNotice(msg);
         return;
     }
 
@@ -858,7 +1012,7 @@ async function doLogin() {
         if (!result.ok) {
             const errMsg = result.error || 'Mã ID thẻ học sinh hoặc mã PIN không đúng!';
             showAuthError(errMsg);
-            alert(errMsg);
+            showAppNotice(errMsg);
             return;
         }
         const sessionToken = result.sessionToken || result.token;
@@ -871,7 +1025,7 @@ async function doLogin() {
     } catch (err) {
         const connErr = 'Lỗi kết nối máy chủ: ' + err.message;
         showAuthError(connErr);
-        alert(connErr);
+        showAppNotice(connErr);
     } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-1"></i> Đăng nhập';
@@ -889,13 +1043,13 @@ async function doRegister() {
     if (!hoTen || !ngaySinhRaw || !lop || !soThuTu || !maPin) {
         const msg = 'Bé điền đủ tất cả các ô có dấu * nhé!';
         showAuthError(msg);
-        alert(msg);
+        showAppNotice(msg);
         return;
     }
     if (!/^\d{6}$/.test(maPin)) {
         const msg = 'Mã PIN phải gồm đúng 6 chữ số!';
         showAuthError(msg);
-        alert(msg);
+        showAppNotice(msg);
         return;
     }
 
@@ -909,16 +1063,16 @@ async function doRegister() {
         const result = await callAppsScript('register', { hoTen, ngaySinh, lop, soThuTu, maPin });
         if (!result.ok) {
             showAuthError(result.error);
-            alert(result.error);
+            showAppNotice(result.error);
             return;
         }
-        alert(`Đã gửi đăng ký thành công, vui lòng chờ Admin duyệt! Mã ID của bé là: ${result.student.maHS}`);
+        showAppNotice(`Đã gửi đăng ký thành công, vui lòng chờ Admin duyệt! Mã ID của bé là: ${result.student.maHS}`);
         document.getElementById('login-mahs').value = result.student.maHS;
         switchAuthTab('login');
     } catch (err) {
         const connErr = 'Lỗi kết nối: ' + err.message;
         showAuthError(connErr);
-        alert(connErr);
+        showAppNotice(connErr);
     } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-user-plus mr-1"></i> Đăng ký ngay';
@@ -1050,7 +1204,7 @@ function updateUserInfoBox() {
     if (!box) return;
     if (currentUser && !currentUser.isGuest) {
         const adminBtn = isAdminUser()
-            ? `<button onclick="openAdminAccountManager()" class="h-8 px-3 flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-xl border border-amber-200 text-xs font-black"><i class="fa-solid fa-users-gear"></i><span>Quản lý</span></button>`
+            ? `<button onclick="openAdminAccountManager()" class="h-8 px-3 flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-xl border border-amber-200 text-sm md:text-base font-black"><i class="fa-solid fa-users-gear"></i><span>Quản lý</span></button>`
             : '';
         box.innerHTML = `
             <div class="flex items-center space-x-2">
@@ -1065,8 +1219,8 @@ function updateUserInfoBox() {
         box.innerHTML = `
             <div class="flex items-center gap-1.5">
                 <span class="text-amber-600 font-black text-xs mr-1">Khách</span>
-                <button onclick="openAuthFromGuest('login')" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-black">Sign in</button>
-                <button onclick="openAuthFromGuest('register')" class="px-3 py-2 bg-white text-purple-600 border border-purple-200 rounded-xl text-xs font-black">Sign up</button>
+                <button onclick="openAuthFromGuest('login')" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm md:text-base font-black">Sign in</button>
+                <button onclick="openAuthFromGuest('register')" class="px-3 py-2 bg-white text-purple-600 border border-purple-200 rounded-xl text-sm md:text-base font-black">Sign up</button>
             </div>`;
     }
 }
@@ -1190,7 +1344,7 @@ async function changeAdminAccountType(maHS, loaiTaiKhoan, selectEl) {
         const res = await callAppsScript('adminSetAccountType', { token: currentUser?.token, maHS, loaiTaiKhoan });
         if (!res?.ok) throw new Error(res?.error || 'Không cập nhật được tài khoản');
         await loadAdminAccounts();
-    } catch (err) { alert(err.message); await loadAdminAccounts(); }
+    } catch (err) { showAppNotice(err.message); await loadAdminAccounts(); }
     finally { selectEl.disabled = false; }
 }
 
@@ -1203,7 +1357,7 @@ function resetStars() {
 }
 
 function clickProgressOrExam(type) {
-    if (type === 'progress') return ensurePremiumAccess('Bản đồ tuần', () => openRoadmap());
+    if (type === 'progress') return ensurePremiumAccess('Bài tập', () => openRoadmap());
     if (type === 'exam') return ensurePremiumAccess('Đấu trường đề thi', () => openExamHub());
 }
 
@@ -1212,6 +1366,7 @@ function clickProgressOrExam(type) {
 // ==========================================
 function openTopic(topicNum, topicName, icon) {
     stopSpeaking();
+    setMainTabActive_(Number(topicNum) === 11 ? 'review' : 'discover');
     if (PREMIUM_TOPIC_IDS.has(Number(topicNum)) && !isPremiumUser()) {
         showPremiumAccessModal(topicName || 'Ôn tập');
         return;
@@ -1230,7 +1385,7 @@ function openTopic(topicNum, topicName, icon) {
         // Tải lỗi thì đưa header về đúng trạng thái trang chủ (không để lại tab/gạch breadcrumb thừa)
         activeTopicId = null;
         updateNavTabs(null, null, null);
-        alert(`Không thể tải chủ đề: ${err.message}`);
+        showAppNotice(`Không thể tải chủ đề: ${err.message}`);
     });
 }
 
@@ -1401,7 +1556,7 @@ async function selectRoadmapWeek(weekNum) {
     
     const tuanHienTai = Number(currentUser?.tuanHienTai) || 1;
     if (weekNum > tuanHienTai) {
-        return alert(`Tuần ${weekNum} đang bị khóa. Bé hãy hoàn thành Tuần ${tuanHienTai} đạt từ 80% trở lên để mở khóa nhé!`);
+        return showAppNotice(`Tuần ${weekNum} đang bị khóa. Bé hãy hoàn thành Tuần ${tuanHienTai} đạt từ 80% trở lên để mở khóa nhé!`);
     }
 
     if (config.isExam) return openExamHub();
@@ -1417,12 +1572,12 @@ async function selectRoadmapWeek(weekNum) {
         hideLoadingOverlay();
 
         const weekQuestions = getQuestionsForWeek343(weekNum);
-        if (!weekQuestions.length) return alert('Tuần này đang chuẩn bị thêm câu hỏi, bé quay lại sau nhé!');
+        if (!weekQuestions.length) return showAppNotice('Tuần này đang chuẩn bị thêm câu hỏi, bé quay lại sau nhé!');
 
         startTopicQuiz(weekNum, config.name, weekQuestions, null);
     } catch (err) {
         hideLoadingOverlay();
-        alert(`Lỗi tải dữ liệu tuần: ${err.message}`);
+        showAppNotice(`Lỗi tải dữ liệu tuần: ${err.message}`);
     }
 }
 
@@ -1528,7 +1683,7 @@ function loadQuestion() {
     const passageHtml = pText ? `
         <div class="w-full max-w-3xl bg-pink-50/70 border-2 border-pink-200 rounded-2xl p-3 mb-1.5 text-left shadow-xs">
             ${pTitle ? `<p class="font-black text-pink-700 text-sm md:text-base mb-1">${escapeHtml(pTitle)}</p>` : ''}
-            <p class="text-gray-800 text-sm md:text-base font-bold whitespace-pre-line leading-relaxed ${useTwoColumns ? 'md:columns-2 md:gap-6' : ''}">${escapeHtml(pText)}</p>
+            <p class="text-gray-800 text-base md:text-lg font-bold whitespace-pre-line leading-relaxed ${useTwoColumns ? 'md:columns-2 md:gap-6' : ''}">${escapeHtml(pText)}</p>
         </div>` : '';
 
     const practiceSpeakerBtnHtml = !isEvaluationMode ? `
@@ -1836,7 +1991,7 @@ function nextQuestion() {
     const isEvaluationMode = !!activeExamContext || !!activeRoadmapContext;
 
     if (!isEvaluationMode && userAnswers[currentQIndex] === undefined) {
-        alert('Bé hãy tìm đáp án đúng để hoàn thành câu này nhé!');
+        showAppNotice('Bé hãy tìm đáp án đúng để hoàn thành câu này nhé!');
         return;
     }
 
@@ -1849,7 +2004,7 @@ function nextQuestion() {
         } else {
             confetti({ particleCount: 75, spread: 75, origin: { y: 0.6 } });
             playAudio('win');
-            alert(`🎉 Chúc mừng bé đã hoàn thành trọn vẹn 1 vòng luyện tập (${activeQuestionsList.length} câu)!\nBây giờ cô giáo Thỏ Ngọc sẽ xáo trộn ngẫu nhiên để con bước vào vòng luyện tập tiếp theo nhé!`);
+            showAppNotice(`🎉 Chúc mừng bé đã hoàn thành trọn vẹn 1 vòng luyện tập (${activeQuestionsList.length} câu)!\nBây giờ cô giáo Thỏ Ngọc sẽ xáo trộn ngẫu nhiên để con bước vào vòng luyện tập tiếp theo nhé!`);
 
             const basePool = practiceCycleRawPool.length ? practiceCycleRawPool : activeQuestionsList;
             activeQuestionsList = shuffleArray([...basePool]);
@@ -1864,9 +2019,9 @@ function nextQuestion() {
 function triggerSubmitQuizPrompt() {
     const answeredCount = Object.keys(userAnswers).length;
     const total = activeQuestionsList.length;
-    if (confirm(`Bé đã làm ${answeredCount}/${total} câu. Bé có chắc chắn muốn nộp bài thi ngay không?`)) {
-        showResultScreen();
-    }
+    showAppConfirm(`Bé đã làm ${answeredCount}/${total} câu. Bé có chắc chắn muốn nộp bài thi ngay không?`, showResultScreen, {
+        icon: '📝', title: 'Xác nhận nộp bài', cancelText: 'Làm tiếp', confirmText: 'Nộp bài'
+    });
 }
 
 function showResultScreen() {
@@ -1912,7 +2067,7 @@ function showResultScreen() {
     const totalQ = activeQuestionsList.length;
     const percent = Math.round((correctCount / totalQ) * 100);
 
-    // Tiến trình tuần: điểm tính riêng theo công thức 10/tổng số câu (không dùng điểm từng câu để tránh lệch)
+    // Bài tập: điểm tính riêng theo công thức 10/tổng số câu (không dùng điểm từng câu để tránh lệch)
     const displayScore = activeRoadmapContext
         ? Math.round((correctCount * 10 / totalQ) * 10) / 10
         : score;
@@ -1929,7 +2084,7 @@ function showResultScreen() {
 
     const nextActionLabel = document.getElementById('report-next-action-label');
     if (nextActionLabel) {
-        nextActionLabel.textContent = activeRoadmapContext ? '🔙 Quay lại tiến trình tuần' : '🚀 Làm đề thi tiếp theo';
+        nextActionLabel.textContent = activeRoadmapContext ? '🔙 Quay lại Bài tập' : '🚀 Làm đề thi tiếp theo';
     }
 
     const historyBtn = document.getElementById('report-history-btn');
@@ -2146,7 +2301,7 @@ async function saveWeeklyProgressToSheet(percent, starCount, scoreVal) {
             const nextWeek = week + 1;
             if (nextWeek > (Number(currentUser.tuanHienTai) || 1) && nextWeek <= TOTAL_ROADMAP_WEEKS) {
                 currentUser.tuanHienTai = nextWeek;
-                setTimeout(() => alert(`🎉 Chúc mừng bé đạt ${percent}% điểm! Tuần ${nextWeek} đã được mở khóa trên bản đồ!`), 500);
+                setTimeout(() => showAppNotice(`🎉 Chúc mừng bé đạt ${percent}% điểm! Tuần ${nextWeek} đã được mở khóa trên bản đồ!`), 500);
             }
         }
     } catch (e) {}
@@ -2154,7 +2309,7 @@ async function saveWeeklyProgressToSheet(percent, starCount, scoreVal) {
 
 async function openHistoryModal(sheetName = 'LichSuTienTrinhTuan') {
     if (!currentUser || currentUser.isGuest) {
-        return alert('Bé vui lòng đăng nhập để xem lịch sử tiến trình nhé!');
+        return showAppNotice('Bé vui lòng đăng nhập để xem lịch sử tiến trình nhé!');
     }
 
     const modal = document.getElementById('modal-history-progress');
@@ -2167,7 +2322,7 @@ async function openHistoryModal(sheetName = 'LichSuTienTrinhTuan') {
     document.getElementById('hist-report-date').textContent = new Date().toLocaleDateString('vi-VN');
 
     const titleMap = {
-        LichSuTienTrinhTuan: "Báo cáo tiến trình 24 tuần học tập",
+        LichSuTienTrinhTuan: "Báo cáo Bài tập theo bài học",
         LichSuBaiThi_HK1: "Báo cáo kết quả đấu trường — Học kỳ 1",
         LichSuBaiThi_HK2: "Báo cáo kết quả đấu trường — Học kỳ 2",
         LichSuBaiThi_HSG: "Báo cáo kết quả đấu trường — Học sinh giỏi"
@@ -2182,14 +2337,14 @@ async function openHistoryModal(sheetName = 'LichSuTienTrinhTuan') {
             // Token hết hạn/không hợp lệ hoặc không đúng chủ - đóng modal, báo rõ thay vì âm thầm
             // hiện báo cáo trống (dễ gây hiểu lầm là bé chưa học gì).
             closeHistoryModal();
-            alert(res.error || 'Không thể tải lịch sử - bé đăng nhập lại nhé!');
+            showAppNotice(res.error || 'Không thể tải lịch sử - bé đăng nhập lại nhé!');
             return;
         }
         const rows = (res && res.history) ? res.history : [];
         renderHistoryReport(rows, sheetName);
     } catch (err) {
         hideLoadingOverlay();
-        alert('Không thể tải lịch sử: ' + err.message);
+        showAppNotice('Không thể tải lịch sử: ' + err.message);
     }
 }
 
@@ -2576,7 +2731,7 @@ function speakPedagogicalEvaluation() {
     const box = document.getElementById('pedagogical-evaluation-box');
     if (!box) return;
     const text = box.innerText || box.textContent || '';
-    if (!text.trim()) return alert('Chưa có dữ liệu nhận xét để đọc, bé làm bài rồi quay lại xem nhé!');
+    if (!text.trim()) return showAppNotice('Chưa có dữ liệu nhận xét để đọc, bé làm bài rồi quay lại xem nhé!');
     speakVietnamese(text, 0.96);
 }
 
@@ -2816,3 +2971,341 @@ document.addEventListener('DOMContentLoaded', () => {
 
 flushPendingLogout();
 tryAutoLogin();
+
+// ============================================================
+// TOÁN 2 V2 - BÀI TẬP BÁM TRỰC TIẾP 48 BÀI HỌC CHÍNH SGK
+// Không còn roadmap tuần trong trải nghiệm người dùng.
+// TOAN_C1-C6 tiếp tục là trục đánh giá xuyên suốt.
+// ============================================================
+function getBaiTapUnlockKeyToan2_() {
+    const id = currentUser?.maHS || 'KHACH';
+    return `toan2_bai_tap_unlocked_v1_${String(id).toUpperCase()}`;
+}
+function getUnlockedBaiTapToan2_() {
+    try { return Math.max(1, Number(localStorage.getItem(getBaiTapUnlockKeyToan2_()) || 1)); }
+    catch (e) { return 1; }
+}
+function saveUnlockedBaiTapToan2_(n) {
+    try { localStorage.setItem(getBaiTapUnlockKeyToan2_(), String(Math.max(1, Number(n) || 1))); }
+    catch (e) {}
+}
+function getNextBaiTapToan2_(data, bai) {
+    return (data?.bai_tap || []).map(x => Number(x.bai)).sort((a,b)=>a-b).find(x => x > Number(bai)) || null;
+}
+function isBaiTapUnlockedToan2_(data, bai) {
+    return Number(bai) <= getUnlockedBaiTapToan2_();
+}
+
+function clickProgressOrExam(type) {
+    if (type === 'progress') return ensurePremiumAccess('Bài tập', () => openRoadmap(1));
+    if (type === 'exam') return ensurePremiumAccess('Đấu trường đề thi', () => openExamHub());
+}
+
+async function openBaiHocHub(semesterNumber = 1) {
+    stopSpeaking();
+    if (!isPremiumUser()) { showPremiumAccessModal('Bài học'); return; }
+    setMainTabActive_('lessons');
+    activeExamContext = null; activeRoadmapContext = null; activeTopicId = null; pendingTopicQuiz = null;
+    updateNavTabs(null, null, null);
+    switchAppView('view-roadmap');
+    showLoadingOverlay('Đang mở Bài học...');
+    try {
+        const data = await loadBaiHocData();
+        renderBaiHocGridToan2_(data, semesterNumber);
+    } catch (err) {
+        showAppNotice(`Không thể mở Bài học: ${err.message}`);
+    } finally { hideLoadingOverlay(); }
+}
+
+let activeBaiHocToan2_ = { data: null, lesson: null, pageIndex: 0 };
+
+function renderBaiHocGridToan2_(data, semesterNumber) {
+    const view = document.getElementById('view-roadmap');
+    const container = document.getElementById('roadmap-svg-container');
+    if (!view || !container) return;
+
+    // Hub Bài học chỉ giữ bộ lọc Học kỳ + lưới bài. Không lặp tiêu đề/mô tả dài phía trên.
+    const h2 = view.querySelector('h2');
+    const p = view.querySelector('h2 + p');
+    if (h2) h2.classList.add('hidden');
+    if (p) p.classList.add('hidden');
+    const historyBtn = view.querySelector('button[onclick*="LichSuTienTrinhTuan"]');
+    if (historyBtn) historyBtn.classList.add('hidden');
+
+    const arr = (data?.bai_hoc || []).filter(x => Number(x.semester) === Number(semesterNumber));
+    const tabHost = document.getElementById('roadmap-semester-tabs');
+    if (tabHost) tabHost.innerHTML = [1,2].map(s => `<button onclick="openBaiHocHub(${s})" class="semester-switch-btn ${Number(s)===Number(semesterNumber)?'is-active':'is-inactive'}">Học kỳ ${s}</button>`).join('');
+
+    const palette = [
+        {bg:'linear-gradient(145deg,#fff1f7 0%,#fdf4ff 100%)', border:'#f9a8d4', title:'#be185d'},
+        {bg:'linear-gradient(145deg,#faf5ff 0%,#f5f3ff 100%)', border:'#d8b4fe', title:'#7e22ce'},
+        {bg:'linear-gradient(145deg,#fdf2f8 0%,#fff7ed 100%)', border:'#fbcfe8', title:'#db2777'},
+        {bg:'linear-gradient(145deg,#f5f3ff 0%,#fdf2f8 100%)', border:'#c4b5fd', title:'#6d28d9'},
+        {bg:'linear-gradient(145deg,#fff7fb 0%,#fce7f3 100%)', border:'#f9a8d4', title:'#c026d3'},
+        {bg:'linear-gradient(145deg,#faf5ff 0%,#fff1f7 100%)', border:'#e9d5ff', title:'#9333ea'}
+    ];
+
+    container.className = 'w-full rounded-3xl border-2 p-3 md:p-4 shadow-sm';
+    container.style.background = 'linear-gradient(135deg,#fff7fb 0%,#faf5ff 50%,#fdf2f8 100%)';
+    container.style.borderColor = '#f0abfc';
+    container.innerHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 md:gap-3">${arr.map((bh,idx)=>{
+        const c = palette[idx % palette.length];
+        return `<button onclick="selectBaiHocToan2_(${bh.bai})" class="text-left min-h-[96px] md:min-h-[104px] rounded-2xl border-2 p-3 md:p-3.5 transition-all hover:-translate-y-0.5 hover:shadow-lg flex flex-col items-start justify-start" style="background:${c.bg};border-color:${c.border};box-shadow:0 4px 12px rgba(168,85,247,.08)"><div class="font-black text-base md:text-[17px] leading-tight" style="color:${c.title}">Bài ${bh.bai}</div><div class="text-[13px] md:text-[14px] font-extrabold text-slate-700 mt-2 leading-snug text-left w-full">${escapeHtml(bh.source_title||bh.title||'')}</div></button>`;
+    }).join('')}</div>`;
+}
+
+async function selectBaiHocToan2_(bai) {
+    if (!isPremiumUser()) { showPremiumAccessModal('Bài học'); return; }
+    try {
+        const data = await loadBaiHocData();
+        const lesson = (data?.bai_hoc || []).find(x => Number(x.bai) === Number(bai));
+        if (!lesson) throw new Error(`Không tìm thấy dữ liệu Bài ${bai}`);
+        activeBaiHocToan2_ = { data, lesson, pageIndex: 0 };
+        renderBaiHocDetailToan2_();
+    } catch (err) {
+        showAppNotice(`Không thể mở Bài học: ${err.message}`);
+    }
+}
+
+function renderBaiHocDetailToan2_() {
+    const ctx = activeBaiHocToan2_;
+    const lesson = ctx.lesson;
+    if (!lesson) return;
+    switchAppView('view-bai-hoc-detail');
+    setMainTabActive_('lessons');
+    updateNavTabs(`Bài ${lesson.bai}`, '📖', null);
+
+    const meta = document.getElementById('bai-hoc-detail-meta');
+    const title = document.getElementById('bai-hoc-detail-title');
+    const tabs = document.getElementById('bai-hoc-detail-tabs');
+    const body = document.getElementById('bai-hoc-detail-body');
+    if (meta) meta.textContent = `Bài ${lesson.bai} · ${lesson.theme || 'Toán 2'}`;
+    if (title) title.textContent = lesson.source_title || lesson.title || `Bài ${lesson.bai}`;
+
+    const pages = Array.isArray(lesson.pages) ? lesson.pages : [];
+    if (tabs) tabs.innerHTML = pages.map((pg, idx) => `<button onclick="openBaiHocPageToan2_(${idx})" class="px-3 py-2 rounded-xl border font-black text-sm md:text-base ${idx===ctx.pageIndex?'bg-gradient-to-r from-pink-500 to-purple-500 text-white border-purple-400 shadow-sm':'bg-white text-purple-700 border-purple-200 hover:bg-purple-50'}">${escapeHtml(pg.title || `Trang ${idx+1}`)}</button>`).join('');
+    if (body) {
+        const pageBody = renderBaiHocPageBodyToan2_(pages[ctx.pageIndex] || {});
+        body.innerHTML = `${pageBody}${renderBaiHocBottomNavToan2_(lesson, ctx.pageIndex, pages.length)}`;
+    }
+}
+
+function renderBaiHocBottomNavToan2_(lesson, pageIndex, pageCount) {
+    const count = Math.max(1, Number(pageCount) || 3);
+    const idx = Math.max(0, Math.min(count - 1, Number(pageIndex) || 0));
+    const prev = idx > 0
+        ? `<button onclick="openBaiHocPageToan2_(${idx-1})" class="px-4 md:px-5 py-2.5 rounded-xl bg-white border border-purple-200 text-purple-700 font-black text-sm md:text-base shadow-sm hover:bg-purple-50">← Trang trước</button>`
+        : '<span></span>';
+    const next = idx < count - 1
+        ? `<button onclick="openBaiHocPageToan2_(${idx+1})" class="px-5 md:px-6 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-sm md:text-base shadow-md hover:brightness-105">Trang tiếp →</button>`
+        : `<button onclick="openBaiHocPageToan2_(0)" class="px-4 md:px-5 py-2.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 font-black text-sm md:text-base">↺ Xem lại bài</button>`;
+    return `<div class="flex items-center justify-between gap-3 pt-4 mt-4 border-t border-pink-100">${prev}<div class="text-sm md:text-base font-black text-slate-400">${idx+1}/${count}</div>${next}</div>`;
+}
+
+function openBaiHocPageToan2_(pageIndex) {
+    activeBaiHocToan2_.pageIndex = Math.max(0, Number(pageIndex) || 0);
+    renderBaiHocDetailToan2_();
+}
+
+function renderBaiHocPageBodyToan2_(page) {
+    const safe = escapeHtml;
+    const lesson = activeBaiHocToan2_?.lesson || {};
+    if (page.page_type === 'explore') {
+        const questions = page.discover_questions || [];
+        const cards = page.knowledge_cards || [];
+        const worked = page.worked_examples || [];
+        let visual = '';
+        if (page.activity_type === 'number_line' && page.number_line) {
+            const n = page.number_line; const nums=[];
+            for(let i=Number(n.min||0); i<=Number(n.max||10); i++) nums.push(i);
+            visual = `<div class="rounded-3xl border-2 border-sky-200 bg-gradient-to-br from-sky-50 via-white to-indigo-50 p-4 md:p-5">
+              <div class="flex items-center gap-2 font-black text-sky-700 mb-3"><span class="text-xl">🐰</span><span>Thỏ Ngọc đi trên tia số</span></div>
+              <div class="relative px-2 pt-8 pb-3"><div class="absolute left-3 right-1 top-[52px] h-1 bg-sky-400 rounded-full"></div><div class="absolute right-0 top-[45px] text-sky-500 text-xl">▶</div>
+              <div class="relative grid gap-1" style="grid-template-columns:repeat(${nums.length},minmax(0,1fr))">${nums.map(v=>`<button onclick="lessonNumberPick_(${v},${Number(n.focus||5)})" class="h-11 rounded-xl border-2 ${v===Number(n.focus||5)?'bg-pink-500 text-white border-pink-500 scale-110 shadow-md':'bg-white text-sky-700 border-sky-200'} font-black hover:bg-sky-100 transition-all">${v}</button>`).join('')}</div></div>
+              <div id="lesson-interactive-feedback" class="mt-3 min-h-[42px] rounded-xl bg-white border border-sky-100 px-3 py-2 text-center text-base md:text-lg font-bold text-slate-600">Bấm vào một số để xem quan hệ với số ${Number(n.focus||5)}.</div></div>`;
+        } else if (page.activity_type === 'operation_parts') {
+            const add=page.addition||{}, sub=page.subtraction||{};
+            const eq=(o,op,theme)=>`<div class="rounded-3xl border-2 border-${theme}-200 bg-${theme}-50/50 p-4"><div class="flex justify-center items-end gap-2 md:gap-4 text-center">${[o.a,op,o.b,'=',o.result].map((v,i)=> i%2===0?`<button onclick="lessonPartPick_('${safe((o.labels||[])[i/2]||'')}')" class="min-w-[62px] rounded-2xl bg-white border-2 border-${theme}-200 px-3 py-3 text-xl md:text-2xl font-black text-slate-800 hover:shadow-md">${v}<span class="block text-[10px] md:text-xs mt-1 text-${theme}-600">${safe((o.labels||[])[i/2]||'')}</span></button>`:`<span class="pb-5 text-xl font-black text-${theme}-500">${v}</span>`).join('')}</div></div>`;
+            visual=`<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${eq(add,'+','pink')}${eq(sub,'−','sky')}</div><div id="lesson-interactive-feedback" class="mt-3 rounded-xl bg-purple-50 border border-purple-100 px-3 py-2 text-center text-base md:text-lg font-bold text-purple-700">Bấm vào một số để gọi tên thành phần của phép tính.</div>`;
+        }
+        return `<div class="space-y-4">
+          ${page.intro?`<div class="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50 p-4 text-base md:text-lg font-extrabold text-pink-700">${safe(page.intro)}</div>`:''}
+          ${page.story?`<div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-4"><div class="font-black text-amber-700 mb-1">🌟 Câu chuyện mở đầu</div><div class="text-base md:text-lg font-semibold text-slate-700 leading-relaxed">${safe(page.story)}</div></div>`:''}
+          ${visual}
+          ${questions.length?`<div class="rounded-2xl border border-violet-200 bg-violet-50/50 p-4"><div class="font-black text-violet-700 mb-2">🤔 Con thử nghĩ xem</div><div class="grid grid-cols-1 md:grid-cols-3 gap-2">${questions.map((q,i)=>`<div class="rounded-xl bg-white border border-violet-100 p-3 text-base md:text-lg font-bold text-slate-700"><span class="text-violet-500">${i+1}.</span> ${safe(q)}</div>`).join('')}</div></div>`:''}
+          ${cards.length?`<div><div class="font-black text-emerald-700 mb-2">📚 Kiến thức mới</div><div class="grid grid-cols-1 md:grid-cols-${Math.min(cards.length,3)} gap-2">${cards.map(c=>`<div class="rounded-2xl border-2 border-emerald-200 bg-emerald-50/60 p-4"><div class="font-black text-emerald-700 mb-1">${safe(c.title)}</div><div class="text-base md:text-lg font-semibold text-slate-700">${safe(c.text)}</div></div>`).join('')}</div></div>`:''}
+          ${worked.length?`<div class="rounded-2xl border border-orange-200 bg-orange-50/60 p-4"><div class="font-black text-orange-700 mb-2">✏️ Cô làm mẫu</div><div class="space-y-2">${worked.map(x=>`<div class="rounded-xl bg-white border border-orange-100 px-3 py-2 text-base md:text-lg font-bold text-slate-700">${safe(x)}</div>`).join('')}</div></div>`:''}
+        </div>`;
+    }
+    if (page.page_type === 'practice') {
+        const items=page.items||[], extra=page.extra_examples||[];
+        return `<div class="space-y-4"><div class="rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 p-3 text-center font-black text-purple-700">🎯 Làm từng thử thách rồi bấm “Xem đáp án” để tự kiểm tra</div><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${items.map((it,i)=>`<div class="rounded-2xl border-2 border-purple-200 bg-white p-4"><div class="flex items-center gap-2 mb-2"><span class="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center font-black">${i+1}</span><span class="font-black text-purple-700">Thử thách ${i+1}</span></div><div class="text-base md:text-lg font-semibold text-slate-700 leading-relaxed min-h-[48px]">${safe(it.prompt||'')}</div>${it.answer?`<button onclick="this.nextElementSibling.classList.toggle('hidden')" class="mt-3 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 text-sm md:text-base font-black">👀 Xem đáp án</button><div class="hidden mt-2 rounded-xl bg-emerald-50 border border-emerald-200 p-2 text-base md:text-lg font-black text-emerald-700">✓ ${safe(it.answer)}</div>`:''}</div>`).join('')}</div>${extra.length?`<div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4"><div class="font-black text-emerald-700 mb-2">🌱 Mẹo của Cô Thỏ Ngọc</div><ul class="list-disc pl-5 space-y-1 text-base md:text-lg font-semibold text-slate-700">${extra.map(x=>`<li>${safe(x)}</li>`).join('')}</ul></div>`:''}</div>`;
+    }
+    if (page.page_type === 'summary') {
+        const points=page.key_points||[], connections=page.connections||[];
+        return `<div class="space-y-4"><div class="rounded-3xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-4 md:p-5"><div class="text-center font-black text-emerald-700 text-lg mb-3">⭐ Ghi nhớ thật nhanh</div><div class="grid grid-cols-1 md:grid-cols-${Math.min(points.length,3)} gap-2">${points.map((x,i)=>`<div class="rounded-2xl bg-white border border-emerald-200 p-3 text-center"><div class="text-2xl mb-1">${['①','②','③'][i]||'✓'}</div><div class="text-base md:text-lg font-bold text-slate-700">${safe(x)}</div></div>`).join('')}</div></div>${connections.length?`<div class="rounded-2xl border border-sky-200 bg-sky-50/60 p-4"><div class="font-black text-sky-700 mb-2">🔗 Nhìn là nhớ</div>${connections.map(x=>`<div class="rounded-xl bg-white border border-sky-100 px-3 py-2 mb-2 last:mb-0 text-base md:text-lg font-bold text-slate-700">${safe(x)}</div>`).join('')}</div>`:''}${page.finish_prompt?`<div class="rounded-2xl border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50 p-4 text-center"><div class="text-2xl mb-1">🐰</div><div class="font-black text-pink-700">${safe(page.finish_prompt)}</div></div>`:''}</div>`;
+    }
+    return `<div class="text-sm font-bold text-slate-500">Chưa có nội dung cho trang này.</div>`;
+}
+
+function lessonNumberPick_(value, focus) {
+    const el=document.getElementById('lesson-interactive-feedback'); if(!el)return;
+    const v=Number(value), f=Number(focus);
+    el.innerHTML = v===f ? `🐰 Thỏ Ngọc đang đứng ở <b>${f}</b>.` : v===f-1 ? `⬅️ <b>${v}</b> đứng ngay trước ${f}, nên ${v} là <b>số liền trước</b> của ${f}.` : v===f+1 ? `➡️ <b>${v}</b> đứng ngay sau ${f}, nên ${v} là <b>số liền sau</b> của ${f}.` : v<f ? `${v} nằm bên trái ${f}, nên <b>${v} &lt; ${f}</b>.` : `${v} nằm bên phải ${f}, nên <b>${v} &gt; ${f}</b>.`;
+}
+function lessonPartPick_(label) { const el=document.getElementById('lesson-interactive-feedback'); if(el) el.innerHTML=`✨ Thành phần này được gọi là <b>${escapeHtml(label)}</b>.`; }
+
+function backToBaiHocHubToan2_() {
+    const sem = Number(activeBaiHocToan2_.lesson?.semester || 1);
+    openBaiHocHub(sem);
+}
+
+async function openRoadmap(semesterNumber = 1) {
+    stopSpeaking();
+    if (!isPremiumUser()) { showPremiumAccessModal('Bài tập'); return; }
+    setMainTabActive_('exercises');
+    activeExamContext = null; activeRoadmapContext = null; activeTopicId = null; pendingTopicQuiz = null;
+    updateNavTabs(null, null, null);
+    switchAppView('view-roadmap');
+    showLoadingOverlay('Đang mở Bài tập...');
+    try {
+        const data = await loadBaiHocData();
+        renderBaiTapGridToan2_(data, semesterNumber);
+    } catch (err) {
+        showAppNotice(`Không thể mở Bài tập: ${err.message}`);
+    } finally { hideLoadingOverlay(); }
+}
+
+function renderBaiTapGridToan2_(data, semesterNumber) {
+    const view = document.getElementById('view-roadmap');
+    const container = document.getElementById('roadmap-svg-container');
+    if (!view || !container) return;
+    const h2 = view.querySelector('h2');
+    const p0 = view.querySelector('h2 + p');
+    if (h2) h2.classList.remove('hidden');
+    if (p0) p0.classList.remove('hidden');
+    if (h2) h2.innerHTML = '<span>✏️</span><span>Bài tập</span>';
+    const p = view.querySelector('h2 + p');
+    if (p) p.textContent = '20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo · đánh giá theo 6 năng lực.';
+    const historyBtn = view.querySelector('button[onclick*="LichSuTienTrinhTuan"]');
+    if (historyBtn) historyBtn.classList.remove('hidden');
+    const history = view.querySelector('button[onclick*="LichSuTienTrinhTuan"] span');
+    if (history) history.textContent = '📊 Lịch sử Bài tập';
+
+    const arr = (data?.bai_tap || []).filter(x => Number(x.semester) === Number(semesterNumber));
+    const unlocked = getUnlockedBaiTapToan2_();
+    const tabHost = document.getElementById('roadmap-semester-tabs');
+    if (tabHost) tabHost.innerHTML = [1,2].map(s => `<button onclick="openRoadmap(${s})" class="semester-switch-btn ${Number(s)===Number(semesterNumber)?'is-active':'is-inactive'}">Học kỳ ${s}</button>`).join('');
+
+    const palette = [
+        {bg:'linear-gradient(145deg,#fff1f7 0%,#fdf4ff 100%)', border:'#f9a8d4', title:'#be185d'},
+        {bg:'linear-gradient(145deg,#faf5ff 0%,#f5f3ff 100%)', border:'#d8b4fe', title:'#7e22ce'},
+        {bg:'linear-gradient(145deg,#fdf2f8 0%,#fff7ed 100%)', border:'#fbcfe8', title:'#db2777'},
+        {bg:'linear-gradient(145deg,#f5f3ff 0%,#fdf2f8 100%)', border:'#c4b5fd', title:'#6d28d9'},
+        {bg:'linear-gradient(145deg,#fff7fb 0%,#fce7f3 100%)', border:'#f9a8d4', title:'#c026d3'},
+        {bg:'linear-gradient(145deg,#faf5ff 0%,#fff1f7 100%)', border:'#e9d5ff', title:'#9333ea'}
+    ];
+
+    container.className = 'w-full rounded-3xl border-2 p-3 md:p-4 shadow-sm';
+    container.style.background = 'linear-gradient(135deg,#fff7fb 0%,#faf5ff 50%,#fdf2f8 100%)';
+    container.style.borderColor = '#f0abfc';
+    container.innerHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 md:gap-3">${arr.map((bt,idx)=>{
+        const open = Number(bt.bai) <= unlocked;
+        const c = palette[idx % palette.length];
+        const bg = open ? c.bg : 'linear-gradient(145deg,#f8fafc 0%,#faf5ff 100%)';
+        const border = open ? c.border : '#e2e8f0';
+        const title = open ? c.title : '#94a3b8';
+        return `<button onclick="${open?`selectBaiTapToan2_(${bt.bai})`:`showLockedBaiTapToan2_(${bt.bai})`}" class="relative text-left min-h-[108px] md:min-h-[116px] rounded-2xl border-2 p-3 md:p-3.5 transition-all ${open?'hover:-translate-y-0.5 hover:shadow-lg':'opacity-65'} flex flex-col items-start justify-start" style="background:${bg};border-color:${border};box-shadow:${open?'0 4px 12px rgba(168,85,247,.08)':'none'}"><span class="absolute top-2.5 right-2.5 text-[12px]">${open?'':'🔒'}</span><div class="font-black text-base md:text-[17px] leading-tight pr-5" style="color:${title}">Bài ${bt.bai}</div><div class="text-[13px] md:text-[14px] font-extrabold ${open?'text-slate-700':'text-slate-400'} mt-2 pr-5 leading-snug text-left w-full">${escapeHtml(bt.title||'')}</div><div class="text-[11px] md:text-[12px] mt-auto pt-2 ${open?'text-emerald-600':'text-slate-400'} font-black">${open?'20 câu':'Cần ≥80% bài trước'}</div></button>`;
+    }).join('')}</div>`;
+}
+function showLockedBaiTapToan2_(bai) {
+    showAppNotice(`🔒 Bài tập ${bai} chưa mở. Bé cần đạt từ 80% ở Bài tập trước để mở khóa nhé!`);
+}
+function getQuestionsForBaiTapToan2_(bt) {
+    if (!bt || !allQuestionsFlatCache) return [];
+    const subIds = (bt.sub_ids || []).map(String);
+    let scoped = allQuestionsFlatCache.filter(q => subIds.length && subIds.includes(String(q.sub_id || q.sub_topic || '')));
+    if (!scoped.length) return [];
+    const candidateTarget = Math.max(20, Number(bt.candidate_pool_target || 30));
+    const candidate = shuffleArray(scoped).slice(0, Math.min(candidateTarget, scoped.length));
+    const by = {};
+    candidate.forEach(q => {
+        const m = String(q.skill_tag || q.tag || 'TOAN_C1').match(/C([1-6])/i);
+        const k = m ? `C${m[1]}` : 'C1';
+        (by[k] ||= []).push(q);
+    });
+    const out = [], used = new Set();
+    let go = true;
+    while (out.length < 20 && go) {
+        go = false;
+        for (const k of ['C1','C2','C3','C4','C5','C6']) {
+            const a = by[k] || [];
+            while (a.length && used.has(a[0].question_id)) a.shift();
+            if (a.length && out.length < 20) {
+                const q = a.shift(); used.add(q.question_id); out.push(q); go = true;
+            }
+        }
+    }
+    for (const q of candidate) {
+        if (out.length >= 20) break;
+        if (!used.has(q.question_id)) { used.add(q.question_id); out.push(q); }
+    }
+    return shuffleArray(out.slice(0,20));
+}
+async function selectBaiTapToan2_(bai) {
+    stopSpeaking();
+    showLoadingOverlay(`Đang chuẩn bị Bài tập ${bai}...`);
+    try {
+        const data = await loadBaiHocData();
+        const bt = (data?.bai_tap || []).find(x => Number(x.bai) === Number(bai));
+        if (!bt) throw new Error('Không tìm thấy Bài tập');
+        if (!isBaiTapUnlockedToan2_(data, bai)) { showLockedBaiTapToan2_(bai); return; }
+        await fetchAllTopicsData();
+        const qs = getQuestionsForBaiTapToan2_(bt);
+        if (qs.length < 20) throw new Error(`Kho câu hỏi phù hợp hiện chỉ có ${qs.length} câu; cần tối thiểu 20 câu.`);
+        activeRoadmapContext = { week:Number(bai), bai:Number(bai), topicId:`BT${bai}`, chuDe:`Bài tập ${bai} · ${bt.title||''}` };
+        pendingTopicQuiz = null; activeExamContext = null;
+        updateNavTabs(`Bài ${bai}`, '✏️', bt.title || '');
+        startTopicQuiz(bai, activeRoadmapContext.chuDe, qs, null);
+    } catch (err) { showAppNotice(`Không thể mở Bài tập: ${err.message}`); }
+    finally { hideLoadingOverlay(); }
+}
+
+// Giữ API/sheet cũ để không phải đổi Apps Script ở bước này; trường "Tuan" được dùng như số Bài tập.
+async function saveWeeklyProgressToSheet(percent, starCount, scoreVal) {
+    const { week, bai, topicId, chuDe } = activeRoadmapContext;
+    const baiSo = Number(bai || week);
+    const thoiGianLamBai = quizStartTime ? formatDuration(Date.now() - quizStartTime) : '';
+    const scoreThang10 = Number(scoreVal ?? 0).toFixed(1);
+    const skillCorrect = { C1:0,C2:0,C3:0,C4:0,C5:0,C6:0 };
+    const skillTotal = { C1:0,C2:0,C3:0,C4:0,C5:0,C6:0 };
+    quizAnsweredLog.forEach(item => {
+        const m = String(item.skill_tag || 'TOAN_C1').toUpperCase().match(/C([1-6])/);
+        const tag = m ? `C${m[1]}` : 'C1';
+        if (skillTotal[tag] === undefined) return;
+        skillTotal[tag]++; if (item.isCorrect) skillCorrect[tag]++;
+    });
+    const payload = {
+        student_id: currentUser.maHS, maHS: currentUser.maHS, token: currentUser.token,
+        hoTen: currentUser.hoTen, lop: currentUser.lop, sheetName:'LichSuTienTrinhTuan',
+        week_completed:baiSo, tuan:baiSo, chuDe, topicId, score:scoreThang10,
+        stars_earned:starCount, tongCauHoi:activeQuestionsList.length,
+        soCauDung:quizAnsweredLog.filter(x=>x.isCorrect).length, percent, thoiGianLamBai,
+        wrongQuestions:quizWrongAnswers
+    };
+    Object.keys(SKILL_TAXONOMY).forEach(k => {
+        payload[SKILL_TAXONOMY[k].sheetCol] = skillCorrect[k];
+        payload[SKILL_TAXONOMY[k].totalCol] = skillTotal[k];
+    });
+    try {
+        await callAppsScript('saveWeeklyProgress', payload);
+        if (percent >= 80) {
+            const data = await loadBaiHocData();
+            const nextBai = getNextBaiTapToan2_(data, baiSo);
+            if (nextBai && nextBai > getUnlockedBaiTapToan2_()) {
+                saveUnlockedBaiTapToan2_(nextBai);
+                setTimeout(()=>showAppNotice(`🎉 Chúc mừng bé đạt ${percent}%! Bài tập ${nextBai} đã được mở khóa.`),500);
+            }
+        }
+    } catch (e) {}
+}
