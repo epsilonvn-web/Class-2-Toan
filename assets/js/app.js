@@ -559,6 +559,12 @@ async function loadExamDataFile(file) {
 async function renderDashboardGrid() {
     const container = document.getElementById('view-dashboard-grid');
     if (!container) return;
+
+    // Luon khoi phuc layout Khám phá khi quay ve trang chu.
+    // Desktop rong: 4 cot; man hinh vua: 3 cot; nho hon: 2/1 cot.
+    // Cac man con co the tam thoi doi className cua container, nen neu khong
+    // reset tai day thi trang Khám phá se bi ket o layout 2 cot.
+    container.className = 'w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5';
     
     let topicsData = [];
     try { topicsData = await fetchAllTopicsData(); } catch (e) {}
@@ -924,6 +930,13 @@ function returnToTopicLecture() {
     } else if (pendingTopicQuiz) {
         if (Number(pendingTopicQuiz.topicNum) === 1) {
             renderExploreNumberScopes(pendingTopicQuiz.topicNum, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
+        } else if (Number(pendingTopicQuiz.topicNum) === 2) {
+            // Mục 2 luôn quay về đúng 4 nhánh, tuyệt đối không rơi về màn phân nhóm 1.2 / 1.4 cũ.
+            renderExploreComparisonBranches(
+                pendingTopicQuiz.topicNum,
+                pendingTopicQuiz.topicName,
+                pendingTopicQuiz.topic2AllPool || pendingTopicQuiz.questions || []
+            );
         } else if (pendingTopicQuiz.selectedExploreGroup) {
             const pool = pendingTopicQuiz.groupMap?.[pendingTopicQuiz.selectedExploreGroup] || [];
             renderExploreLevelsForGroup(pendingTopicQuiz.selectedExploreGroup, pendingTopicQuiz.selectedExploreGroupLabel, pool);
@@ -1522,7 +1535,7 @@ function makeTopic2OrderQuestions_() {
             const wrong3 = direction === 'asc'
                 ? `${asc[1]} < ${asc[0]} < ${asc[2]} < ${asc[3]}`
                 : `${desc[1]} > ${desc[0]} > ${desc[2]} > ${desc[3]}`;
-            return seededShuffle([correct, wrong1, wrong2, wrong3]);
+            return shuffleArray([correct, wrong1, wrong2, wrong3]);
         };
         const ascAns = asc.join(' < '), descAns = desc.join(' > ');
         return [
@@ -1549,13 +1562,21 @@ function makeTopic2OrderQuestions_() {
 }
 
 function renderExploreComparisonBranches(topicNum, topicName, pool) {
-    const range100Pool = getTopic2Range100Pool_(pool);
+    // Kiến trúc chuẩn Mục 2:
+    // - Không có màn chọn phạm vi 100 / 1000 ở bên ngoài.
+    // - 1.2 (phạm vi 100) cấp dữ liệu cho cả 4 nhánh.
+    // - 1.4 (phạm vi 1000) CHỈ được ghép vào nhánh "So sánh số".
+    const allPool = [...(pool || [])];
+    const range100Pool = getTopic2Range100Pool_(allPool);
+    const range1000ComparePool = allPool.filter(q => String(q.sub_id || q.sub_topic || q.sub_code || '').trim() === '1.4');
     const extraOrder = makeTopic2OrderQuestions_();
     pendingTopicQuiz = {
         topicNum,
         topicName,
-        questions: range100Pool,
+        questions: allPool,
+        topic2AllPool: allPool,
         topic2Range100Pool: range100Pool,
+        topic2Range1000ComparePool: range1000ComparePool,
         topic2OrderPool: extraOrder,
         selectedCompareBranch: null,
         selectedCompareBranchLabel: null
@@ -1568,6 +1589,7 @@ function renderExploreComparisonBranches(topicNum, topicName, pool) {
     container.innerHTML = EXPLORE_COMPARE_BRANCHES.map((item, idx) => {
         const palette = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
         let count = range100Pool.filter(q => item.types.includes(q.explore_type)).length;
+        if (item.key === 'compare') count += range1000ComparePool.length;
         if (item.key === 'order-find') count += extraOrder.length;
         return `
             <button onclick="selectExploreComparisonBranch('${item.key}')" class="p-4 ${palette.card} border-2 rounded-2xl text-left shadow-sm pastel-btn min-h-[118px] flex flex-col justify-between">
@@ -1591,6 +1613,8 @@ function selectExploreComparisonBranch(key) {
 
     const base = pendingTopicQuiz.topic2Range100Pool || [];
     let pool = base.filter(q => meta.types.includes(q.explore_type));
+    // Kiến thức phạm vi 1000 chỉ xuất hiện bên trong nhánh So sánh số.
+    if (key === 'compare') pool = [...pool, ...(pendingTopicQuiz.topic2Range1000ComparePool || [])];
     if (key === 'order-find') pool = [...pool, ...(pendingTopicQuiz.topic2OrderPool || [])];
     if (!pool.length) return showAppNotice('Mục này đang được cập nhật thêm câu hỏi nhé bé!');
 
@@ -1604,6 +1628,11 @@ function selectExploreComparisonBranch(key) {
 }
 
 function renderExploreSubtopics(topicNum, topicName, topicObj) {
+    // Guard dứt điểm: Mục 2 không bao giờ dùng màn subtopic cũ (1.2 / 1.4).
+    if (Number(topicNum) === 2) {
+        const source = topicObj?.topic2AllPool || topicObj?.questions || pendingTopicQuiz?.topic2AllPool || pendingTopicQuiz?.questions || [];
+        return renderExploreComparisonBranches(Number(topicNum), topicName, source);
+    }
     const sourceQuestions = topicObj.questions || pendingTopicQuiz?.questions || [];
     pendingTopicQuiz = { topicNum, topicName, questions: sourceQuestions };
 
@@ -1656,6 +1685,9 @@ function getExploreNumberScopePool_(pool, scope) {
 }
 
 function renderExploreNumberScopes(topicNum, topicName, pool) {
+    // Guard dứt điểm: màn chọn phạm vi chỉ thuộc Mục 1 - Cấu tạo số.
+    // Nếu bất kỳ luồng cũ nào gọi nhầm Mục 2 vào đây, tự chuyển về 4 nhánh chuẩn.
+    if (Number(topicNum) === 2) return renderExploreComparisonBranches(Number(topicNum), topicName, pool || []);
     pendingTopicQuiz = {
         topicNum,
         topicName,
@@ -1707,8 +1739,57 @@ function selectExploreNumberScope(scope) {
 function getNumberComposePool_(scope, pool) {
     const targetSub = String(scope) === '1000' ? '1.3' : '1.1';
     const compose = (pool || []).filter(q => String(q.sub_id || q.sub_topic || '') === targetSub && q.explore_type === 'compose_words');
-    // Dự phòng cho JSON cũ chưa có explore_type.
-    return compose.length ? compose : (pool || []).filter(q => String(q.sub_id || q.sub_topic || '') === targetSub);
+    const base = compose.length ? compose : (pool || []).filter(q => String(q.sub_id || q.sub_topic || '') === targetSub);
+
+    // Phạm vi 100 cần đủ 50 câu Ghép số. Nếu JSON hiện tại chưa đủ,
+    // tự bổ sung câu mới theo đúng renderer compose_words thay vì nhân bản câu cũ.
+    if (String(scope) !== '100' || base.length >= 50) return base;
+
+    const result = [...base];
+    const used = new Set(result.map(q => Number(q.a)).filter(Number.isFinite));
+    const candidates = [
+        12,14,16,18,23,25,27,29,31,32,35,38,41,43,45,49,52,54,56,58,
+        61,64,67,69,71,73,75,78,81,83,85,87,91,93,95,97,30,40,50,60,70,80,90
+    ];
+
+    for (const n of candidates) {
+        if (result.length >= 50 || used.has(n)) continue;
+        used.add(n);
+        const tens = Math.floor(n / 10);
+        const ones = n % 10;
+        const distractors = [];
+        const push = v => {
+            if (v >= 10 && v <= 99 && v !== n && !distractors.includes(v)) distractors.push(v);
+        };
+        // Nhiễu ưu tiên lỗi đảo chữ số, nhầm hàng và số lân cận.
+        push(ones * 10 + tens);
+        push(tens * 10);
+        push((Math.min(9, tens + 1)) * 10 + ones);
+        push((Math.max(1, tens - 1)) * 10 + ones);
+        push(n + 1);
+        push(n - 1);
+        while (distractors.length < 3) push(10 + ((n + distractors.length * 7) % 90));
+
+        result.push(normalizeQuestion({
+            id: 192000 + n,
+            sub: 'Số trong phạm vi 100',
+            sub_code: '1.1',
+            q: 'Bé ơi, ghép các giá trị hàng thành số đúng nhé!',
+            o: shuffleArray([String(n), ...distractors.slice(0, 3).map(String)]),
+            a: String(n),
+            h: `Con đọc từng giá trị hàng rồi ghép lại nhé: ${tens} chục + ${ones} đơn vị tạo thành số ${n}.`,
+            tag: 'TOAN_C1',
+            explore_topic_id: 1,
+            explore_topic: 'Cấu tạo số',
+            explore_type: 'compose_words',
+            visual_data: {
+                parts: [{ count: tens, place: 'chục' }, { count: ones, place: 'đơn vị' }],
+                shuffle: true,
+                display_style: 'inline_words'
+            }
+        }));
+    }
+    return result.slice(0, 50);
 }
 
 function makeQuantityEstimateQuestion_(id, total, emoji, label) {
@@ -1771,7 +1852,17 @@ function buildFindNumberPool_(scope) {
         ['Số chẵn lớn nhất bé hơn 50 là số nào?', 48, [49, 46, 50]],
         ['Số lẻ bé nhất lớn hơn 60 là số nào?', 61, [59, 60, 63]],
         ['Số tròn chục lớn hơn 60 nhưng bé hơn 80 là số nào?', 70, [60, 80, 71]],
-        ['Số chẵn lớn nhất bé hơn 70 và có hai chữ số giống nhau là số nào?', 66, [55, 68, 44]]
+        ['Số chẵn lớn nhất bé hơn 70 và có hai chữ số giống nhau là số nào?', 66, [55, 68, 44]],
+        ['Số chẵn bé nhất có hai chữ số giống nhau là số nào?', 22, [11, 20, 33]],
+        ['Số lẻ lớn nhất có hai chữ số giống nhau nhưng bé hơn 90 là số nào?', 77, [88, 79, 66]],
+        ['Số tròn chục bé nhất lớn hơn 30 là số nào?', 40, [30, 31, 50]],
+        ['Số tròn chục lớn nhất bé hơn 70 là số nào?', 60, [50, 69, 70]],
+        ['Số chẵn bé nhất lớn hơn 50 là số nào?', 52, [50, 51, 54]],
+        ['Số lẻ lớn nhất bé hơn 80 là số nào?', 79, [77, 78, 81]],
+        ['Số lớn nhất có hàng chục là 4 và hàng đơn vị là số chẵn là số nào?', 48, [46, 49, 58]],
+        ['Số bé nhất có hàng chục là 6 và hàng đơn vị là số lẻ là số nào?', 61, [60, 63, 51]],
+        ['Số lớn nhất bé hơn 60 và có hai chữ số khác nhau là số nào?', 59, [58, 55, 60]],
+        ['Số bé nhất lớn hơn 70 và có hàng đơn vị bằng 2 là số nào?', 72, [62, 71, 82]]
     ];
     return specs.map((x, i) => normalizeQuestion({
         id: 191000 + i,
