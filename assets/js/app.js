@@ -3059,10 +3059,11 @@ function checkAnswer(selectedOpt) {
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
         setTimeout(() => speakVietnamese(`${q.answer}`), 180);
 
-        // Ghép số và toàn bộ Mục 2 là các hoạt động phản xạ ngắn:
-        // làm đúng thì tự chuyển câu sau, không bắt bé bấm thêm một lần.
-        const shouldAutoAdvance = pendingTopicQuiz?.selectedNumberActivity === 'compose'
-            || Number(pendingTopicQuiz?.topicNum) === 2;
+        // Toàn bộ Mục 1-4 là các hoạt động phản xạ ngắn:
+        // khi bé chọn đúng, giữ phản hồi xanh trong chốc lát rồi tự chuyển câu sau.
+        // Chọn sai vẫn đứng ở câu hiện tại để bé tiếp tục thử.
+        const currentTopicNum = Number(pendingTopicQuiz?.topicNum);
+        const shouldAutoAdvance = currentTopicNum >= 1 && currentTopicNum <= 4;
         if (shouldAutoAdvance) {
             setTimeout(() => {
                 if (userAnswers[currentQIndex] !== undefined) nextQuestion();
