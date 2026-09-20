@@ -669,6 +669,7 @@ function updateExamTimerDisplay() {
 }
 
 function openExamHub() {
+    setAppShellRootMode_(true);
     stopSpeaking();
     if (!isPremiumUser()) { showPremiumAccessModal('Đấu trường đề thi'); return; }
     setMainTabActive_('exams');
@@ -788,6 +789,7 @@ const GAME_SCRIPT_MAP = {
 };
 const loadedGameScripts = {};
 function openMiniGameHub() {
+    setAppShellRootMode_(true);
     if (!isPremiumUser()) { showPremiumAccessModal('Mini Game'); return; }
     setMainTabActive_('games');
     stopSpeaking(); inMiniGameFlow = true; activeExamContext = null; activeRoadmapContext = null; activeTopicId = null; pendingTopicQuiz = null;
@@ -805,6 +807,7 @@ function loadGameScript(src) {
     return new Promise((resolve, reject) => { const script = document.createElement('script'); script.src = src; script.onload = () => { loadedGameScripts[src] = true; resolve(); }; script.onerror = () => reject(new Error(`Không tải được file game: ${src}`)); document.body.appendChild(script); });
 }
 async function openGamePlay(gameId) {
+    setAppShellRootMode_(false);
     if (!isPremiumUser()) { showPremiumAccessModal('Mini Game'); return; }
     stopSpeaking(); inMiniGameFlow = true; const game = MINIGAME_LIST.find(g => g.id === gameId); if (!game) return;
     if (!game.ready) { showAppNotice(`Game "${game.title}" đang được xây dựng. Cô Thỏ Ngọc sẽ mở game này ở bản cập nhật sau nhé!`); return; }
@@ -813,6 +816,19 @@ async function openGamePlay(gameId) {
     const container = document.getElementById('game-play-container'); if (container) container.innerHTML = '<p class="text-center text-gray-400 font-bold py-8"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải game...</p>';
     try { await loadGameScript(GAME_SCRIPT_MAP[gameId]); } catch (e) { if (container) container.innerHTML = '<p class="text-center text-rose-500 font-bold py-8">Không tải được game, bé thử lại nhé!</p>'; return; }
     if (gameId === 'balance-scale' && typeof startBalanceScaleGame === 'function') startBalanceScaleGame();
+}
+
+// ============================================================
+// TOAN 2 APP SHELL 2026 - banner chinh o root tab, banner phu + breadcrumb khi vao noi dung.
+// Chi dieu khien presentation, khong thay doi nghiep vu/du lieu.
+// ============================================================
+let appShellRootMode_ = true;
+function setAppShellRootMode_(isRoot) {
+    appShellRootMode_ = !!isRoot;
+    const mainBanner = document.getElementById('app-main-banner');
+    const contextBanner = document.getElementById('app-context-banner');
+    if (mainBanner) mainBanner.classList.toggle('hidden', !appShellRootMode_);
+    if (contextBanner) contextBanner.classList.toggle('hidden', appShellRootMode_);
 }
 
 // ==========================================
@@ -835,26 +851,12 @@ function getActiveMainModuleMeta_() {
 // Nút đầu tiên luôn bám theo module đang active, tránh bị sót "Khám phá"
 // khi người dùng đã chuyển sang Bài học/Bài tập/Đề thi/Mini games.
 function updateNavTabs(level2Title, level2Icon, level3Title, level4Title) {
-    const rootTab = document.getElementById('header-discover-tab');
     const tab2 = document.getElementById('header-level2-tab');
     const tab3 = document.getElementById('header-level3-tab');
     const tab4 = document.getElementById('header-level4-tab');
     const homeBtn = document.getElementById('btn-header-home');
-    const meta = getActiveMainModuleMeta_();
 
-    // Không có tầng con => đang ở màn root của module.
-    // Header vẫn hiển thị đúng 1 chip của module hiện tại (Khám phá/Bài học/...)
-    // để nhất quán giữa tất cả 6 tab; các tầng con phía sau được ẩn.
     if (!level2Title) {
-        if (rootTab) {
-            const btn = rootTab.querySelector('button');
-            if (btn) {
-                btn.setAttribute('onclick', `openMainTab('${meta.target}')`);
-                btn.innerHTML = `<span>${meta.label}</span>`;
-            }
-            rootTab.classList.remove('hidden');
-            rootTab.classList.add('flex');
-        }
         if (tab2) { tab2.classList.add('hidden'); tab2.classList.remove('flex'); }
         if (tab3) { tab3.classList.add('hidden'); tab3.classList.remove('flex'); }
         if (tab4) { tab4.classList.add('hidden'); tab4.classList.remove('flex'); }
@@ -862,46 +864,28 @@ function updateNavTabs(level2Title, level2Icon, level3Title, level4Title) {
         return;
     }
 
-    // Breadcrumb root luôn là module hiện tại.
-    if (rootTab) {
-        const btn = rootTab.querySelector('button');
-        if (btn) {
-            btn.setAttribute('onclick', `openMainTab('${meta.target}')`);
-            btn.innerHTML = `<span>${meta.label}</span>`;
-        }
-        rootTab.classList.remove('hidden');
-        rootTab.classList.add('flex');
-    }
-
     if (tab2) {
         const t2 = document.getElementById('header-level2-title');
         const i2 = document.getElementById('header-level2-icon');
         const btn2 = tab2.querySelector('button');
         if (t2) t2.textContent = level2Title;
-        if (i2) i2.textContent = level2Icon || meta.icon;
-        if (btn2) {
-            btn2.setAttribute('onclick', Number(activeTopicId) === 12 ? 'openPoetryGarden()' : 'returnToTopicLecture()');
-        }
-        tab2.classList.remove('hidden');
-        tab2.classList.add('flex');
+        if (i2) i2.textContent = level2Icon || getActiveMainModuleMeta_().icon;
+        if (btn2) btn2.setAttribute('onclick', Number(activeTopicId) === 12 ? 'openPoetryGarden()' : 'returnToTopicLecture()');
+        tab2.classList.remove('hidden'); tab2.classList.add('flex');
     }
     if (homeBtn) homeBtn.classList.add('opacity-80', 'hover:opacity-100');
 
-    if (level3Title) {
+    if (level3Title && tab3) {
         const t3 = document.getElementById('header-level3-title');
         if (t3) t3.textContent = level3Title;
-        if (tab3) { tab3.classList.remove('hidden'); tab3.classList.add('flex'); }
-    } else if (tab3) {
-        tab3.classList.add('hidden'); tab3.classList.remove('flex');
-    }
+        tab3.classList.remove('hidden'); tab3.classList.add('flex');
+    } else if (tab3) { tab3.classList.add('hidden'); tab3.classList.remove('flex'); }
 
     if (level4Title && tab4) {
         const t4 = document.getElementById('header-level4-title');
         if (t4) t4.textContent = level4Title;
         tab4.classList.remove('hidden'); tab4.classList.add('flex');
-    } else if (tab4) {
-        tab4.classList.add('hidden'); tab4.classList.remove('flex');
-    }
+    } else if (tab4) { tab4.classList.add('hidden'); tab4.classList.remove('flex'); }
 }
 
 function returnToLevel3FromHeader() {
@@ -1004,6 +988,7 @@ function openMainTab(tabName) {
 }
 
 async function openReviewHubFromQuestionBank() {
+    setAppShellRootMode_(true);
     stopSpeaking();
     setMainTabActive_('review');
     activeTopicId = 'review'; activeExamContext = null; activeRoadmapContext = null;
@@ -1023,6 +1008,7 @@ async function openReviewHubFromQuestionBank() {
 }
 
 function goHome() {
+    setAppShellRootMode_(true);
     stopSpeaking();
     clearInterval(quizTimerInterval);
     inMiniGameFlow = false;
@@ -1295,7 +1281,7 @@ function updateUserInfoBox() {
     if (!box) return;
     if (currentUser && !currentUser.isGuest) {
         const adminBtn = isAdminUser()
-            ? `<button onclick="openAdminAccountManager()" class="h-8 px-3 flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-xl border border-amber-200 text-sm md:text-base font-black"><i class="fa-solid fa-users-gear"></i><span>Quản lý</span></button>`
+            ? `<button onclick="openAdminAccountManager()" class="h-8 px-3 flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-xl border border-amber-200 text-sm md:text-base font-black"><i class="fa-solid fa-users-gear"></i><span class="admin-manage-label">Quản lý</span></button>`
             : '';
         box.innerHTML = `
             <div class="flex items-center space-x-2">
@@ -1456,6 +1442,7 @@ function clickProgressOrExam(type) {
 // CHỦ ĐỀ 1: BẢNG CHỮ CÁI TƯƠNG TÁC (1.1 ĐẾN 1.4)
 // ==========================================
 function openTopic(topicNum, topicName, icon) {
+    setAppShellRootMode_(false);
     stopSpeaking();
     if (Number(topicNum) === 12) return openPoetryGarden();
     setMainTabActive_('discover');
@@ -1964,6 +1951,7 @@ async function loadPoetryGardenData() {
 }
 
 async function openPoetryGarden() {
+    setAppShellRootMode_(false);
     stopSpeaking();
     activeTopicId = 12;
     activeExamContext = null;
@@ -2060,6 +2048,7 @@ async function renderPoetryCategory(categoryIndex) {
 }
 
 async function openMathPoem(categoryIndex, poemIndex) {
+    setAppShellRootMode_(false);
     stopSpeaking();
     ensurePoetryGardenStyles_();
     const data = poetryGardenCache || await loadPoetryGardenData();
@@ -2252,6 +2241,7 @@ async function selectRoadmapWeek(weekNum) {
 // LOGIC CHẤM ĐIỂM & ĐIỀU KHIỂN CÂU HỎI
 // ==========================================
 function startTopicQuiz(topicNum, topicName, questions, subLabel) {
+    setAppShellRootMode_(false);
     stopSpeaking();
     clearInterval(quizTimerInterval);
     activeQuestionsList = questions; 
@@ -4126,6 +4116,7 @@ function clickProgressOrExam(type) {
 }
 
 async function openBaiHocHub(semesterNumber = 1) {
+    setAppShellRootMode_(true);
     stopSpeaking();
     if (!isPremiumUser()) { showPremiumAccessModal('Bài học'); return; }
     setMainTabActive_('lessons');
@@ -4192,6 +4183,7 @@ async function selectBaiHocToan2_(bai) {
 }
 
 function renderBaiHocDetailToan2_() {
+    setAppShellRootMode_(false);
     const ctx = activeBaiHocToan2_;
     const lesson = ctx.lesson;
     if (!lesson) return;
@@ -4312,6 +4304,7 @@ function backToBaiHocHubToan2_() {
 }
 
 async function openRoadmap(semesterNumber = 1) {
+    setAppShellRootMode_(true);
     stopSpeaking();
     if (!isPremiumUser()) { showPremiumAccessModal('Bài tập'); return; }
     setMainTabActive_('exercises');
