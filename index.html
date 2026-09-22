@@ -436,6 +436,63 @@
             .main-module-tab{font-size:14px !important;}
         }
 
+
+        /* TOAN 2 - can chinh cum sao va vien card Kham pha */
+        #view-dashboard-grid .pastel-card {
+            border-width: 1px !important;
+        }
+
+        @media (min-width: 768px) {
+            #header-star-box {
+                height: 62px !important;
+                min-height: 62px !important;
+                padding: 5px 8px !important;
+                justify-content: center !important;
+                gap: 4px !important;
+            }
+            #header-star-box > div {
+                min-height: 22px;
+                gap: 8px;
+            }
+            #header-star-box > div > span:first-child {
+                font-size: 12px !important;
+                padding: 3px 7px !important;
+                line-height: 1.15 !important;
+            }
+            #header-star-box > div > span:first-child i {
+                font-size: 12px !important;
+            }
+            #star-green-count,
+            #star-red-count {
+                font-size: 15px !important;
+                line-height: 1 !important;
+                min-width: 15px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 767px) {
+            #header-star-box {
+                height: 52px !important;
+                min-height: 52px !important;
+                padding: 4px 6px !important;
+                justify-content: center !important;
+                gap: 3px !important;
+            }
+            #header-star-box > div > span:first-child {
+                font-size: 11px !important;
+                padding: 2px 5px !important;
+            }
+            #header-star-box > div > span:first-child i {
+                font-size: 11px !important;
+            }
+            #star-green-count,
+            #star-red-count {
+                font-size: 13px !important;
+                line-height: 1 !important;
+            }
+        }
+
     </style>
 </head>
 <body class="p-1 md:p-2 w-full" style="padding-top:0;padding-bottom:max(0.25rem,env(safe-area-inset-bottom));padding-left:max(0.25rem,env(safe-area-inset-left));padding-right:max(0.25rem,env(safe-area-inset-right));">
