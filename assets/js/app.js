@@ -1233,6 +1233,9 @@ async function flushPendingLogout() {
 async function logout() {
     stopSpeaking();
     clearTimeout(sessionRestoreRetryTimer);
+    clearInterval(adminRegistrationPollTimer);
+    adminRegistrationPollTimer = null;
+    adminNewRegistrationCount = 0;
     const tokenToRevoke = currentUser?.token || localStorage.getItem('toan2_token');
 
     // Người dùng đã chủ động bấm Đăng xuất: xóa token phiên hoạt động trên client ngay lập tức.
@@ -1260,6 +1263,7 @@ function enterDashboard(isSilent = false) {
     renderDashboardGrid();
     renderExamHubGrid();
     goHome();
+    startAdminRegistrationPolling();
 
     // Phát ngẫu nhiên lời chào sư phạm (Không nhạc)
     if (!isSilent) {
@@ -1276,12 +1280,60 @@ function enterDashboard(isSilent = false) {
     }
 }
 
+let adminNewRegistrationCount = 0;
+let adminRegistrationPollTimer = null;
+
+function renderAdminRegistrationBadge() {
+    const badge = document.getElementById('admin-new-registration-badge');
+    if (!badge) return;
+    const count = Math.max(0, Number(adminNewRegistrationCount) || 0);
+    badge.textContent = count > 99 ? '99+' : String(count);
+    badge.classList.toggle('hidden', count <= 0);
+}
+
+async function refreshAdminRegistrationBadge() {
+    if (!isAdminUser() || !currentUser?.token) return;
+    try {
+        const res = await callAppsScript('getNewRegistrationsCount', { token: currentUser.token });
+        if (!res?.ok) return;
+        adminNewRegistrationCount = Number(res.count) || 0;
+        renderAdminRegistrationBadge();
+    } catch (e) {
+        // Badge là thông tin phụ, không làm gián đoạn ứng dụng khi mạng tạm thời lỗi.
+    }
+}
+
+function startAdminRegistrationPolling() {
+    clearInterval(adminRegistrationPollTimer);
+    adminRegistrationPollTimer = null;
+    if (!isAdminUser()) {
+        adminNewRegistrationCount = 0;
+        return;
+    }
+    refreshAdminRegistrationBadge();
+    adminRegistrationPollTimer = setInterval(refreshAdminRegistrationBadge, 15000);
+}
+
+async function markAdminRegistrationsSeen() {
+    if (!isAdminUser() || !currentUser?.token) return;
+    try {
+        const res = await callAppsScript('markRegistrationsSeen', { token: currentUser.token });
+        if (res?.ok) {
+            adminNewRegistrationCount = 0;
+            renderAdminRegistrationBadge();
+        }
+    } catch (e) {}
+}
+
+window.addEventListener('focus', () => { if (isAdminUser()) refreshAdminRegistrationBadge(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && isAdminUser()) refreshAdminRegistrationBadge(); });
+
 function updateUserInfoBox() {
     const box = document.getElementById('user-info-box');
     if (!box) return;
     if (currentUser && !currentUser.isGuest) {
         const adminBtn = isAdminUser()
-            ? `<button onclick="openAdminAccountManager()" class="h-8 px-3 flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-xl border border-amber-200 text-sm md:text-base font-black"><i class="fa-solid fa-users-gear"></i><span class="admin-manage-label">Quản lý</span></button>`
+            ? `<button onclick="openAdminAccountManager()" class="relative h-8 px-3 flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-xl border border-amber-200 text-sm md:text-base font-black"><i class="fa-solid fa-users-gear"></i><span class="admin-manage-label">Quản lý</span><span id="admin-new-registration-badge" class="hidden absolute -top-2 -right-2 min-w-[19px] h-[19px] px-1 rounded-full bg-rose-500 text-white text-[10px] leading-[19px] text-center font-black border-2 border-white shadow-md">0</span></button>`
             : '';
         box.innerHTML = `
             <div class="flex items-center space-x-2">
@@ -1323,6 +1375,7 @@ async function openAdminAccountManager() {
     }
     modal.classList.remove('hidden');
     await loadAdminAccounts();
+    await markAdminRegistrationsSeen();
 }
 
 function closeAdminAccountManager() { document.getElementById('admin-account-modal')?.classList.add('hidden'); }
