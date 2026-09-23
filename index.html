@@ -554,7 +554,40 @@
             }
         }
 
-    </style>
+    
+        /* TOAN 2 - Tang co chu card va tab mobile 2026-09-23 */
+        /* Card muc hoc: tang nhe ca desktop va mobile */
+        #view-dashboard-grid .pastel-card h3 {
+            font-size: 1.3rem !important;
+            line-height: 1.22 !important;
+        }
+        #view-dashboard-grid .pastel-card > div:last-child {
+            font-size: 15px !important;
+            line-height: 1.45 !important;
+        }
+
+        @media (max-width: 767px) {
+            /* Ten 6 tab chinh mobile lon hon, desktop giu nguyen */
+            .main-module-tab {
+                font-size: 17px !important;
+                font-weight: 900 !important;
+            }
+            .main-module-tab > span:first-child {
+                font-size: 21px !important;
+            }
+
+            /* Card muc hoc mobile: tang them de de doc */
+            #view-dashboard-grid .pastel-card h3 {
+                font-size: 1.32rem !important;
+                line-height: 1.22 !important;
+            }
+            #view-dashboard-grid .pastel-card > div:last-child {
+                font-size: 16px !important;
+                line-height: 1.45 !important;
+            }
+        }
+
+</style>
 </head>
 <body class="p-1 md:p-2 w-full" style="padding-top:0;padding-bottom:max(0.25rem,env(safe-area-inset-bottom));padding-left:max(0.25rem,env(safe-area-inset-left));padding-right:max(0.25rem,env(safe-area-inset-right));">
 
