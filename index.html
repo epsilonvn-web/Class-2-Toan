@@ -11,7 +11,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <title>Toán lớp 1 - Cô giáo Thỏ Hồng</title>
+    <title>Toán 2 - Cô Thỏ Ngọc</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome 6 -->
@@ -28,7 +28,7 @@
         html { background: #ffffff; }
         body {
             font-family: 'Quicksand', 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #fdf2f8 0%, #fae8ff 50%, #f3e8ff 100%);
+            background: #ffffff;
             color: #4a4a4a;
             user-select: none;
             min-height: 100vh;
@@ -37,10 +37,6 @@
             align-items: center;
             justify-content: flex-start;
         }
-        #screen-dashboard {
-            max-width: 72rem !important;
-        }
-
         .pastel-card {
             background: #ffffff;
             border-radius: 28px;
@@ -84,58 +80,123 @@
         ::-webkit-scrollbar-thumb { background: #f472b6; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #ec4899; }
 
-        /* TOAN1 UI V11 - 6 tab co dinh theo mau TV1 */
-        .main-module-tab{
-            position:relative; min-height:46px; padding:7px 8px; border-radius:14px;
-            border:1.5px solid #f5c5df; background:linear-gradient(180deg,#fff,#fff8fc);
-            color:#7e3bb8; font-weight:900; font-size:13px; line-height:1.05;
-            display:flex; align-items:center; justify-content:center; gap:6px;
-            box-shadow:0 2px 7px rgba(109,40,217,.07);
-            transition:box-shadow .18s,border-color .18s,background .18s,color .18s;
-        }
-        .main-module-tab:hover{border-color:#e879f9;box-shadow:0 0 13px rgba(217,70,239,.22);}
-        .main-module-tab.is-active{
-            color:#fff; border-color:#d946ef;
-            background:linear-gradient(135deg,#ec4899 0%,#a855f7 55%,#7c3aed 100%);
-            box-shadow:0 5px 14px rgba(168,85,247,.28);
-        }
-        @media (min-width:768px){.main-module-tab{min-height:50px;font-size:14px;}}
 
-        .semester-switch-btn{
-            min-width:88px; height:34px; padding:0 14px; border-radius:12px;
-            font-weight:900; font-size:12px; transform:none !important;
-            transition:background .18s,color .18s,border-color .18s,box-shadow .18s,filter .18s !important;
-        }
-        .semester-switch-btn:hover{transform:none !important;filter:brightness(1.04);}
-        .semester-switch-btn.is-active{
-            color:#fff !important; background:linear-gradient(135deg,#ec4899 0%,#a855f7 100%) !important;
-            border:2px solid #c026d3 !important; box-shadow:0 5px 12px rgba(168,85,247,.28) !important;
-        }
-        .semester-switch-btn.is-inactive{
-            color:#7e22ce !important; background:linear-gradient(135deg,#fff1f7 0%,#f5f3ff 100%) !important;
-            border:1.5px solid #e9d5ff !important; box-shadow:0 2px 6px rgba(126,34,206,.08) !important;
-        }
-
-        /* Toan 1 - breadcrumb header chi hien chu, bo icon de gon */
-        #header-level2-icon { display:none !important; }
-        #header-level2-title { margin-left:0 !important; }
-
-        @media (max-width:767px){
-            #screen-login img[src="icon-512.png"] {
-                border:none !important; border-radius:0 !important; box-shadow:none !important; background:transparent !important;
+        @media (max-width: 767px) {
+            .app-main-header {
+                display: grid !important;
+                grid-template-columns: auto minmax(0, 1fr) auto auto;
+                grid-template-rows: auto auto;
+                gap: 0.35rem 0.35rem !important;
+                align-items: center;
+                padding: 0.35rem 0.45rem !important;
             }
-            .app-main-header{display:flex !important;flex-direction:column !important;align-items:stretch !important;gap:.35rem !important;padding:.35rem .45rem !important;}
-            #header-nav-zone{display:flex !important;width:100% !important;min-width:0;justify-content:flex-start !important;overflow:hidden !important;}
-            #btn-header-home{width:72px !important;height:48px !important;min-width:72px !important;}
-            #header-learning-tabs{flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;}
-            #header-learning-tabs::-webkit-scrollbar{display:none;}
-            #header-level2-icon{display:none !important;}
-            #header-level2-tab > button{padding-left:.5rem !important;padding-right:.5rem !important;column-gap:0 !important;}
-            #header-info-zone{display:flex !important;width:100% !important;justify-content:flex-end !important;gap:.35rem !important;min-width:0;}
-            #btn-toggle-autospeech{width:38px !important;height:38px !important;min-width:38px !important;}
-            #header-star-box{transform:none !important;margin-left:0 !important;}
-            #user-info-box{margin-left:auto !important;min-width:0;text-align:right;}
-            .semester-switch-btn{min-width:76px;height:32px;padding:0 9px;font-size:11px;}
+
+            #header-nav-zone,
+            #header-info-zone {
+                display: contents !important;
+            }
+
+            #btn-header-home {
+                grid-row: 1;
+                grid-column: 1;
+            }
+
+            #header-learning-tabs {
+                grid-row: 1;
+                grid-column: 2;
+                min-width: 0;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scrollbar-width: none;
+                margin-left: 0;
+            }
+            #header-learning-tabs::-webkit-scrollbar { display: none; }
+
+            #header-level2-icon { display: none !important; }
+            #header-level2-tab > button {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+                column-gap: 0 !important;
+            }
+
+            #btn-progress-map {
+                grid-row: 1;
+                grid-column: 3;
+                justify-self: end;
+            }
+
+            #btn-mini-game {
+                grid-row: 1;
+                grid-column: 4;
+                justify-self: end;
+            }
+
+            #btn-toggle-autospeech {
+                grid-row: 2;
+                grid-column: 1;
+                justify-self: start;
+                margin: 0;
+            }
+
+            #header-star-box {
+                grid-row: 2;
+                grid-column: 1;
+                justify-self: start;
+                margin-left: 0 !important;
+                transform: translateX(2.7rem);
+            }
+
+            #user-info-box {
+                grid-row: 2;
+                grid-column: 2 / 5;
+                justify-self: end;
+                width: auto;
+                min-width: 0;
+                margin-left: auto;
+                text-align: right;
+            }
+
+            #user-info-box > div,
+            #user-info-box > span { margin-left: auto; }
+
+            #user-info-box > * { max-width: 100%; }
+
+            #header-star-box .star-word { display: none !important; }
+
+            #btn-progress-map,
+            #btn-mini-game {
+                padding-left: 0.625rem !important;
+                padding-right: 0.625rem !important;
+            }
+        }
+
+
+        /* Breadcrumb header: text only, never overlap the account/info area.
+           If the deepest tab is too long, clip it instead of pushing/chồng tab khác. */
+        #header-nav-zone {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+            justify-content: flex-start !important;
+        }
+        #header-learning-tabs {
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+        #header-learning-tabs > div { flex: 0 0 auto; min-width: 0; }
+        #header-learning-tabs button { min-width: 0; }
+        #header-info-zone { flex: 0 0 auto !important; }
+        #header-level2-icon { display: none !important; }
+        #header-level3-tab {
+            flex: 1 1 auto !important;
+            overflow: hidden;
+        }
+        #header-level3-tab > button {
+            max-width: 100% !important;
+            overflow: hidden;
         }
 
         @media print {
@@ -154,14 +215,70 @@
             .page-break-2 { page-break-before: always; break-before: page; page-break-after: always; break-after: page; }
             .page-break-3 { page-break-before: always; break-before: page; }
         }
+
+
+        /* UI chuẩn 6 tab chính: Khám phá | Bài học | Bài tập | Ôn tập | Đề thi | Mini games */
+        .main-module-tab {
+            position: relative;
+            min-height: 46px;
+            padding: 7px 8px;
+            border-radius: 14px;
+            border: 1.5px solid #f5c5df;
+            background: linear-gradient(180deg,#fff,#fff8fc);
+            color: #7e3bb8;
+            font-weight: 900;
+            font-size: 13px;
+            line-height: 1.05;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 7px rgba(109,40,217,.07);
+            transition: box-shadow .18s,border-color .18s,background .18s,color .18s;
+        }
+        .main-module-tab:hover { border-color:#e879f9; box-shadow:0 0 13px rgba(217,70,239,.22); }
+        .main-module-tab.is-active {
+            color:#fff;
+            border-color:#d946ef;
+            background:linear-gradient(135deg,#ec4899 0%,#a855f7 55%,#7c3aed 100%);
+            box-shadow:0 5px 14px rgba(168,85,247,.28);
+        }
+        @media (min-width:768px) { .main-module-tab { min-height:50px; font-size:14px; } }
+
+        .semester-switch-btn {
+            min-width: 88px;
+            height: 34px;
+            padding: 0 14px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 12px;
+            transform: none !important;
+            transition: background .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease;
+        }
+        .semester-switch-btn.is-active {
+            color:#fff !important;
+            background:linear-gradient(135deg,#ec4899 0%,#a855f7 100%) !important;
+            border:2px solid #c026d3 !important;
+            box-shadow:0 5px 12px rgba(168,85,247,.28) !important;
+        }
+        .semester-switch-btn.is-inactive {
+            color:#7e22ce !important;
+            background:linear-gradient(135deg,#fff1f7 0%,#f5f3ff 100%) !important;
+            border:1.5px solid #e9d5ff !important;
+            box-shadow:0 2px 6px rgba(126,34,206,.08) !important;
+        }
+        @media (max-width:900px) {
+            .semester-switch-btn { min-width:78px; height:32px; padding:0 10px; font-size:11px; }
+        }
+
     
 
         /* =========================================================
-           TOAN 1 UI 2026-09-20 - APP SHELL THEO CHUAN TV1
+           TOAN 2 UI 2026-09-20 - APP SHELL THEO TV1
            Chi thay presentation/layout, giu nguyen engine va workflow.
            ========================================================= */
         body { background:#ffffff !important; }
-        #screen-dashboard { max-width:72rem !important; background:transparent !important; }
+        #screen-dashboard { background:transparent !important; max-width:72rem !important; }
 
         .app-main-header{
             display:grid !important;
@@ -180,27 +297,22 @@
             width:101px !important; min-width:101px !important; height:67px !important;
             border-radius:16px !important; box-shadow:0 3px 10px rgba(76,29,149,.08) !important;
         }
-        #header-info-zone{width:auto !important;min-width:0;margin-left:0 !important;justify-content:flex-end !important;gap:7px !important;}
-        #btn-toggle-autospeech{display:none !important;}
-        #header-star-box{
-            background:#fff7fb !important;
-            height:62px !important;
-            min-height:62px !important;
-            padding:5px 8px !important;
-            justify-content:center !important;
+        #header-info-zone{
+            width:auto !important; min-width:0; margin-left:0 !important;
+            justify-content:flex-end !important; gap:7px !important;
         }
-        #header-star-box > div > span:first-child{font-size:12px !important;padding:3px 7px !important;}
-        #header-star-box > div > span:first-child i{font-size:13px !important;}
-        #star-green-count,#star-red-count{font-size:15px !important;min-width:16px;text-align:center;}
+        #header-star-box{background:#fff7fb !important;}
 
-        #main-module-tabs{width:100%;min-width:0;background:transparent !important;border:0 !important;border-radius:0 !important;padding:0 !important;box-shadow:none !important;}
-        #main-module-tabs > div{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;}
+        #main-module-tabs{width:100%;min-width:0;background:transparent!important;border:0!important;border-radius:0!important;padding:0!important;box-shadow:none!important;}
+        #main-module-tabs>div{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;}
         .main-module-tab{
-            min-width:0;min-height:62px;padding:7px 5px;border-radius:16px;flex-direction:column;gap:3px;
-            font-size:13px;line-height:1.05;border-width:1.5px;box-shadow:0 3px 9px rgba(76,29,149,.08);
-            position:relative;overflow:visible;
+            position:relative; min-width:0; min-height:62px; padding:7px 5px; border-radius:16px;
+            border:1.5px solid; font-weight:900; font-size:13px; line-height:1.05;
+            display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;
+            box-shadow:0 3px 9px rgba(76,29,149,.08);transition:box-shadow .18s,border-color .18s,background .18s,color .18s;
+            overflow:visible;
         }
-        .main-module-tab > span:first-child{font-size:21px !important;line-height:1;}
+        .main-module-tab>span:first-child{font-size:21px!important;line-height:1;}
         .main-module-tab::after{content:'';position:absolute;left:34%;right:34%;bottom:-5px;height:3px;border-radius:99px;opacity:0;transform:scaleX(.45);transition:all .18s ease;background:currentColor;}
         .main-module-tab.is-active::after{opacity:.95;transform:scaleX(1);}
         .main-module-tab[data-tab="discover"]{background:#f3e8ff;color:#7c3aed;border-color:#ddd6fe;}
@@ -223,81 +335,80 @@
         .app-main-banner-copy{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:36%;text-align:center;pointer-events:none;text-shadow:0 2px 0 rgba(255,255,255,.9),0 3px 12px rgba(126,34,206,.12);}
         .app-main-banner-title{font-size:clamp(21px,2.35vw,34px);line-height:1;font-weight:900;color:#ec4899;letter-spacing:-.02em;}
         .app-main-banner-teacher{margin-top:5px;font-size:clamp(12px,1.15vw,17px);font-weight:900;color:#7e22ce;}
-        #app-context-banner.hidden,#app-main-banner.hidden{display:none !important;}
-        #app-context-banner{position:relative;min-height:58px;overflow:hidden;border-radius:0;border:0 !important;background:none !important;box-shadow:none !important;display:flex;align-items:center;padding:7px 10px;}
+        #app-context-banner.hidden,#app-main-banner.hidden{display:none!important;}
+        #app-context-banner{position:relative;min-height:58px;overflow:hidden;border-radius:0;border:0!important;background:none!important;box-shadow:none!important;display:flex;align-items:center;padding:7px 10px;}
         #app-context-banner::before{content:'';position:absolute;inset:0;background-image:url('banner-sub.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;transform:none;opacity:1;filter:none;pointer-events:none;z-index:0;}
-        #header-learning-tabs{width:100% !important;max-width:none !important;flex:1 1 auto !important;min-width:0 !important;overflow-x:auto !important;overflow-y:hidden !important;scrollbar-width:none;gap:5px;position:relative;z-index:2;}
+        #header-learning-tabs{width:100%!important;max-width:none!important;flex:1 1 auto!important;min-width:0!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none;gap:5px;position:relative;z-index:2;white-space:nowrap;}
         #header-learning-tabs::-webkit-scrollbar{display:none;}
-        #header-level2-tab,#header-level3-tab,#header-level4-tab{width:auto !important;min-width:0 !important;max-width:none !important;flex:0 0 auto !important;overflow:visible !important;}
-        #header-level2-tab > button,#header-level3-tab > div,#header-level4-tab > div{height:38px !important;max-width:220px !important;min-width:0 !important;padding:0 12px !important;border-radius:13px !important;background:rgba(255,255,255,.50) !important;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 2px 7px rgba(76,29,149,.08) !important;}
-        #header-level2-tab > button{color:#be185d !important;border:1.5px solid #f9a8d4 !important;}
-        #header-level3-tab > div{color:#7e22ce !important;border:1.5px solid #d8b4fe !important;}
-        #header-level4-tab > div{color:#b45309 !important;border:1.5px solid #fde68a !important;}
-        #header-level2-title,#header-level3-title,#header-level4-title{font-size:12px !important;font-weight:900 !important;}
-        #header-level3-tab > span,#header-level4-tab > span{color:#c084fc !important;font-size:13px !important;}
-        #header-level2-icon{display:none !important;}
+        #header-level2-tab,#header-level3-tab,#header-level4-tab{width:auto!important;min-width:0!important;max-width:none!important;flex:0 0 auto!important;overflow:visible!important;}
+        #header-level2-tab>button,#header-level3-tab>button,#header-level4-tab>button{height:38px!important;max-width:260px!important;min-width:0!important;padding:0 12px!important;border-radius:13px!important;background:rgba(255,255,255,.50)!important;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 2px 7px rgba(76,29,149,.08)!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        #header-level2-tab>button{color:#be185d!important;border:1.5px solid #f9a8d4!important;}
+        #header-level3-tab>button{color:#7e22ce!important;border:1.5px solid #d8b4fe!important;}
+        #header-level4-tab>button{color:#b45309!important;border:1.5px solid #fde68a!important;}
+        #header-level2-title,#header-level3-title,#header-level4-title{font-size:12px!important;font-weight:900!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        #header-level3-tab>span,#header-level4-tab>span{color:#c084fc!important;font-size:13px!important;}
 
-        #app-footer{width:100%;max-width:72rem;min-height:76px;margin:10px auto 0;padding:0 14px;border-radius:0;background-image:url('footer-bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#1827f2;border:0;box-shadow:none;}
+        #app-footer{width:100%;max-width:72rem;height:76px;min-height:76px;flex:0 0 76px;margin:10px auto 0;padding:0 14px;border-radius:0;background-image:url('footer-bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#1827f2;border:0;box-shadow:none;}
         #app-footer .footer-title{font-size:17px;font-weight:900;line-height:1.35;text-shadow:0 1px 0 #fff;}
         #app-footer .footer-sub{font-size:13px;font-weight:800;line-height:1.35;color:#1827f2;text-shadow:0 1px 0 #fff;}
 
-        /* Root view: bo khung ngoai, chi giu card noi dung. */
-        #view-bai-hoc-hub,#view-roadmap,#view-minigame-hub,#view-exam-hub{background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;padding-left:0 !important;padding-right:0 !important;}
-        #roadmap-svg-container{background:transparent !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;padding-left:0 !important;padding-right:0 !important;}
-        body:has(#main-tab-review.is-active) #view-lecture{background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;padding-left:0 !important;padding-right:0 !important;}
+        /* Bo khung lon, chi giu card noi dung thuc su */
+        #view-roadmap,#view-bai-hoc-detail,#view-minigame-hub,#view-game-play,#view-exam-hub{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:0!important;padding:8px 0!important;}
+        #roadmap-svg-container{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding-left:0!important;padding-right:0!important;}
+        #view-quiz>.pastel-card{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:0!important;padding:8px 0!important;}
+        #view-quiz{gap:8px!important;}
+        #view-quiz #question-box{margin-top:4px!important;margin-bottom:4px!important;}
+        #view-quiz #quiz-bottom-nav{padding-top:6px!important;}
+        #view-bai-hoc-detail .space-y-3>:not([hidden])~:not([hidden]),#view-game-play .space-y-3>:not([hidden])~:not([hidden]){margin-top:8px!important;}
 
-        /* Man nhanh: bo khung ngoai va chieu cao gia. */
-        #view-lecture,#view-bai-hoc-lesson,#view-game-play{background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;min-height:0 !important;padding:8px 0 !important;}
-        #view-quiz > .pastel-card{background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;min-height:0 !important;padding:8px 0 !important;}
-        #view-lecture{justify-content:flex-start !important;gap:8px !important;}
-        #view-lecture > .w-full{gap:8px !important;}
-        #view-lecture .mb-3,#view-lecture .mb-2\.5{margin-bottom:8px !important;}
-        #view-lecture .mt-2\.5{margin-top:8px !important;}
-        #view-lecture .pt-2{padding-top:8px !important;}
-        #view-quiz{gap:8px !important;}
-        #view-quiz #question-box{margin-top:4px !important;margin-bottom:4px !important;}
-        #view-quiz #quiz-bottom-nav{padding-top:6px !important;}
+        /* Card Kham pha tang co chu nhu TV1 */
+        #view-dashboard-grid .pastel-card h3{font-size:1.2rem!important;}
+        #view-dashboard-grid .pastel-card>div:last-child{font-size:13.2px!important;}
 
-        @media (max-width:767px){
-            .app-main-header{display:grid !important;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;gap:7px !important;padding:7px 0 !important;}
-            #btn-header-home{grid-column:1;grid-row:1;width:86px !important;min-width:86px !important;height:58px !important;justify-self:start;}
-            #header-info-zone{grid-column:2;grid-row:1;justify-self:end !important;width:auto !important;gap:5px !important;}
-            #main-module-tabs{grid-column:1 / 3;grid-row:2;width:100% !important;}
-            #main-module-tabs > div{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+        @media(max-width:767px){
+            .app-main-header{display:grid!important;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;gap:7px!important;padding:7px 0!important;}
+            #btn-header-home{grid-column:1;grid-row:1;width:86px!important;min-width:86px!important;height:58px!important;justify-self:start;}
+            #header-info-zone{display:flex!important;grid-column:2;grid-row:1;justify-self:end!important;width:auto!important;min-width:0!important;gap:5px!important;}
+            #main-module-tabs{grid-column:1/3;grid-row:2;width:100%!important;}
+            #main-module-tabs>div{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
             .main-module-tab{min-height:52px;flex-direction:row;gap:6px;font-size:12px;padding:6px 8px;border-radius:15px;}
-            .main-module-tab > span:first-child{font-size:18px !important;}
+            .main-module-tab>span:first-child{font-size:18px!important;}
             .main-module-tab::after{bottom:-4px;height:2px;}
-            #header-star-box{transform:none !important;margin-left:0 !important;height:52px !important;min-height:52px !important;padding:3px 6px !important;}
-            #header-star-box > div > span:first-child{font-size:10px !important;padding:2px 5px !important;}
-            #header-star-box > div > span:first-child i{font-size:11px !important;}
-            #star-green-count,#star-red-count{font-size:13px !important;}
-            #user-info-box{margin-left:0 !important;min-width:0;text-align:right;}
-            #user-info-box .admin-manage-label{display:none !important;}
-            #user-info-box button[title="Quản lý tài khoản"]{width:34px !important;padding-left:0 !important;padding-right:0 !important;justify-content:center !important;}
-            #app-main-banner{aspect-ratio:4/1;border-radius:0;}
+            #header-star-box{transform:none!important;margin-left:0!important;padding:3px 5px!important;}
+            #user-info-box{margin-left:0!important;min-width:0;text-align:right;}
+            #user-info-box .admin-manage-label{display:none!important;}
+            #user-info-box button[title="Quản lý tài khoản"],
+            #user-info-box button[onclick="openAdminAccountManager()"]{
+                width:34px!important;
+                min-width:34px!important;
+                padding-left:0!important;
+                padding-right:0!important;
+                justify-content:center!important;
+                gap:0!important;
+            }
+            #user-info-box button[onclick="openAdminAccountManager()"] > span{display:none!important;}
+            #app-main-banner{aspect-ratio:4/1;}
             .app-main-banner-copy{width:39%;left:51%;top:49%;}
             .app-main-banner-title{font-size:clamp(13px,4.2vw,20px);}
             .app-main-banner-teacher{font-size:clamp(9px,2.8vw,13px);margin-top:2px;}
-            #app-context-banner{min-height:52px;border-radius:0;padding:6px 8px;}
+            #app-context-banner{min-height:52px;padding:6px 8px;}
             #header-learning-tabs{gap:4px;}
-            #header-level2-tab > button,#header-level3-tab > div,#header-level4-tab > div{height:34px !important;max-width:150px !important;padding:0 9px !important;border-radius:11px !important;}
-            #header-level2-title,#header-level3-title,#header-level4-title{font-size:11px !important;}
-            #app-footer{min-height:64px;margin-top:8px;border-radius:0;}
+            #header-level2-tab>button,#header-level3-tab>button,#header-level4-tab>button{height:34px!important;max-width:180px!important;padding:0 9px!important;border-radius:11px!important;}
+            #header-level2-title,#header-level3-title,#header-level4-title{font-size:11px!important;}
+            #header-level2-icon{display:none!important;}
+            #app-footer{height:64px;min-height:64px;flex:0 0 64px;margin-top:8px;}
             #app-footer .footer-title{font-size:14px;}
             #app-footer .footer-sub{font-size:12px;}
-            #view-lecture,#view-bai-hoc-lesson,#view-game-play,#view-quiz > .pastel-card{padding-top:6px !important;padding-bottom:6px !important;}
+            #view-roadmap,#view-bai-hoc-detail,#view-minigame-hub,#view-game-play,#view-exam-hub,#view-quiz>.pastel-card{padding-top:6px!important;padding-bottom:6px!important;}
+            #view-dashboard-grid .pastel-card h3{font-size:1.05rem!important;}
+            #view-dashboard-grid .pastel-card>div:last-child{font-size:13.2px!important;}
         }
 
+    
 
-        /* TOAN 1 - CHUAN BANNER / FOOTER / NEN THEO TV1 2026-09-22 */
-        html, body, #screen-dashboard, #app-viewport, #view-dashboard-grid { background:#ffffff !important; }
-
-        /* Khám phá: giữ pastel nhẹ theo nhóm, bỏ shadow để nền trang thật sự thoáng. */
-        #view-dashboard-grid .pastel-card,
-        #view-dashboard-grid .pastel-card:hover {
-            box-shadow:none !important;
-            border-width:1px !important;
-        }
+        /* TOAN 2 - CHUAN BANNER / FOOTER / NEN THEO TV1 2026-09-22 */
+        #screen-dashboard, #app-viewport, #view-dashboard-grid { background:#ffffff !important; }
+        #view-dashboard-grid .pastel-card, #view-dashboard-grid .pastel-card:hover { box-shadow:none !important; }
         #view-dashboard-grid .pastel-card:has(h3.text-pink-700)    { background:rgba(253,242,248,.82) !important; }
         #view-dashboard-grid .pastel-card:has(h3.text-purple-700)  { background:rgba(250,245,255,.84) !important; }
         #view-dashboard-grid .pastel-card:has(h3.text-blue-700)    { background:rgba(239,246,255,.86) !important; }
@@ -306,114 +417,154 @@
         #view-dashboard-grid .pastel-card:has(h3.text-indigo-700)  { background:rgba(238,242,255,.86) !important; }
         #view-dashboard-grid .pastel-card:has(h3.text-amber-700)   { background:rgba(255,251,235,.88) !important; }
         #view-dashboard-grid .pastel-card:has(h3.text-rose-700)    { background:rgba(255,241,242,.86) !important; }
-        #view-dashboard-grid .pastel-card:has(h3.text-teal-700)    { background:rgba(240,253,250,.88) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-cyan-700)    { background:rgba(236,254,255,.88) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-violet-700)  { background:rgba(245,243,255,.88) !important; }
         #view-dashboard-grid .pastel-card:has(h3.text-yellow-700)  { background:rgba(254,252,232,.90) !important; }
 
-        /* Toán 1 - tăng cỡ chữ 6 tab chính trên header cho cân với tiêu đề card Khám phá. */
         @media (min-width:768px){
-            .main-module-tab{ font-size:16px !important; }
-        }
-
-        /* Breadcrumb desktop: tự giãn theo nội dung, tối đa 440px như TV1. */
-        @media (min-width:768px){
-            #header-level2-tab > button, #header-level3-tab > div, #header-level4-tab > div {
-                width:auto !important; min-width:0 !important; max-width:440px !important;
-                padding-left:18px !important; padding-right:18px !important;
+            .main-module-tab{font-size:16px !important;}
+            #header-level2-tab>button,#header-level3-tab>button,#header-level4-tab>button{
+                width:auto !important;min-width:0 !important;max-width:440px !important;
+                padding-left:18px !important;padding-right:18px !important;
             }
-            #header-level2-title, #header-level3-title, #header-level4-title {
-                font-size:14px !important; max-width:400px !important; overflow:hidden !important;
-                text-overflow:ellipsis !important; white-space:nowrap !important;
+            #header-level2-title,#header-level3-title,#header-level4-title{
+                font-size:14px !important;max-width:400px !important;overflow:hidden !important;
+                text-overflow:ellipsis !important;white-space:nowrap !important;
             }
         }
+        @media (max-width:767px){
+            .main-module-tab{font-size:14px !important;}
+        }
 
-    
-        /* TOAN 1 - FOOTER 8:1 DONG BO TV2 2026-09-22 */
-        #app-footer {
-            aspect-ratio: 8 / 1 !important;
-            min-height: 0 !important;
-            height: auto !important;
-            background-image: url('footer-bg.jpg') !important;
-            background-size: cover !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
+
+        /* TOAN 2 - can chinh cum sao va vien card Kham pha */
+        #view-dashboard-grid .pastel-card {
+            border-width: 1px !important;
+        }
+
+        @media (min-width: 768px) {
+            #header-star-box {
+                height: 62px !important;
+                min-height: 62px !important;
+                padding: 5px 8px !important;
+                justify-content: center !important;
+                gap: 4px !important;
+            }
+            #header-star-box > div {
+                min-height: 22px;
+                gap: 8px;
+            }
+            #header-star-box > div > span:first-child {
+                font-size: 12px !important;
+                padding: 3px 7px !important;
+                line-height: 1.15 !important;
+            }
+            #header-star-box > div > span:first-child i {
+                font-size: 12px !important;
+            }
+            #star-green-count,
+            #star-red-count {
+                font-size: 15px !important;
+                line-height: 1 !important;
+                min-width: 15px;
+                text-align: center;
+            }
         }
 
         @media (max-width: 767px) {
-            #app-footer {
-                aspect-ratio: 8 / 1 !important;
-                min-height: 0 !important;
-                height: auto !important;
+            #header-star-box {
+                height: 52px !important;
+                min-height: 52px !important;
+                padding: 4px 6px !important;
+                justify-content: center !important;
+                gap: 3px !important;
+            }
+            #header-star-box > div > span:first-child {
+                font-size: 11px !important;
+                padding: 2px 5px !important;
+            }
+            #header-star-box > div > span:first-child i {
+                font-size: 11px !important;
+            }
+            #star-green-count,
+            #star-red-count {
+                font-size: 13px !important;
+                line-height: 1 !important;
             }
         }
 
-
-        /* TOAN 1 - FOOTER RONG BANG BANNER */
+        /* TOAN 2 - MOBILE TINH CHINH 2026-09-23 */
+        /* Footer 8:1, rong dung bang phan artwork banner ben trong dashboard */
         #app-footer {
             width: calc(100% - 1rem) !important;
-            max-width: 71rem !important;
+            max-width: calc(72rem - 1rem) !important;
+            aspect-ratio: 8 / 1 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            flex: 0 0 auto !important;
             box-sizing: border-box !important;
         }
 
         @media (max-width: 767px) {
-            #app-footer {
-                width: calc(100% - 0.5rem) !important;
-                max-width: none !important;
-            }
-        }
-
-
-        /* TOAN 1 - MOBILE: NUT QUAN LY CHI GIU ICON */
-        @media (max-width: 767px) {
-            #user-info-box button[title="Quản lý tài khoản"] {
-                width: 34px !important;
-                min-width: 34px !important;
+            /* Nut Quan ly chi con icon, badge dang ky moi van giu */
+            #user-info-box button[onclick="openAdminAccountManager()"] {
+                width: 36px !important;
+                min-width: 36px !important;
                 padding-left: 0 !important;
                 padding-right: 0 !important;
+                gap: 0 !important;
                 justify-content: center !important;
                 font-size: 0 !important;
-                overflow: hidden !important;
-                white-space: nowrap !important;
             }
-
-            #user-info-box button[title="Quản lý tài khoản"] i {
-                font-size: 14px !important;
+            #user-info-box button[onclick="openAdminAccountManager()"] > .admin-manage-label,
+            #user-info-box button[onclick="openAdminAccountManager()"] > span:not(#admin-new-registration-badge) {
+                display: none !important;
+            }
+            #user-info-box button[onclick="openAdminAccountManager()"] > i {
+                font-size: 16px !important;
                 margin: 0 !important;
             }
 
-            #user-info-box button[title="Quản lý tài khoản"] .admin-manage-label {
-                display: none !important;
-            }
-        }
-
-
-        /* TOAN 1 - MOBILE: TANG CO CHU HEADER VA CARD KHAM PHA */
-        @media (max-width: 767px) {
+            /* Chu 6 tab chinh lon hon tren mobile */
             .main-module-tab {
-                font-size: 15px !important;
+                font-size: 16px !important;
                 font-weight: 900 !important;
             }
+            .main-module-tab > span:first-child {
+                font-size: 20px !important;
+            }
+
+            /* Tieu de + mo ta cac muc hoc lon hon */
             #view-dashboard-grid .pastel-card h3 {
-                font-size: 18px !important;
-                line-height: 1.25 !important;
+                font-size: 1.2rem !important;
+                line-height: 1.2 !important;
             }
             #view-dashboard-grid .pastel-card > div:last-child {
-                font-size: 14px !important;
-                line-height: 1.45 !important;
+                font-size: 15px !important;
+                line-height: 1.4 !important;
+            }
+
+            #app-footer {
+                width: calc(100% - 0.5rem) !important;
+                max-width: calc(100% - 0.5rem) !important;
+                aspect-ratio: 8 / 1 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                flex: 0 0 auto !important;
             }
         }
 
-</style>
+    </style>
 </head>
 <body class="p-1 md:p-2 w-full" style="padding-top:0;padding-bottom:max(0.25rem,env(safe-area-inset-bottom));padding-left:max(0.25rem,env(safe-area-inset-left));padding-right:max(0.25rem,env(safe-area-inset-right));">
 
     <div class="w-full flex justify-center items-center mt-0">
         <!-- 1. MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
-        <div id="screen-login" class="hidden w-full max-w-md pastel-card p-6 md:p-8 flex flex-col items-center text-center my-auto">
+        <div id="screen-login" class="w-full max-w-md pastel-card p-6 md:p-8 flex flex-col items-center text-center my-auto">
             <div class="mb-2 flex flex-col items-center">
-                <img src="icon-512.png" alt="Toán 1" class="w-[150px] h-[150px] md:w-[160px] md:h-[160px] object-contain shadow-md select-none">
+                <img src="icon-512.png" alt="Toán 2" class="w-[150px] h-[150px] md:w-[160px] md:h-[160px] object-contain select-none">
             </div>
-
-            <p class="text-base md:text-lg font-extrabold text-pink-600 mb-5">Cô Thỏ Hồng</p>
+            <p class="text-sm font-bold text-purple-600 mb-5">Cô Thỏ Ngọc</p>
 
             <div class="w-full grid grid-cols-2 bg-pink-50 rounded-2xl p-1 mb-5 border border-pink-200">
                 <button id="tab-btn-login" onclick="switchAuthTab('login')" class="py-2.5 rounded-xl font-extrabold text-sm pastel-btn bg-white text-pink-600 shadow-sm">Đăng nhập</button>
@@ -470,18 +621,18 @@
 
             <div class="w-full mt-4 pt-4 border-t border-pink-100">
                 <button onclick="handleGuestMode()" class="w-full py-3 bg-gradient-to-r from-pink-100 to-purple-100 text-purple-700 font-extrabold rounded-2xl text-xs md:text-sm pastel-btn hover:from-pink-200 hover:to-purple-200 border border-purple-200 flex items-center justify-center space-x-1.5">
-                    <i class="fa-solid fa-compass"></i><span>Vào học thử - không cần tài khoản (khách)</span>
+                    <i class="fa-solid fa-arrow-left"></i><span>Để sau nhé</span>
                 </button>
             </div>
             <p id="auth-error-msg" class="text-xs font-bold text-rose-500 mt-3 hidden"></p>
         </div>
 
         <!-- 2. KHUNG CHÍNH CHUẨN TỶ LỆ 16:9 / 16:10 -->
-        <div id="screen-dashboard" class="w-full max-w-5xl flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2">
+        <div id="screen-dashboard" class="w-full hidden flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2" style="max-width: 72rem !important;">
             
-            <header class="app-main-header w-full bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border-2 border-pink-200">
+            <header class="app-main-header w-full">
                 <button id="btn-header-home" onclick="goHome()" title="Về trang chủ" class="flex items-center justify-center bg-white border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]">
-                    <img src="logo-home.png" alt="Trang chủ Toán 1" class="w-full h-full object-cover">
+                    <img src="log-home.png" alt="Trang chủ Toán 2" class="w-full h-full object-cover">
                 </button>
 
                 <nav id="main-module-tabs" aria-label="Điều hướng chính">
@@ -497,14 +648,8 @@
 
                 <div id="header-info-zone" class="flex items-center">
                     <div id="header-star-box" class="flex flex-col space-y-0.5 bg-pink-50/90 px-1.5 md:px-2.5 py-1 rounded-xl border border-pink-200 shadow-inner">
-                        <div class="flex items-center justify-between space-x-2 font-extrabold">
-                            <span class="px-1.5 py-0.5 bg-emerald-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center"><i class="fa-solid fa-star md:mr-0.5"></i><span class="hidden md:inline"> Đúng</span></span>
-                            <span class="text-emerald-600 font-extrabold text-xs" id="star-green-count">0</span>
-                        </div>
-                        <div class="flex items-center justify-between space-x-2 font-extrabold">
-                            <span class="px-1.5 py-0.5 bg-rose-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center"><i class="fa-solid fa-star md:mr-0.5"></i><span class="hidden md:inline"> Sai</span></span>
-                            <span class="text-rose-600 font-extrabold text-xs" id="star-red-count">0</span>
-                        </div>
+                        <div class="flex items-center justify-between space-x-2 font-extrabold"><span class="px-1.5 py-0.5 bg-emerald-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center"><i class="fa-solid fa-star md:mr-0.5"></i><span class="hidden md:inline"> Đúng</span></span><span class="text-emerald-600 font-extrabold text-xs" id="star-green-count">0</span></div>
+                        <div class="flex items-center justify-between space-x-2 font-extrabold"><span class="px-1.5 py-0.5 bg-rose-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center"><i class="fa-solid fa-star md:mr-0.5"></i><span class="hidden md:inline"> Sai</span></span><span class="text-rose-600 font-extrabold text-xs" id="star-red-count">0</span></div>
                     </div>
                     <div id="user-info-box" class="text-xs font-bold text-gray-600 text-right"></div>
                 </div>
@@ -514,18 +659,16 @@
                 <div id="app-main-banner">
                     <picture>
                         <source media="(max-width: 767px)" srcset="banner-main-mobile.jpg">
-                        <img src="banner-main.jpg" alt="Khu vườn học tập của Cô Thỏ Hồng">
+                        <img src="banner-main.jpg" alt="Khu vườn học tập của Cô Thỏ Ngọc">
                     </picture>
                 </div>
                 <div id="app-context-banner" class="hidden">
                     <div id="header-learning-tabs" class="flex items-center min-w-0">
                         <div id="header-level2-tab" class="hidden items-center">
-                            <button onclick="returnToTopicLecture()" class="flex items-center space-x-1.5 shrink-0 transition-shadow duration-200">
-                                <span id="header-level2-icon">🔢</span><span id="header-level2-title" class="truncate">Chủ đề học</span>
-                            </button>
+                            <button onclick="returnToTopicLecture()" class="flex items-center space-x-1.5 shrink-0 transition-shadow duration-200"><span id="header-level2-icon">🔢</span><span id="header-level2-title" class="truncate">Chủ đề học</span></button>
                         </div>
-                        <div id="header-level3-tab" class="hidden items-center space-x-1"><span class="font-bold">›</span><div class="truncate flex items-center"><span id="header-level3-title" class="truncate">Mục nhỏ</span></div></div>
-                        <div id="header-level4-tab" class="hidden items-center space-x-1"><span class="font-bold">›</span><div class="truncate flex items-center"><span id="header-level4-title" class="truncate">Mục sâu</span></div></div>
+                        <div id="header-level3-tab" class="hidden items-center space-x-1"><span class="font-bold">›</span><button onclick="returnToLevel3FromHeader()" class="truncate flex items-center"><span id="header-level3-title" class="truncate">Mục nhỏ</span></button></div>
+                        <div id="header-level4-tab" class="hidden items-center space-x-1"><span class="font-bold">›</span><button onclick="returnToLevel4FromHeader()" class="truncate flex items-center"><span id="header-level4-title" class="truncate">Mục sâu</span></button></div>
                     </div>
                 </div>
             </section>
@@ -534,60 +677,8 @@
                 
                 <!-- VIEW 1: TRANG CHỦ 12 CHỦ ĐỀ -->
                 <div id="view-dashboard-grid" class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5"></div>
-                <!-- MODULE BAI HOC: HIEN THI TRUC TIEP DANH SACH BAI -->
-                <div id="view-bai-hoc-hub" class="w-full hidden pastel-card p-3 md:p-5">
-                    <div class="w-full max-w-6xl mx-auto">
-                        <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3 mb-3">
-                            <div id="bai-hoc-semester-tabs" class="flex items-center gap-2 justify-self-start"></div>
-                            <div class="text-center min-w-0">
-                                <h2 class="text-lg md:text-xl font-black text-purple-700 flex items-center justify-center gap-2"><span>📖</span><span>Bài học Toán 1</span></h2>
-                                <p id="bai-hoc-hub-subtitle" class="text-xs md:text-sm text-slate-500 font-bold mt-0.5">Chọn bài và học ngay</p>
-                            </div>
-                            <div class="w-[180px] hidden md:block" aria-hidden="true"></div>
-                        </div>
-                        <div id="bai-hoc-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2"></div>
-                    </div>
-                </div>
 
-                <!-- VIEW: NỘI DUNG MỘT BÀI HỌC -->
-                <div id="view-bai-hoc-lesson" class="w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center min-h-[480px]">
-                    <div class="w-full max-w-5xl">
-                        <div class="flex items-start justify-between gap-3 mb-3">
-                            <div class="min-w-0">
-                                <div id="bai-hoc-lesson-meta" class="text-sm md:text-base font-extrabold text-purple-600 mb-1">📖 Bài học</div>
-                                <h2 id="bai-hoc-lesson-title" class="text-lg md:text-xl font-black text-slate-800"></h2>
-                            </div>
-                            <button id="btn-back-bai-hoc-list" onclick="openBaiHocHub(activeBaiHocContext?.semester || 1)" class="px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-xl text-xs md:text-sm font-extrabold shrink-0">← Danh sách bài</button>
-                        </div>
-                        <div id="bai-hoc-page-tabs" class="grid grid-cols-3 gap-2 mb-3"></div>
-                        <div id="bai-hoc-page-content" class="w-full"></div>
-                        <div id="bai-hoc-bottom-nav" class="flex items-center justify-between gap-3 mt-3 pt-2 border-t border-pink-100"></div>
-                    </div>
-                </div>
-
-                <!-- VIEW 2: BÀI GIẢNG -->
-                <div id="view-lecture" class="w-full hidden pastel-card p-4 md:p-6 flex flex-col justify-between items-center min-h-[480px]">
-                    <div class="w-full max-w-4xl flex flex-col items-center">
-                        <h2 id="lecture-title" class="hidden"></h2>
-                        <div class="w-full bg-pink-50/40 p-3.5 md:p-4 rounded-2xl border-2 border-pink-100 mb-3">
-                            <p id="lecture-content" class="text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-line text-center"></p>
-                        </div>
-
-                        <button onclick="speakLecture()" class="w-full max-w-xs py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-extrabold rounded-xl text-sm md:text-base pastel-btn flex items-center justify-center space-x-2 border-2 border-purple-200 shadow-sm mb-2.5">
-                            <i class="fa-solid fa-volume-high text-base"></i><span>Nghe cô đọc</span>
-                        </button>
-
-                        <div class="w-full pt-2 border-t border-pink-100 flex flex-col items-center">
-                            <div id="lecture-subtopics-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-2xl"></div>
-                        </div>
-                    </div>
-
-                    <div class="w-full flex justify-center mt-2.5 pt-1">
-                        <button onclick="selectSubtopic(null)" class="w-full max-w-xs py-2 bg-gradient-to-r from-purple-400 to-indigo-400 text-white font-extrabold rounded-xl text-xs md:text-sm pastel-btn shadow-md">
-                            🌟 Học trộn tất cả các mục
-                        </button>
-                    </div>
-                </div>
+                <!-- Khám phá dùng trực tiếp view-dashboard-grid để hiển thị chủ đề/mục con; không còn view lecture trung gian. -->
 
                 <!-- VIEW 3: PHÒNG LÀM BÀI / THI CHUẨN 16:9 -->
                 <div id="view-quiz" class="w-full hidden flex flex-col space-y-1.5">
@@ -626,7 +717,7 @@
                             
                             <button id="btn-roadmap-history" onclick="openHistoryModal('LichSuTienTrinhTuan')" class="hidden px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-sm font-extrabold items-center space-x-1.5 transition-shadow duration-200 hover:shadow-[0_0_10px_rgba(99,102,241,0.5)] shadow-xs">
                                 <i class="fa-solid fa-chart-line"></i>
-                                <span>Lịch sử Bài tập</span>
+                                <span>Lịch sử tiến trình tuần</span>
                             </button>
 
                             <button onclick="speakCurrentQuestion()" class="px-3 py-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl text-sm font-extrabold flex items-center space-x-1.5 transition-all pastel-btn shadow-xs">
@@ -673,33 +764,52 @@
 
                     </div>
                 </div>
-                <!-- VIEW 4: BÀI TẬP THEO TỪNG BÀI SGK -->
-                <div id="view-roadmap" class="w-full hidden pastel-card p-3 md:p-5 flex flex-col justify-start items-center">
-                    <div class="w-full max-w-6xl flex flex-col items-center">
+
+                <!-- VIEW 4: BẢN ĐỒ LỘ TRÌNH 12 TUẦN SVG CHỮ S -->
+                <div id="view-roadmap" class="w-full hidden pastel-card p-3 md:p-5 flex flex-col justify-between items-center min-h-[480px]">
+                    <div class="w-full max-w-5xl flex flex-col items-center">
                         <div class="flex flex-col sm:flex-row items-center justify-between w-full px-2 mb-2 gap-2">
                             <div>
-                                <h2 class="text-base md:text-lg font-extrabold text-indigo-600 flex items-center space-x-2"><span>✏️</span><span>Bài tập</span></h2>
-                                <p class="text-[11px] md:text-xs text-gray-500 font-bold">20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo.</p>
+                                <h2 class="text-base md:text-lg font-extrabold text-indigo-600 flex items-center space-x-2">
+                                    <span>✏️</span><span>Bài tập</span>
+                                </h2>
+                                <p class="text-[11px] md:text-xs text-gray-500 font-bold">20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo · đánh giá theo 6 năng lực.</p>
                             </div>
-                            <div class="flex items-center gap-3 shrink-0">
-                                <div id="roadmap-semester-tabs" class="flex items-center gap-2"></div>
+                            
+                            <div class="flex items-center space-x-2 shrink-0">
                                 <button onclick="openHistoryModal('LichSuTienTrinhTuan')" class="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold rounded-xl border border-indigo-200 text-xs pastel-btn flex items-center space-x-1.5 shadow-sm">
-                                    <i class="fa-solid fa-chart-line text-indigo-600"></i><span>📊 Lịch sử Bài tập</span>
+                                    <i class="fa-solid fa-chart-line text-indigo-600"></i>
+                                    <span>📊 Lịch sử Bài tập</span>
                                 </button>
                             </div>
                         </div>
+
+                        <div id="roadmap-semester-tabs" class="w-full flex items-center justify-center gap-2 mb-2"></div>
                         <div id="roadmap-svg-container" class="w-full flex justify-center items-center overflow-hidden bg-gradient-to-b from-pink-50/30 to-purple-50/30 rounded-2xl border-2 border-pink-100 p-1"></div>
                     </div>
                 </div>
 
-                <!-- VIEW: TRUNG TÂM MINI GAME TOÁN 1 -->
+                <!-- VIEW: CHI TIẾT BÀI HỌC TOÁN 2 -->
+                <div id="view-bai-hoc-detail" class="w-full hidden pastel-card p-3 md:p-5">
+                    <div class="w-full max-w-5xl mx-auto space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="min-w-0">
+                                <div id="bai-hoc-detail-meta" class="text-xs md:text-sm font-black text-sky-600 mb-1">Bài học</div>
+                                <h2 id="bai-hoc-detail-title" class="text-lg md:text-xl font-black text-slate-800 leading-snug"></h2>
+                            </div>
+                            <button onclick="backToBaiHocHubToan2_()" class="shrink-0 px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 rounded-xl text-xs font-extrabold">← Danh sách bài</button>
+                        </div>
+                        <div id="bai-hoc-detail-tabs" class="flex flex-wrap items-center justify-center gap-2 border-y border-pink-100 py-2.5"></div>
+                        <div id="bai-hoc-detail-body" class="w-full"></div>
+                    </div>
+                </div>
+
+                <!-- VIEW: TRUNG TÂM MINI GAME TOÁN 2 -->
                 <div id="view-minigame-hub" class="w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center">
                     <div class="w-full max-w-5xl">
                         <div class="text-center mb-4">
-                            <h2 class="text-base md:text-lg font-extrabold text-teal-600 flex items-center justify-center space-x-2">
-                                <span>🎮</span><span>Trung tâm Mini Game Toán 1</span>
-                            </h2>
-                            <p class="text-[11px] md:text-xs text-gray-500 font-bold">Học mà chơi - luyện tư duy Toán cùng Cô giáo Thỏ Hồng</p>
+                            <h2 class="text-base md:text-lg font-extrabold text-teal-600 flex items-center justify-center space-x-2"><span>🎮</span><span>Trung tâm Mini Game Toán 2</span></h2>
+                            <p class="text-[11px] md:text-xs text-gray-500 font-bold">Học mà chơi - luyện tư duy Toán cùng Cô Thỏ Ngọc</p>
                         </div>
                         <div id="minigame-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
                     </div>
@@ -710,9 +820,7 @@
                     <div class="w-full max-w-3xl">
                         <div class="flex items-center justify-between mb-3 gap-2">
                             <h2 id="game-play-title" class="text-base md:text-lg font-extrabold text-teal-600 flex items-center gap-2 min-w-0"></h2>
-                            <button onclick="openMiniGameHub()" class="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-extrabold rounded-xl text-xs md:text-sm shadow-sm pastel-btn shrink-0">
-                                <i class="fa-solid fa-arrow-left"></i> Chọn game khác
-                            </button>
+                            <button onclick="openMiniGameHub()" class="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-extrabold rounded-xl text-xs md:text-sm shadow-sm pastel-btn shrink-0"><i class="fa-solid fa-arrow-left"></i> Chọn game khác</button>
                         </div>
                         <div id="game-play-container" class="w-full"></div>
                     </div>
@@ -840,9 +948,9 @@
                         </div>
 
                         <div class="flex items-center space-x-2 shrink-0">
-                            <div class="text-xs font-bold text-slate-700 bg-white/95 px-3 py-2 rounded-xl border border-pink-200 text-center shadow-xs leading-snug">
-                                <div>Ngày báo cáo</div>
-                                <div><span id="hist-report-date" class="font-bold text-rose-600">03/09/2026</span></div>
+                            <div class="text-xs font-bold text-slate-700 bg-white/95 px-3 py-2 rounded-xl border border-pink-200 text-center shadow-xs flex flex-col items-center justify-center leading-tight">
+                                <span>Ngày báo cáo</span>
+                                <span id="hist-report-date" class="font-bold text-rose-600">03/09/2026</span>
                             </div>
                             <button onclick="closeHistoryModal()" class="w-8 h-8 rounded-full bg-white border border-pink-200 flex items-center justify-center text-pink-400 hover:text-rose-600 transition-all shadow-xs no-print">
                                 <i class="fa-solid fa-xmark"></i>
@@ -876,7 +984,7 @@
                 <!-- TRANG 2: NHẬN XÉT SƯ PHẠM CHI TIẾT -->
                 <div class="space-y-4 page-break-2">
                     <div class="bg-gradient-to-br from-amber-50/90 via-orange-50/60 to-rose-50/50 border border-amber-200/80 rounded-2xl p-4 space-y-3 shadow-xs">
-                        <div class="flex items-center justify-between space-x-2.5 border-b border-amber-200/60 pb-1.5">
+                        <div class="flex items-center justify-between border-b border-amber-200/60 pb-1.5 gap-2 flex-wrap">
                             <div class="flex items-center space-x-2.5">
                                 <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs shrink-0">
                                     <i class="fa-solid fa-award"></i>
@@ -886,9 +994,8 @@
                                     <p class="text-xs font-bold text-amber-700">Đánh giá năng lực tư duy 6 chủ đề & lời khuyên phụ huynh đồng hành</p>
                                 </div>
                             </div>
-                            <button onclick="speakPedagogicalEvaluation()" class="no-print shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 rounded-xl text-xs md:text-sm font-extrabold flex items-center space-x-1.5 transition-all pastel-btn shadow-xs whitespace-nowrap">
-                                <i class="fa-solid fa-volume-high"></i>
-                                <span>Nghe cô giáo đọc</span>
+                            <button onclick="speakPedagogicalEvaluation()" class="no-print shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 rounded-xl text-xs font-black flex items-center space-x-1.5 pastel-btn shadow-xs">
+                                <i class="fa-solid fa-volume-high"></i><span>Nghe cô giáo đọc</span>
                             </button>
                         </div>
                         <div id="pedagogical-evaluation-box" class="space-y-2.5 text-xs sm:text-sm text-slate-800 leading-normal font-semibold"></div>
@@ -906,14 +1013,14 @@
                             <thead class="bg-pink-100/70 text-pink-950 font-black border-b border-pink-200">
                                 <tr class="divide-x divide-pink-200">
                                     <th class="py-2.5 px-2 whitespace-nowrap">Lần thi</th>
-                                    <th class="py-2.5 px-2 whitespace-nowrap">Đề / Bài</th>
+                                    <th class="py-2.5 px-2 whitespace-nowrap">Đề / Tuần</th>
                                     <th class="py-2.5 px-2 whitespace-nowrap text-rose-600">Tổng điểm</th>
-                                    <th class="py-2 px-1 leading-tight">C1: Số học<br><span class="text-[10px] text-pink-700">(& Hình học)</span></th>
-                                    <th class="py-2 px-1 leading-tight">C2: Phép tính<br><span class="text-[10px] text-pink-700">(Cộng & Trừ)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C1: Nhận biết<br><span class="text-[10px] text-pink-700">(Số & hình)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C2: Phép tính<br><span class="text-[10px] text-pink-700">(Tính nhẩm)</span></th>
                                     <th class="py-2 px-1 leading-tight">C3: Đo lường<br><span class="text-[10px] text-pink-700">(Thời gian)</span></th>
-                                    <th class="py-2 px-1 leading-tight">C4: Vị trí<br><span class="text-[10px] text-pink-700">(So sánh)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C4: Quy luật<br><span class="text-[10px] text-pink-700">(Tìm x)</span></th>
                                     <th class="py-2 px-1 leading-tight">C5: Giải toán<br><span class="text-[10px] text-pink-700">(Lời văn)</span></th>
-                                    <th class="py-2 px-1 leading-tight">C6: Dãy số<br><span class="text-[10px] text-pink-700">(Quy luật)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C6: Tư duy<br><span class="text-[10px] text-pink-700">(Logic IQ)</span></th>
                                     <th class="py-2.5 px-2 whitespace-nowrap">Ngày làm</th>
                                     <th class="py-2.5 px-2 whitespace-nowrap">Thời gian</th>
                                 </tr>
@@ -938,21 +1045,6 @@
         </div>
     </div>
 
-    <!-- HỘP THOẠI ĐẸP DÙNG CHUNG - thay alert/confirm mặc định của trình duyệt -->
-    <div id="modal-app-dialog" class="hidden fixed inset-0 z-[120] bg-slate-950/55 backdrop-blur-sm items-center justify-center p-4" onclick="if(event.target===this) closeAppDialog(false)">
-        <div id="app-dialog-panel" class="w-full max-w-md rounded-[28px] bg-white shadow-2xl ring-4 ring-pink-200 overflow-hidden">
-            <div class="bg-gradient-to-br from-pink-50 via-white to-purple-50 px-5 pt-5 pb-4 text-center">
-                <div id="app-dialog-icon" class="mx-auto w-14 h-14 rounded-2xl bg-white border-2 border-pink-200 shadow-sm flex items-center justify-center text-3xl">🐰</div>
-                <h3 id="app-dialog-title" class="mt-3 text-lg font-black text-purple-800">Thông báo</h3>
-                <div id="app-dialog-message" class="mt-2 text-sm md:text-base leading-7 font-semibold text-slate-700"></div>
-            </div>
-            <div class="px-4 py-3 bg-white border-t border-pink-100 flex gap-2 justify-center">
-                <button id="app-dialog-cancel" onclick="closeAppDialog(false)" class="hidden min-w-[110px] px-5 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-black text-sm">Để sau</button>
-                <button id="app-dialog-ok" onclick="closeAppDialog(true)" class="min-w-[120px] px-6 py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 hover:brightness-105 text-white font-black text-sm shadow-md">Đã hiểu</button>
-            </div>
-        </div>
-    </div>
-
     <!-- CHÂN TRANG DÙNG CHUNG - ảnh phong cảnh + chữ HTML -->
     <footer id="app-footer" class="select-text cursor-text" style="user-select:text;-webkit-user-select:text;">
         <div>
@@ -962,8 +1054,7 @@
     </footer>
 
     <!-- NẠP ENGINE JAVASCRIPT ĐỒNG BỘ -->
-    <script src="assets/js/app.js?v=10.0-toan1-ui-shell"></script>
-
+    <script src="assets/js/app.js?v=11.0-toan2-tv1-ui"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
