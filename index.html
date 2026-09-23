@@ -632,7 +632,7 @@
             
             <header class="app-main-header w-full">
                 <button id="btn-header-home" onclick="goHome()" title="Về trang chủ" class="flex items-center justify-center bg-white border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]">
-                    <img src="log-home.png" alt="Trang chủ Toán 2" class="w-full h-full object-cover">
+                    <img src="./logo-home.png?v=20260923-2" alt="Trang chủ Toán 2" class="w-full h-full object-cover">
                 </button>
 
                 <nav id="main-module-tabs" aria-label="Điều hướng chính">
@@ -1057,7 +1057,21 @@
     <script src="assets/js/app.js?v=11.0-toan2-tv1-ui"></script>
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
+        window.addEventListener('load', async () => {
+          const isLocal = location.hostname === '127.0.0.1' || location.hostname === 'localhost';
+
+          if (isLocal) {
+            // Dev/Live Server: tránh service worker/cache cũ giữ index hoặc asset lỗi.
+            const regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(reg => reg.unregister()));
+
+            if ('caches' in window) {
+              const keys = await caches.keys();
+              await Promise.all(keys.map(key => caches.delete(key)));
+            }
+            return;
+          }
+
           navigator.serviceWorker.register('./service-worker.js').then((reg) => {
             if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
             reg.addEventListener('updatefound', () => {
