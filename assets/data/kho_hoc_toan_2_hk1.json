@@ -19304,6 +19304,1176 @@
     "explore_branch": "2.3"
   },
   {
+    "id": 30000,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "8",
+      "11",
+      "10",
+      "12"
+    ],
+    "a": "10",
+    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 10.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        8,
+        null,
+        12,
+        14,
+        16
+      ],
+      "full_sequence": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "step": 2,
+      "direction": "asc",
+      "missing_index": 1
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30001,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "16",
+      "18",
+      "14",
+      "17"
+    ],
+    "a": "16",
+    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 16.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        12,
+        14,
+        null,
+        18,
+        20
+      ],
+      "full_sequence": [
+        12,
+        14,
+        16,
+        18,
+        20
+      ],
+      "step": 2,
+      "direction": "asc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30002,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "20",
+      "22",
+      "24",
+      "23"
+    ],
+    "a": "22",
+    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 22.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        16,
+        18,
+        20,
+        null,
+        24
+      ],
+      "full_sequence": [
+        16,
+        18,
+        20,
+        22,
+        24
+      ],
+      "step": 2,
+      "direction": "asc",
+      "missing_index": 3
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30003,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "28",
+      "26",
+      "30",
+      "29"
+    ],
+    "a": "28",
+    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 28.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        20,
+        22,
+        24,
+        26,
+        null
+      ],
+      "full_sequence": [
+        20,
+        22,
+        24,
+        26,
+        28
+      ],
+      "step": 2,
+      "direction": "asc",
+      "missing_index": 4
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30004,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "30",
+      "26",
+      "28",
+      "29"
+    ],
+    "a": "28",
+    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 28.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        24,
+        26,
+        null,
+        30,
+        32
+      ],
+      "full_sequence": [
+        24,
+        26,
+        28,
+        30,
+        32
+      ],
+      "step": 2,
+      "direction": "asc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30005,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "87",
+      "90",
+      "86",
+      "88"
+    ],
+    "a": "88",
+    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 88.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        90,
+        null,
+        86,
+        84,
+        82
+      ],
+      "full_sequence": [
+        90,
+        88,
+        86,
+        84,
+        82
+      ],
+      "step": 2,
+      "direction": "desc",
+      "missing_index": 1
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30006,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "84",
+      "80",
+      "81",
+      "82"
+    ],
+    "a": "82",
+    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 82.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        86,
+        84,
+        null,
+        80,
+        78
+      ],
+      "full_sequence": [
+        86,
+        84,
+        82,
+        80,
+        78
+      ],
+      "step": 2,
+      "direction": "desc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30007,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "74",
+      "76",
+      "78",
+      "75"
+    ],
+    "a": "76",
+    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 76.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        82,
+        80,
+        78,
+        null,
+        74
+      ],
+      "full_sequence": [
+        82,
+        80,
+        78,
+        76,
+        74
+      ],
+      "step": 2,
+      "direction": "desc",
+      "missing_index": 3
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30008,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "68",
+      "69",
+      "70",
+      "72"
+    ],
+    "a": "70",
+    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 70.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        78,
+        76,
+        74,
+        72,
+        null
+      ],
+      "full_sequence": [
+        78,
+        76,
+        74,
+        72,
+        70
+      ],
+      "step": 2,
+      "direction": "desc",
+      "missing_index": 4
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30009,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "72",
+      "69",
+      "68",
+      "70"
+    ],
+    "a": "70",
+    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 70.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        74,
+        72,
+        null,
+        68,
+        66
+      ],
+      "full_sequence": [
+        74,
+        72,
+        70,
+        68,
+        66
+      ],
+      "step": 2,
+      "direction": "desc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30010,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "14",
+      "17",
+      "18",
+      "20"
+    ],
+    "a": "17",
+    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 17.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        14,
+        null,
+        20,
+        23,
+        26
+      ],
+      "full_sequence": [
+        14,
+        17,
+        20,
+        23,
+        26
+      ],
+      "step": 3,
+      "direction": "asc",
+      "missing_index": 1
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30011,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "24",
+      "21",
+      "25",
+      "27"
+    ],
+    "a": "24",
+    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 24.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        18,
+        21,
+        null,
+        27,
+        30
+      ],
+      "full_sequence": [
+        18,
+        21,
+        24,
+        27,
+        30
+      ],
+      "step": 3,
+      "direction": "asc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30012,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "28",
+      "34",
+      "32",
+      "31"
+    ],
+    "a": "31",
+    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 31.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        22,
+        25,
+        28,
+        null,
+        34
+      ],
+      "full_sequence": [
+        22,
+        25,
+        28,
+        31,
+        34
+      ],
+      "step": 3,
+      "direction": "asc",
+      "missing_index": 3
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30013,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "35",
+      "41",
+      "39",
+      "38"
+    ],
+    "a": "38",
+    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 38.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        26,
+        29,
+        32,
+        35,
+        null
+      ],
+      "full_sequence": [
+        26,
+        29,
+        32,
+        35,
+        38
+      ],
+      "step": 3,
+      "direction": "asc",
+      "missing_index": 4
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30014,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "37",
+      "33",
+      "39",
+      "36"
+    ],
+    "a": "36",
+    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 36.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        30,
+        33,
+        null,
+        39,
+        42
+      ],
+      "full_sequence": [
+        30,
+        33,
+        36,
+        39,
+        42
+      ],
+      "step": 3,
+      "direction": "asc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30015,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "83",
+      "86",
+      "80",
+      "82"
+    ],
+    "a": "83",
+    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 83.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        86,
+        null,
+        80,
+        77,
+        74
+      ],
+      "full_sequence": [
+        86,
+        83,
+        80,
+        77,
+        74
+      ],
+      "step": 3,
+      "direction": "desc",
+      "missing_index": 1
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30016,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "73",
+      "76",
+      "79",
+      "75"
+    ],
+    "a": "76",
+    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 76.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        82,
+        79,
+        null,
+        73,
+        70
+      ],
+      "full_sequence": [
+        82,
+        79,
+        76,
+        73,
+        70
+      ],
+      "step": 3,
+      "direction": "desc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30017,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "69",
+      "66",
+      "68",
+      "72"
+    ],
+    "a": "69",
+    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 69.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        78,
+        75,
+        72,
+        null,
+        66
+      ],
+      "full_sequence": [
+        78,
+        75,
+        72,
+        69,
+        66
+      ],
+      "step": 3,
+      "direction": "desc",
+      "missing_index": 3
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30018,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "59",
+      "65",
+      "61",
+      "62"
+    ],
+    "a": "62",
+    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 62.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        74,
+        71,
+        68,
+        65,
+        null
+      ],
+      "full_sequence": [
+        74,
+        71,
+        68,
+        65,
+        62
+      ],
+      "step": 3,
+      "direction": "desc",
+      "missing_index": 4
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30019,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "63",
+      "61",
+      "64",
+      "67"
+    ],
+    "a": "64",
+    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 64.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        70,
+        67,
+        null,
+        61,
+        58
+      ],
+      "full_sequence": [
+        70,
+        67,
+        64,
+        61,
+        58
+      ],
+      "step": 3,
+      "direction": "desc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30020,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "28",
+      "24",
+      "25",
+      "20"
+    ],
+    "a": "24",
+    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 24.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        20,
+        null,
+        28,
+        32,
+        36
+      ],
+      "full_sequence": [
+        20,
+        24,
+        28,
+        32,
+        36
+      ],
+      "step": 4,
+      "direction": "asc",
+      "missing_index": 1
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30021,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "36",
+      "28",
+      "32",
+      "33"
+    ],
+    "a": "32",
+    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 32.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        24,
+        28,
+        null,
+        36,
+        40
+      ],
+      "full_sequence": [
+        24,
+        28,
+        32,
+        36,
+        40
+      ],
+      "step": 4,
+      "direction": "asc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30022,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "44",
+      "41",
+      "36",
+      "40"
+    ],
+    "a": "40",
+    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 40.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        28,
+        32,
+        36,
+        null,
+        44
+      ],
+      "full_sequence": [
+        28,
+        32,
+        36,
+        40,
+        44
+      ],
+      "step": 4,
+      "direction": "asc",
+      "missing_index": 3
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30023,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "44",
+      "48",
+      "52",
+      "49"
+    ],
+    "a": "48",
+    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 48.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        32,
+        36,
+        40,
+        44,
+        null
+      ],
+      "full_sequence": [
+        32,
+        36,
+        40,
+        44,
+        48
+      ],
+      "step": 4,
+      "direction": "asc",
+      "missing_index": 4
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30024,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "48",
+      "40",
+      "45",
+      "44"
+    ],
+    "a": "44",
+    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 44.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        36,
+        40,
+        null,
+        48,
+        52
+      ],
+      "full_sequence": [
+        36,
+        40,
+        44,
+        48,
+        52
+      ],
+      "step": 4,
+      "direction": "asc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30025,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "74",
+      "82",
+      "77",
+      "78"
+    ],
+    "a": "78",
+    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 78.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        82,
+        null,
+        74,
+        70,
+        66
+      ],
+      "full_sequence": [
+        82,
+        78,
+        74,
+        70,
+        66
+      ],
+      "step": 4,
+      "direction": "desc",
+      "missing_index": 1
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30026,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "74",
+      "70",
+      "66",
+      "69"
+    ],
+    "a": "70",
+    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 70.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        78,
+        74,
+        null,
+        66,
+        62
+      ],
+      "full_sequence": [
+        78,
+        74,
+        70,
+        66,
+        62
+      ],
+      "step": 4,
+      "direction": "desc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30027,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "66",
+      "58",
+      "62",
+      "61"
+    ],
+    "a": "62",
+    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 62.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        74,
+        70,
+        66,
+        null,
+        58
+      ],
+      "full_sequence": [
+        74,
+        70,
+        66,
+        62,
+        58
+      ],
+      "step": 4,
+      "direction": "desc",
+      "missing_index": 3
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30028,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "54",
+      "53",
+      "58",
+      "50"
+    ],
+    "a": "54",
+    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 54.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        70,
+        66,
+        62,
+        58,
+        null
+      ],
+      "full_sequence": [
+        70,
+        66,
+        62,
+        58,
+        54
+      ],
+      "step": 4,
+      "direction": "desc",
+      "missing_index": 4
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
+    "id": 30029,
+    "sub": "Điền số theo quy luật",
+    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
+    "o": [
+      "58",
+      "62",
+      "57",
+      "54"
+    ],
+    "a": "58",
+    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 58.",
+    "tag": "TOAN_C4",
+    "sub_code": "1.2",
+    "explore_level": 2,
+    "explore_type": "sequence_missing",
+    "explore_branch": "2.4",
+    "visual_data": {
+      "sequence": [
+        66,
+        62,
+        null,
+        54,
+        50
+      ],
+      "full_sequence": [
+        66,
+        62,
+        58,
+        54,
+        50
+      ],
+      "step": 4,
+      "direction": "desc",
+      "missing_index": 2
+    },
+    "explore_topic_id": 2,
+    "explore_topic": "Tia số và phép so sánh"
+  },
+  {
     "id": 31000,
     "sub": "Ý nghĩa phép nhân và phép chia",
     "q": "Bé ơi, 2 + 2 + 2 viết gọn thành phép nhân nào?",
@@ -20005,20 +21175,27 @@
   },
   {
     "id": 32000,
+    "sub_code": "3.2",
     "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 0 = ?",
+    "q": "Bé ơi, hãy tính: 2 × 1 = ?",
     "o": [
-      "-2",
+      "4",
       "0",
       "2",
-      "4"
+      "3"
     ],
-    "a": "0",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 0.",
+    "a": "2",
+    "h": "Nhìn 2 hàng, mỗi hàng 1 hình. Tổng cộng có 2 hình.",
     "tag": "TOAN_C2",
-    "sub_code": "3.2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 1
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20026,20 +21203,27 @@
   },
   {
     "id": 32001,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 : 2 = ?",
-    "o": [
-      "2",
-      "3",
-      "1",
-      "0"
-    ],
-    "a": "1",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 1.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 2 = ?",
+    "o": [
+      "4",
+      "2",
+      "6",
+      "5"
+    ],
+    "a": "4",
+    "h": "Nhìn 2 hàng, mỗi hàng 2 hình. Tổng cộng có 4 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 2
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20047,20 +21231,27 @@
   },
   {
     "id": 32002,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 2 = ?",
-    "o": [
-      "2",
-      "6",
-      "4",
-      "8"
-    ],
-    "a": "4",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 4.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 3 = ?",
+    "o": [
+      "8",
+      "7",
+      "6",
+      "4"
+    ],
+    "a": "6",
+    "h": "Nhìn 2 hàng, mỗi hàng 3 hình. Tổng cộng có 6 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 3
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20068,20 +21259,27 @@
   },
   {
     "id": 32003,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 6 : 2 = ?",
-    "o": [
-      "3",
-      "2",
-      "5",
-      "4"
-    ],
-    "a": "3",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 3.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 4 = ?",
+    "o": [
+      "8",
+      "6",
+      "10",
+      "9"
+    ],
+    "a": "8",
+    "h": "Nhìn 2 hàng, mỗi hàng 4 hình. Tổng cộng có 8 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 4
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20089,20 +21287,27 @@
   },
   {
     "id": 32004,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 4 = ?",
-    "o": [
-      "8",
-      "6",
-      "10",
-      "12"
-    ],
-    "a": "8",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 8.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 5 = ?",
+    "o": [
+      "12",
+      "11",
+      "10",
+      "8"
+    ],
+    "a": "10",
+    "h": "Nhìn 2 hàng, mỗi hàng 5 hình. Tổng cộng có 10 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 5
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20110,20 +21315,27 @@
   },
   {
     "id": 32005,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 10 : 2 = ?",
-    "o": [
-      "6",
-      "7",
-      "5",
-      "4"
-    ],
-    "a": "5",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 5.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 6 = ?",
+    "o": [
+      "12",
+      "10",
+      "14",
+      "13"
+    ],
+    "a": "12",
+    "h": "Nhìn 2 hàng, mỗi hàng 6 hình. Tổng cộng có 12 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 6
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20131,20 +21343,27 @@
   },
   {
     "id": 32006,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 6 = ?",
-    "o": [
-      "14",
-      "12",
-      "16",
-      "10"
-    ],
-    "a": "12",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 12.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 7 = ?",
+    "o": [
+      "16",
+      "15",
+      "14",
+      "12"
+    ],
+    "a": "14",
+    "h": "Nhìn 2 hàng, mỗi hàng 7 hình. Tổng cộng có 14 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 7
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20152,20 +21371,27 @@
   },
   {
     "id": 32007,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 14 : 2 = ?",
-    "o": [
-      "8",
-      "7",
-      "6",
-      "9"
-    ],
-    "a": "7",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 7.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 8 = ?",
+    "o": [
+      "16",
+      "14",
+      "18",
+      "17"
+    ],
+    "a": "16",
+    "h": "Nhìn 2 hàng, mỗi hàng 8 hình. Tổng cộng có 16 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 8
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20173,20 +21399,27 @@
   },
   {
     "id": 32008,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 8 = ?",
-    "o": [
-      "18",
-      "20",
-      "16",
-      "14"
-    ],
-    "a": "16",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 16.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 9 = ?",
+    "o": [
+      "20",
+      "19",
+      "18",
+      "16"
+    ],
+    "a": "18",
+    "h": "Nhìn 2 hàng, mỗi hàng 9 hình. Tổng cộng có 18 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 9
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20194,20 +21427,27 @@
   },
   {
     "id": 32009,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 18 : 2 = ?",
-    "o": [
-      "9",
-      "8",
-      "11",
-      "10"
-    ],
-    "a": "9",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 9.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 × 10 = ?",
+    "o": [
+      "20",
+      "18",
+      "22",
+      "21"
+    ],
+    "a": "20",
+    "h": "Nhìn 2 hàng, mỗi hàng 10 hình. Tổng cộng có 20 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "multiply",
+      "groups": 2,
+      "per_group": 10
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20215,20 +21455,28 @@
   },
   {
     "id": 32010,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 10 = ?",
-    "o": [
-      "22",
-      "18",
-      "24",
-      "20"
-    ],
-    "a": "20",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 20.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 2 : 2 = ?",
+    "o": [
+      "2",
+      "3",
+      "4",
+      "1"
+    ],
+    "a": "1",
+    "h": "Chia đều 2 hình thành 2 hàng, mỗi hàng có 1 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 1,
+      "total": 2
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20236,20 +21484,28 @@
   },
   {
     "id": 32011,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 22 : 2 = ?",
-    "o": [
-      "13",
-      "12",
-      "10",
-      "11"
-    ],
-    "a": "11",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 11.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 4 : 2 = ?",
+    "o": [
+      "3",
+      "4",
+      "2",
+      "1"
+    ],
+    "a": "2",
+    "h": "Chia đều 4 hình thành 2 hàng, mỗi hàng có 2 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 2,
+      "total": 4
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20257,20 +21513,28 @@
   },
   {
     "id": 32012,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 12 = ?",
-    "o": [
-      "26",
-      "22",
-      "28",
-      "24"
-    ],
-    "a": "24",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 24.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 6 : 2 = ?",
+    "o": [
+      "5",
+      "3",
+      "2",
+      "4"
+    ],
+    "a": "3",
+    "h": "Chia đều 6 hình thành 2 hàng, mỗi hàng có 3 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 3,
+      "total": 6
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20278,20 +21542,28 @@
   },
   {
     "id": 32013,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 26 : 2 = ?",
-    "o": [
-      "12",
-      "15",
-      "13",
-      "14"
-    ],
-    "a": "13",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 13.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 8 : 2 = ?",
+    "o": [
+      "4",
+      "3",
+      "5",
+      "2"
+    ],
+    "a": "4",
+    "h": "Chia đều 8 hình thành 2 hàng, mỗi hàng có 4 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 4,
+      "total": 8
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20299,20 +21571,28 @@
   },
   {
     "id": 32014,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 14 = ?",
-    "o": [
-      "32",
-      "28",
-      "26",
-      "30"
-    ],
-    "a": "28",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 28.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 10 : 2 = ?",
+    "o": [
+      "4",
+      "6",
+      "2",
+      "5"
+    ],
+    "a": "5",
+    "h": "Chia đều 10 hình thành 2 hàng, mỗi hàng có 5 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 5,
+      "total": 10
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20320,20 +21600,28 @@
   },
   {
     "id": 32015,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 30 : 2 = ?",
-    "o": [
-      "14",
-      "15",
-      "16",
-      "17"
-    ],
-    "a": "15",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 15.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 12 : 2 = ?",
+    "o": [
+      "7",
+      "2",
+      "6",
+      "5"
+    ],
+    "a": "6",
+    "h": "Chia đều 12 hình thành 2 hàng, mỗi hàng có 6 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 6,
+      "total": 12
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20341,20 +21629,28 @@
   },
   {
     "id": 32016,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 16 = ?",
-    "o": [
-      "32",
-      "30",
-      "36",
-      "34"
-    ],
-    "a": "32",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 32.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 14 : 2 = ?",
+    "o": [
+      "2",
+      "7",
+      "6",
+      "8"
+    ],
+    "a": "7",
+    "h": "Chia đều 14 hình thành 2 hàng, mỗi hàng có 7 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 7,
+      "total": 14
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20362,20 +21658,28 @@
   },
   {
     "id": 32017,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 34 : 2 = ?",
-    "o": [
-      "18",
-      "16",
-      "17",
-      "19"
-    ],
-    "a": "17",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 17.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 16 : 2 = ?",
+    "o": [
+      "8",
+      "7",
+      "9",
+      "2"
+    ],
+    "a": "8",
+    "h": "Chia đều 16 hình thành 2 hàng, mỗi hàng có 8 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 8,
+      "total": 16
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20383,20 +21687,28 @@
   },
   {
     "id": 32018,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 18 = ?",
-    "o": [
-      "40",
-      "36",
-      "34",
-      "38"
-    ],
-    "a": "36",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 36.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 18 : 2 = ?",
+    "o": [
+      "8",
+      "10",
+      "2",
+      "9"
+    ],
+    "a": "9",
+    "h": "Chia đều 18 hình thành 2 hàng, mỗi hàng có 9 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 9,
+      "total": 18
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20404,335 +21716,28 @@
   },
   {
     "id": 32019,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 38 : 2 = ?",
-    "o": [
-      "18",
-      "21",
-      "19",
-      "20"
-    ],
-    "a": "19",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 19.",
-    "tag": "TOAN_C2",
     "sub_code": "3.2",
+    "sub": "Bảng nhân 2 và bảng chia 2",
+    "q": "Bé ơi, hãy tính: 20 : 2 = ?",
+    "o": [
+      "11",
+      "2",
+      "10",
+      "9"
+    ],
+    "a": "10",
+    "h": "Chia đều 20 hình thành 2 hàng, mỗi hàng có 10 hình.",
+    "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32020,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 20 = ?",
-    "o": [
-      "38",
-      "44",
-      "42",
-      "40"
-    ],
-    "a": "40",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 40.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32021,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 42 : 2 = ?",
-    "o": [
-      "23",
-      "20",
-      "21",
-      "22"
-    ],
-    "a": "21",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 21.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32022,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 22 = ?",
-    "o": [
-      "44",
-      "42",
-      "48",
-      "46"
-    ],
-    "a": "44",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 44.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32023,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 46 : 2 = ?",
-    "o": [
-      "24",
-      "23",
-      "25",
-      "22"
-    ],
-    "a": "23",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 23.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32024,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 24 = ?",
-    "o": [
-      "50",
-      "46",
-      "52",
-      "48"
-    ],
-    "a": "48",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 48.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32025,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 50 : 2 = ?",
-    "o": [
-      "25",
-      "26",
-      "24",
-      "27"
-    ],
-    "a": "25",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 25.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32026,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 26 = ?",
-    "o": [
-      "52",
-      "50",
-      "54",
-      "56"
-    ],
-    "a": "52",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 52.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32027,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 54 : 2 = ?",
-    "o": [
-      "29",
-      "28",
-      "27",
-      "26"
-    ],
-    "a": "27",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 27.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32028,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 28 = ?",
-    "o": [
-      "56",
-      "58",
-      "54",
-      "60"
-    ],
-    "a": "56",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 56.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32029,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 58 : 2 = ?",
-    "o": [
-      "31",
-      "28",
-      "29",
-      "30"
-    ],
-    "a": "29",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 29.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32030,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 30 = ?",
-    "o": [
-      "60",
-      "58",
-      "64",
-      "62"
-    ],
-    "a": "60",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 60.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32031,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 62 : 2 = ?",
-    "o": [
-      "32",
-      "33",
-      "30",
-      "31"
-    ],
-    "a": "31",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 31.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32032,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 32 = ?",
-    "o": [
-      "62",
-      "68",
-      "64",
-      "66"
-    ],
-    "a": "64",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 64.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32033,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 66 : 2 = ?",
-    "o": [
-      "32",
-      "33",
-      "35",
-      "34"
-    ],
-    "a": "33",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 33.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B25",
-      "TOAN2_B29"
-    ]
-  },
-  {
-    "id": 32034,
-    "sub": "Bảng nhân 2 và bảng chia 2",
-    "q": "Bé ơi, hãy tính nhẩm: 2 × 34 = ?",
-    "o": [
-      "68",
-      "66",
-      "72",
-      "70"
-    ],
-    "a": "68",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 68.",
-    "tag": "TOAN_C2",
-    "sub_code": "3.2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "🍎",
+      "mode": "divide",
+      "groups": 2,
+      "per_group": 10,
+      "total": 20
+    },
     "lesson_refs": [
       "TOAN2_B25",
       "TOAN2_B29"
@@ -20742,18 +21747,25 @@
     "id": 33000,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 10 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 1 = ?",
     "o": [
-      "2",
-      "3",
-      "1",
-      "4"
+      "6",
+      "10",
+      "0",
+      "5"
     ],
-    "a": "2",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 2.",
+    "a": "5",
+    "h": "Nhìn 5 hàng, mỗi hàng 1 hình. Tổng cộng có 5 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 1
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20763,18 +21775,25 @@
     "id": 33001,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 1 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 2 = ?",
     "o": [
-      "6",
-      "10",
       "15",
+      "11",
+      "10",
       "5"
     ],
-    "a": "5",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 5.",
+    "a": "10",
+    "h": "Nhìn 5 hàng, mỗi hàng 2 hình. Tổng cộng có 10 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 2
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20784,18 +21803,25 @@
     "id": 33002,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 2 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 3 = ?",
     "o": [
-      "5",
-      "20",
+      "16",
+      "15",
       "10",
-      "15"
+      "20"
     ],
-    "a": "10",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 10.",
+    "a": "15",
+    "h": "Nhìn 5 hàng, mỗi hàng 3 hình. Tổng cộng có 15 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 3
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20805,18 +21831,25 @@
     "id": 33003,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 7 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 4 = ?",
     "o": [
-      "45",
-      "40",
-      "30",
-      "35"
+      "20",
+      "15",
+      "25",
+      "21"
     ],
-    "a": "35",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 35.",
+    "a": "20",
+    "h": "Nhìn 5 hàng, mỗi hàng 4 hình. Tổng cộng có 20 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 4
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20826,18 +21859,25 @@
     "id": 33004,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 4 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 5 = ?",
     "o": [
-      "15",
+      "20",
       "30",
-      "25",
-      "20"
+      "26",
+      "25"
     ],
-    "a": "20",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 20.",
+    "a": "25",
+    "h": "Nhìn 5 hàng, mỗi hàng 5 hình. Tổng cộng có 25 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 5
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20847,18 +21887,25 @@
     "id": 33005,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 5 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 6 = ?",
     "o": [
-      "20",
       "35",
-      "25",
-      "30"
+      "31",
+      "30",
+      "25"
     ],
-    "a": "25",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 25.",
+    "a": "30",
+    "h": "Nhìn 5 hàng, mỗi hàng 6 hình. Tổng cộng có 30 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 6
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20868,18 +21915,25 @@
     "id": 33006,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 40 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 7 = ?",
     "o": [
-      "10",
-      "7",
-      "9",
-      "8"
+      "36",
+      "35",
+      "30",
+      "40"
     ],
-    "a": "8",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 8.",
+    "a": "35",
+    "h": "Nhìn 5 hàng, mỗi hàng 7 hình. Tổng cộng có 35 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 7
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20889,18 +21943,25 @@
     "id": 33007,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 50 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 8 = ?",
     "o": [
-      "12",
-      "11",
-      "9",
-      "10"
+      "40",
+      "35",
+      "45",
+      "41"
     ],
-    "a": "10",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 10.",
+    "a": "40",
+    "h": "Nhìn 5 hàng, mỗi hàng 8 hình. Tổng cộng có 40 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 8
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20910,18 +21971,25 @@
     "id": 33008,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 15 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 9 = ?",
     "o": [
-      "2",
-      "5",
-      "3",
-      "4"
+      "40",
+      "50",
+      "46",
+      "45"
     ],
-    "a": "3",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 3.",
+    "a": "45",
+    "h": "Nhìn 5 hàng, mỗi hàng 9 hình. Tổng cộng có 45 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 9
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20931,18 +21999,25 @@
     "id": 33009,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 10 = ?",
+    "q": "Bé ơi, hãy tính: 5 × 10 = ?",
     "o": [
       "55",
-      "60",
-      "45",
-      "50"
+      "51",
+      "50",
+      "45"
     ],
     "a": "50",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 50.",
+    "h": "Nhìn 5 hàng, mỗi hàng 10 hình. Tổng cộng có 50 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "multiply",
+      "groups": 5,
+      "per_group": 10
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20952,18 +22027,26 @@
     "id": 33010,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 25 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 5 : 5 = ?",
     "o": [
-      "6",
-      "4",
-      "7",
-      "5"
+      "2",
+      "5",
+      "3",
+      "1"
     ],
-    "a": "5",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 5.",
+    "a": "1",
+    "h": "Chia đều 5 hình thành 5 hàng, mỗi hàng có 1 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 1,
+      "total": 5
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20973,18 +22056,26 @@
     "id": 33011,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 3 = ?",
+    "q": "Bé ơi, hãy tính: 10 : 5 = ?",
     "o": [
-      "15",
-      "20",
-      "25",
-      "10"
+      "3",
+      "5",
+      "2",
+      "1"
     ],
-    "a": "15",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 15.",
+    "a": "2",
+    "h": "Chia đều 10 hình thành 5 hàng, mỗi hàng có 2 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 2,
+      "total": 10
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -20994,18 +22085,26 @@
     "id": 33012,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 20 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 15 : 5 = ?",
     "o": [
       "5",
       "3",
-      "6",
+      "2",
       "4"
     ],
-    "a": "4",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 4.",
+    "a": "3",
+    "h": "Chia đều 15 hình thành 5 hàng, mỗi hàng có 3 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 3,
+      "total": 15
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -21015,18 +22114,26 @@
     "id": 33013,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 35 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 20 : 5 = ?",
     "o": [
-      "8",
-      "6",
-      "7",
-      "9"
+      "4",
+      "3",
+      "5",
+      "6"
     ],
-    "a": "7",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 7.",
+    "a": "4",
+    "h": "Chia đều 20 hình thành 5 hàng, mỗi hàng có 4 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 4,
+      "total": 20
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -21036,18 +22143,26 @@
     "id": 33014,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 25 : 5 = ?",
     "o": [
-      "2",
-      "3",
-      "13",
-      "1"
+      "4",
+      "6",
+      "7",
+      "5"
     ],
-    "a": "1",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 1.",
+    "a": "5",
+    "h": "Chia đều 25 hình thành 5 hàng, mỗi hàng có 5 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 5,
+      "total": 25
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -21057,18 +22172,26 @@
     "id": 33015,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 30 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 30 : 5 = ?",
     "o": [
+      "7",
       "8",
       "6",
-      "5",
-      "7"
+      "5"
     ],
     "a": "6",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 6.",
+    "h": "Chia đều 30 hình thành 5 hàng, mỗi hàng có 6 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 6,
+      "total": 30
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -21078,18 +22201,26 @@
     "id": 33016,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 9 = ?",
+    "q": "Bé ơi, hãy tính: 35 : 5 = ?",
     "o": [
-      "40",
-      "45",
-      "50",
-      "55"
+      "5",
+      "7",
+      "6",
+      "8"
     ],
-    "a": "45",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 45.",
+    "a": "7",
+    "h": "Chia đều 35 hình thành 5 hàng, mỗi hàng có 7 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 7,
+      "total": 35
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -21099,18 +22230,26 @@
     "id": 33017,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 8 = ?",
+    "q": "Bé ơi, hãy tính: 40 : 5 = ?",
     "o": [
-      "45",
-      "50",
-      "35",
-      "40"
+      "8",
+      "7",
+      "9",
+      "5"
     ],
-    "a": "40",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 40.",
+    "a": "8",
+    "h": "Chia đều 40 hình thành 5 hàng, mỗi hàng có 8 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 8,
+      "total": 40
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -21120,18 +22259,26 @@
     "id": 33018,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 6 = ?",
+    "q": "Bé ơi, hãy tính: 45 : 5 = ?",
     "o": [
-      "25",
-      "40",
-      "30",
-      "35"
+      "8",
+      "10",
+      "5",
+      "9"
     ],
-    "a": "30",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 30.",
+    "a": "9",
+    "h": "Chia đều 45 hình thành 5 hàng, mỗi hàng có 9 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 9,
+      "total": 45
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -21141,333 +22288,26 @@
     "id": 33019,
     "sub_code": "3.3",
     "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 45 : 5 = ?",
+    "q": "Bé ơi, hãy tính: 50 : 5 = ?",
     "o": [
       "11",
-      "10",
-      "8",
-      "9"
-    ],
-    "a": "9",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 9.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33020,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 10 : 5 = ?",
-    "o": [
-      "4",
-      "2",
-      "3",
-      "1"
-    ],
-    "a": "2",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 2.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33021,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 1 = ?",
-    "o": [
-      "13",
-      "15",
       "5",
-      "10"
-    ],
-    "a": "5",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 5.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33022,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 2 = ?",
-    "o": [
       "10",
-      "5",
-      "15",
-      "20"
-    ],
-    "a": "10",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 10.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33023,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 7 = ?",
-    "o": [
-      "35",
-      "40",
-      "45",
-      "30"
-    ],
-    "a": "35",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 35.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33024,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 4 = ?",
-    "o": [
-      "15",
-      "20",
-      "25",
-      "30"
-    ],
-    "a": "20",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 20.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33025,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 5 = ?",
-    "o": [
-      "20",
-      "35",
-      "30",
-      "25"
-    ],
-    "a": "25",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 25.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33026,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 40 : 5 = ?",
-    "o": [
-      "8",
-      "10",
-      "7",
-      "9"
-    ],
-    "a": "8",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 8.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33027,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 50 : 5 = ?",
-    "o": [
-      "11",
-      "10",
-      "12",
       "9"
     ],
     "a": "10",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 10.",
+    "h": "Chia đều 50 hình thành 5 hàng, mỗi hàng có 10 hình.",
     "tag": "TOAN_C2",
     "explore_topic_id": 4,
     "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33028,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 15 : 5 = ?",
-    "o": [
-      "3",
-      "5",
-      "4",
-      "2"
-    ],
-    "a": "3",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 3.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33029,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 10 = ?",
-    "o": [
-      "55",
-      "50",
-      "60",
-      "45"
-    ],
-    "a": "50",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 50.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33030,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 25 : 5 = ?",
-    "o": [
-      "6",
-      "7",
-      "4",
-      "5"
-    ],
-    "a": "5",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 5.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33031,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 × 3 = ?",
-    "o": [
-      "25",
-      "10",
-      "15",
-      "20"
-    ],
-    "a": "15",
-    "h": "Nhẩm theo bảng nhân. Kết quả: 15.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33032,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 20 : 5 = ?",
-    "o": [
-      "5",
-      "6",
-      "4",
-      "3"
-    ],
-    "a": "4",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 4.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33033,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 35 : 5 = ?",
-    "o": [
-      "8",
-      "7",
-      "9",
-      "6"
-    ],
-    "a": "7",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 7.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
-    "lesson_refs": [
-      "TOAN2_B26",
-      "TOAN2_B30"
-    ]
-  },
-  {
-    "id": 33034,
-    "sub_code": "3.3",
-    "sub": "Bảng nhân 5 và bảng chia 5",
-    "q": "Bé ơi, hãy tính nhẩm: 5 : 5 = ?",
-    "o": [
-      "1",
-      "2",
-      "3",
-      "11"
-    ],
-    "a": "1",
-    "h": "Dựa vào phép nhân tương ứng. Kết quả: 1.",
-    "tag": "TOAN_C2",
-    "explore_topic_id": 4,
-    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_table_visual",
+    "visual_data": {
+      "emoji": "⭐",
+      "mode": "divide",
+      "groups": 5,
+      "per_group": 10,
+      "total": 50
+    },
     "lesson_refs": [
       "TOAN2_B26",
       "TOAN2_B30"
@@ -33431,1176 +34271,6 @@
     "explore_topic": "Cấu tạo số"
   },
   {
-    "id": 30000,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "8",
-      "11",
-      "10",
-      "12"
-    ],
-    "a": "10",
-    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 10.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        8,
-        null,
-        12,
-        14,
-        16
-      ],
-      "full_sequence": [
-        8,
-        10,
-        12,
-        14,
-        16
-      ],
-      "step": 2,
-      "direction": "asc",
-      "missing_index": 1
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30001,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "16",
-      "18",
-      "14",
-      "17"
-    ],
-    "a": "16",
-    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 16.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        12,
-        14,
-        null,
-        18,
-        20
-      ],
-      "full_sequence": [
-        12,
-        14,
-        16,
-        18,
-        20
-      ],
-      "step": 2,
-      "direction": "asc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30002,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "20",
-      "22",
-      "24",
-      "23"
-    ],
-    "a": "22",
-    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 22.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        16,
-        18,
-        20,
-        null,
-        24
-      ],
-      "full_sequence": [
-        16,
-        18,
-        20,
-        22,
-        24
-      ],
-      "step": 2,
-      "direction": "asc",
-      "missing_index": 3
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30003,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "28",
-      "26",
-      "30",
-      "29"
-    ],
-    "a": "28",
-    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 28.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        20,
-        22,
-        24,
-        26,
-        null
-      ],
-      "full_sequence": [
-        20,
-        22,
-        24,
-        26,
-        28
-      ],
-      "step": 2,
-      "direction": "asc",
-      "missing_index": 4
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30004,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "30",
-      "26",
-      "28",
-      "29"
-    ],
-    "a": "28",
-    "h": "Dãy số tăng đều 2 đơn vị mỗi bước. Số còn thiếu là 28.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        24,
-        26,
-        null,
-        30,
-        32
-      ],
-      "full_sequence": [
-        24,
-        26,
-        28,
-        30,
-        32
-      ],
-      "step": 2,
-      "direction": "asc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30005,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "87",
-      "90",
-      "86",
-      "88"
-    ],
-    "a": "88",
-    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 88.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        90,
-        null,
-        86,
-        84,
-        82
-      ],
-      "full_sequence": [
-        90,
-        88,
-        86,
-        84,
-        82
-      ],
-      "step": 2,
-      "direction": "desc",
-      "missing_index": 1
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30006,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "84",
-      "80",
-      "81",
-      "82"
-    ],
-    "a": "82",
-    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 82.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        86,
-        84,
-        null,
-        80,
-        78
-      ],
-      "full_sequence": [
-        86,
-        84,
-        82,
-        80,
-        78
-      ],
-      "step": 2,
-      "direction": "desc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30007,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "74",
-      "76",
-      "78",
-      "75"
-    ],
-    "a": "76",
-    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 76.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        82,
-        80,
-        78,
-        null,
-        74
-      ],
-      "full_sequence": [
-        82,
-        80,
-        78,
-        76,
-        74
-      ],
-      "step": 2,
-      "direction": "desc",
-      "missing_index": 3
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30008,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "68",
-      "69",
-      "70",
-      "72"
-    ],
-    "a": "70",
-    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 70.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        78,
-        76,
-        74,
-        72,
-        null
-      ],
-      "full_sequence": [
-        78,
-        76,
-        74,
-        72,
-        70
-      ],
-      "step": 2,
-      "direction": "desc",
-      "missing_index": 4
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30009,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "72",
-      "69",
-      "68",
-      "70"
-    ],
-    "a": "70",
-    "h": "Dãy số giảm đều 2 đơn vị mỗi bước. Số còn thiếu là 70.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        74,
-        72,
-        null,
-        68,
-        66
-      ],
-      "full_sequence": [
-        74,
-        72,
-        70,
-        68,
-        66
-      ],
-      "step": 2,
-      "direction": "desc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30010,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "14",
-      "17",
-      "18",
-      "20"
-    ],
-    "a": "17",
-    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 17.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        14,
-        null,
-        20,
-        23,
-        26
-      ],
-      "full_sequence": [
-        14,
-        17,
-        20,
-        23,
-        26
-      ],
-      "step": 3,
-      "direction": "asc",
-      "missing_index": 1
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30011,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "24",
-      "21",
-      "25",
-      "27"
-    ],
-    "a": "24",
-    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 24.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        18,
-        21,
-        null,
-        27,
-        30
-      ],
-      "full_sequence": [
-        18,
-        21,
-        24,
-        27,
-        30
-      ],
-      "step": 3,
-      "direction": "asc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30012,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "28",
-      "34",
-      "32",
-      "31"
-    ],
-    "a": "31",
-    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 31.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        22,
-        25,
-        28,
-        null,
-        34
-      ],
-      "full_sequence": [
-        22,
-        25,
-        28,
-        31,
-        34
-      ],
-      "step": 3,
-      "direction": "asc",
-      "missing_index": 3
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30013,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "35",
-      "41",
-      "39",
-      "38"
-    ],
-    "a": "38",
-    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 38.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        26,
-        29,
-        32,
-        35,
-        null
-      ],
-      "full_sequence": [
-        26,
-        29,
-        32,
-        35,
-        38
-      ],
-      "step": 3,
-      "direction": "asc",
-      "missing_index": 4
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30014,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "37",
-      "33",
-      "39",
-      "36"
-    ],
-    "a": "36",
-    "h": "Dãy số tăng đều 3 đơn vị mỗi bước. Số còn thiếu là 36.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        30,
-        33,
-        null,
-        39,
-        42
-      ],
-      "full_sequence": [
-        30,
-        33,
-        36,
-        39,
-        42
-      ],
-      "step": 3,
-      "direction": "asc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30015,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "83",
-      "86",
-      "80",
-      "82"
-    ],
-    "a": "83",
-    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 83.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        86,
-        null,
-        80,
-        77,
-        74
-      ],
-      "full_sequence": [
-        86,
-        83,
-        80,
-        77,
-        74
-      ],
-      "step": 3,
-      "direction": "desc",
-      "missing_index": 1
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30016,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "73",
-      "76",
-      "79",
-      "75"
-    ],
-    "a": "76",
-    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 76.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        82,
-        79,
-        null,
-        73,
-        70
-      ],
-      "full_sequence": [
-        82,
-        79,
-        76,
-        73,
-        70
-      ],
-      "step": 3,
-      "direction": "desc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30017,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "69",
-      "66",
-      "68",
-      "72"
-    ],
-    "a": "69",
-    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 69.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        78,
-        75,
-        72,
-        null,
-        66
-      ],
-      "full_sequence": [
-        78,
-        75,
-        72,
-        69,
-        66
-      ],
-      "step": 3,
-      "direction": "desc",
-      "missing_index": 3
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30018,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "59",
-      "65",
-      "61",
-      "62"
-    ],
-    "a": "62",
-    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 62.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        74,
-        71,
-        68,
-        65,
-        null
-      ],
-      "full_sequence": [
-        74,
-        71,
-        68,
-        65,
-        62
-      ],
-      "step": 3,
-      "direction": "desc",
-      "missing_index": 4
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30019,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "63",
-      "61",
-      "64",
-      "67"
-    ],
-    "a": "64",
-    "h": "Dãy số giảm đều 3 đơn vị mỗi bước. Số còn thiếu là 64.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        70,
-        67,
-        null,
-        61,
-        58
-      ],
-      "full_sequence": [
-        70,
-        67,
-        64,
-        61,
-        58
-      ],
-      "step": 3,
-      "direction": "desc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30020,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "28",
-      "24",
-      "25",
-      "20"
-    ],
-    "a": "24",
-    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 24.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        20,
-        null,
-        28,
-        32,
-        36
-      ],
-      "full_sequence": [
-        20,
-        24,
-        28,
-        32,
-        36
-      ],
-      "step": 4,
-      "direction": "asc",
-      "missing_index": 1
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30021,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "36",
-      "28",
-      "32",
-      "33"
-    ],
-    "a": "32",
-    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 32.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        24,
-        28,
-        null,
-        36,
-        40
-      ],
-      "full_sequence": [
-        24,
-        28,
-        32,
-        36,
-        40
-      ],
-      "step": 4,
-      "direction": "asc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30022,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "44",
-      "41",
-      "36",
-      "40"
-    ],
-    "a": "40",
-    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 40.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        28,
-        32,
-        36,
-        null,
-        44
-      ],
-      "full_sequence": [
-        28,
-        32,
-        36,
-        40,
-        44
-      ],
-      "step": 4,
-      "direction": "asc",
-      "missing_index": 3
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30023,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "44",
-      "48",
-      "52",
-      "49"
-    ],
-    "a": "48",
-    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 48.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        32,
-        36,
-        40,
-        44,
-        null
-      ],
-      "full_sequence": [
-        32,
-        36,
-        40,
-        44,
-        48
-      ],
-      "step": 4,
-      "direction": "asc",
-      "missing_index": 4
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30024,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "48",
-      "40",
-      "45",
-      "44"
-    ],
-    "a": "44",
-    "h": "Dãy số tăng đều 4 đơn vị mỗi bước. Số còn thiếu là 44.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        36,
-        40,
-        null,
-        48,
-        52
-      ],
-      "full_sequence": [
-        36,
-        40,
-        44,
-        48,
-        52
-      ],
-      "step": 4,
-      "direction": "asc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30025,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "74",
-      "82",
-      "77",
-      "78"
-    ],
-    "a": "78",
-    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 78.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        82,
-        null,
-        74,
-        70,
-        66
-      ],
-      "full_sequence": [
-        82,
-        78,
-        74,
-        70,
-        66
-      ],
-      "step": 4,
-      "direction": "desc",
-      "missing_index": 1
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30026,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "74",
-      "70",
-      "66",
-      "69"
-    ],
-    "a": "70",
-    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 70.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        78,
-        74,
-        null,
-        66,
-        62
-      ],
-      "full_sequence": [
-        78,
-        74,
-        70,
-        66,
-        62
-      ],
-      "step": 4,
-      "direction": "desc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30027,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "66",
-      "58",
-      "62",
-      "61"
-    ],
-    "a": "62",
-    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 62.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        74,
-        70,
-        66,
-        null,
-        58
-      ],
-      "full_sequence": [
-        74,
-        70,
-        66,
-        62,
-        58
-      ],
-      "step": 4,
-      "direction": "desc",
-      "missing_index": 3
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30028,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "54",
-      "53",
-      "58",
-      "50"
-    ],
-    "a": "54",
-    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 54.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        70,
-        66,
-        62,
-        58,
-        null
-      ],
-      "full_sequence": [
-        70,
-        66,
-        62,
-        58,
-        54
-      ],
-      "step": 4,
-      "direction": "desc",
-      "missing_index": 4
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
-    "id": 30029,
-    "sub": "Điền số theo quy luật",
-    "q": "Bé ơi, hãy tìm số còn thiếu trong dãy số có quy luật nhé!",
-    "o": [
-      "58",
-      "62",
-      "57",
-      "54"
-    ],
-    "a": "58",
-    "h": "Dãy số giảm đều 4 đơn vị mỗi bước. Số còn thiếu là 58.",
-    "tag": "TOAN_C4",
-    "sub_code": "1.2",
-    "explore_level": 2,
-    "explore_type": "sequence_missing",
-    "explore_branch": "2.4",
-    "visual_data": {
-      "sequence": [
-        66,
-        62,
-        null,
-        54,
-        50
-      ],
-      "full_sequence": [
-        66,
-        62,
-        58,
-        54,
-        50
-      ],
-      "step": 4,
-      "direction": "desc",
-      "missing_index": 2
-    },
-    "explore_topic_id": 2,
-    "explore_topic": "Tia số và phép so sánh"
-  },
-  {
     "id": 192200,
     "sub": "Khởi động quy luật emoji",
     "q": "Bé ơi, emoji nào còn thiếu để dãy hình lặp lại đúng quy luật?",
@@ -40240,5 +39910,635 @@
     ],
     "explore_type": "measure_mixed",
     "explore_hidden": true
+  },
+  {
+    "id": 34000,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Điền số thích hợp: 2 × ? = 18",
+    "o": [
+      "8",
+      "9",
+      "10",
+      "7"
+    ],
+    "a": "9",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34001,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Điền số thích hợp: 5 × ? = 40",
+    "o": [
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "a": "8",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34002,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Điền số thích hợp: ? × 2 = 14",
+    "o": [
+      "6",
+      "8",
+      "7",
+      "9"
+    ],
+    "a": "7",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34003,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Điền số thích hợp: ? × 5 = 30",
+    "o": [
+      "5",
+      "7",
+      "6",
+      "8"
+    ],
+    "a": "6",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34004,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Điền số thích hợp: 20 ÷ ? = 10",
+    "o": [
+      "5",
+      "10",
+      "2",
+      "4"
+    ],
+    "a": "2",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34005,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Điền số thích hợp: 35 ÷ ? = 7",
+    "o": [
+      "7",
+      "2",
+      "5",
+      "10"
+    ],
+    "a": "5",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34006,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Điền số thích hợp: ? ÷ 2 = 8",
+    "o": [
+      "14",
+      "18",
+      "16",
+      "12"
+    ],
+    "a": "16",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34007,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Điền số thích hợp: ? ÷ 5 = 9",
+    "o": [
+      "40",
+      "50",
+      "35",
+      "45"
+    ],
+    "a": "45",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34008,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Biết 2 × 9 = 18. Không tính lại từ đầu, 18 ÷ 2 bằng bao nhiêu?",
+    "o": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "a": "9",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34009,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Biết 5 × 6 = 30. Không tính lại từ đầu, 30 ÷ 5 bằng bao nhiêu?",
+    "o": [
+      "5",
+      "7",
+      "6",
+      "8"
+    ],
+    "a": "6",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34010,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Phép tính nào có kết quả bằng 20?",
+    "o": [
+      "2 × 10",
+      "5 × 5",
+      "20 ÷ 5",
+      "2 × 5"
+    ],
+    "a": "2 × 10",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34011,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Phép tính nào có kết quả bằng 10?",
+    "o": [
+      "20 ÷ 2",
+      "5 × 3",
+      "2 × 4",
+      "25 ÷ 5"
+    ],
+    "a": "20 ÷ 2",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34012,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Phép tính nào có kết quả lớn nhất?",
+    "o": [
+      "2 × 10",
+      "5 × 8",
+      "30 ÷ 5",
+      "20 ÷ 2"
+    ],
+    "a": "5 × 8",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34013,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Phép tính nào có kết quả bé nhất?",
+    "o": [
+      "5 × 2",
+      "2 × 3",
+      "10 ÷ 5",
+      "20 ÷ 2"
+    ],
+    "a": "10 ÷ 5",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34014,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Trong hai phép tính 2 × 8 và 5 × 3, phép tính nào có kết quả lớn hơn?",
+    "o": [
+      "2 × 8",
+      "5 × 3",
+      "Hai kết quả bằng nhau",
+      "Không xác định"
+    ],
+    "a": "2 × 8",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34015,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Cặp phép tính nào có cùng kết quả?",
+    "o": [
+      "2 × 5 và 20 ÷ 2",
+      "5 × 4 và 10 ÷ 2",
+      "2 × 8 và 25 ÷ 5",
+      "5 × 6 và 18 ÷ 2"
+    ],
+    "a": "2 × 5 và 20 ÷ 2",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34016,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Chọn phép tính có kết quả khác ba phép tính còn lại.",
+    "o": [
+      "2 × 5",
+      "5 × 2",
+      "20 ÷ 2",
+      "25 ÷ 5"
+    ],
+    "a": "25 ÷ 5",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34017,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Chọn phép tính thích hợp để điền vào chỗ trống: 5 × 4 = ____.",
+    "o": [
+      "20 ÷ 2",
+      "2 × 10",
+      "30 ÷ 5",
+      "5 × 3"
+    ],
+    "a": "2 × 10",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34018,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Bắt đầu từ 10. Nhân 2 rồi chia 5. Kết quả cuối cùng là bao nhiêu?",
+    "o": [
+      "2",
+      "4",
+      "5",
+      "10"
+    ],
+    "a": "4",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34019,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Bắt đầu từ 20. Chia 2 rồi chia tiếp cho 5. Kết quả cuối cùng là bao nhiêu?",
+    "o": [
+      "1",
+      "2",
+      "4",
+      "5"
+    ],
+    "a": "2",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34020,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Bắt đầu từ 5. Nhân 4 rồi chia 2. Kết quả cuối cùng là bao nhiêu?",
+    "o": [
+      "5",
+      "8",
+      "10",
+      "20"
+    ],
+    "a": "10",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34021,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Bắt đầu từ 2. Nhân 5 rồi nhân tiếp 2. Kết quả cuối cùng là bao nhiêu?",
+    "o": [
+      "10",
+      "15",
+      "20",
+      "25"
+    ],
+    "a": "20",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34022,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Bắt đầu từ 50. Chia 5 rồi nhân 2. Kết quả cuối cùng là bao nhiêu?",
+    "o": [
+      "5",
+      "10",
+      "20",
+      "25"
+    ],
+    "a": "20",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34023,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Bắt đầu từ 30. Chia 5 rồi nhân 5. Kết quả cuối cùng là bao nhiêu?",
+    "o": [
+      "6",
+      "25",
+      "30",
+      "35"
+    ],
+    "a": "30",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34024,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Bắt đầu từ 18. Chia 2 rồi nhân 5. Kết quả cuối cùng là bao nhiêu?",
+    "o": [
+      "35",
+      "40",
+      "45",
+      "50"
+    ],
+    "a": "45",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34025,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Có 8 chiếc xe đạp, mỗi xe có 2 bánh. Có tất cả bao nhiêu bánh xe?",
+    "o": [
+      "14",
+      "16",
+      "18",
+      "20"
+    ],
+    "a": "16",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34026,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Có 7 lọ hoa, mỗi lọ cắm 5 bông. Có tất cả bao nhiêu bông hoa?",
+    "o": [
+      "30",
+      "35",
+      "40",
+      "45"
+    ],
+    "a": "35",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34027,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Có 20 chiếc bánh chia đều cho 2 bạn. Mỗi bạn nhận được bao nhiêu chiếc bánh?",
+    "o": [
+      "5",
+      "8",
+      "10",
+      "12"
+    ],
+    "a": "10",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34028,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Có 40 chiếc bút, xếp đều 5 chiếc vào mỗi hộp. Cần bao nhiêu hộp?",
+    "o": [
+      "5",
+      "6",
+      "8",
+      "10"
+    ],
+    "a": "8",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34029,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Lớp có 18 bạn xếp thành các cặp, mỗi cặp 2 bạn. Có bao nhiêu cặp?",
+    "o": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "a": "9",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34030,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Có 35 quả cam, xếp đều 5 quả vào mỗi rổ. Có bao nhiêu rổ?",
+    "o": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "a": "7",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34031,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Có 6 hộp bóng, mỗi hộp có 5 quả bóng. Có tất cả bao nhiêu quả bóng?",
+    "o": [
+      "25",
+      "30",
+      "35",
+      "40"
+    ],
+    "a": "30",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34032,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Có 50 tấm thẻ chia đều cho 5 nhóm. Mỗi nhóm nhận được bao nhiêu tấm thẻ?",
+    "o": [
+      "5",
+      "8",
+      "10",
+      "12"
+    ],
+    "a": "10",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34033,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Một con cua có 2 càng. Có 9 con cua thì có tất cả bao nhiêu càng?",
+    "o": [
+      "16",
+      "18",
+      "20",
+      "22"
+    ],
+    "a": "18",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
+  },
+  {
+    "id": 34034,
+    "sub_code": "3.4",
+    "sub": "Nâng cao bảng nhân/chia 2 và 5",
+    "q": "Có 30 bạn chia đều thành 5 đội. Mỗi đội có bao nhiêu bạn?",
+    "o": [
+      "5",
+      "6",
+      "7",
+      "10"
+    ],
+    "a": "6",
+    "h": "",
+    "tag": "TOAN_C3",
+    "explore_topic_id": 4,
+    "explore_topic": "Phép nhân và chia",
+    "explore_type": "mul_div_advanced"
   }
 ]
