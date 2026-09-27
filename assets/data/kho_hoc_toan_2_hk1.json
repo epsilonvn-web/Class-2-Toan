@@ -4776,15 +4776,15 @@
   {
     "id": 22000,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 6 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 2 + 9 = ?",
     "o": [
       "12",
       "11",
-      "14",
-      "13"
+      "13",
+      "10"
     ],
-    "a": "12",
-    "h": "6 + 6 = 12. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "11",
+    "h": "Tách 2 = 1 + 1. 9 + 1 = 10; 10 + 1 = 11.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -4794,355 +4794,20 @@
       "TOAN2_B08"
     ],
     "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 2,
+      "right": 9,
+      "answer": 11,
+      "anchor": 9,
+      "split_number": 2,
+      "to_ten": 1,
+      "remainder": 1
+    }
   },
   {
     "id": 22001,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 5 = ?",
-    "o": [
-      "14",
-      "13",
-      "16",
-      "15"
-    ],
-    "a": "14",
-    "h": "9 + 5 = 14. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22002,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 17 - 8 = ?",
-    "o": [
-      "9",
-      "8",
-      "11",
-      "10"
-    ],
-    "a": "9",
-    "h": "17 - 8 = 9. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22003,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 7 = ?",
-    "o": [
-      "7",
-      "8",
-      "5",
-      "6"
-    ],
-    "a": "6",
-    "h": "13 - 7 = 6. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22004,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 17 - 9 = ?",
-    "o": [
-      "10",
-      "7",
-      "9",
-      "8"
-    ],
-    "a": "8",
-    "h": "17 - 9 = 8. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22005,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 15 - 7 = ?",
-    "o": [
-      "8",
-      "7",
-      "9",
-      "10"
-    ],
-    "a": "8",
-    "h": "15 - 7 = 8. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22006,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 9 = ?",
-    "o": [
-      "16",
-      "18",
-      "19",
-      "17"
-    ],
-    "a": "17",
-    "h": "8 + 9 = 17. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22007,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 15 - 8 = ?",
-    "o": [
-      "8",
-      "6",
-      "7",
-      "9"
-    ],
-    "a": "7",
-    "h": "15 - 8 = 7. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22008,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 16 - 9 = ?",
-    "o": [
-      "7",
-      "8",
-      "9",
-      "6"
-    ],
-    "a": "7",
-    "h": "16 - 9 = 7. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22009,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 5 = ?",
-    "o": [
-      "7",
-      "10",
-      "8",
-      "9"
-    ],
-    "a": "8",
-    "h": "13 - 5 = 8. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 2,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22010,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 3 = ?",
-    "o": [
-      "10",
-      "7",
-      "8",
-      "9"
-    ],
-    "a": "8",
-    "h": "11 - 3 = 8. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 2,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22011,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 9 = ?",
-    "o": [
-      "20",
-      "17",
-      "19",
-      "18"
-    ],
-    "a": "18",
-    "h": "9 + 9 = 18. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 2,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22012,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 9 = ?",
-    "o": [
-      "2",
-      "3",
-      "5",
-      "4"
-    ],
-    "a": "3",
-    "h": "12 - 9 = 3. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 2,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22013,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 4 + 9 = ?",
-    "o": [
-      "15",
-      "13",
-      "14",
-      "12"
-    ],
-    "a": "13",
-    "h": "4 + 9 = 13. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 2,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22014,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 14 - 6 = ?",
-    "o": [
-      "9",
-      "10",
-      "8",
-      "7"
-    ],
-    "a": "8",
-    "h": "14 - 6 = 8. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 2,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22015,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 15 - 6 = ?",
-    "o": [
-      "10",
-      "11",
-      "8",
-      "9"
-    ],
-    "a": "9",
-    "h": "15 - 6 = 9. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 2,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22016,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
     "q": "Bé ơi, hãy tính nhẩm có nhớ: 3 + 8 = ?",
     "o": [
@@ -5152,7 +4817,7 @@
       "11"
     ],
     "a": "11",
-    "h": "3 + 8 = 11. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "h": "Tách 3 = 2 + 1. 8 + 2 = 10; 10 + 1 = 11.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5162,296 +4827,30 @@
       "TOAN2_B08"
     ],
     "explore_level": 2,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 3,
+      "right": 8,
+      "answer": 11,
+      "anchor": 8,
+      "split_number": 3,
+      "to_ten": 2,
+      "remainder": 1
+    }
   },
   {
-    "id": 22017,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 18 - 9 = ?",
-    "o": [
-      "9",
-      "11",
-      "8",
-      "10"
-    ],
-    "a": "9",
-    "h": "18 - 9 = 9. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 2,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22018,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 7 = ?",
-    "o": [
-      "4",
-      "3",
-      "5",
-      "6"
-    ],
-    "a": "4",
-    "h": "11 - 7 = 4. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22019,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 6 = ?",
-    "o": [
-      "7",
-      "4",
-      "5",
-      "6"
-    ],
-    "a": "5",
-    "h": "11 - 6 = 5. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22020,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 14 - 8 = ?",
-    "o": [
-      "6",
-      "5",
-      "8",
-      "7"
-    ],
-    "a": "6",
-    "h": "14 - 8 = 6. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22021,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 4 = ?",
-    "o": [
-      "12",
-      "14",
-      "13",
-      "11"
-    ],
-    "a": "12",
-    "h": "8 + 4 = 12. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22022,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 8 = ?",
-    "o": [
-      "3",
-      "4",
-      "5",
-      "2"
-    ],
-    "a": "3",
-    "h": "11 - 8 = 3. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22023,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 5 + 9 = ?",
-    "o": [
-      "16",
-      "13",
-      "15",
-      "14"
-    ],
-    "a": "14",
-    "h": "5 + 9 = 14. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22024,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 6 = ?",
-    "o": [
-      "8",
-      "6",
-      "7",
-      "9"
-    ],
-    "a": "7",
-    "h": "13 - 6 = 7. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22025,
+    "id": 22002,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
     "q": "Bé ơi, hãy tính nhẩm có nhớ: 3 + 9 = ?",
     "o": [
-      "14",
-      "12",
       "11",
-      "13"
-    ],
-    "a": "12",
-    "h": "3 + 9 = 12. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22026,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 8 = ?",
-    "o": [
-      "16",
-      "19",
-      "17",
-      "18"
-    ],
-    "a": "17",
-    "h": "9 + 8 = 17. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 3,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22027,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 9 = ?",
-    "o": [
-      "3",
-      "6",
-      "5",
-      "4"
-    ],
-    "a": "4",
-    "h": "13 - 9 = 4. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 4,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22028,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 6 = ?",
-    "o": [
-      "15",
-      "12",
       "13",
-      "14"
-    ],
-    "a": "13",
-    "h": "7 + 6 = 13. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 4,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22029,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 5 + 8 = ?",
-    "o": [
       "14",
-      "13",
-      "15",
       "12"
     ],
-    "a": "13",
-    "h": "5 + 8 = 13. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "12",
+    "h": "Tách 3 = 1 + 2. 9 + 1 = 10; 10 + 2 = 12.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5460,44 +4859,31 @@
       "TOAN2_B07",
       "TOAN2_B08"
     ],
-    "explore_level": 4,
-    "explore_type": "mental_carry_20"
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 3,
+      "right": 9,
+      "answer": 12,
+      "anchor": 9,
+      "split_number": 3,
+      "to_ten": 1,
+      "remainder": 2
+    }
   },
   {
-    "id": 22030,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 7 = ?",
-    "o": [
-      "16",
-      "15",
-      "17",
-      "18"
-    ],
-    "a": "16",
-    "h": "9 + 7 = 16. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 4,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22031,
+    "id": 22003,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
     "q": "Bé ơi, hãy tính nhẩm có nhớ: 4 + 7 = ?",
     "o": [
       "13",
       "11",
-      "12",
-      "10"
+      "10",
+      "12"
     ],
     "a": "11",
-    "h": "4 + 7 = 11. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "h": "Tách 4 = 3 + 1. 7 + 3 = 10; 10 + 1 = 11.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5507,20 +4893,30 @@
       "TOAN2_B08"
     ],
     "explore_level": 4,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 4,
+      "right": 7,
+      "answer": 11,
+      "anchor": 7,
+      "split_number": 4,
+      "to_ten": 3,
+      "remainder": 1
+    }
   },
   {
-    "id": 22032,
+    "id": 22004,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 16 - 8 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 4 + 8 = ?",
     "o": [
-      "8",
-      "9",
-      "7",
-      "10"
+      "12",
+      "14",
+      "11",
+      "13"
     ],
-    "a": "8",
-    "h": "16 - 8 = 8. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "12",
+    "h": "Tách 4 = 2 + 2. 8 + 2 = 10; 10 + 2 = 12.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5529,13 +4925,386 @@
       "TOAN2_B07",
       "TOAN2_B08"
     ],
-    "explore_level": 4,
-    "explore_type": "mental_carry_20"
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 4,
+      "right": 8,
+      "answer": 12,
+      "anchor": 8,
+      "split_number": 4,
+      "to_ten": 2,
+      "remainder": 2
+    }
   },
   {
-    "id": 22033,
+    "id": 22005,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 4 + 9 = ?",
+    "o": [
+      "14",
+      "15",
+      "13",
+      "12"
+    ],
+    "a": "13",
+    "h": "Tách 4 = 1 + 3. 9 + 1 = 10; 10 + 3 = 13.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 4,
+      "right": 9,
+      "answer": 13,
+      "anchor": 9,
+      "split_number": 4,
+      "to_ten": 1,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22006,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 5 + 6 = ?",
+    "o": [
+      "12",
+      "10",
+      "11",
+      "13"
+    ],
+    "a": "11",
+    "h": "Tách 5 = 4 + 1. 6 + 4 = 10; 10 + 1 = 11.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 5,
+      "right": 6,
+      "answer": 11,
+      "anchor": 6,
+      "split_number": 5,
+      "to_ten": 4,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22007,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
     "q": "Bé ơi, hãy tính nhẩm có nhớ: 5 + 7 = ?",
+    "o": [
+      "13",
+      "11",
+      "14",
+      "12"
+    ],
+    "a": "12",
+    "h": "Tách 5 = 3 + 2. 7 + 3 = 10; 10 + 2 = 12.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 5,
+      "right": 7,
+      "answer": 12,
+      "anchor": 7,
+      "split_number": 5,
+      "to_ten": 3,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22008,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 5 + 8 = ?",
+    "o": [
+      "12",
+      "15",
+      "14",
+      "13"
+    ],
+    "a": "13",
+    "h": "Tách 5 = 2 + 3. 8 + 2 = 10; 10 + 3 = 13.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 5,
+      "right": 8,
+      "answer": 13,
+      "anchor": 8,
+      "split_number": 5,
+      "to_ten": 2,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22009,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 5 + 9 = ?",
+    "o": [
+      "16",
+      "15",
+      "14",
+      "13"
+    ],
+    "a": "14",
+    "h": "Tách 5 = 1 + 4. 9 + 1 = 10; 10 + 4 = 14.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 5,
+      "right": 9,
+      "answer": 14,
+      "anchor": 9,
+      "split_number": 5,
+      "to_ten": 1,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22010,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 5 = ?",
+    "o": [
+      "13",
+      "10",
+      "11",
+      "12"
+    ],
+    "a": "11",
+    "h": "Tách 5 = 4 + 1. 6 + 4 = 10; 10 + 1 = 11.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 6,
+      "right": 5,
+      "answer": 11,
+      "anchor": 6,
+      "split_number": 5,
+      "to_ten": 4,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22011,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 6 = ?",
+    "o": [
+      "14",
+      "12",
+      "13",
+      "11"
+    ],
+    "a": "12",
+    "h": "Tách 6 = 4 + 2. 6 + 4 = 10; 10 + 2 = 12.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 6,
+      "right": 6,
+      "answer": 12,
+      "anchor": 6,
+      "split_number": 6,
+      "to_ten": 4,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22012,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 7 = ?",
+    "o": [
+      "15",
+      "13",
+      "12",
+      "14"
+    ],
+    "a": "13",
+    "h": "Tách 6 = 3 + 3. 7 + 3 = 10; 10 + 3 = 13.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 6,
+      "right": 7,
+      "answer": 13,
+      "anchor": 7,
+      "split_number": 6,
+      "to_ten": 3,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22013,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 8 = ?",
+    "o": [
+      "14",
+      "16",
+      "13",
+      "15"
+    ],
+    "a": "14",
+    "h": "Tách 6 = 2 + 4. 8 + 2 = 10; 10 + 4 = 14.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 6,
+      "right": 8,
+      "answer": 14,
+      "anchor": 8,
+      "split_number": 6,
+      "to_ten": 2,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22014,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 9 = ?",
+    "o": [
+      "14",
+      "17",
+      "16",
+      "15"
+    ],
+    "a": "15",
+    "h": "Tách 6 = 1 + 5. 9 + 1 = 10; 10 + 5 = 15.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 6,
+      "right": 9,
+      "answer": 15,
+      "anchor": 9,
+      "split_number": 6,
+      "to_ten": 1,
+      "remainder": 5
+    }
+  },
+  {
+    "id": 22015,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 4 = ?",
+    "o": [
+      "11",
+      "10",
+      "13",
+      "12"
+    ],
+    "a": "11",
+    "h": "Tách 4 = 3 + 1. 7 + 3 = 10; 10 + 1 = 11.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 7,
+      "right": 4,
+      "answer": 11,
+      "anchor": 7,
+      "split_number": 4,
+      "to_ten": 3,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22016,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 5 = ?",
     "o": [
       "14",
       "11",
@@ -5543,7 +5312,106 @@
       "12"
     ],
     "a": "12",
-    "h": "5 + 7 = 12. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "h": "Tách 5 = 3 + 2. 7 + 3 = 10; 10 + 2 = 12.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 7,
+      "right": 5,
+      "answer": 12,
+      "anchor": 7,
+      "split_number": 5,
+      "to_ten": 3,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22017,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 6 = ?",
+    "o": [
+      "12",
+      "14",
+      "13",
+      "15"
+    ],
+    "a": "13",
+    "h": "Tách 6 = 3 + 3. 7 + 3 = 10; 10 + 3 = 13.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 7,
+      "right": 6,
+      "answer": 13,
+      "anchor": 7,
+      "split_number": 6,
+      "to_ten": 3,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22018,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 7 = ?",
+    "o": [
+      "16",
+      "15",
+      "13",
+      "14"
+    ],
+    "a": "14",
+    "h": "Tách 7 = 3 + 4. 7 + 3 = 10; 10 + 4 = 14.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 7,
+      "right": 7,
+      "answer": 14,
+      "anchor": 7,
+      "split_number": 7,
+      "to_ten": 3,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22019,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 8 = ?",
+    "o": [
+      "17",
+      "14",
+      "15",
+      "16"
+    ],
+    "a": "15",
+    "h": "Tách 7 = 2 + 5. 8 + 2 = 10; 10 + 5 = 15.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5553,20 +5421,525 @@
       "TOAN2_B08"
     ],
     "explore_level": 4,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 7,
+      "right": 8,
+      "answer": 15,
+      "anchor": 8,
+      "split_number": 7,
+      "to_ten": 2,
+      "remainder": 5
+    }
+  },
+  {
+    "id": 22020,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 9 = ?",
+    "o": [
+      "18",
+      "17",
+      "16",
+      "15"
+    ],
+    "a": "16",
+    "h": "Tách 7 = 1 + 6. 9 + 1 = 10; 10 + 6 = 16.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 7,
+      "right": 9,
+      "answer": 16,
+      "anchor": 9,
+      "split_number": 7,
+      "to_ten": 1,
+      "remainder": 6
+    }
+  },
+  {
+    "id": 22021,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 3 = ?",
+    "o": [
+      "12",
+      "11",
+      "10",
+      "13"
+    ],
+    "a": "11",
+    "h": "Tách 3 = 2 + 1. 8 + 2 = 10; 10 + 1 = 11.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 8,
+      "right": 3,
+      "answer": 11,
+      "anchor": 8,
+      "split_number": 3,
+      "to_ten": 2,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22022,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 4 = ?",
+    "o": [
+      "11",
+      "14",
+      "13",
+      "12"
+    ],
+    "a": "12",
+    "h": "Tách 4 = 2 + 2. 8 + 2 = 10; 10 + 2 = 12.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 8,
+      "right": 4,
+      "answer": 12,
+      "anchor": 8,
+      "split_number": 4,
+      "to_ten": 2,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22023,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 5 = ?",
+    "o": [
+      "12",
+      "13",
+      "14",
+      "15"
+    ],
+    "a": "13",
+    "h": "Tách 5 = 2 + 3. 8 + 2 = 10; 10 + 3 = 13.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 8,
+      "right": 5,
+      "answer": 13,
+      "anchor": 8,
+      "split_number": 5,
+      "to_ten": 2,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22024,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 6 = ?",
+    "o": [
+      "14",
+      "13",
+      "15",
+      "16"
+    ],
+    "a": "14",
+    "h": "Tách 6 = 2 + 4. 8 + 2 = 10; 10 + 4 = 14.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 8,
+      "right": 6,
+      "answer": 14,
+      "anchor": 8,
+      "split_number": 6,
+      "to_ten": 2,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22025,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 7 = ?",
+    "o": [
+      "14",
+      "16",
+      "17",
+      "15"
+    ],
+    "a": "15",
+    "h": "Tách 7 = 2 + 5. 8 + 2 = 10; 10 + 5 = 15.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 8,
+      "right": 7,
+      "answer": 15,
+      "anchor": 8,
+      "split_number": 7,
+      "to_ten": 2,
+      "remainder": 5
+    }
+  },
+  {
+    "id": 22026,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 8 = ?",
+    "o": [
+      "15",
+      "18",
+      "17",
+      "16"
+    ],
+    "a": "16",
+    "h": "Tách 8 = 2 + 6. 8 + 2 = 10; 10 + 6 = 16.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 8,
+      "right": 8,
+      "answer": 16,
+      "anchor": 8,
+      "split_number": 8,
+      "to_ten": 2,
+      "remainder": 6
+    }
+  },
+  {
+    "id": 22027,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 9 = ?",
+    "o": [
+      "17",
+      "16",
+      "19",
+      "18"
+    ],
+    "a": "17",
+    "h": "Tách 8 = 1 + 7. 9 + 1 = 10; 10 + 7 = 17.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 8,
+      "right": 9,
+      "answer": 17,
+      "anchor": 9,
+      "split_number": 8,
+      "to_ten": 1,
+      "remainder": 7
+    }
+  },
+  {
+    "id": 22028,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 2 = ?",
+    "o": [
+      "11",
+      "12",
+      "10",
+      "13"
+    ],
+    "a": "11",
+    "h": "Tách 2 = 1 + 1. 9 + 1 = 10; 10 + 1 = 11.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 9,
+      "right": 2,
+      "answer": 11,
+      "anchor": 9,
+      "split_number": 2,
+      "to_ten": 1,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22029,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 3 = ?",
+    "o": [
+      "12",
+      "14",
+      "13",
+      "11"
+    ],
+    "a": "12",
+    "h": "Tách 3 = 1 + 2. 9 + 1 = 10; 10 + 2 = 12.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 9,
+      "right": 3,
+      "answer": 12,
+      "anchor": 9,
+      "split_number": 3,
+      "to_ten": 1,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22030,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 4 = ?",
+    "o": [
+      "15",
+      "13",
+      "14",
+      "12"
+    ],
+    "a": "13",
+    "h": "Tách 4 = 1 + 3. 9 + 1 = 10; 10 + 3 = 13.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 9,
+      "right": 4,
+      "answer": 13,
+      "anchor": 9,
+      "split_number": 4,
+      "to_ten": 1,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22031,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 5 = ?",
+    "o": [
+      "14",
+      "16",
+      "13",
+      "15"
+    ],
+    "a": "14",
+    "h": "Tách 5 = 1 + 4. 9 + 1 = 10; 10 + 4 = 14.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 9,
+      "right": 5,
+      "answer": 14,
+      "anchor": 9,
+      "split_number": 5,
+      "to_ten": 1,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22032,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 6 = ?",
+    "o": [
+      "17",
+      "16",
+      "14",
+      "15"
+    ],
+    "a": "15",
+    "h": "Tách 6 = 1 + 5. 9 + 1 = 10; 10 + 5 = 15.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 9,
+      "right": 6,
+      "answer": 15,
+      "anchor": 9,
+      "split_number": 6,
+      "to_ten": 1,
+      "remainder": 5
+    }
+  },
+  {
+    "id": 22033,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 7 = ?",
+    "o": [
+      "18",
+      "15",
+      "17",
+      "16"
+    ],
+    "a": "16",
+    "h": "Tách 7 = 1 + 6. 9 + 1 = 10; 10 + 6 = 16.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 9,
+      "right": 7,
+      "answer": 16,
+      "anchor": 9,
+      "split_number": 7,
+      "to_ten": 1,
+      "remainder": 6
+    }
   },
   {
     "id": 22034,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 8 + 5 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 8 = ?",
     "o": [
-      "15",
-      "12",
-      "14",
-      "13"
+      "17",
+      "19",
+      "16",
+      "18"
     ],
-    "a": "13",
-    "h": "8 + 5 = 13. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "17",
+    "h": "Tách 8 = 1 + 7. 9 + 1 = 10; 10 + 7 = 17.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 9,
+      "right": 8,
+      "answer": 17,
+      "anchor": 9,
+      "split_number": 8,
+      "to_ten": 1,
+      "remainder": 7
+    }
+  },
+  {
+    "id": 22035,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 9 = ?",
+    "o": [
+      "19",
+      "20",
+      "17",
+      "18"
+    ],
+    "a": "18",
+    "h": "Tách 9 = 1 + 8. 9 + 1 = 10; 10 + 8 = 18.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5576,43 +5949,30 @@
       "TOAN2_B08"
     ],
     "explore_level": 4,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22035,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 5 = ?",
-    "o": [
-      "13",
-      "12",
-      "11",
-      "10"
-    ],
-    "a": "11",
-    "h": "6 + 5 = 11. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "add",
+      "left": 9,
+      "right": 9,
+      "answer": 18,
+      "anchor": 9,
+      "split_number": 9,
+      "to_ten": 1,
+      "remainder": 8
+    }
   },
   {
     "id": 22036,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 9 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 2 = ?",
     "o": [
-      "16",
-      "17",
-      "18",
-      "15"
+      "11",
+      "10",
+      "9",
+      "8"
     ],
-    "a": "16",
-    "h": "7 + 9 = 16. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "9",
+    "h": "Tách 2 = 1 + 1. 11 - 1 = 10; 10 - 1 = 9.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5622,20 +5982,29 @@
       "TOAN2_B08"
     ],
     "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 11,
+      "right": 2,
+      "answer": 9,
+      "split_number": 2,
+      "to_ten": 1,
+      "remainder": 1
+    }
   },
   {
     "id": 22037,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 3 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 3 = ?",
     "o": [
       "9",
       "10",
-      "8",
-      "11"
+      "7",
+      "8"
     ],
-    "a": "9",
-    "h": "12 - 3 = 9. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "8",
+    "h": "Tách 3 = 1 + 2. 11 - 1 = 10; 10 - 2 = 8.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5644,21 +6013,94 @@
       "TOAN2_B07",
       "TOAN2_B08"
     ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 11,
+      "right": 3,
+      "answer": 8,
+      "split_number": 3,
+      "to_ten": 1,
+      "remainder": 2
+    }
   },
   {
     "id": 22038,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 5 + 6 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 4 = ?",
     "o": [
-      "12",
-      "13",
-      "10",
-      "11"
+      "9",
+      "8",
+      "6",
+      "7"
     ],
-    "a": "11",
-    "h": "5 + 6 = 11. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "7",
+    "h": "Tách 4 = 1 + 3. 11 - 1 = 10; 10 - 3 = 7.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 11,
+      "right": 4,
+      "answer": 7,
+      "split_number": 4,
+      "to_ten": 1,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22039,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 5 = ?",
+    "o": [
+      "8",
+      "6",
+      "7",
+      "5"
+    ],
+    "a": "6",
+    "h": "Tách 5 = 1 + 4. 11 - 1 = 10; 10 - 4 = 6.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 11,
+      "right": 5,
+      "answer": 6,
+      "split_number": 5,
+      "to_ten": 1,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22040,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 6 = ?",
+    "o": [
+      "5",
+      "4",
+      "6",
+      "7"
+    ],
+    "a": "5",
+    "h": "Tách 6 = 1 + 5. 11 - 1 = 10; 10 - 5 = 5.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5668,10 +6110,243 @@
       "TOAN2_B08"
     ],
     "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 11,
+      "right": 6,
+      "answer": 5,
+      "split_number": 6,
+      "to_ten": 1,
+      "remainder": 5
+    }
   },
   {
-    "id": 22039,
+    "id": 22041,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 7 = ?",
+    "o": [
+      "5",
+      "3",
+      "4",
+      "6"
+    ],
+    "a": "4",
+    "h": "Tách 7 = 1 + 6. 11 - 1 = 10; 10 - 6 = 4.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 11,
+      "right": 7,
+      "answer": 4,
+      "split_number": 7,
+      "to_ten": 1,
+      "remainder": 6
+    }
+  },
+  {
+    "id": 22042,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 8 = ?",
+    "o": [
+      "4",
+      "2",
+      "5",
+      "3"
+    ],
+    "a": "3",
+    "h": "Tách 8 = 1 + 7. 11 - 1 = 10; 10 - 7 = 3.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 11,
+      "right": 8,
+      "answer": 3,
+      "split_number": 8,
+      "to_ten": 1,
+      "remainder": 7
+    }
+  },
+  {
+    "id": 22043,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 11 - 9 = ?",
+    "o": [
+      "3",
+      "2",
+      "4",
+      "1"
+    ],
+    "a": "2",
+    "h": "Tách 9 = 1 + 8. 11 - 1 = 10; 10 - 8 = 2.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 11,
+      "right": 9,
+      "answer": 2,
+      "split_number": 9,
+      "to_ten": 1,
+      "remainder": 8
+    }
+  },
+  {
+    "id": 22044,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 3 = ?",
+    "o": [
+      "8",
+      "10",
+      "11",
+      "9"
+    ],
+    "a": "9",
+    "h": "Tách 3 = 2 + 1. 12 - 2 = 10; 10 - 1 = 9.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 12,
+      "right": 3,
+      "answer": 9,
+      "split_number": 3,
+      "to_ten": 2,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22045,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 4 = ?",
+    "o": [
+      "10",
+      "7",
+      "8",
+      "9"
+    ],
+    "a": "8",
+    "h": "Tách 4 = 2 + 2. 12 - 2 = 10; 10 - 2 = 8.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 12,
+      "right": 4,
+      "answer": 8,
+      "split_number": 4,
+      "to_ten": 2,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22046,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 5 = ?",
+    "o": [
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "a": "7",
+    "h": "Tách 5 = 2 + 3. 12 - 2 = 10; 10 - 3 = 7.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 12,
+      "right": 5,
+      "answer": 7,
+      "split_number": 5,
+      "to_ten": 2,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22047,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 6 = ?",
+    "o": [
+      "8",
+      "7",
+      "6",
+      "5"
+    ],
+    "a": "6",
+    "h": "Tách 6 = 2 + 4. 12 - 2 = 10; 10 - 4 = 6.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 12,
+      "right": 6,
+      "answer": 6,
+      "split_number": 6,
+      "to_ten": 2,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22048,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
     "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 7 = ?",
     "o": [
@@ -5681,7 +6356,7 @@
       "5"
     ],
     "a": "5",
-    "h": "12 - 7 = 5. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "h": "Tách 7 = 2 + 5. 12 - 2 = 10; 10 - 5 = 5.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5691,20 +6366,29 @@
       "TOAN2_B08"
     ],
     "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 12,
+      "right": 7,
+      "answer": 5,
+      "split_number": 7,
+      "to_ten": 2,
+      "remainder": 5
+    }
   },
   {
-    "id": 22040,
+    "id": 22049,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 8 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 8 = ?",
     "o": [
-      "15",
-      "17",
-      "14",
-      "16"
+      "3",
+      "5",
+      "4",
+      "6"
     ],
-    "a": "15",
-    "h": "7 + 8 = 15. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "4",
+    "h": "Tách 8 = 2 + 6. 12 - 2 = 10; 10 - 6 = 4.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5713,21 +6397,30 @@
       "TOAN2_B07",
       "TOAN2_B08"
     ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 12,
+      "right": 8,
+      "answer": 4,
+      "split_number": 8,
+      "to_ten": 2,
+      "remainder": 6
+    }
   },
   {
-    "id": 22041,
+    "id": 22050,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 6 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 9 = ?",
     "o": [
-      "16",
-      "15",
-      "17",
-      "14"
+      "2",
+      "3",
+      "4",
+      "5"
     ],
-    "a": "15",
-    "h": "9 + 6 = 15. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "3",
+    "h": "Tách 9 = 2 + 7. 12 - 2 = 10; 10 - 7 = 3.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5736,21 +6429,62 @@
       "TOAN2_B07",
       "TOAN2_B08"
     ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 12,
+      "right": 9,
+      "answer": 3,
+      "split_number": 9,
+      "to_ten": 2,
+      "remainder": 7
+    }
   },
   {
-    "id": 22042,
+    "id": 22051,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 8 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 4 = ?",
     "o": [
-      "15",
-      "14",
-      "13",
-      "16"
+      "11",
+      "9",
+      "8",
+      "10"
     ],
-    "a": "14",
-    "h": "6 + 8 = 14. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "a": "9",
+    "h": "Tách 4 = 3 + 1. 13 - 3 = 10; 10 - 1 = 9.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 13,
+      "right": 4,
+      "answer": 9,
+      "split_number": 4,
+      "to_ten": 3,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22052,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 5 = ?",
+    "o": [
+      "10",
+      "9",
+      "8",
+      "7"
+    ],
+    "a": "8",
+    "h": "Tách 5 = 3 + 2. 13 - 3 = 10; 10 - 2 = 8.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5760,10 +6494,211 @@
       "TOAN2_B08"
     ],
     "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 13,
+      "right": 5,
+      "answer": 8,
+      "split_number": 5,
+      "to_ten": 3,
+      "remainder": 2
+    }
   },
   {
-    "id": 22043,
+    "id": 22053,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 6 = ?",
+    "o": [
+      "8",
+      "9",
+      "6",
+      "7"
+    ],
+    "a": "7",
+    "h": "Tách 6 = 3 + 3. 13 - 3 = 10; 10 - 3 = 7.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 13,
+      "right": 6,
+      "answer": 7,
+      "split_number": 6,
+      "to_ten": 3,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22054,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 7 = ?",
+    "o": [
+      "5",
+      "6",
+      "8",
+      "7"
+    ],
+    "a": "6",
+    "h": "Tách 7 = 3 + 4. 13 - 3 = 10; 10 - 4 = 6.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 13,
+      "right": 7,
+      "answer": 6,
+      "split_number": 7,
+      "to_ten": 3,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22055,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 8 = ?",
+    "o": [
+      "4",
+      "7",
+      "5",
+      "6"
+    ],
+    "a": "5",
+    "h": "Tách 8 = 3 + 5. 13 - 3 = 10; 10 - 5 = 5.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 13,
+      "right": 8,
+      "answer": 5,
+      "split_number": 8,
+      "to_ten": 3,
+      "remainder": 5
+    }
+  },
+  {
+    "id": 22056,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 13 - 9 = ?",
+    "o": [
+      "4",
+      "6",
+      "5",
+      "3"
+    ],
+    "a": "4",
+    "h": "Tách 9 = 3 + 6. 13 - 3 = 10; 10 - 6 = 4.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 13,
+      "right": 9,
+      "answer": 4,
+      "split_number": 9,
+      "to_ten": 3,
+      "remainder": 6
+    }
+  },
+  {
+    "id": 22057,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 14 - 5 = ?",
+    "o": [
+      "10",
+      "9",
+      "8",
+      "11"
+    ],
+    "a": "9",
+    "h": "Tách 5 = 4 + 1. 14 - 4 = 10; 10 - 1 = 9.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 14,
+      "right": 5,
+      "answer": 9,
+      "split_number": 5,
+      "to_ten": 4,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22058,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 14 - 6 = ?",
+    "o": [
+      "8",
+      "7",
+      "10",
+      "9"
+    ],
+    "a": "8",
+    "h": "Tách 6 = 4 + 2. 14 - 4 = 10; 10 - 2 = 8.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 14,
+      "right": 6,
+      "answer": 8,
+      "split_number": 6,
+      "to_ten": 4,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22059,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
     "q": "Bé ơi, hãy tính nhẩm có nhớ: 14 - 7 = ?",
     "o": [
@@ -5773,7 +6708,39 @@
       "9"
     ],
     "a": "7",
-    "h": "14 - 7 = 7. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "h": "Tách 7 = 4 + 3. 14 - 4 = 10; 10 - 3 = 7.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 14,
+      "right": 7,
+      "answer": 7,
+      "split_number": 7,
+      "to_ten": 4,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22060,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 14 - 8 = ?",
+    "o": [
+      "6",
+      "7",
+      "5",
+      "8"
+    ],
+    "a": "6",
+    "h": "Tách 8 = 4 + 4. 14 - 4 = 10; 10 - 4 = 6.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5783,20 +6750,253 @@
       "TOAN2_B08"
     ],
     "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 14,
+      "right": 8,
+      "answer": 6,
+      "split_number": 8,
+      "to_ten": 4,
+      "remainder": 4
+    }
   },
   {
-    "id": 22044,
+    "id": 22061,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 14 - 9 = ?",
+    "o": [
+      "6",
+      "4",
+      "7",
+      "5"
+    ],
+    "a": "5",
+    "h": "Tách 9 = 4 + 5. 14 - 4 = 10; 10 - 5 = 5.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 14,
+      "right": 9,
+      "answer": 5,
+      "split_number": 9,
+      "to_ten": 4,
+      "remainder": 5
+    }
+  },
+  {
+    "id": 22062,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 15 - 6 = ?",
+    "o": [
+      "9",
+      "8",
+      "11",
+      "10"
+    ],
+    "a": "9",
+    "h": "Tách 6 = 5 + 1. 15 - 5 = 10; 10 - 1 = 9.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 15,
+      "right": 6,
+      "answer": 9,
+      "split_number": 6,
+      "to_ten": 5,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22063,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 15 - 7 = ?",
+    "o": [
+      "9",
+      "8",
+      "10",
+      "7"
+    ],
+    "a": "8",
+    "h": "Tách 7 = 5 + 2. 15 - 5 = 10; 10 - 2 = 8.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 15,
+      "right": 7,
+      "answer": 8,
+      "split_number": 7,
+      "to_ten": 5,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22064,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 15 - 8 = ?",
+    "o": [
+      "8",
+      "7",
+      "6",
+      "9"
+    ],
+    "a": "7",
+    "h": "Tách 8 = 5 + 3. 15 - 5 = 10; 10 - 3 = 7.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 1,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 15,
+      "right": 8,
+      "answer": 7,
+      "split_number": 8,
+      "to_ten": 5,
+      "remainder": 3
+    }
+  },
+  {
+    "id": 22065,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
     "q": "Bé ơi, hãy tính nhẩm có nhớ: 15 - 9 = ?",
     "o": [
+      "5",
       "7",
       "8",
-      "5",
       "6"
     ],
     "a": "6",
-    "h": "15 - 9 = 6. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "h": "Tách 9 = 5 + 4. 15 - 5 = 10; 10 - 4 = 6.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 15,
+      "right": 9,
+      "answer": 6,
+      "split_number": 9,
+      "to_ten": 5,
+      "remainder": 4
+    }
+  },
+  {
+    "id": 22066,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 16 - 7 = ?",
+    "o": [
+      "11",
+      "9",
+      "10",
+      "8"
+    ],
+    "a": "9",
+    "h": "Tách 7 = 6 + 1. 16 - 6 = 10; 10 - 1 = 9.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 16,
+      "right": 7,
+      "answer": 9,
+      "split_number": 7,
+      "to_ten": 6,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22067,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 16 - 8 = ?",
+    "o": [
+      "9",
+      "10",
+      "8",
+      "7"
+    ],
+    "a": "8",
+    "h": "Tách 8 = 6 + 2. 16 - 6 = 10; 10 - 2 = 8.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 16,
+      "right": 8,
+      "answer": 8,
+      "split_number": 8,
+      "to_ten": 6,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22068,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 16 - 9 = ?",
+    "o": [
+      "9",
+      "8",
+      "6",
+      "7"
+    ],
+    "a": "7",
+    "h": "Tách 9 = 6 + 3. 16 - 6 = 10; 10 - 3 = 7.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5806,12 +7006,85 @@
       "TOAN2_B08"
     ],
     "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 16,
+      "right": 9,
+      "answer": 7,
+      "split_number": 9,
+      "to_ten": 6,
+      "remainder": 3
+    }
   },
   {
-    "id": 22045,
+    "id": 22069,
     "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 14 - 5 = ?",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 17 - 8 = ?",
+    "o": [
+      "10",
+      "11",
+      "9",
+      "8"
+    ],
+    "a": "9",
+    "h": "Tách 8 = 7 + 1. 17 - 7 = 10; 10 - 1 = 9.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 2,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 17,
+      "right": 8,
+      "answer": 9,
+      "split_number": 8,
+      "to_ten": 7,
+      "remainder": 1
+    }
+  },
+  {
+    "id": 22070,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 17 - 9 = ?",
+    "o": [
+      "8",
+      "9",
+      "7",
+      "10"
+    ],
+    "a": "8",
+    "h": "Tách 9 = 7 + 2. 17 - 7 = 10; 10 - 2 = 8.",
+    "tag": "TOAN_C2",
+    "sub_code": "2.2",
+    "explore_topic_id": 3,
+    "explore_topic": "Phép cộng và trừ",
+    "lesson_refs": [
+      "TOAN2_B07",
+      "TOAN2_B08"
+    ],
+    "explore_level": 3,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 17,
+      "right": 9,
+      "answer": 8,
+      "split_number": 9,
+      "to_ten": 7,
+      "remainder": 2
+    }
+  },
+  {
+    "id": 22071,
+    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
+    "q": "Bé ơi, hãy tính nhẩm có nhớ: 18 - 9 = ?",
     "o": [
       "9",
       "11",
@@ -5819,7 +7092,7 @@
       "10"
     ],
     "a": "9",
-    "h": "14 - 5 = 9. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
+    "h": "Tách 9 = 8 + 1. 18 - 8 = 10; 10 - 1 = 9.",
     "tag": "TOAN_C2",
     "sub_code": "2.2",
     "explore_topic_id": 3,
@@ -5828,100 +7101,17 @@
       "TOAN2_B07",
       "TOAN2_B08"
     ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22046,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 7 + 5 = ?",
-    "o": [
-      "12",
-      "13",
-      "14",
-      "11"
-    ],
-    "a": "12",
-    "h": "7 + 5 = 12. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22047,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 6 + 7 = ?",
-    "o": [
-      "12",
-      "13",
-      "15",
-      "14"
-    ],
-    "a": "13",
-    "h": "6 + 7 = 13. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22048,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 12 - 8 = ?",
-    "o": [
-      "3",
-      "4",
-      "6",
-      "5"
-    ],
-    "a": "4",
-    "h": "12 - 8 = 4. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
-  },
-  {
-    "id": 22049,
-    "sub": "Phép cộng, phép trừ có nhớ phạm vi 20",
-    "q": "Bé ơi, hãy tính nhẩm có nhớ: 9 + 4 = ?",
-    "o": [
-      "15",
-      "14",
-      "13",
-      "12"
-    ],
-    "a": "13",
-    "h": "9 + 4 = 13. Con có thể tách số để làm tròn 10 rồi tính tiếp.",
-    "tag": "TOAN_C2",
-    "sub_code": "2.2",
-    "explore_topic_id": 3,
-    "explore_topic": "Phép cộng và trừ",
-    "lesson_refs": [
-      "TOAN2_B07",
-      "TOAN2_B08"
-    ],
-    "explore_level": 1,
-    "explore_type": "mental_carry_20"
+    "explore_level": 4,
+    "explore_type": "mental_carry_20",
+    "visual_data": {
+      "operation": "sub",
+      "left": 18,
+      "right": 9,
+      "answer": 9,
+      "split_number": 9,
+      "to_ten": 8,
+      "remainder": 1
+    }
   },
   {
     "id": 23000,
@@ -5943,7 +7133,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 48,
+      "right": 47,
+      "answer": 95,
+      "anchor": 8,
+      "split_number": 7,
+      "to_ten": 2,
+      "remainder": 5,
+      "carry": 1,
+      "ones_result": 5,
+      "tens_result": 9
+    }
   },
   {
     "id": 23001,
@@ -5965,7 +7168,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 31,
+      "right": 19,
+      "answer": 12,
+      "split_number": 9,
+      "to_ten": 1,
+      "remainder": 8,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 2,
+      "tens_result": 1
+    }
   },
   {
     "id": 23002,
@@ -5987,7 +7203,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 37,
+      "right": 24,
+      "answer": 61,
+      "anchor": 7,
+      "split_number": 4,
+      "to_ten": 3,
+      "remainder": 1,
+      "carry": 1,
+      "ones_result": 1,
+      "tens_result": 6
+    }
   },
   {
     "id": 23003,
@@ -6009,7 +7238,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 68,
+      "right": 13,
+      "answer": 81,
+      "anchor": 8,
+      "split_number": 3,
+      "to_ten": 2,
+      "remainder": 1,
+      "carry": 1,
+      "ones_result": 1,
+      "tens_result": 8
+    }
   },
   {
     "id": 23004,
@@ -6031,7 +7273,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 51,
+      "right": 32,
+      "answer": 19,
+      "split_number": 2,
+      "to_ten": 1,
+      "remainder": 1,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 9,
+      "tens_result": 1
+    }
   },
   {
     "id": 23005,
@@ -6053,7 +7308,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 78,
+      "right": 29,
+      "answer": 49,
+      "split_number": 9,
+      "to_ten": 8,
+      "remainder": 1,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 9,
+      "tens_result": 4
+    }
   },
   {
     "id": 23006,
@@ -6075,7 +7343,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 39,
+      "right": 18,
+      "answer": 57,
+      "anchor": 9,
+      "split_number": 8,
+      "to_ten": 1,
+      "remainder": 7,
+      "carry": 1,
+      "ones_result": 7,
+      "tens_result": 5
+    }
   },
   {
     "id": 23007,
@@ -6097,7 +7378,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 39,
+      "right": 29,
+      "answer": 68,
+      "anchor": 9,
+      "split_number": 9,
+      "to_ten": 1,
+      "remainder": 8,
+      "carry": 1,
+      "ones_result": 8,
+      "tens_result": 6
+    }
   },
   {
     "id": 23008,
@@ -6119,7 +7413,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 66,
+      "right": 37,
+      "answer": 29,
+      "split_number": 7,
+      "to_ten": 6,
+      "remainder": 1,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 9,
+      "tens_result": 2
+    }
   },
   {
     "id": 23009,
@@ -6141,7 +7448,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 32,
+      "right": 16,
+      "answer": 16,
+      "split_number": 6,
+      "to_ten": 2,
+      "remainder": 4,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 6,
+      "tens_result": 1
+    }
   },
   {
     "id": 23010,
@@ -6163,7 +7483,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 65,
+      "right": 26,
+      "answer": 91,
+      "anchor": 6,
+      "split_number": 5,
+      "to_ten": 4,
+      "remainder": 1,
+      "carry": 1,
+      "ones_result": 1,
+      "tens_result": 9
+    }
   },
   {
     "id": 23011,
@@ -6185,7 +7518,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 42,
+      "right": 26,
+      "answer": 16,
+      "split_number": 6,
+      "to_ten": 2,
+      "remainder": 4,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 6,
+      "tens_result": 1
+    }
   },
   {
     "id": 23012,
@@ -6207,7 +7553,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 35,
+      "right": 38,
+      "answer": 73,
+      "anchor": 8,
+      "split_number": 5,
+      "to_ten": 2,
+      "remainder": 3,
+      "carry": 1,
+      "ones_result": 3,
+      "tens_result": 7
+    }
   },
   {
     "id": 23013,
@@ -6229,7 +7588,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 66,
+      "right": 38,
+      "answer": 28,
+      "split_number": 8,
+      "to_ten": 6,
+      "remainder": 2,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 8,
+      "tens_result": 2
+    }
   },
   {
     "id": 23014,
@@ -6251,7 +7623,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 35,
+      "right": 16,
+      "answer": 51,
+      "anchor": 6,
+      "split_number": 5,
+      "to_ten": 4,
+      "remainder": 1,
+      "carry": 1,
+      "ones_result": 1,
+      "tens_result": 5
+    }
   },
   {
     "id": 23015,
@@ -6273,7 +7658,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 85,
+      "right": 18,
+      "answer": 67,
+      "split_number": 8,
+      "to_ten": 5,
+      "remainder": 3,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 7,
+      "tens_result": 6
+    }
   },
   {
     "id": 23016,
@@ -6295,7 +7693,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 46,
+      "right": 49,
+      "answer": 95,
+      "anchor": 9,
+      "split_number": 6,
+      "to_ten": 1,
+      "remainder": 5,
+      "carry": 1,
+      "ones_result": 5,
+      "tens_result": 9
+    }
   },
   {
     "id": 23017,
@@ -6317,7 +7728,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 2,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 74,
+      "right": 15,
+      "answer": 59,
+      "split_number": 5,
+      "to_ten": 4,
+      "remainder": 1,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 9,
+      "tens_result": 5
+    }
   },
   {
     "id": 23018,
@@ -6339,7 +7763,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 56,
+      "right": 37,
+      "answer": 19,
+      "split_number": 7,
+      "to_ten": 6,
+      "remainder": 1,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 9,
+      "tens_result": 1
+    }
   },
   {
     "id": 23019,
@@ -6361,7 +7798,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 73,
+      "right": 25,
+      "answer": 48,
+      "split_number": 5,
+      "to_ten": 3,
+      "remainder": 2,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 8,
+      "tens_result": 4
+    }
   },
   {
     "id": 23020,
@@ -6383,7 +7833,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 45,
+      "right": 15,
+      "answer": 60,
+      "anchor": 5,
+      "split_number": 5,
+      "to_ten": 5,
+      "remainder": 0,
+      "carry": 1,
+      "ones_result": 0,
+      "tens_result": 6
+    }
   },
   {
     "id": 23021,
@@ -6405,7 +7868,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 42,
+      "right": 18,
+      "answer": 60,
+      "anchor": 8,
+      "split_number": 2,
+      "to_ten": 2,
+      "remainder": 0,
+      "carry": 1,
+      "ones_result": 0,
+      "tens_result": 6
+    }
   },
   {
     "id": 23022,
@@ -6427,7 +7903,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 37,
+      "right": 49,
+      "answer": 86,
+      "anchor": 9,
+      "split_number": 7,
+      "to_ten": 1,
+      "remainder": 6,
+      "carry": 1,
+      "ones_result": 6,
+      "tens_result": 8
+    }
   },
   {
     "id": 23023,
@@ -6449,7 +7938,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 56,
+      "right": 49,
+      "answer": 7,
+      "split_number": 9,
+      "to_ten": 6,
+      "remainder": 3,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 7,
+      "tens_result": 0
+    }
   },
   {
     "id": 23024,
@@ -6471,7 +7973,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 65,
+      "right": 16,
+      "answer": 81,
+      "anchor": 6,
+      "split_number": 5,
+      "to_ten": 4,
+      "remainder": 1,
+      "carry": 1,
+      "ones_result": 1,
+      "tens_result": 8
+    }
   },
   {
     "id": 23025,
@@ -6493,7 +8008,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 80,
+      "right": 44,
+      "answer": 36,
+      "split_number": 4,
+      "to_ten": 0,
+      "remainder": 4,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 6,
+      "tens_result": 3
+    }
   },
   {
     "id": 23026,
@@ -6515,7 +8043,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 3,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 34,
+      "right": 37,
+      "answer": 71,
+      "anchor": 7,
+      "split_number": 4,
+      "to_ten": 3,
+      "remainder": 1,
+      "carry": 1,
+      "ones_result": 1,
+      "tens_result": 7
+    }
   },
   {
     "id": 23027,
@@ -6537,7 +8078,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 4,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 46,
+      "right": 27,
+      "answer": 73,
+      "anchor": 7,
+      "split_number": 6,
+      "to_ten": 3,
+      "remainder": 3,
+      "carry": 1,
+      "ones_result": 3,
+      "tens_result": 7
+    }
   },
   {
     "id": 23028,
@@ -6559,7 +8113,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 4,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 52,
+      "right": 15,
+      "answer": 37,
+      "split_number": 5,
+      "to_ten": 2,
+      "remainder": 3,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 7,
+      "tens_result": 3
+    }
   },
   {
     "id": 23029,
@@ -6581,7 +8148,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 4,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 75,
+      "right": 27,
+      "answer": 48,
+      "split_number": 7,
+      "to_ten": 5,
+      "remainder": 2,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 8,
+      "tens_result": 4
+    }
   },
   {
     "id": 23030,
@@ -6603,7 +8183,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 4,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 53,
+      "right": 49,
+      "answer": 4,
+      "split_number": 9,
+      "to_ten": 3,
+      "remainder": 6,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 4,
+      "tens_result": 0
+    }
   },
   {
     "id": 23031,
@@ -6625,7 +8218,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 4,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 81,
+      "right": 42,
+      "answer": 39,
+      "split_number": 2,
+      "to_ten": 1,
+      "remainder": 1,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 9,
+      "tens_result": 3
+    }
   },
   {
     "id": 23032,
@@ -6647,7 +8253,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 4,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 52,
+      "right": 28,
+      "answer": 80,
+      "anchor": 8,
+      "split_number": 2,
+      "to_ten": 2,
+      "remainder": 0,
+      "carry": 1,
+      "ones_result": 0,
+      "tens_result": 8
+    }
   },
   {
     "id": 23033,
@@ -6669,7 +8288,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 4,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 50,
+      "right": 33,
+      "answer": 17,
+      "split_number": 3,
+      "to_ten": 0,
+      "remainder": 3,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 7,
+      "tens_result": 1
+    }
   },
   {
     "id": 23034,
@@ -6691,7 +8323,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 4,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 66,
+      "right": 19,
+      "answer": 47,
+      "split_number": 9,
+      "to_ten": 6,
+      "remainder": 3,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 7,
+      "tens_result": 4
+    }
   },
   {
     "id": 23035,
@@ -6713,7 +8358,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 41,
+      "right": 22,
+      "answer": 19,
+      "split_number": 2,
+      "to_ten": 1,
+      "remainder": 1,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 9,
+      "tens_result": 1
+    }
   },
   {
     "id": 23036,
@@ -6735,7 +8393,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 31,
+      "right": 27,
+      "answer": 4,
+      "split_number": 7,
+      "to_ten": 1,
+      "remainder": 6,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 4,
+      "tens_result": 0
+    }
   },
   {
     "id": 23037,
@@ -6757,7 +8428,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 81,
+      "right": 35,
+      "answer": 46,
+      "split_number": 5,
+      "to_ten": 1,
+      "remainder": 4,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 6,
+      "tens_result": 4
+    }
   },
   {
     "id": 23038,
@@ -6779,7 +8463,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 72,
+      "right": 68,
+      "answer": 4,
+      "split_number": 8,
+      "to_ten": 2,
+      "remainder": 6,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 4,
+      "tens_result": 0
+    }
   },
   {
     "id": 23039,
@@ -6801,7 +8498,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 74,
+      "right": 18,
+      "answer": 56,
+      "split_number": 8,
+      "to_ten": 4,
+      "remainder": 4,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 6,
+      "tens_result": 5
+    }
   },
   {
     "id": 23040,
@@ -6823,7 +8533,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 54,
+      "right": 26,
+      "answer": 28,
+      "split_number": 6,
+      "to_ten": 4,
+      "remainder": 2,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 8,
+      "tens_result": 2
+    }
   },
   {
     "id": 23041,
@@ -6845,7 +8568,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 40,
+      "right": 33,
+      "answer": 7,
+      "split_number": 3,
+      "to_ten": 0,
+      "remainder": 3,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 7,
+      "tens_result": 0
+    }
   },
   {
     "id": 23042,
@@ -6867,7 +8603,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 41,
+      "right": 39,
+      "answer": 80,
+      "anchor": 9,
+      "split_number": 1,
+      "to_ten": 1,
+      "remainder": 0,
+      "carry": 1,
+      "ones_result": 0,
+      "tens_result": 8
+    }
   },
   {
     "id": 23043,
@@ -6889,7 +8638,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 40,
+      "right": 34,
+      "answer": 6,
+      "split_number": 4,
+      "to_ten": 0,
+      "remainder": 4,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 6,
+      "tens_result": 0
+    }
   },
   {
     "id": 23044,
@@ -6911,7 +8673,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 73,
+      "right": 66,
+      "answer": 7,
+      "split_number": 6,
+      "to_ten": 3,
+      "remainder": 3,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 7,
+      "tens_result": 0
+    }
   },
   {
     "id": 23045,
@@ -6933,7 +8708,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 43,
+      "right": 29,
+      "answer": 72,
+      "anchor": 9,
+      "split_number": 3,
+      "to_ten": 1,
+      "remainder": 2,
+      "carry": 1,
+      "ones_result": 2,
+      "tens_result": 7
+    }
   },
   {
     "id": 23046,
@@ -6955,7 +8743,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "add",
+      "left": 47,
+      "right": 26,
+      "answer": 73,
+      "anchor": 7,
+      "split_number": 6,
+      "to_ten": 3,
+      "remainder": 3,
+      "carry": 1,
+      "ones_result": 3,
+      "tens_result": 7
+    }
   },
   {
     "id": 23047,
@@ -6977,7 +8778,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 86,
+      "right": 69,
+      "answer": 17,
+      "split_number": 9,
+      "to_ten": 6,
+      "remainder": 3,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 7,
+      "tens_result": 1
+    }
   },
   {
     "id": 23048,
@@ -6999,7 +8813,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 41,
+      "right": 18,
+      "answer": 23,
+      "split_number": 8,
+      "to_ten": 1,
+      "remainder": 7,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 3,
+      "tens_result": 2
+    }
   },
   {
     "id": 23049,
@@ -7021,7 +8848,20 @@
       "TOAN2_B14"
     ],
     "explore_level": 1,
-    "explore_type": "vertical_carry_100"
+    "explore_type": "vertical_carry_100",
+    "visual_data": {
+      "operation": "sub",
+      "left": 70,
+      "right": 66,
+      "answer": 4,
+      "split_number": 6,
+      "to_ten": 0,
+      "remainder": 6,
+      "carry": 1,
+      "borrow": 1,
+      "ones_result": 4,
+      "tens_result": 0
+    }
   },
   {
     "id": 24000,
