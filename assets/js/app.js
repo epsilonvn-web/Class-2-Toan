@@ -2518,11 +2518,11 @@ function getCarryConceptMeta_(q) {
 
 function renderMakeTenTable_(anchor) {
     const rows = [[9,1],[8,2],[7,3],[6,4],[5,5]];
-    return `<div class="w-full h-full rounded-2xl border-2 border-amber-200 bg-amber-50/70 px-3 py-2.5 shadow-sm flex flex-col justify-center">
-        <div class="text-center text-sm md:text-base font-black text-amber-700 mb-1.5">BẢNG VỀ 10</div>
-        <div class="space-y-1">${rows.map(([a,b]) => {
+    return `<div class="w-full rounded-2xl border-2 border-amber-200 bg-amber-50/70 px-2.5 py-2 shadow-sm">
+        <div class="text-center text-sm md:text-base font-black text-amber-700 mb-1">BẢNG VỀ 10</div>
+        <div class="space-y-0.5">${rows.map(([a,b]) => {
             const active = Number(anchor) === a;
-            return `<div class="rounded-xl border px-2 py-1 text-center text-base md:text-lg font-black transition-all ${active ? 'border-emerald-400 bg-emerald-100 text-emerald-800 shadow-sm scale-[1.02]' : 'border-amber-100 bg-white/80 text-slate-700'}">
+            return `<div class="rounded-xl border px-2 py-0.5 text-center text-base font-black transition-all ${active ? 'border-emerald-400 bg-emerald-100 text-emerald-800 shadow-sm scale-[1.02]' : 'border-amber-100 bg-white/80 text-slate-700'}">
                 <span class="${active ? 'text-rose-600' : ''}">${a}</span> + ${b} = <span class="${active ? 'text-emerald-700' : ''}">10</span>
             </div>`;
         }).join('')}</div>
@@ -2555,7 +2555,7 @@ function buildCarryLearningPresentation_(q) {
             return {
                 prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true,
                 visual: `<div class="relative w-full max-w-xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 shadow-sm px-4 py-4 text-center">
-                    ${speaker}<div class="text-4xl md:text-5xl font-black text-slate-800">${a} <span class="text-pink-500">${symbol}</span> ${b} <span class="text-purple-400">= ?</span></div>
+                    ${speaker}<div class="text-3xl md:text-4xl font-black text-slate-800">${a} <span class="text-pink-500">${symbol}</span> ${b} <span class="text-purple-400">= ?</span></div>
                 </div>`
             };
         }
@@ -2578,11 +2578,11 @@ function buildCarryLearningPresentation_(q) {
 
     if (type === 'mental_carry_20') {
         const addTable = op === '+' ? renderMakeTenTable_(anchor) : '';
-        const mainCard = `<div class="relative h-full rounded-2xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 px-4 py-3 text-center shadow-sm flex flex-col justify-center">
+        const mainCard = `<div class="relative rounded-2xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 px-4 py-2 text-center shadow-sm flex flex-col justify-start">
             ${speaker}
-            <div class="text-4xl md:text-5xl font-black text-slate-800">${a} <span class="text-pink-500">${symbol}</span> ${b} <span class="text-purple-400">= ?</span></div>
+            <div class="text-3xl md:text-4xl font-black text-slate-800">${a} <span class="text-pink-500">${symbol}</span> ${b} <span class="text-purple-400">= ?</span></div>
             <div class="mt-2 rounded-xl border border-purple-200 bg-purple-50/75 px-3 py-2 text-base md:text-lg font-black text-slate-700">${hintText}</div>
-            <div data-carry-concept-feedback class="invisible mt-2 space-y-1.5">
+            <div data-carry-concept-feedback class="hidden mt-2 space-y-1.5">
                 <div class="rounded-xl border border-sky-200 bg-sky-50 px-3 py-1.5 text-base md:text-lg font-extrabold text-slate-700">
                     ${op === '+'
                         ? `Tách ${splitNumber} = ${toTen} + ${remainder} → ${anchor} + ${toTen} = <span class="text-emerald-600">10</span>.`
@@ -2594,8 +2594,8 @@ function buildCarryLearningPresentation_(q) {
             </div>
         </div>`;
         const visual = op === '+'
-            ? `<div class="w-full max-w-5xl md:h-[220px] grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 items-stretch">${addTable}${mainCard}</div>`
-            : `<div class="w-full max-w-3xl md:h-[220px]">${mainCard}</div>`;
+            ? `<div class="w-full max-w-5xl shrink-0 grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 items-start">${addTable}${mainCard}</div>`
+            : `<div class="w-full max-w-3xl shrink-0">${mainCard}</div>`;
         return { prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true, visual };
     }
 
@@ -2632,8 +2632,8 @@ function buildCarryLearningPresentation_(q) {
         </div>
     </div>`;
     const visual = op === '+'
-        ? `<div class="w-full max-w-5xl md:h-[230px] grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 items-stretch">${addTable}${mainCard}</div>`
-        : `<div class="w-full max-w-4xl md:h-[230px]">${mainCard}</div>`;
+        ? `<div class="w-full max-w-5xl md:h-[250px] shrink-0 grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 items-stretch">${addTable}${mainCard}</div>`
+        : `<div class="w-full max-w-4xl md:h-[250px] shrink-0">${mainCard}</div>`;
     return { prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true, visual };
 }
 
@@ -3197,7 +3197,7 @@ function loadQuestion() {
             ${practiceSpeakerBtnHtml}
         </div>`}
         
-        <div class="w-full ${isCarryLearning ? 'max-w-3xl' : (isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-1 md:grid-cols-2 gap-2.5'))} mt-1">
+        <div class="w-full ${isCarryLearning ? 'max-w-3xl' : (isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-1 md:grid-cols-2 gap-2.5'))} ${isCarryLearning ? 'mt-2' : 'mt-1'}">
     `;
 
     q.options.forEach((opt, idx) => {
@@ -3224,13 +3224,34 @@ function loadQuestion() {
         html += `</div>`;
     }
 
-    document.getElementById('question-box').innerHTML = html;
+    const questionBox = document.getElementById('question-box');
+    questionBox.innerHTML = html;
+
+    // Riêng Cộng/Trừ có nhớ: khối bài giảng + đáp án cần đủ chiều cao để flex không co
+    // khối hướng dẫn và làm đáp án chồng lên nội dung. Chỉ áp dụng tại màn hình này,
+    // không thay đổi index hay chiều cao các phần học khác.
+    if (isCarryLearning) {
+        const guidedCarry = isCarryLearningGuided_();
+        questionBox.style.minHeight = guidedCarry ? '270px' : '210px';
+        questionBox.style.justifyContent = 'flex-start';
+        questionBox.style.paddingTop = '0';
+        questionBox.style.paddingBottom = '0';
+        const quizCard = questionBox.closest('.pastel-card');
+        if (quizCard) quizCard.style.minHeight = guidedCarry ? '515px' : '405px';
+    } else {
+        questionBox.style.minHeight = '';
+        questionBox.style.justifyContent = '';
+        questionBox.style.paddingTop = '';
+        questionBox.style.paddingBottom = '';
+        const quizCard = questionBox.closest('.pastel-card');
+        if (quizCard) quizCard.style.minHeight = '';
+    }
 
     // Riêng phần Ghép số: tách thanh điều hướng khỏi khối đáp án để giao diện thoáng hơn.
     const practiceNav = document.getElementById('nav-group-practice');
     if (practiceNav) {
         const isComposeNav = !activeExamContext && !activeRoadmapContext && (pendingTopicQuiz?.selectedNumberActivity === 'compose' || q.explore_type === 'compose_words');
-        practiceNav.style.marginTop = isComposeNav ? '1rem' : '';
+        practiceNav.style.marginTop = isCarryLearning ? '0.25rem' : (isComposeNav ? '1rem' : '');
     }
 
     restoreQuestionState(q);
