@@ -929,6 +929,12 @@ function returnToTopicLecture() {
             renderExploreNumberScopes(pendingTopicQuiz.topicNum, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
         } else if (Number(pendingTopicQuiz.topicNum) === 2) {
             renderExploreComparisonBranches(2, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
+        } else if (Number(pendingTopicQuiz.topicNum) === 3) {
+            // Nhấn breadcrumb cấp Mục lớn "3. Phép cộng và trừ" phải quay về đúng
+            // danh sách 6 mục con, không mắc lại ở màn hình chọn Cấp 1/Cấp 2.
+            renderExploreSubtopics(pendingTopicQuiz.topicNum, pendingTopicQuiz.topicName, pendingTopicQuiz);
+        } else if (pendingTopicQuiz.carryLearningSub) {
+            renderCarryLearningModes_(pendingTopicQuiz.carryLearningSub, pendingTopicQuiz.carryLearningLabel, pendingTopicQuiz.carryLearningPool || []);
         } else if (pendingTopicQuiz.selectedExploreGroup) {
             const pool = pendingTopicQuiz.groupMap?.[pendingTopicQuiz.selectedExploreGroup] || [];
             renderExploreLevelsForGroup(pendingTopicQuiz.selectedExploreGroup, pendingTopicQuiz.selectedExploreGroupLabel, pool);
@@ -1660,17 +1666,26 @@ function renderExploreSubtopics(topicNum, topicName, topicObj) {
     container.className = `w-full grid grid-cols-1 sm:grid-cols-2 ${groups.length > 6 ? 'lg:grid-cols-3' : ''} gap-2.5`;
 
     let subHtml = '';
+    const compactTopic3Cards = Number(topicNum) === 3;
     groups.forEach((subName, idx) => {
         const style = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
         const displayTitle = beautifySubtopicName(groupLabels[subName]);
         const count = groupMap[subName].length;
+        const topic3PedagogyDesc = {
+            '2.2': 'Cầu 10: tách số → về 10 → tính phần còn lại',
+            '2.3': 'Đơn vị trước → nhớ/mượn 1 chục → chục sau'
+        };
         const desc = Number(topicNum) === 1
             ? (subName === '1A'
                 ? 'Đọc – viết – tách gộp – giá trị hàng – ước lượng'
                 : 'Liền trước/sau – vị trí trên tia số – so sánh – sắp xếp')
-            : '';
+            : (Number(topicNum) === 3 ? (topic3PedagogyDesc[String(subName)] || '') : '');
+        const needsPedagogyDesc = Number(topicNum) === 3 && ['2.2', '2.3'].includes(String(subName));
+        const cardSizeClass = compactTopic3Cards
+            ? (needsPedagogyDesc ? 'px-4 py-3 min-h-[88px]' : 'px-4 py-3 min-h-[76px]')
+            : 'p-4 min-h-[96px]';
         subHtml += `
-            <button onclick="selectSubtopic(${idx})" class="p-4 ${style.card} border-2 rounded-2xl font-bold text-left transition-all flex flex-col justify-between shadow-sm pastel-btn min-h-[96px]">
+            <button onclick="selectSubtopic(${idx})" class="${cardSizeClass} ${style.card} border-2 rounded-2xl font-bold text-left transition-all flex flex-col justify-between shadow-sm pastel-btn">
                 <div class="flex items-start justify-between gap-3 w-full">
                     <span class="text-base md:text-lg leading-snug"><strong class="${style.num} mr-1.5">${idx + 1}.</strong> ${escapeHtml(displayTitle)}</span>
                     <span class="text-xs font-extrabold ${style.badge} px-2.5 py-0.5 rounded-full border shrink-0 shadow-inner">${count} câu</span>
@@ -1965,6 +1980,72 @@ function selectExploreLevel(level) {
     startTopicQuiz(topicNum, title, firstCycleQuestions, selectedNumberScopeLabel || selectedExploreGroup || `topic-${topicNum}`);
 }
 
+
+function isCarryLearningSub_(subCode) {
+    return ['2.2', '2.3'].includes(String(subCode || '').trim());
+}
+
+function renderCarryLearningModes_(subCode, subLabel, pool) {
+    if (!pendingTopicQuiz) return;
+    const code = String(subCode || '').trim();
+    const label = subLabel || (code === '2.2'
+        ? 'Phép cộng, phép trừ có nhớ phạm vi 20'
+        : 'Phép cộng, phép trừ có nhớ phạm vi 100');
+    const sourcePool = Array.isArray(pool) ? pool : [];
+
+    pendingTopicQuiz.carryLearningSub = code;
+    pendingTopicQuiz.carryLearningLabel = label;
+    pendingTopicQuiz.carryLearningPool = sourcePool;
+    pendingTopicQuiz.carryLearningMode = null;
+
+    const container = document.getElementById('view-dashboard-grid');
+    if (!container) return;
+    container.className = 'w-full grid grid-cols-1 sm:grid-cols-2 gap-2.5';
+
+    const cards = [
+        {
+            key: 'guided', icon: '🧩', title: 'Cấp 1 · Học có hướng dẫn',
+            desc: code === '2.2'
+                ? 'Có bảng về 10, gợi ý tách số; làm đúng mới hiện đầy đủ cách tính.'
+                : 'Có bảng về 10, gợi ý tách số và ô nhớ/mượn 1; làm đúng mới hiện đầy đủ cách tính.'
+        },
+        {
+            key: 'practice', icon: '✍️', title: 'Cấp 2 · Tự thực hành',
+            desc: 'Dùng đúng cùng bộ câu hỏi, xáo trộn ngẫu nhiên; không bảng, không gợi ý.'
+        }
+    ];
+
+    container.innerHTML = cards.map((item, idx) => {
+        const palette = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
+        return `<button onclick="startCarryLearningMode_('${item.key}')" class="p-4 ${palette.card} border-2 rounded-2xl text-left shadow-sm pastel-btn min-h-[112px] flex flex-col justify-between">
+            <div class="flex items-start justify-between gap-3">
+                <span class="text-lg md:text-xl font-black"><span class="mr-2">${item.icon}</span>${item.title}</span>
+                <span class="text-xs font-extrabold ${palette.badge} px-2.5 py-0.5 rounded-full border shrink-0">${sourcePool.length} câu</span>
+            </div>
+            <span class="mt-2 text-sm md:text-base font-bold text-slate-500 leading-snug">${item.desc}</span>
+        </button>`;
+    }).join('');
+
+    const { topicName, topicNum } = pendingTopicQuiz;
+    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', label);
+    switchAppView('view-dashboard-grid');
+}
+
+function startCarryLearningMode_(mode) {
+    stopSpeaking();
+    if (!pendingTopicQuiz || !['guided', 'practice'].includes(mode)) return;
+    const pool = pendingTopicQuiz.carryLearningPool || [];
+    if (!pool.length) return showAppNotice('Mục này đang được cập nhật thêm câu hỏi nhé bé!');
+
+    pendingTopicQuiz.carryLearningMode = mode;
+    practiceCycleRawPool = [...pool];
+    const firstCycleQuestions = shuffleArray([...pool]);
+    const modeLabel = mode === 'guided' ? 'Cấp 1 · Học có hướng dẫn' : 'Cấp 2 · Tự thực hành';
+    const { topicNum, topicName, carryLearningLabel, carryLearningSub } = pendingTopicQuiz;
+    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', carryLearningLabel, modeLabel);
+    startTopicQuiz(topicNum, `${topicName} - ${carryLearningLabel} - ${modeLabel}`, firstCycleQuestions, `${carryLearningSub}-${mode}`);
+}
+
 function selectSubtopic(idx) {
     stopSpeaking();
     if (!pendingTopicQuiz) return;
@@ -1975,6 +2056,10 @@ function selectSubtopic(idx) {
     const subLabel = idx !== null ? groups[idx] : null;
     const pool = idx !== null ? groupMap[subLabel] : questions;
     const displayLabel = subLabel ? beautifySubtopicName(groupLabels[subLabel]) : null;
+
+    if (Number(topicNum) === 3 && isCarryLearningSub_(subLabel)) {
+        return renderCarryLearningModes_(subLabel, displayLabel, pool);
+    }
 
     const finalTitle = displayLabel ? `${topicName} - ${displayLabel}` : topicName;
     practiceCycleRawPool = [...pool];
@@ -2351,6 +2436,207 @@ function startTopicQuiz(topicNum, topicName, questions, subLabel) {
     loadQuestion();
 }
 
+function getOperationTermsMeta_(q) {
+    if (!q || q.explore_type !== 'operation_terms') return null;
+    const raw = String(q.question_text || '').replace(/×/g, 'x').replace(/−/g, '-');
+    const equation = raw.match(/(\d+)\s*([+\-])\s*(\d+)\s*=\s*(\d+)/);
+    if (!equation) return null;
+
+    const left = equation[1];
+    const op = equation[2];
+    const right = equation[3];
+    const result = equation[4];
+    const targetMatch = raw.match(/số\s*(\d+)\s*gọi là gì/i) || raw.match(/thành phần số\s*(\d+)/i);
+    const target = targetMatch?.[1] || left;
+    const labels = op === '+'
+        ? ['Số hạng', 'Số hạng', 'Tổng']
+        : ['Số bị trừ', 'Số trừ', 'Hiệu'];
+
+    return { left, op, right, result, target, labels };
+}
+
+function revealOperationTermsFeedback_(q) {
+    const meta = getOperationTermsMeta_(q);
+    if (!meta) return;
+    document.querySelectorAll('[data-operation-term-label]').forEach(el => el.classList.remove('hidden'));
+    const summary = document.querySelector('[data-operation-terms-summary]');
+    if (summary) summary.classList.remove('hidden');
+}
+
+function isCarryConceptQuestion_(q) {
+    return !!q && ['mental_carry_20', 'vertical_carry_100'].includes(String(q.explore_type || ''));
+}
+
+function isCarryLearningGuided_() {
+    return String(pendingTopicQuiz?.carryLearningMode || '') === 'guided';
+}
+
+function isCarryLearningPractice_() {
+    return String(pendingTopicQuiz?.carryLearningMode || '') === 'practice';
+}
+
+function getCarryConceptMeta_(q) {
+    if (!isCarryConceptQuestion_(q)) return null;
+    const raw = String(q.question_text || '').replace(/×/g, 'x').replace(/−/g, '-');
+    const m = raw.match(/(\d+)\s*([+\-])\s*(\d+)\s*=\s*\?/);
+    if (!m) return null;
+    const a = Number(m[1]);
+    const op = m[2];
+    const b = Number(m[3]);
+    const answer = Number(q.answer);
+    if (![a, b, answer].every(Number.isFinite)) return null;
+
+    const vd = q.visual_data || {};
+    let anchor = Number(vd.anchor);
+    let splitNumber = Number(vd.split_number);
+    let toTen = Number(vd.to_ten);
+    let remainder = Number(vd.remainder);
+
+    if (op === '+') {
+        if (!Number.isFinite(anchor)) anchor = Math.max(a % 10, b % 10);
+        if (!Number.isFinite(splitNumber)) splitNumber = (anchor === (a % 10)) ? (b % 10) : (a % 10);
+        if (!Number.isFinite(toTen)) toTen = 10 - anchor;
+        if (!Number.isFinite(remainder)) remainder = splitNumber - toTen;
+    } else {
+        const aOnes = a % 10;
+        const bOnes = b % 10;
+        if (!Number.isFinite(splitNumber)) splitNumber = q.explore_type === 'vertical_carry_100' ? bOnes : b;
+        if (!Number.isFinite(toTen)) toTen = q.explore_type === 'vertical_carry_100' ? aOnes : (a - 10);
+        if (!Number.isFinite(remainder)) remainder = splitNumber - toTen;
+    }
+
+    return {
+        a, op, b, answer,
+        type: String(q.explore_type || ''),
+        anchor, splitNumber, toTen, remainder,
+        carry: Number(vd.carry ?? 1),
+        borrow: Number(vd.borrow ?? (op === '-' ? 1 : 0)),
+        onesResult: Number(vd.ones_result),
+        tensResult: Number(vd.tens_result)
+    };
+}
+
+function renderMakeTenTable_(anchor) {
+    const rows = [[9,1],[8,2],[7,3],[6,4],[5,5]];
+    return `<div class="w-full h-full rounded-2xl border-2 border-amber-200 bg-amber-50/70 px-3 py-2.5 shadow-sm flex flex-col justify-center">
+        <div class="text-center text-sm md:text-base font-black text-amber-700 mb-1.5">BẢNG VỀ 10</div>
+        <div class="space-y-1">${rows.map(([a,b]) => {
+            const active = Number(anchor) === a;
+            return `<div class="rounded-xl border px-2 py-1 text-center text-base md:text-lg font-black transition-all ${active ? 'border-emerald-400 bg-emerald-100 text-emerald-800 shadow-sm scale-[1.02]' : 'border-amber-100 bg-white/80 text-slate-700'}">
+                <span class="${active ? 'text-rose-600' : ''}">${a}</span> + ${b} = <span class="${active ? 'text-emerald-700' : ''}">10</span>
+            </div>`;
+        }).join('')}</div>
+    </div>`;
+}
+
+function revealCarryConceptFeedback_(q) {
+    if (!isCarryConceptQuestion_(q) || !isCarryLearningGuided_()) return;
+    document.querySelectorAll('[data-carry-concept-feedback]').forEach(el => el.classList.remove('hidden', 'invisible'));
+    document.querySelectorAll('[data-carry-one]').forEach(el => {
+        el.classList.remove('opacity-25', 'text-slate-300', 'border-slate-200', 'bg-slate-50');
+        el.classList.add('opacity-100', 'text-rose-600', 'border-rose-300', 'bg-rose-50');
+    });
+}
+
+function buildCarryLearningPresentation_(q) {
+    if (!isCarryConceptQuestion_(q)) return null;
+    const mode = String(pendingTopicQuiz?.carryLearningMode || '');
+    if (!['guided', 'practice'].includes(mode)) return null;
+    const guided = mode === 'guided';
+    const meta = getCarryConceptMeta_(q);
+    if (!meta) return null;
+    const { a, op, b, answer, type, anchor, splitNumber, toTen, remainder } = meta;
+    const symbol = op === '+' ? '+' : '−';
+    const speaker = `<button onclick="speakCurrentQuestion()" class="absolute top-2.5 right-2.5 w-8 h-8 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi"><i class="fa-solid fa-volume-high text-pink-600 text-xs"></i></button>`;
+
+    // Cấp 2: đúng cùng bộ câu hỏi nhưng bỏ toàn bộ giàn giáo sư phạm.
+    if (!guided) {
+        if (type === 'mental_carry_20') {
+            return {
+                prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true,
+                visual: `<div class="relative w-full max-w-xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 shadow-sm px-4 py-4 text-center">
+                    ${speaker}<div class="text-4xl md:text-5xl font-black text-slate-800">${a} <span class="text-pink-500">${symbol}</span> ${b} <span class="text-purple-400">= ?</span></div>
+                </div>`
+            };
+        }
+        const aT = Math.floor(a / 10), aO = a % 10, bT = Math.floor(b / 10), bO = b % 10;
+        return {
+            prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true,
+            visual: `<div class="relative w-full max-w-xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 shadow-sm px-4 py-3 text-center">
+                ${speaker}
+                <div class="mx-auto grid grid-cols-[50px_72px_72px] md:grid-cols-[54px_82px_82px] justify-center text-center font-black">
+                    <div></div><div class="text-xs md:text-sm text-pink-600 pb-1">CHỤC</div><div class="text-xs md:text-sm text-purple-600 pb-1">ĐƠN VỊ</div>
+                    <div></div><div class="border border-pink-200 bg-pink-50 py-1.5 text-2xl md:text-3xl">${aT}</div><div class="border border-purple-200 bg-purple-50 py-1.5 text-2xl md:text-3xl">${aO}</div>
+                    <div class="flex items-center justify-center text-2xl md:text-3xl text-pink-500">${symbol}</div><div class="border border-pink-200 bg-white py-1.5 text-2xl md:text-3xl">${bT}</div><div class="border border-purple-200 bg-white py-1.5 text-2xl md:text-3xl">${bO}</div>
+                    <div></div><div class="border-t-4 border-slate-700 bg-pink-50/50 py-1.5 text-2xl md:text-3xl text-slate-300">?</div><div class="border-t-4 border-slate-700 bg-purple-50/50 py-1.5 text-2xl md:text-3xl text-slate-300">?</div>
+                </div>
+            </div>`
+        };
+    }
+
+    const hintText = `Hãy tách <span class="text-rose-600">${splitNumber}</span> thành <span class="text-purple-600">${toTen} + ${remainder}</span>.`;
+
+    if (type === 'mental_carry_20') {
+        const addTable = op === '+' ? renderMakeTenTable_(anchor) : '';
+        const mainCard = `<div class="relative h-full rounded-2xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 px-4 py-3 text-center shadow-sm flex flex-col justify-center">
+            ${speaker}
+            <div class="text-4xl md:text-5xl font-black text-slate-800">${a} <span class="text-pink-500">${symbol}</span> ${b} <span class="text-purple-400">= ?</span></div>
+            <div class="mt-2 rounded-xl border border-purple-200 bg-purple-50/75 px-3 py-2 text-base md:text-lg font-black text-slate-700">${hintText}</div>
+            <div data-carry-concept-feedback class="invisible mt-2 space-y-1.5">
+                <div class="rounded-xl border border-sky-200 bg-sky-50 px-3 py-1.5 text-base md:text-lg font-extrabold text-slate-700">
+                    ${op === '+'
+                        ? `Tách ${splitNumber} = ${toTen} + ${remainder} → ${anchor} + ${toTen} = <span class="text-emerald-600">10</span>.`
+                        : `Tách ${b} = ${toTen} + ${remainder} → ${a} − ${toTen} = <span class="text-emerald-600">10</span>.`}
+                </div>
+                <div class="rounded-xl border-2 border-emerald-300 bg-emerald-50 px-3 py-1.5 text-lg md:text-xl font-black text-emerald-700">
+                    10 ${op === '+' ? '+' : '−'} ${remainder} = ${answer} ✅
+                </div>
+            </div>
+        </div>`;
+        const visual = op === '+'
+            ? `<div class="w-full max-w-5xl md:h-[220px] grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 items-stretch">${addTable}${mainCard}</div>`
+            : `<div class="w-full max-w-3xl md:h-[220px]">${mainCard}</div>`;
+        return { prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true, visual };
+    }
+
+    // Phạm vi 100: kế thừa bảng/gợi ý của phạm vi 20 và thêm ô nhớ/mượn 1 dưới hàng chục.
+    const aT = Math.floor(a / 10), aO = a % 10, bT = Math.floor(b / 10), bO = b % 10;
+    const addTable = op === '+' ? renderMakeTenTable_(anchor) : '';
+    const onesLine = op === '+'
+        ? `${aO} + ${bO} = ${aO + bO} → viết <span class="text-purple-600">${(aO + bO) % 10}</span>, nhớ <span class="text-rose-600">1</span>.`
+        : `${aO} không trừ được ${bO} → mượn <span class="text-rose-600">1</span> chục: ${aO + 10} − ${bO} = <span class="text-purple-600">${aO + 10 - bO}</span>.`;
+    const tensLine = op === '+'
+        ? `${aT} + ${bT} + <span class="text-rose-600">1</span> = ${Math.floor(answer / 10)} chục.`
+        : `${aT} chục mượn 1 còn ${aT - 1}; ${aT - 1} − ${bT} = ${Math.floor(answer / 10)} chục.`;
+
+    const mainCard = `<div class="relative h-full rounded-2xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 px-3 py-2 text-center shadow-sm">
+        ${speaker}
+        <div class="h-full grid grid-cols-1 md:grid-cols-[230px_1fr] gap-2 items-center">
+            <div class="flex flex-col items-center justify-center">
+                <div class="mx-auto grid grid-cols-[44px_70px_70px] md:grid-cols-[48px_76px_76px] justify-center text-center font-black">
+                    <div></div><div class="text-xs text-pink-600 pb-0.5">CHỤC</div><div class="text-xs text-purple-600 pb-0.5">ĐƠN VỊ</div>
+                    <div></div><div class="border border-pink-200 bg-pink-50 py-0.5 text-2xl md:text-3xl">${aT}</div><div class="border border-purple-200 bg-purple-50 py-0.5 text-2xl md:text-3xl">${aO}</div>
+                    <div class="flex items-center justify-center text-2xl md:text-3xl text-pink-500">${symbol}</div><div class="border border-pink-200 bg-white py-0.5 text-2xl md:text-3xl">${bT}</div><div class="border border-purple-200 bg-white py-0.5 text-2xl md:text-3xl">${bO}</div>
+                    <div></div><div class="pt-1 flex items-center justify-center"><span data-carry-one class="inline-flex min-w-[32px] h-6 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-base font-black text-slate-300 opacity-25">1</span></div><div></div>
+                    <div></div><div class="border-t-4 border-slate-700 bg-pink-50/50 py-0.5 text-2xl md:text-3xl text-slate-300">?</div><div class="border-t-4 border-slate-700 bg-purple-50/50 py-0.5 text-2xl md:text-3xl text-slate-300">?</div>
+                </div>
+            </div>
+            <div class="flex flex-col justify-center pr-1 md:pr-6">
+                <div class="rounded-xl border border-purple-200 bg-purple-50/75 px-3 py-1.5 text-base md:text-lg font-black text-slate-700">${hintText}</div>
+                <div data-carry-concept-feedback class="invisible mt-1.5 space-y-1">
+                    <div class="rounded-xl border border-sky-200 bg-sky-50 px-3 py-1 text-sm md:text-base font-extrabold text-slate-700">${onesLine}</div>
+                    <div class="rounded-xl border border-pink-200 bg-pink-50 px-3 py-1 text-sm md:text-base font-extrabold text-slate-700">${tensLine}</div>
+                    <div class="rounded-xl border-2 border-emerald-300 bg-emerald-50 px-3 py-1 text-base md:text-lg font-black text-emerald-700">${a} ${symbol} ${b} = ${answer} ✅</div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+    const visual = op === '+'
+        ? `<div class="w-full max-w-5xl md:h-[230px] grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 items-stretch">${addTable}${mainCard}</div>`
+        : `<div class="w-full max-w-4xl md:h-[230px]">${mainCard}</div>`;
+    return { prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true, visual };
+}
+
 function getExploreMathPresentation(q) {
     const sub = String(q?.sub_topic || '');
     if (!/^[123]\./.test(sub) || activeExamContext || activeRoadmapContext) return null;
@@ -2375,7 +2661,7 @@ function getExploreMathPresentation(q) {
     const placePhrase = (count, place, tone) =>
         `<span class="inline-flex items-center justify-center rounded-2xl border-2 border-${tone}-200 bg-${tone}-50/85 px-3.5 py-2.5 md:px-4 md:py-3 text-lg md:text-xl font-black text-${tone}-700 whitespace-nowrap shadow-sm">${digitWords[count] || String(count)} ${place}</span>`;
     const vd = q.visual_data || {};
-    let prompt = raw, visual = '';
+    let prompt = raw, promptHtml = '', visual = '';
 
     // ===== MỤC 1 - CẤU TẠO SỐ =====
     // Không phụ thuộc explore_group: các bản JSON mới/cũ có thể không chứa trường này.
@@ -2474,7 +2760,7 @@ function getExploreMathPresentation(q) {
                 break;
             }
         }
-        return {prompt, visual};
+        return {prompt, promptHtml, visual};
     }
 
     const isTopic2Explore = Number(q.explore_topic_id) === 2 || String(q.sub_id || q.sub_topic || '').trim() === '1.2';
@@ -2534,16 +2820,50 @@ function getExploreMathPresentation(q) {
                 break;
             }
         }
-        return {prompt, visual};
+        return {prompt, promptHtml, visual};
     }
 
-    // ===== MỤC 2–3: giữ renderer trực quan đã làm =====
-    if(/^2\.[12]$/.test(sub)&&math){prompt='Bé ơi, hãy tính nhẩm nhé!';visual=card(`<div class="text-5xl md:text-6xl font-black">${math[1]} <span class="text-pink-500">${math[2]}</span> ${math[3]} <span class="text-purple-400">= ?</span></div>`)}
-    else if(/^2\.[345]$/.test(sub)&&(math||nums.length>=2)){const a=math?math[1]:nums[0],op=math?math[2]:(/trừ/i.test(raw)?'-':'+'),b=math?math[3]:nums[1];prompt='Bé ơi, hãy đặt tính rồi tính nhé!';visual=card(`<div class="inline-grid grid-cols-[32px_auto] text-right text-5xl font-black leading-tight"><span></span><span>${a}</span><span class="text-pink-500">${op}</span><span>${b}</span><span class="col-span-2 border-t-4 border-slate-700 mt-1 pt-2 text-purple-400">?</span></div>`)}
-    else if(sub==='2.6'&&nums.length>=3){const op=raw.includes('-')?'-':'+';const target=(raw.match(/Số\s*(\d+)\s*gọi là gì/i)||raw.match(/thành phần số\s*(\d+)/i)||[])[1]||nums[0];prompt=`Bé ơi, số ${target} trong phép tính trên gọi là gì?`;visual=card(`<div class="text-5xl font-black">${nums[0]} <span class="text-pink-500">${op}</span> ${nums[1]} <span class="text-purple-400">=</span> ${nums[2]}</div>`)}
+    // ===== MỤC 3 - CỘNG TRỪ: hai cấp độ dùng cùng một kho câu hỏi =====
+    // Cấp 1 có bảng/gợi ý và chỉ hiện đầy đủ cách làm sau khi bé trả lời đúng.
+    // Cấp 2 dùng chính các câu đó nhưng ẩn toàn bộ giàn giáo sư phạm.
+    const carryLearningPresentation = buildCarryLearningPresentation_(q);
+    if (carryLearningPresentation) return carryLearningPresentation;
+
+    else if(/^2\.[1]$/.test(sub)&&math){prompt='Bé ơi, hãy tính nhẩm nhé!';visual=card(`<div class="text-5xl md:text-6xl font-black">${math[1]} <span class="text-pink-500">${math[2]}</span> ${math[3]} <span class="text-purple-400">= ?</span></div>`)}
+    else if(/^2\.[45]$/.test(sub)&&(math||nums.length>=2)){const a=math?math[1]:nums[0],op=math?math[2]:(/trừ/i.test(raw)?'-':'+'),b=math?math[3]:nums[1];prompt='Bé ơi, hãy đặt tính rồi tính nhé!';visual=card(`<div class="inline-grid grid-cols-[32px_auto] text-right text-5xl font-black leading-tight"><span></span><span>${a}</span><span class="text-pink-500">${op}</span><span>${b}</span><span class="col-span-2 border-t-4 border-slate-700 mt-1 pt-2 text-purple-400">?</span></div>`)}
+    else if(sub==='2.6'&&nums.length>=3){
+        const meta = getOperationTermsMeta_(q);
+        if (meta) {
+            const termClass = value => value === meta.target ? 'text-rose-600' : 'text-slate-700';
+            prompt = `Bé ơi, số ${meta.target} trong phép tính trên gọi là gì?`;
+            promptHtml = `Bé ơi, số <span class="inline-flex items-center rounded-lg border border-rose-200 bg-rose-50 px-1.5 py-0.5 text-rose-600">${escapeHtml(meta.target)}</span> trong phép tính trên gọi là gì?`;
+            visual = card(`
+                <div class="inline-grid grid-cols-[minmax(78px,auto)_32px_minmax(78px,auto)_32px_minmax(78px,auto)] items-start justify-center gap-x-1 md:gap-x-2">
+                    <div class="flex flex-col items-center">
+                        <span class="text-4xl md:text-[42px] leading-none font-black ${termClass(meta.left)}">${escapeHtml(meta.left)}</span>
+                        <span data-operation-term-label class="hidden mt-2 rounded-full border border-pink-200 bg-pink-50 px-3 py-1.5 text-lg md:text-xl font-black text-pink-700 whitespace-nowrap leading-none">${escapeHtml(meta.labels[0])}</span>
+                    </div>
+                    <span class="text-4xl md:text-[42px] leading-none font-black text-pink-500">${meta.op}</span>
+                    <div class="flex flex-col items-center">
+                        <span class="text-4xl md:text-[42px] leading-none font-black ${termClass(meta.right)}">${escapeHtml(meta.right)}</span>
+                        <span data-operation-term-label class="hidden mt-2 rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-lg md:text-xl font-black text-purple-700 whitespace-nowrap leading-none">${escapeHtml(meta.labels[1])}</span>
+                    </div>
+                    <span class="text-4xl md:text-[42px] leading-none font-black text-purple-400">=</span>
+                    <div class="flex flex-col items-center">
+                        <span class="text-4xl md:text-[42px] leading-none font-black ${termClass(meta.result)}">${escapeHtml(meta.result)}</span>
+                        <span data-operation-term-label class="hidden mt-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-lg md:text-xl font-black text-emerald-700 whitespace-nowrap leading-none">${escapeHtml(meta.labels[2])}</span>
+                    </div>
+                </div>
+                <div data-operation-terms-summary class="hidden mt-3 text-base md:text-lg font-extrabold text-slate-500 leading-snug">
+                    ${meta.op === '+'
+                        ? `${escapeHtml(meta.left)} và ${escapeHtml(meta.right)} là <span class="text-pink-600">số hạng</span>; ${escapeHtml(meta.result)} là <span class="text-emerald-600">tổng</span>.`
+                        : `${escapeHtml(meta.left)} là <span class="text-pink-600">số bị trừ</span>; ${escapeHtml(meta.right)} là <span class="text-purple-600">số trừ</span>; ${escapeHtml(meta.result)} là <span class="text-emerald-600">hiệu</span>.`}
+                </div>`);
+        }
+    }
     else if(sub==='3.1'){const m=raw.match(/((?:\d+\s*\+\s*)+\d+)/);const ts=m?m[1].match(/\d+/g):[];prompt='Bé ơi, hãy viết tổng trên thành phép nhân nhé!';if(ts.length)visual=card(`<div class="text-4xl md:text-5xl font-black">${ts.join(' + ')}</div><div class="mt-3 text-2xl font-black text-purple-500">= ? × ?</div>`)}
     else if(/^3\.[23]$/.test(sub)&&math){prompt='Bé ơi, hãy tính nhẩm nhé!';visual=card(`<div class="text-5xl md:text-6xl font-black">${math[1]} <span class="text-pink-500">${math[2]==='x'?'×':'÷'}</span> ${math[3]} <span class="text-purple-400">= ?</span></div>`)}
-    return {prompt,visual};
+    return {prompt,promptHtml,visual};
 }
 
 function getComposeSpeechText(q) {
@@ -2738,6 +3058,9 @@ function loadQuestion() {
     // Mục 3 (Cộng - trừ) và Mục 4 (Nhân - chia) có đáp án ngắn,
     // nên dùng bố cục gọn: 4 đáp án trên một hàng ở desktop.
     const isCompactTopic34 = !isEvaluationMode && [3, 4].includes(Number(pendingTopicQuiz?.topicNum));
+    const isOperationTerms = !isEvaluationMode && q.explore_type === 'operation_terms';
+    const isCarryConcept = !isEvaluationMode && isCarryConceptQuestion_(q);
+    const isCarryLearning = !isEvaluationMode && !!exploreMath?.isCarryLearning;
     const isOrderInteractive = isTopic2OrderInteractive_(q);
 
     if (isEvaluationMode) {
@@ -2779,7 +3102,7 @@ function loadQuestion() {
             <p class="text-gray-800 text-base md:text-lg font-bold whitespace-pre-line leading-relaxed ${useTwoColumns ? 'md:columns-2 md:gap-6' : ''}">${escapeHtml(pText)}</p>
         </div>` : '';
 
-    const practiceSpeakerBtnHtml = !isEvaluationMode && !isNumberCompose && !isFindNumber ? `
+    const practiceSpeakerBtnHtml = !isEvaluationMode && !isNumberCompose && !isFindNumber && !exploreMath?.inlineSpeaker ? `
         <div class="flex items-center justify-center mt-1 mb-1">
             <button onclick="speakCurrentQuestion()" class="px-4 py-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-2xl text-xs md:text-sm font-extrabold flex items-center space-x-1.5 pastel-btn shadow-xs">
                 <i class="fa-solid fa-volume-high text-pink-600"></i>
@@ -2867,14 +3190,14 @@ function loadQuestion() {
         ${composeSpeakerBtnHtml}
         ${findNumberSpeakerBtnHtml}
         ${exploreMath?.visual || ''}
-        <div class="flex flex-col items-center justify-center max-w-3xl text-center px-2 mt-2 mb-0.5">
+        ${exploreMath?.hidePrompt ? '' : `<div class="flex flex-col items-center justify-center max-w-3xl text-center px-2 mt-2 mb-0.5">
             <h3 class="${isFindNumber ? 'text-base md:text-lg text-purple-700' : (exploreMath ? (isCompactTopic34 ? 'text-lg md:text-xl text-purple-700' : 'text-xl md:text-2xl lg:text-2xl text-purple-700') : 'text-sm md:text-base lg:text-lg text-slate-900')} font-black leading-snug">
-                ${escapeHtml(exploreMath?.prompt || q.question_text)}
+                ${exploreMath?.promptHtml || escapeHtml(exploreMath?.prompt || q.question_text)}
             </h3>
             ${practiceSpeakerBtnHtml}
-        </div>
+        </div>`}
         
-        <div class="w-full ${isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl'} grid ${isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-1 md:grid-cols-2 gap-2.5')} mt-1">
+        <div class="w-full ${isCarryLearning ? 'max-w-3xl' : (isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-1 md:grid-cols-2 gap-2.5'))} mt-1">
     `;
 
     q.options.forEach((opt, idx) => {
@@ -2892,7 +3215,7 @@ function loadQuestion() {
                 </button>`;
         } else {
             html += `
-                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-2.5 md:p-3 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-sm md:text-base' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))) : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
+                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-2 md:py-2.5 min-h-[46px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-2.5 md:p-3 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-sm md:text-base' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
                     <span>${exploreMath ? '' : `<strong class="text-pink-600 mr-2 text-base md:text-lg">${letter}.</strong>`} ${escapeHtml(formattedOpt)}</span>
                     <span class="option-icon text-pink-500 text-base md:text-lg"></span>
                 </button>`;
@@ -2978,6 +3301,10 @@ function restoreQuestionState(q) {
                 b.disabled = true;
             }
         });
+        if (completedAnswer === q.answer) {
+            revealOperationTermsFeedback_(q);
+            revealCarryConceptFeedback_(q);
+        }
     }
 }
 
@@ -3098,15 +3425,20 @@ function checkAnswer(selectedOpt) {
             }
         });
 
+        const isOperationTerms = q.explore_type === 'operation_terms';
+        const isCarryConcept = isCarryConceptQuestion_(q);
+        const isCarryGuided = isCarryConcept && isCarryLearningGuided_();
+        if (isOperationTerms) revealOperationTermsFeedback_(q);
+        if (isCarryGuided) revealCarryConceptFeedback_(q);
+
         playAudio('correct');
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
         setTimeout(() => speakVietnamese(`${q.answer}`), 180);
 
-        // Toàn bộ Mục 1-4 là các hoạt động phản xạ ngắn:
-        // khi bé chọn đúng, giữ phản hồi xanh trong chốc lát rồi tự chuyển câu sau.
-        // Chọn sai vẫn đứng ở câu hiện tại để bé tiếp tục thử.
+        // Các bài phản xạ ngắn và Cấp 2 tự thực hành có thể tự chuyển.
+        // Riêng tên thành phần và Cấp 1 có hướng dẫn phải giữ màn hình để bé đọc lại cách làm.
         const currentTopicNum = Number(pendingTopicQuiz?.topicNum);
-        const shouldAutoAdvance = currentTopicNum >= 1 && currentTopicNum <= 4;
+        const shouldAutoAdvance = currentTopicNum >= 1 && currentTopicNum <= 4 && !isOperationTerms && !isCarryGuided;
         if (shouldAutoAdvance) {
             setTimeout(() => {
                 if (userAnswers[currentQIndex] !== undefined) nextQuestion();
@@ -3128,6 +3460,7 @@ function checkAnswer(selectedOpt) {
             }
         });
 
+        // Cấp 1 đã có đúng một gợi ý cố định từ đầu; Cấp 2 không mở thêm gợi ý khi sai.
         playAudio('wrong');
     }
 
