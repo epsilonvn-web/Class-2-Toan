@@ -2710,6 +2710,21 @@ function renderMakeTenTable_(anchor) {
 
 function revealCarryConceptFeedback_(q) {
     if (!isCarryConceptQuestion_(q) || !isCarryLearningGuided_()) return;
+    const meta = getCarryConceptMeta_(q);
+    if (meta && meta.type === 'vertical_carry_100') {
+        const tens = Math.floor(Number(meta.answer) / 10);
+        const ones = Number(meta.answer) % 10;
+        document.querySelectorAll('[data-carry-answer-tens]').forEach(el => {
+            el.textContent = String(tens);
+            el.classList.remove('text-slate-300');
+            el.classList.add('text-emerald-700');
+        });
+        document.querySelectorAll('[data-carry-answer-ones]').forEach(el => {
+            el.textContent = String(ones);
+            el.classList.remove('text-slate-300');
+            el.classList.add('text-emerald-700');
+        });
+    }
     document.querySelectorAll('[data-carry-concept-feedback]').forEach(el => el.classList.remove('hidden', 'invisible'));
     document.querySelectorAll('[data-carry-one]').forEach(el => {
         el.classList.remove('opacity-25', 'text-slate-300', 'border-slate-200', 'bg-slate-50', 'text-rose-600', 'border-rose-300', 'bg-rose-50');
@@ -2800,7 +2815,7 @@ function buildCarryLearningPresentation_(q) {
                     <div></div><div class="border border-pink-200 bg-pink-50 py-0.5 text-2xl md:text-3xl">${aT}</div><div class="border border-purple-200 bg-purple-50 py-0.5 text-2xl md:text-3xl">${aO}</div>
                     <div class="flex items-center justify-center text-2xl md:text-3xl text-pink-500">${symbol}</div><div class="border border-pink-200 bg-white py-0.5 text-2xl md:text-3xl">${bT}</div><div class="border border-purple-200 bg-white py-0.5 text-2xl md:text-3xl">${bO}</div>
                     <div></div><div class="pt-1 flex items-center justify-center"><span data-carry-one class="inline-flex min-w-[32px] h-6 items-center justify-center rounded-lg border border-blue-300 bg-blue-50 text-base font-black text-blue-600 opacity-100">1</span></div><div></div>
-                    <div></div><div class="border-t-4 border-slate-700 bg-pink-50/50 py-0.5 text-2xl md:text-3xl text-slate-300">?</div><div class="border-t-4 border-slate-700 bg-purple-50/50 py-0.5 text-2xl md:text-3xl text-slate-300">?</div>
+                    <div></div><div data-carry-answer-tens class="border-t-4 border-slate-700 bg-pink-50/50 py-0.5 text-2xl md:text-3xl text-slate-300">?</div><div data-carry-answer-ones class="border-t-4 border-slate-700 bg-purple-50/50 py-0.5 text-2xl md:text-3xl text-slate-300">?</div>
                 </div>
             </div>
             <div class="flex flex-col justify-center pr-1 md:pr-6">
@@ -2840,31 +2855,58 @@ function buildMulDivTableVisual_(q, math) {
     if (![2, 5].includes(groups) || !Number.isInteger(perGroup) || perGroup < 1 || perGroup > 10) return null;
 
     const result = isMultiply ? left * right : left / right;
+    const mainOp = isMultiply ? '×' : '÷';
+    const repeated = Array.from({ length: groups }, () => perGroup).join(' + ');
+
+    // Emoji lớn theo đúng diện tích nửa màn hình bên trái.
+    // 2 hàng có thể dùng emoji lớn hơn; 5 hàng tự thu vừa đủ để không tăng chiều cao màn hình.
+    const emojiSize = groups === 2
+        ? (perGroup >= 9 ? 30 : perGroup >= 7 ? 34 : 38)
+        : (perGroup >= 9 ? 21 : perGroup >= 7 ? 23 : 26);
+    const rowMinHeight = groups === 2 ? 62 : 42;
+
     const rowHtml = Array.from({ length: groups }, (_, rowIdx) => `
-        <div class="flex items-center justify-center gap-[2px] rounded-xl border ${rowIdx % 2 === 0 ? 'border-pink-200 bg-pink-50/60' : 'border-purple-200 bg-purple-50/60'} px-2 py-1">
-            ${Array.from({ length: perGroup }, () => `<span class="text-[13px] md:text-sm leading-none">${emoji}</span>`).join('')}
+        <div class="flex items-center justify-center gap-[3px] rounded-xl border ${rowIdx % 2 === 0 ? 'border-pink-200 bg-pink-50/70' : 'border-purple-200 bg-purple-50/70'} px-2 py-1.5" style="min-height:${rowMinHeight}px">
+            ${Array.from({ length: perGroup }, () => `<span class="leading-none select-none" style="font-size:${emojiSize}px">${emoji}</span>`).join('')}
         </div>`).join('');
 
-    const repeated = Array.from({ length: groups }, () => perGroup).join(' + ');
-    const mainOp = isMultiply ? '×' : '÷';
-    const guide = isMultiply
-        ? `${groups} hàng, mỗi hàng ${perGroup} hình`
-        : `${left} hình chia đều thành ${groups} hàng`;
+    const conceptTitle = isMultiply ? 'PHÉP NHÂN = CỘNG CÁC NHÓM BẰNG NHAU' : 'PHÉP CHIA = CHIA ĐỀU THÀNH CÁC NHÓM';
+    const conceptLine = isMultiply
+        ? `<span class="text-pink-600">${left} hàng</span> × <span class="text-purple-600">${right} hình</span><br><span class="text-slate-600">tương ứng:</span> <span class="text-emerald-700">${repeated}</span>`
+        : `<span class="text-pink-600">${left} hình</span> chia đều thành <span class="text-purple-600">${groups} hàng</span><br><span class="text-slate-600">Bé nhìn xem mỗi hàng có bao nhiêu hình nhé!</span>`;
+
     const feedback = isMultiply
         ? `${repeated} = ${result} &nbsp;→&nbsp; ${left} × ${right} = ${result}`
         : `${left} = ${repeated} &nbsp;→&nbsp; ${left} ÷ ${right} = ${result}`;
 
     return {
-        prompt: isMultiply ? 'Bé hãy nhìn các hàng hình rồi tính nhé!' : 'Bé hãy nhìn cách chia đều rồi tính nhé!',
+        prompt: '',
+        hidePrompt: true,
+        inlineSpeaker: true,
         visual: `
-            <div class="w-full max-w-2xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/60 to-purple-50/60 shadow-sm px-4 py-3 md:px-5 md:py-4 text-center">
-                <div class="text-4xl md:text-5xl font-black text-slate-800 leading-none">
-                    ${left} <span class="text-pink-500">${mainOp}</span> ${right} <span class="text-purple-400">= ?</span>
+            <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 items-stretch">
+                <div class="rounded-3xl border-2 border-amber-200 bg-gradient-to-br from-white via-amber-50/70 to-pink-50/70 shadow-sm px-3 py-3 md:px-4 md:py-4 flex flex-col justify-center">
+                    <div class="text-center text-sm md:text-base font-black text-amber-700 mb-2">👀 NHÌN BẰNG MẮT</div>
+                    <div class="space-y-1.5 md:space-y-2">${rowHtml}</div>
+                    <div class="mt-2 text-center text-sm md:text-base font-black text-slate-600">
+                        ${isMultiply ? `${groups} hàng · mỗi hàng ${perGroup} hình` : `${left} hình · chia đều thành ${groups} hàng`}
+                    </div>
                 </div>
-                <div class="mt-2 text-sm md:text-base font-black text-purple-600">${guide}</div>
-                <div class="mt-2 mx-auto flex max-w-[430px] flex-col gap-1.5">${rowHtml}</div>
-                <div data-muldiv-feedback class="hidden mt-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-base md:text-lg font-black text-emerald-700">
-                    ${feedback}
+
+                <div class="rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/60 to-purple-50/60 shadow-sm px-4 py-3 md:px-5 md:py-4 flex flex-col justify-center text-center relative">
+                    <button onclick="speakCurrentQuestion()" class="absolute top-2.5 right-2.5 w-9 h-9 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-600 border border-pink-200 flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <div class="text-4xl md:text-5xl font-black text-slate-800 leading-none pr-8">
+                        ${left} <span class="text-pink-500">${mainOp}</span> ${right} <span class="text-purple-400">= ?</span>
+                    </div>
+                    <div class="mt-3 rounded-2xl border border-purple-200 bg-white/80 px-3 py-3">
+                        <div class="text-xs md:text-sm font-black tracking-wide text-purple-500">${conceptTitle}</div>
+                        <div class="mt-1.5 text-base md:text-lg font-black leading-snug">${conceptLine}</div>
+                    </div>
+                    <div data-muldiv-feedback class="hidden mt-3 rounded-2xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2.5 text-base md:text-lg font-black text-emerald-700">
+                        ${feedback}
+                    </div>
                 </div>
             </div>`,
         isMulDivVisual: true
