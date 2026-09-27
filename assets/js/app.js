@@ -474,7 +474,7 @@ function beautifySubtopicName(name) {
     return s;
 }
 
-const DATA_VERSION = '20260919-2232-topic2-pattern30';
+const DATA_VERSION = '20260927-2135-muldiv-visual';
 const TOPICS_DATA_FILES = [
     'assets/data/kho_hoc_toan_2_hk1.json',
     'assets/data/kho_hoc_toan_2_hk2.json'
@@ -2359,14 +2359,14 @@ async function openMathPoem(categoryIndex, poemIndex) {
                 <div class="px-5 md:px-10 py-7 md:py-9 text-center bg-white/62 backdrop-blur-[1.5px] mx-3 md:mx-6 my-4 rounded-[28px] border border-white/80 shadow-sm">${lines}</div>
                 <div class="px-4 md:px-6 py-4 border-t border-pink-100 bg-white/70 backdrop-blur-[2px] grid grid-cols-[1fr_auto_1fr] items-center gap-3">
                     <div class="flex justify-start">
-                        <button onclick="openMathPoem(${categoryIndex}, ${poemIndex - 1})" ${poemIndex <= 0 ? 'disabled' : ''} class="px-4 py-2.5 rounded-xl bg-white border-2 border-purple-200 text-purple-700 font-black pastel-btn disabled:opacity-35 disabled:cursor-not-allowed">← Bài trước</button>
+                        <button onclick="openMathPoem(${categoryIndex}, ${poemIndex - 1})" ${poemIndex <= 0 ? 'disabled' : ''} class="h-10 px-4 py-0 rounded-xl bg-white border-2 border-purple-200 text-purple-700 font-black pastel-btn disabled:opacity-35 disabled:cursor-not-allowed flex items-center justify-center">← Bài trước</button>
                     </div>
                     <div class="flex flex-col items-center justify-center gap-2">
                         <div class="px-4 py-1.5 rounded-full bg-white border-2 border-pink-200 text-pink-600 font-black text-sm md:text-base shadow-sm">${poemIndex + 1}/${cat.poems.length}</div>
                         <button onclick="speakMathPoem(${categoryIndex}, ${poemIndex})" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black pastel-btn whitespace-nowrap">🔊 Nghe Cô Thỏ Ngọc đọc</button>
                     </div>
                     <div class="flex justify-end">
-                        <button onclick="openMathPoem(${categoryIndex}, ${poemIndex + 1})" ${poemIndex >= cat.poems.length - 1 ? 'disabled' : ''} class="px-4 py-2.5 rounded-xl bg-white border-2 border-purple-200 text-purple-700 font-black pastel-btn disabled:opacity-35 disabled:cursor-not-allowed">Bài tiếp theo →</button>
+                        <button onclick="openMathPoem(${categoryIndex}, ${poemIndex + 1})" ${poemIndex >= cat.poems.length - 1 ? 'disabled' : ''} class="h-10 px-4 py-0 rounded-xl bg-white border-2 border-purple-200 text-purple-700 font-black pastel-btn disabled:opacity-35 disabled:cursor-not-allowed flex items-center justify-center">Bài tiếp theo →</button>
                     </div>
                 </div>
             </div>
@@ -2510,9 +2510,54 @@ async function selectRoadmapWeek(weekNum) {
 }
 
 // ==========================================
+// CHUẨN HÓA ĐIỀU HƯỚNG TRƯỚC / SAU
+// - Chiều cao nút: 40px
+// - Khoảng cách từ nội dung/đáp án đến hàng điều hướng: 20px (= 1/2 chiều cao nút)
+// Áp dụng thống nhất cho luyện tập, Khám phá, tiến trình và đề thi.
+// ==========================================
+const QUIZ_NAV_BUTTON_HEIGHT_PX = 40;
+const QUIZ_NAV_TOP_GAP_PX = QUIZ_NAV_BUTTON_HEIGHT_PX / 2;
+
+function ensureUnifiedQuizNavStyles_() {
+    if (document.getElementById('epsilon-unified-quiz-nav-style')) return;
+    const style = document.createElement('style');
+    style.id = 'epsilon-unified-quiz-nav-style';
+    style.textContent = `
+        #view-quiz #question-box { margin-bottom: 0 !important; }
+        #view-quiz #quiz-bottom-nav { padding-top: 0 !important; }
+        #view-quiz #nav-group-practice,
+        #view-quiz #nav-group-exam {
+            margin-top: ${QUIZ_NAV_TOP_GAP_PX}px !important;
+        }
+        #view-quiz #btn-prev-q-prac,
+        #view-quiz #btn-next-q-prac,
+        #view-quiz #btn-prev-q-exam,
+        #view-quiz #btn-next-q-exam {
+            height: ${QUIZ_NAV_BUTTON_HEIGHT_PX}px !important;
+            min-height: ${QUIZ_NAV_BUTTON_HEIGHT_PX}px !important;
+            max-height: ${QUIZ_NAV_BUTTON_HEIGHT_PX}px !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        #view-quiz #practice-step-indicator {
+            height: ${QUIZ_NAV_BUTTON_HEIGHT_PX}px !important;
+            min-height: ${QUIZ_NAV_BUTTON_HEIGHT_PX}px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// ==========================================
 // LOGIC CHẤM ĐIỂM & ĐIỀU KHIỂN CÂU HỎI
 // ==========================================
 function startTopicQuiz(topicNum, topicName, questions, subLabel) {
+    ensureUnifiedQuizNavStyles_();
     setAppShellRootMode_(false);
     stopSpeaking();
     clearInterval(quizTimerInterval);
@@ -2780,6 +2825,56 @@ function revealNeighborRuleFeedback_(q) {
     document.querySelectorAll('[data-neighbor-rule-feedback]').forEach(el => el.classList.remove('hidden'));
 }
 
+
+function buildMulDivTableVisual_(q, math) {
+    if (!q || q.explore_type !== 'mul_div_table_visual' || !math) return null;
+    const op = String(math[2] || '').toLowerCase();
+    const left = Number(math[1]);
+    const right = Number(math[3]);
+    if (!Number.isFinite(left) || !Number.isFinite(right)) return null;
+
+    const emoji = String(q?.visual_data?.emoji || (String(q.sub_topic) === '3.2' ? '🍎' : '⭐'));
+    const isMultiply = op === 'x';
+    const groups = isMultiply ? left : right;
+    const perGroup = isMultiply ? right : (right ? left / right : 0);
+    if (![2, 5].includes(groups) || !Number.isInteger(perGroup) || perGroup < 1 || perGroup > 10) return null;
+
+    const result = isMultiply ? left * right : left / right;
+    const rowHtml = Array.from({ length: groups }, (_, rowIdx) => `
+        <div class="flex items-center justify-center gap-[2px] rounded-xl border ${rowIdx % 2 === 0 ? 'border-pink-200 bg-pink-50/60' : 'border-purple-200 bg-purple-50/60'} px-2 py-1">
+            ${Array.from({ length: perGroup }, () => `<span class="text-[13px] md:text-sm leading-none">${emoji}</span>`).join('')}
+        </div>`).join('');
+
+    const repeated = Array.from({ length: groups }, () => perGroup).join(' + ');
+    const mainOp = isMultiply ? '×' : '÷';
+    const guide = isMultiply
+        ? `${groups} hàng, mỗi hàng ${perGroup} hình`
+        : `${left} hình chia đều thành ${groups} hàng`;
+    const feedback = isMultiply
+        ? `${repeated} = ${result} &nbsp;→&nbsp; ${left} × ${right} = ${result}`
+        : `${left} = ${repeated} &nbsp;→&nbsp; ${left} ÷ ${right} = ${result}`;
+
+    return {
+        prompt: isMultiply ? 'Bé hãy nhìn các hàng hình rồi tính nhé!' : 'Bé hãy nhìn cách chia đều rồi tính nhé!',
+        visual: `
+            <div class="w-full max-w-2xl rounded-3xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/60 to-purple-50/60 shadow-sm px-4 py-3 md:px-5 md:py-4 text-center">
+                <div class="text-4xl md:text-5xl font-black text-slate-800 leading-none">
+                    ${left} <span class="text-pink-500">${mainOp}</span> ${right} <span class="text-purple-400">= ?</span>
+                </div>
+                <div class="mt-2 text-sm md:text-base font-black text-purple-600">${guide}</div>
+                <div class="mt-2 mx-auto flex max-w-[430px] flex-col gap-1.5">${rowHtml}</div>
+                <div data-muldiv-feedback class="hidden mt-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-base md:text-lg font-black text-emerald-700">
+                    ${feedback}
+                </div>
+            </div>`,
+        isMulDivVisual: true
+    };
+}
+
+function revealMulDivFeedback_() {
+    document.querySelectorAll('[data-muldiv-feedback]').forEach(el => el.classList.remove('hidden'));
+}
+
 function getExploreMathPresentation(q) {
     const sub = String(q?.sub_topic || '');
     if (!/^[123]\./.test(sub) || activeExamContext || activeRoadmapContext) return null;
@@ -2976,6 +3071,9 @@ function getExploreMathPresentation(q) {
     // Cấp 2 dùng chính các câu đó nhưng ẩn toàn bộ giàn giáo sư phạm.
     const carryLearningPresentation = buildCarryLearningPresentation_(q);
     if (carryLearningPresentation) return carryLearningPresentation;
+
+    const mulDivTablePresentation = buildMulDivTableVisual_(q, math);
+    if (mulDivTablePresentation) return mulDivTablePresentation;
 
     else if(/^2\.[1]$/.test(sub)&&math){prompt='Bé ơi, hãy tính nhẩm nhé!';visual=card(`<div class="text-5xl md:text-6xl font-black">${math[1]} <span class="text-pink-500">${math[2]}</span> ${math[3]} <span class="text-purple-400">= ?</span></div>`)}
     else if(/^2\.[45]$/.test(sub)&&(math||nums.length>=2)){const a=math?math[1]:nums[0],op=math?math[2]:(/trừ/i.test(raw)?'-':'+'),b=math?math[3]:nums[1];prompt='Bé ơi, hãy đặt tính rồi tính nhé!';visual=card(`<div class="inline-grid grid-cols-[32px_auto] text-right text-5xl font-black leading-tight"><span></span><span>${a}</span><span class="text-pink-500">${op}</span><span>${b}</span><span class="col-span-2 border-t-4 border-slate-700 mt-1 pt-2 text-purple-400">?</span></div>`)}
@@ -3209,6 +3307,7 @@ function loadQuestion() {
     const isOperationTerms = !isEvaluationMode && q.explore_type === 'operation_terms';
     const isCarryConcept = !isEvaluationMode && isCarryConceptQuestion_(q);
     const isCarryLearning = !isEvaluationMode && !!exploreMath?.isCarryLearning;
+    const isMulDivVisual = !isEvaluationMode && !!exploreMath?.isMulDivVisual;
     const isOrderInteractive = isTopic2OrderInteractive_(q);
 
     if (isEvaluationMode) {
@@ -3269,7 +3368,7 @@ function loadQuestion() {
         document.getElementById('question-box').innerHTML = renderOrderInteractiveQuestion_(q);
         renderOrderInteractiveState_();
         const practiceNav = document.getElementById('nav-group-practice');
-        if (practiceNav) practiceNav.style.marginTop = '0.75rem';
+        if (practiceNav) practiceNav.style.marginTop = '';
         updateNavButtons();
         updateQuizPalletUI();
         if (autoSpeechEnabled) speakCurrentQuestion();
@@ -3395,12 +3494,10 @@ function loadQuestion() {
         if (quizCard) quizCard.style.minHeight = '';
     }
 
-    // Riêng phần Ghép số: tách thanh điều hướng khỏi khối đáp án để giao diện thoáng hơn.
+    // Khoảng cách tới hàng điều hướng được chuẩn hóa toàn chương trình:
+    // 20px = 1/2 chiều cao nút 40px. Không đặt margin riêng theo từng dạng câu nữa.
     const practiceNav = document.getElementById('nav-group-practice');
-    if (practiceNav) {
-        const isComposeNav = !activeExamContext && !activeRoadmapContext && (pendingTopicQuiz?.selectedNumberActivity === 'compose' || q.explore_type === 'compose_words');
-        practiceNav.style.marginTop = isCarryLearning ? '0.25rem' : (isComposeNav ? '1rem' : '');
-    }
+    if (practiceNav) practiceNav.style.marginTop = '';
 
     restoreQuestionState(q);
     updateNavButtons();
@@ -3598,9 +3695,11 @@ function checkAnswer(selectedOpt) {
         const isCarryConcept = isCarryConceptQuestion_(q);
         const isCarryGuided = isCarryConcept && isCarryLearningGuided_();
         const isNeighborBasic = q.explore_type === 'number_line_neighbor';
+        const isMulDivVisual = q.explore_type === 'mul_div_table_visual';
         if (isOperationTerms) revealOperationTermsFeedback_(q);
         if (isCarryGuided) revealCarryConceptFeedback_(q);
         if (isNeighborBasic) revealNeighborRuleFeedback_(q);
+        if (isMulDivVisual) revealMulDivFeedback_();
 
         playAudio('correct');
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
@@ -3609,7 +3708,7 @@ function checkAnswer(selectedOpt) {
         // Các bài phản xạ ngắn và Cấp 2 tự thực hành có thể tự chuyển.
         // Riêng tên thành phần và Cấp 1 có hướng dẫn phải giữ màn hình để bé đọc lại cách làm.
         const currentTopicNum = Number(pendingTopicQuiz?.topicNum);
-        const shouldAutoAdvance = currentTopicNum >= 1 && currentTopicNum <= 4 && !isOperationTerms && !isCarryGuided && !isNeighborBasic;
+        const shouldAutoAdvance = currentTopicNum >= 1 && currentTopicNum <= 4 && !isOperationTerms && !isCarryGuided && !isNeighborBasic && !isMulDivVisual;
         if (shouldAutoAdvance) {
             setTimeout(() => {
                 if (userAnswers[currentQIndex] !== undefined) nextQuestion();
@@ -4767,11 +4866,11 @@ function renderBaiHocBottomNavToan2_(lesson, pageIndex, pageCount) {
     const count = Math.max(1, Number(pageCount) || 3);
     const idx = Math.max(0, Math.min(count - 1, Number(pageIndex) || 0));
     const prev = idx > 0
-        ? `<button onclick="openBaiHocPageToan2_(${idx-1})" class="px-4 md:px-5 py-2.5 rounded-xl bg-white border border-purple-200 text-purple-700 font-black text-sm md:text-base shadow-sm hover:bg-purple-50">← Trang trước</button>`
+        ? `<button onclick="openBaiHocPageToan2_(${idx-1})" class="h-10 px-4 md:px-5 py-0 rounded-xl bg-white border border-purple-200 text-purple-700 font-black text-sm md:text-base shadow-sm hover:bg-purple-50 flex items-center justify-center">← Trang trước</button>`
         : '<span></span>';
     const next = idx < count - 1
-        ? `<button onclick="openBaiHocPageToan2_(${idx+1})" class="px-5 md:px-6 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-sm md:text-base shadow-md hover:brightness-105">Trang tiếp →</button>`
-        : `<button onclick="openBaiHocPageToan2_(0)" class="px-4 md:px-5 py-2.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 font-black text-sm md:text-base">↺ Xem lại bài</button>`;
+        ? `<button onclick="openBaiHocPageToan2_(${idx+1})" class="h-10 px-5 md:px-6 py-0 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-sm md:text-base shadow-md hover:brightness-105 flex items-center justify-center">Trang tiếp →</button>`
+        : `<button onclick="openBaiHocPageToan2_(0)" class="h-10 px-4 md:px-5 py-0 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 font-black text-sm md:text-base flex items-center justify-center">↺ Xem lại bài</button>`;
     return `<div class="flex items-center justify-between gap-3 pt-4 mt-4 border-t border-pink-100">${prev}<div class="text-sm md:text-base font-black text-slate-400">${idx+1}/${count}</div>${next}</div>`;
 }
 
