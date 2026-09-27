@@ -896,6 +896,16 @@ function returnToLevel3FromHeader() {
             return renderExploreNumberActivities(pendingTopicQuiz.selectedNumberScopeLabel, pendingTopicQuiz.selectedNumberScopePool);
         }
         if (Number(pendingTopicQuiz.topicNum) === 2) {
+            // Mục 2.1 có thêm tầng chọn 3 level. Khi bấm breadcrumb "2.1",
+            // phải quay về đúng màn hình 3 level của 2.1, không nhảy ra màn hình Mục 2.
+            if (pendingTopicQuiz.selectedCompareBranch === 'neighbors') {
+                const pool = pendingTopicQuiz.neighborLevelPool || getTopic2BranchPool_(pendingTopicQuiz.questions || [], 'neighbors');
+                return renderTopic2NeighborLevels_(pool);
+            }
+            if (pendingTopicQuiz.selectedCompareBranch === 'compare') {
+                const pool = pendingTopicQuiz.compareLevelPool || getTopic2BranchPool_(pendingTopicQuiz.questions || [], 'compare');
+                return renderTopic2CompareLevels_(pool);
+            }
             return renderExploreComparisonBranches(2, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
         }
         const label = document.getElementById('header-level3-title')?.textContent || '';
@@ -910,6 +920,14 @@ function returnToLevel3FromHeader() {
 function returnToLevel4FromHeader() {
     stopSpeaking();
     if (activeRoadmapContext) return openRoadmap(activeRoadmapContext.semester || 1);
+    if (Number(pendingTopicQuiz?.topicNum) === 2 && pendingTopicQuiz?.selectedCompareBranch === 'neighbors') {
+        const pool = pendingTopicQuiz.neighborLevelPool || getTopic2BranchPool_(pendingTopicQuiz.questions || [], 'neighbors');
+        return renderTopic2NeighborLevels_(pool);
+    }
+    if (Number(pendingTopicQuiz?.topicNum) === 2 && pendingTopicQuiz?.selectedCompareBranch === 'compare') {
+        const pool = pendingTopicQuiz.compareLevelPool || getTopic2BranchPool_(pendingTopicQuiz.questions || [], 'compare');
+        return renderTopic2CompareLevels_(pool);
+    }
     return returnToLevel3FromHeader();
 }
 
@@ -1548,7 +1566,7 @@ const EXPLORE_COMPARE_BRANCHES = [
         key: 'compare',
         label: '2.2 Phép so sánh',
         icon: '⚖️',
-        desc: 'So sánh hai số, chọn >, <, = và nhận biết số lớn hơn, bé hơn.',
+        desc: 'Tách riêng so sánh số có 2 chữ số và 3 chữ số; có câu suy luận phù hợp từng mức.',
         types: ['compare_pair']
     },
     {
@@ -1607,6 +1625,114 @@ function renderExploreComparisonBranches(topicNum, topicName, pool) {
     switchAppView('view-dashboard-grid');
 }
 
+const TOPIC2_NEIGHBOR_LEVELS = {
+    1: { icon: '🚂', title: 'Cấp 1 · Tia số trực quan', desc: 'Nhìn tia số, nhận biết liền trước/liền sau; làm đúng sẽ thấy ngay quy tắc −1 hoặc +1.' },
+    2: { icon: '🧩', title: 'Cấp 2 · Suy luận 2 bước', desc: 'Tìm số gốc từ một đặc điểm, rồi xác định số liền trước hoặc liền sau.' },
+    3: { icon: '🧠', title: 'Cấp 3 · Suy luận 3 bước', desc: 'Kết hợp hai điều kiện để tìm số gốc, rồi mới xác định số liền trước hoặc liền sau.' }
+};
+
+function renderTopic2NeighborLevels_(pool) {
+    if (!pendingTopicQuiz) return;
+    const sourcePool = Array.isArray(pool) ? pool : [];
+    pendingTopicQuiz.neighborLevelPool = sourcePool;
+    pendingTopicQuiz.selectedNeighborLevel = null;
+
+    const container = document.getElementById('view-dashboard-grid');
+    if (!container) return;
+    container.className = 'w-full grid grid-cols-1 sm:grid-cols-3 gap-2.5';
+    container.innerHTML = [1,2,3].map((level, idx) => {
+        const meta = TOPIC2_NEIGHBOR_LEVELS[level];
+        const palette = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
+        const count = sourcePool.filter(q => Number(q.explore_level) === level).length;
+        return `
+            <button onclick="selectTopic2NeighborLevel_(${level})" class="p-4 ${palette.card} border-2 rounded-2xl text-left shadow-sm pastel-btn min-h-[126px] flex flex-col justify-between ${count ? '' : 'opacity-50 cursor-not-allowed'}" ${count ? '' : 'disabled'}>
+                <div class="flex items-start justify-between gap-3">
+                    <span class="text-base md:text-lg font-black leading-snug"><span class="mr-2">${meta.icon}</span>${escapeHtml(meta.title)}</span>
+                    <span class="text-xs font-extrabold ${palette.badge} px-2.5 py-0.5 rounded-full border shrink-0">${count} câu</span>
+                </div>
+                <span class="mt-2 text-xs md:text-sm font-bold text-slate-500 leading-snug">${escapeHtml(meta.desc)}</span>
+            </button>`;
+    }).join('');
+
+    const { topicNum, topicName } = pendingTopicQuiz;
+    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', '2.1 Số liền trước, số liền sau');
+    switchAppView('view-dashboard-grid');
+}
+
+function selectTopic2NeighborLevel_(level) {
+    stopSpeaking();
+    if (!pendingTopicQuiz) return;
+    const sourcePool = pendingTopicQuiz.neighborLevelPool || getTopic2BranchPool_(pendingTopicQuiz.questions || [], 'neighbors');
+    const pool = sourcePool.filter(q => Number(q.explore_level) === Number(level));
+    if (!pool.length) return showAppNotice('Cấp này đang được cập nhật thêm câu hỏi nhé bé!');
+
+    pendingTopicQuiz.selectedNeighborLevel = Number(level);
+    practiceCycleRawPool = [...pool];
+    const firstCycleQuestions = shuffleArray([...pool]);
+    const meta = TOPIC2_NEIGHBOR_LEVELS[level];
+    const { topicNum, topicName } = pendingTopicQuiz;
+    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', '2.1 Số liền trước, số liền sau', meta.title);
+    startTopicQuiz(topicNum, `${topicName} - 2.1 - ${meta.title}`, firstCycleQuestions, `topic2-neighbors-l${level}`);
+}
+
+
+const TOPIC2_COMPARE_LEVELS = {
+    1: {
+        icon: '🔢',
+        title: '2 chữ số · So sánh & suy luận',
+        desc: 'So sánh số có 2 chữ số; xen câu suy luận để bé phải xác định số trước khi chọn dấu.'
+    },
+    2: {
+        icon: '💯',
+        title: '3 chữ số · So sánh',
+        desc: 'Luyện điền < hoặc > với số có 3 chữ số; xen một số câu suy luận để tránh làm máy móc.'
+    }
+};
+
+function renderTopic2CompareLevels_(pool) {
+    if (!pendingTopicQuiz) return;
+    const sourcePool = Array.isArray(pool) ? pool : [];
+    pendingTopicQuiz.compareLevelPool = sourcePool;
+    pendingTopicQuiz.selectedCompareLevel = null;
+
+    const container = document.getElementById('view-dashboard-grid');
+    if (!container) return;
+    container.className = 'w-full grid grid-cols-1 sm:grid-cols-2 gap-2.5';
+    container.innerHTML = [1,2].map((level, idx) => {
+        const meta = TOPIC2_COMPARE_LEVELS[level];
+        const palette = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
+        const count = sourcePool.filter(q => Number(q.explore_level) === level).length;
+        return `
+            <button onclick="selectTopic2CompareLevel_(${level})" class="p-4 ${palette.card} border-2 rounded-2xl text-left shadow-sm pastel-btn min-h-[126px] flex flex-col justify-between ${count ? '' : 'opacity-50 cursor-not-allowed'}" ${count ? '' : 'disabled'}>
+                <div class="flex items-start justify-between gap-3">
+                    <span class="text-base md:text-lg font-black leading-snug"><span class="mr-2">${meta.icon}</span>${escapeHtml(meta.title)}</span>
+                    <span class="text-xs font-extrabold ${palette.badge} px-2.5 py-0.5 rounded-full border shrink-0">${count} câu</span>
+                </div>
+                <span class="mt-2 text-xs md:text-sm font-bold text-slate-500 leading-snug">${escapeHtml(meta.desc)}</span>
+            </button>`;
+    }).join('');
+
+    const { topicNum, topicName } = pendingTopicQuiz;
+    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', '2.2 Phép so sánh');
+    switchAppView('view-dashboard-grid');
+}
+
+function selectTopic2CompareLevel_(level) {
+    stopSpeaking();
+    if (!pendingTopicQuiz) return;
+    const sourcePool = pendingTopicQuiz.compareLevelPool || getTopic2BranchPool_(pendingTopicQuiz.questions || [], 'compare');
+    const pool = sourcePool.filter(q => Number(q.explore_level) === Number(level));
+    if (!pool.length) return showAppNotice('Mục này đang được cập nhật thêm câu hỏi nhé bé!');
+
+    pendingTopicQuiz.selectedCompareLevel = Number(level);
+    practiceCycleRawPool = [...pool];
+    const firstCycleQuestions = shuffleArray([...pool]);
+    const meta = TOPIC2_COMPARE_LEVELS[level];
+    const { topicNum, topicName } = pendingTopicQuiz;
+    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '🔢', '2.2 Phép so sánh', meta.title);
+    startTopicQuiz(topicNum, `${topicName} - 2.2 - ${meta.title}`, firstCycleQuestions, `topic2-compare-l${level}`);
+}
+
 function selectExploreComparisonBranch(key) {
     stopSpeaking();
     if (!pendingTopicQuiz) return;
@@ -1618,6 +1744,14 @@ function selectExploreComparisonBranch(key) {
 
     pendingTopicQuiz.selectedCompareBranch = key;
     pendingTopicQuiz.selectedCompareBranchLabel = meta.label;
+
+    if (key === 'neighbors') {
+        return renderTopic2NeighborLevels_(pool);
+    }
+    if (key === 'compare') {
+        return renderTopic2CompareLevels_(pool);
+    }
+
     practiceCycleRawPool = [...pool];
     const firstCycleQuestions = shuffleArray([...pool]);
     const { topicNum, topicName } = pendingTopicQuiz;
@@ -2519,11 +2653,11 @@ function getCarryConceptMeta_(q) {
 function renderMakeTenTable_(anchor) {
     const rows = [[9,1],[8,2],[7,3],[6,4],[5,5]];
     return `<div class="w-full rounded-2xl border-2 border-amber-200 bg-amber-50/70 px-2.5 py-2 shadow-sm">
-        <div class="text-center text-sm md:text-base font-black text-amber-700 mb-1">BẢNG VỀ 10</div>
+        <div class="text-center text-base md:text-lg font-black text-amber-700 mb-1.5">BẢNG VỀ 10</div>
         <div class="space-y-0.5">${rows.map(([a,b]) => {
             const active = Number(anchor) === a;
-            return `<div class="rounded-xl border px-2 py-0.5 text-center text-base font-black transition-all ${active ? 'border-emerald-400 bg-emerald-100 text-emerald-800 shadow-sm scale-[1.02]' : 'border-amber-100 bg-white/80 text-slate-700'}">
-                <span class="${active ? 'text-rose-600' : ''}">${a}</span> + ${b} = <span class="${active ? 'text-emerald-700' : ''}">10</span>
+            return `<div class="rounded-xl border px-2 py-1 min-h-[35px] text-center text-lg md:text-xl font-black transition-all flex items-center justify-center ${active ? 'border-emerald-400 bg-emerald-100 text-emerald-800 shadow-sm scale-[1.02]' : 'border-amber-100 bg-white/80 text-slate-700'}">
+                <span class="${active ? 'text-rose-600' : ''}">${a}</span>&nbsp;+&nbsp;${b}&nbsp;=&nbsp;<span class="${active ? 'text-emerald-700' : ''}">10</span>
             </div>`;
         }).join('')}</div>
     </div>`;
@@ -2533,8 +2667,8 @@ function revealCarryConceptFeedback_(q) {
     if (!isCarryConceptQuestion_(q) || !isCarryLearningGuided_()) return;
     document.querySelectorAll('[data-carry-concept-feedback]').forEach(el => el.classList.remove('hidden', 'invisible'));
     document.querySelectorAll('[data-carry-one]').forEach(el => {
-        el.classList.remove('opacity-25', 'text-slate-300', 'border-slate-200', 'bg-slate-50');
-        el.classList.add('opacity-100', 'text-rose-600', 'border-rose-300', 'bg-rose-50');
+        el.classList.remove('opacity-25', 'text-slate-300', 'border-slate-200', 'bg-slate-50', 'text-rose-600', 'border-rose-300', 'bg-rose-50');
+        el.classList.add('opacity-100', 'text-blue-600', 'border-blue-300', 'bg-blue-50');
     });
 }
 
@@ -2575,10 +2709,13 @@ function buildCarryLearningPresentation_(q) {
     }
 
     const hintText = `Hãy tách <span class="text-rose-600">${splitNumber}</span> thành <span class="text-purple-600">${toTen} + ${remainder}</span>.`;
+    const borrowHintText = (type === 'vertical_carry_100' && op === '-')
+        ? `Mượn <span class="text-blue-600">1</span> chục: <span class="text-slate-800">${a % 10}</span> thành <span class="text-blue-600">${(a % 10) + 10}</span>, rồi tính <span class="text-slate-800">${(a % 10) + 10} − ${b % 10}</span>.`
+        : '';
 
     if (type === 'mental_carry_20') {
         const addTable = op === '+' ? renderMakeTenTable_(anchor) : '';
-        const mainCard = `<div class="relative rounded-2xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 px-4 py-2 text-center shadow-sm flex flex-col justify-start">
+        const mainCard = `<div class="relative min-h-[225px] rounded-2xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50/55 to-purple-50/55 px-4 py-2.5 text-center shadow-sm flex flex-col justify-start">
             ${speaker}
             <div class="text-3xl md:text-4xl font-black text-slate-800">${a} <span class="text-pink-500">${symbol}</span> ${b} <span class="text-purple-400">= ?</span></div>
             <div class="mt-2 rounded-xl border border-purple-200 bg-purple-50/75 px-3 py-2 text-base md:text-lg font-black text-slate-700">${hintText}</div>
@@ -2594,7 +2731,7 @@ function buildCarryLearningPresentation_(q) {
             </div>
         </div>`;
         const visual = op === '+'
-            ? `<div class="w-full max-w-5xl shrink-0 grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 items-start">${addTable}${mainCard}</div>`
+            ? `<div class="w-full max-w-5xl shrink-0 grid grid-cols-1 md:grid-cols-[200px_1fr] gap-3 items-stretch">${addTable}${mainCard}</div>`
             : `<div class="w-full max-w-3xl shrink-0">${mainCard}</div>`;
         return { prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true, visual };
     }
@@ -2617,12 +2754,13 @@ function buildCarryLearningPresentation_(q) {
                     <div></div><div class="text-xs text-pink-600 pb-0.5">CHỤC</div><div class="text-xs text-purple-600 pb-0.5">ĐƠN VỊ</div>
                     <div></div><div class="border border-pink-200 bg-pink-50 py-0.5 text-2xl md:text-3xl">${aT}</div><div class="border border-purple-200 bg-purple-50 py-0.5 text-2xl md:text-3xl">${aO}</div>
                     <div class="flex items-center justify-center text-2xl md:text-3xl text-pink-500">${symbol}</div><div class="border border-pink-200 bg-white py-0.5 text-2xl md:text-3xl">${bT}</div><div class="border border-purple-200 bg-white py-0.5 text-2xl md:text-3xl">${bO}</div>
-                    <div></div><div class="pt-1 flex items-center justify-center"><span data-carry-one class="inline-flex min-w-[32px] h-6 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-base font-black text-slate-300 opacity-25">1</span></div><div></div>
+                    <div></div><div class="pt-1 flex items-center justify-center"><span data-carry-one class="inline-flex min-w-[32px] h-6 items-center justify-center rounded-lg border border-blue-300 bg-blue-50 text-base font-black text-blue-600 opacity-100">1</span></div><div></div>
                     <div></div><div class="border-t-4 border-slate-700 bg-pink-50/50 py-0.5 text-2xl md:text-3xl text-slate-300">?</div><div class="border-t-4 border-slate-700 bg-purple-50/50 py-0.5 text-2xl md:text-3xl text-slate-300">?</div>
                 </div>
             </div>
             <div class="flex flex-col justify-center pr-1 md:pr-6">
                 <div class="rounded-xl border border-purple-200 bg-purple-50/75 px-3 py-1.5 text-base md:text-lg font-black text-slate-700">${hintText}</div>
+                ${borrowHintText ? `<div class="mt-1 rounded-xl border border-blue-200 bg-blue-50/80 px-3 py-1.5 text-base md:text-lg font-black text-slate-700">${borrowHintText}</div>` : ''}
                 <div data-carry-concept-feedback class="invisible mt-1.5 space-y-1">
                     <div class="rounded-xl border border-sky-200 bg-sky-50 px-3 py-1 text-sm md:text-base font-extrabold text-slate-700">${onesLine}</div>
                     <div class="rounded-xl border border-pink-200 bg-pink-50 px-3 py-1 text-sm md:text-base font-extrabold text-slate-700">${tensLine}</div>
@@ -2635,6 +2773,11 @@ function buildCarryLearningPresentation_(q) {
         ? `<div class="w-full max-w-5xl md:h-[250px] shrink-0 grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 items-stretch">${addTable}${mainCard}</div>`
         : `<div class="w-full max-w-4xl md:h-[250px] shrink-0">${mainCard}</div>`;
     return { prompt: '', hidePrompt: true, inlineSpeaker: true, compactAnswers: true, isCarryLearning: true, visual };
+}
+
+function revealNeighborRuleFeedback_(q) {
+    if (!q || q.explore_type !== 'number_line_neighbor') return;
+    document.querySelectorAll('[data-neighbor-rule-feedback]').forEach(el => el.classList.remove('hidden'));
 }
 
 function getExploreMathPresentation(q) {
@@ -2767,10 +2910,15 @@ function getExploreMathPresentation(q) {
     if (isTopic2Explore && q.explore_type) {
         switch (q.explore_type) {
             case 'number_line_neighbor': {
-                prompt = raw;
                 const min = Number(vd.min ?? 0), max = Number(vd.max ?? min+6), focus=Number(vd.focus);
+                const direction = String(vd.direction || 'before') === 'after' ? 'after' : 'before';
+                const relation = direction === 'before' ? 'trước' : 'sau';
+                const answer = direction === 'before' ? focus - 1 : focus + 1;
+                const sign = direction === 'before' ? '−' : '+';
+                prompt = `Bé ơi, hãy tìm số liền ${relation} của ${focus} nhé!`;
+                promptHtml = `Bé ơi, hãy tìm số liền <span class="text-rose-600 font-black">${relation}</span> của ${focus} nhé!`;
                 const vals=[]; for(let n=min;n<=max;n++) vals.push(n);
-                visual = card(`<div class="flex items-center justify-center overflow-hidden">${vals.map((x,i)=>`<span class="w-11 h-11 rounded-full flex items-center justify-center font-black text-base md:text-lg ${x===focus?'bg-pink-500 text-white ring-4 ring-pink-100':'bg-white border-2 border-purple-200 text-purple-700'}">${x}</span>${i<vals.length-1?'<i class="w-5 md:w-8 h-[3px] bg-purple-200"></i>':''}`).join('')}</div>`);
+                visual = card(`<div class="flex items-center justify-center overflow-hidden">${vals.map((x,i)=>`<span class="w-11 h-11 rounded-full flex items-center justify-center font-black text-base md:text-lg ${x===focus?'bg-pink-500 text-white ring-4 ring-pink-100':'bg-white border-2 border-purple-200 text-purple-700'}">${x}</span>${i<vals.length-1?'<i class="w-5 md:w-8 h-[3px] bg-purple-200"></i>':''}`).join('')}</div><div data-neighbor-rule-feedback class="hidden mt-3 rounded-2xl border-2 border-emerald-200 bg-emerald-50 px-4 py-2 text-xl md:text-2xl font-black text-emerald-700">${answer} = ${focus} ${sign} 1</div>`);
                 break;
             }
             case 'compare_pair': {
@@ -3197,7 +3345,7 @@ function loadQuestion() {
             ${practiceSpeakerBtnHtml}
         </div>`}
         
-        <div class="w-full ${isCarryLearning ? 'max-w-3xl' : (isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-1 md:grid-cols-2 gap-2.5'))} ${isCarryLearning ? 'mt-2' : 'mt-1'}">
+        <div class="w-full ${isCarryLearning ? 'max-w-2xl' : (isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-1 md:grid-cols-2 gap-2.5'))} ${isCarryLearning ? 'mt-2' : 'mt-1'}">
     `;
 
     q.options.forEach((opt, idx) => {
@@ -3215,7 +3363,7 @@ function loadQuestion() {
                 </button>`;
         } else {
             html += `
-                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-2 md:py-2.5 min-h-[46px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-2.5 md:p-3 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-sm md:text-base' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
+                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-1.5 md:py-2 min-h-[42px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-2.5 md:p-3 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-sm md:text-base' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
                     <span>${exploreMath ? '' : `<strong class="text-pink-600 mr-2 text-base md:text-lg">${letter}.</strong>`} ${escapeHtml(formattedOpt)}</span>
                     <span class="option-icon text-pink-500 text-base md:text-lg"></span>
                 </button>`;
@@ -3232,12 +3380,12 @@ function loadQuestion() {
     // không thay đổi index hay chiều cao các phần học khác.
     if (isCarryLearning) {
         const guidedCarry = isCarryLearningGuided_();
-        questionBox.style.minHeight = guidedCarry ? '270px' : '210px';
+        questionBox.style.minHeight = guidedCarry ? '300px' : '210px';
         questionBox.style.justifyContent = 'flex-start';
         questionBox.style.paddingTop = '0';
         questionBox.style.paddingBottom = '0';
         const quizCard = questionBox.closest('.pastel-card');
-        if (quizCard) quizCard.style.minHeight = guidedCarry ? '515px' : '405px';
+        if (quizCard) quizCard.style.minHeight = guidedCarry ? '535px' : '405px';
     } else {
         questionBox.style.minHeight = '';
         questionBox.style.justifyContent = '';
@@ -3449,8 +3597,10 @@ function checkAnswer(selectedOpt) {
         const isOperationTerms = q.explore_type === 'operation_terms';
         const isCarryConcept = isCarryConceptQuestion_(q);
         const isCarryGuided = isCarryConcept && isCarryLearningGuided_();
+        const isNeighborBasic = q.explore_type === 'number_line_neighbor';
         if (isOperationTerms) revealOperationTermsFeedback_(q);
         if (isCarryGuided) revealCarryConceptFeedback_(q);
+        if (isNeighborBasic) revealNeighborRuleFeedback_(q);
 
         playAudio('correct');
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
@@ -3459,7 +3609,7 @@ function checkAnswer(selectedOpt) {
         // Các bài phản xạ ngắn và Cấp 2 tự thực hành có thể tự chuyển.
         // Riêng tên thành phần và Cấp 1 có hướng dẫn phải giữ màn hình để bé đọc lại cách làm.
         const currentTopicNum = Number(pendingTopicQuiz?.topicNum);
-        const shouldAutoAdvance = currentTopicNum >= 1 && currentTopicNum <= 4 && !isOperationTerms && !isCarryGuided;
+        const shouldAutoAdvance = currentTopicNum >= 1 && currentTopicNum <= 4 && !isOperationTerms && !isCarryGuided && !isNeighborBasic;
         if (shouldAutoAdvance) {
             setTimeout(() => {
                 if (userAnswers[currentQIndex] !== undefined) nextQuestion();
