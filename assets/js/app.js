@@ -13,7 +13,7 @@ const TOPICS_CONFIG = [
     { id: 9, title: "9. Toán có lời văn", desc: "Thêm bớt, nhiều hơn ít hơn, giải 2 bước tính", icon: "📝", color: "rose" },
     { id: 10, title: "10. Thống kê và xác suất", desc: "Kiểm đếm, biểu đồ tranh, khả năng xảy ra", icon: "📊", color: "blue" },
     { id: 11, title: "11. Toán nâng cao", desc: "Tính nhanh, cấu tạo số, hình học và IQ nâng cao", icon: "🧠", color: "yellow" },
-    { id: 12, title: "12. Vườn thơ toán học", desc: "50 bài thơ ngắn bao quát kiến thức Toán 2", icon: "🌷", color: "rose", poetryGarden: true }
+    { id: 12, title: "12. Math Lab – Toán tư duy Mỹ", desc: "Khám phá • Mô hình • Nhiều cách giải", icon: "✨", color: "fuchsia", mathLab: true }
 ];
 
 const SUBTOPIC_PALETTES = [
@@ -134,6 +134,25 @@ let autoSpeechEnabled = localStorage.getItem('autoSpeechEnabled') !== 'false';
 const examsCache = {};
 let poetryGardenCache = null;
 let poetryGardenState = { category: null, poemIndex: null };
+
+// Math Lab - mục 12: một lối học song song theo hướng number sense, mô hình và nhiều chiến lược.
+const MATH_LAB_DATA_FILE = 'assets/data/math_lab_toan_2_12_1.json';
+let mathLabCache = null;
+let mathLabState = {
+    view: 'home',
+    trackCode: null,
+    journeyIndex: null,
+    activityIndex: 0,
+    selectedIndex: null,
+    selectedMulti: [],
+    build: { hundreds: 0, tens: 0, ones: 0 },
+    rangeValue: null,
+    orderPicked: [],
+    tradeDone: false,
+    grouped: false,
+    feedback: null,
+    hintLevel: 0
+};
 
 // ==========================================
 // BÀI HỌC <-> BÀI TẬP THEO SGK TOÁN 2
@@ -583,7 +602,7 @@ async function renderDashboardGrid() {
     TOPICS_CONFIG.forEach(t => {
         const topicObj = topicsData.find(item => Number(item.topic_id) === Number(t.id));
         const totalCount = topicObj && topicObj.questions ? topicObj.questions.length : 0;
-        const countLabel = Number(t.id) === 12 ? '50 bài thơ' : (totalCount > 0 ? `${totalCount} câu` : 'Đang cập nhật');
+        const countLabel = Number(t.id) === 12 ? '72 hành trình' : (totalCount > 0 ? `${totalCount} câu` : 'Đang cập nhật');
 
         const iconHtml = t.isCustomTextIcon 
             ? `<div class="w-8 h-8 bg-rose-100 rounded-xl flex items-center justify-center text-[11px] font-black text-rose-600 shadow-inner group-hover:scale-110 transition-transform shrink-0 tracking-tight">S/X</div>`
@@ -605,7 +624,7 @@ async function renderDashboardGrid() {
         `;
     });
 
-    // Khám phá hiển thị 11 chuyên mục học + Vườn thơ; Ôn tập và Đề thi có tab riêng.
+    // Khám phá hiển thị 11 chuyên mục truyền thống + Math Lab; Ôn tập và Đề thi có tab riêng.
     container.innerHTML = html;
 }
 
@@ -870,7 +889,7 @@ function updateNavTabs(level2Title, level2Icon, level3Title, level4Title) {
         const btn2 = tab2.querySelector('button');
         if (t2) t2.textContent = level2Title;
         if (i2) i2.textContent = level2Icon || getActiveMainModuleMeta_().icon;
-        if (btn2) btn2.setAttribute('onclick', Number(activeTopicId) === 12 ? 'openPoetryGarden()' : 'returnToTopicLecture()');
+        if (btn2) btn2.setAttribute('onclick', Number(activeTopicId) === 12 ? 'openMathLab()' : 'returnToTopicLecture()');
         tab2.classList.remove('hidden'); tab2.classList.add('flex');
     }
     if (homeBtn) homeBtn.classList.add('opacity-80', 'hover:opacity-100');
@@ -890,7 +909,10 @@ function updateNavTabs(level2Title, level2Icon, level3Title, level4Title) {
 
 function returnToLevel3FromHeader() {
     stopSpeaking();
-    if (Number(activeTopicId) === 12 && poetryGardenState.category !== null) return renderPoetryCategory(poetryGardenState.category);
+    if (Number(activeTopicId) === 12) {
+        if (mathLabState.trackCode === '12.1' && mathLabCache) return renderMathLabTrack_(mathLabCache);
+        return openMathLab();
+    }
     if (pendingTopicQuiz) {
         if (Number(pendingTopicQuiz.topicNum) === 1 && pendingTopicQuiz.selectedNumberScope && pendingTopicQuiz.selectedNumberScopePool) {
             return renderExploreNumberActivities(pendingTopicQuiz.selectedNumberScopeLabel, pendingTopicQuiz.selectedNumberScopePool);
@@ -919,6 +941,9 @@ function returnToLevel3FromHeader() {
 
 function returnToLevel4FromHeader() {
     stopSpeaking();
+    if (Number(activeTopicId) === 12 && mathLabState.journeyIndex !== null && mathLabCache) {
+        return renderMathLabActivity_();
+    }
     if (activeRoadmapContext) return openRoadmap(activeRoadmapContext.semester || 1);
     if (Number(pendingTopicQuiz?.topicNum) === 2 && pendingTopicQuiz?.selectedCompareBranch === 'neighbors') {
         const pool = pendingTopicQuiz.neighborLevelPool || getTopic2BranchPool_(pendingTopicQuiz.questions || [], 'neighbors');
@@ -935,8 +960,7 @@ function returnToTopicLecture() {
     stopSpeaking();
     clearInterval(quizTimerInterval);
     if (Number(activeTopicId) === 12) {
-        if (poetryGardenState.category !== null) return renderPoetryCategory(poetryGardenState.category);
-        return openPoetryGarden();
+        return openMathLab();
     }
     if (activeExamContext) {
         openExamHub();
@@ -1040,6 +1064,9 @@ function goHome() {
     activeExamContext = null;
     activeRoadmapContext = null;
     pendingTopicQuiz = null;
+    mathLabState.view = 'home';
+    mathLabState.trackCode = null;
+    mathLabState.journeyIndex = null;
     setMainTabActive_('discover');
     updateNavTabs(null, null, null);
     renderDashboardGrid();
@@ -1521,7 +1548,7 @@ function clickProgressOrExam(type) {
 function openTopic(topicNum, topicName, icon) {
     setAppShellRootMode_(false);
     stopSpeaking();
-    if (Number(topicNum) === 12) return openPoetryGarden();
+    if (Number(topicNum) === 12) return openMathLab();
     setMainTabActive_('discover');
     if (PREMIUM_TOPIC_IDS.has(Number(topicNum)) && !isPremiumUser()) {
         showPremiumAccessModal(topicName || 'Nội dung Premium');
@@ -2203,6 +2230,391 @@ function selectSubtopic(idx) {
     startTopicQuiz(topicNum, finalTitle, firstCycleQuestions, subLabel);
 }
 
+
+
+// ==========================================
+// 12. MATH LAB - TOÁN TƯ DUY MỸ
+// Khám phá • Mô hình • Nhiều cách giải
+// SGK Toán 2 là đích kiến thức; trải nghiệm học được thiết kế lại theo hướng
+// number sense, thao tác, mô hình trực quan, giải thích và transfer.
+// ==========================================
+const MATH_LAB_TRACKS_CONFIG = [
+    { code:'12.1', icon:'🔢', title:'Number Sense Lab – Cảm nhận số', journeys:10, ready:true,  desc:'Số đến 1000, giá trị hàng, nhiều cách biểu diễn, tia số và ước lượng.' },
+    { code:'12.2', icon:'➕', title:'Addition & Subtraction Lab', journeys:12, ready:false, desc:'Cộng trừ linh hoạt, làm 10, bù trừ, regrouping và nhiều chiến lược.' },
+    { code:'12.3', icon:'✖️', title:'Equal Groups Lab – Tư duy nhân chia', journeys:10, ready:false, desc:'Nhóm bằng nhau, array, bảng 2–5, chia đều và chia theo nhóm.' },
+    { code:'12.4', icon:'📏', title:'Measurement Lab – Đo lường & tiền', journeys:8, ready:false, desc:'Ước lượng, đo, đơn vị, khối lượng, dung tích và tiền Việt Nam.' },
+    { code:'12.5', icon:'⏰', title:'Time Lab – Thời gian & lịch', journeys:7, ready:false, desc:'Giờ, phút, ngày, tuần, tháng và đọc lịch trong tình huống thật.' },
+    { code:'12.6', icon:'📐', title:'Geometry Lab – Hình học & không gian', journeys:8, ready:false, desc:'Đường, hình phẳng, ghép hình, tưởng tượng không gian và hình khối.' },
+    { code:'12.7', icon:'🧩', title:'Patterns & Unknowns Lab', journeys:6, ready:false, desc:'Quy luật, số ẩn, dấu bằng như quan hệ và suy luận ngược.' },
+    { code:'12.8', icon:'📊', title:'Data & Chance Lab', journeys:5, ready:false, desc:'Thu thập, phân loại, biểu đồ tranh và khả năng xảy ra.' },
+    { code:'12.9', icon:'💡', title:'Problem Solving Studio', journeys:6, ready:false, desc:'Mô hình hóa bài toán, nhiều cách giải, giải thích và thuyết phục.' }
+];
+
+function ensureMathLabStyles_() {
+    if (document.getElementById('math-lab-style')) return;
+    const style = document.createElement('style');
+    style.id = 'math-lab-style';
+    style.textContent = `
+        .ml-hero{background:linear-gradient(135deg,#fff7ff 0%,#f5f3ff 46%,#eefcff 100%);border:2px solid #ead7ff;border-radius:28px;padding:20px 22px;box-shadow:0 8px 26px rgba(126,34,206,.06)}
+        .ml-kicker{font-size:.72rem;font-weight:1000;letter-spacing:.24em;text-transform:uppercase;color:#c026d3}
+        .ml-track-card,.ml-journey-card{border:2px solid #ead7ff;border-radius:24px;background:rgba(255,255,255,.96);box-shadow:0 4px 14px rgba(99,102,241,.06);transition:.18s ease}
+        .ml-track-card:hover,.ml-journey-card:hover{transform:translateY(-2px);border-color:#d8b4fe;box-shadow:0 10px 24px rgba(168,85,247,.11)}
+        .ml-track-card.is-soon{opacity:.72;cursor:default}
+        .ml-progress{height:7px;border-radius:999px;background:#f1f5f9;overflow:hidden}.ml-progress>i{display:block;height:100%;background:linear-gradient(90deg,#d946ef,#8b5cf6,#38bdf8);border-radius:inherit}
+        .ml-teacher{background:linear-gradient(135deg,#fdf4ff,#f5f3ff);border:1.5px solid #e9d5ff;border-radius:20px;padding:12px 14px;color:#6b21a8;font-weight:800;line-height:1.45}
+        .ml-prompt{font-weight:1000;color:#0f172a;font-size:clamp(1.05rem,2vw,1.35rem);line-height:1.42}
+        .ml-choice{width:100%;min-height:58px;border:2px solid #e2e8f0;border-radius:18px;background:#fff;padding:10px 12px;font-weight:900;color:#334155;text-align:left;transition:.15s ease}
+        .ml-choice:hover{border-color:#c084fc;background:#faf5ff}.ml-choice.is-selected{border-color:#a855f7;background:#f3e8ff;color:#6b21a8;box-shadow:0 0 0 3px rgba(168,85,247,.08)}
+        .ml-choice.is-correct{border-color:#34d399;background:#ecfdf5;color:#047857}.ml-choice.is-wrong{border-color:#fb7185;background:#fff1f2;color:#be123c}
+        .ml-base10{display:flex;align-items:flex-end;justify-content:center;gap:9px;flex-wrap:wrap;min-height:96px;padding:12px;border-radius:20px;background:#f8fafc;border:1.5px dashed #cbd5e1}
+        .ml-hundred{width:64px;height:64px;border-radius:8px;border:2px solid #38bdf8;background-color:#e0f2fe;background-image:linear-gradient(#bae6fd 1px,transparent 1px),linear-gradient(90deg,#bae6fd 1px,transparent 1px);background-size:6.4px 6.4px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+        .ml-ten{width:12px;height:64px;border-radius:5px;border:2px solid #a78bfa;background:repeating-linear-gradient(to bottom,#ede9fe 0 5px,#c4b5fd 5px 6px)}
+        .ml-one{width:15px;height:15px;border-radius:4px;border:2px solid #f59e0b;background:#fef3c7}
+        .ml-block-group{display:flex;align-items:flex-end;gap:4px;flex-wrap:wrap;justify-content:center}
+        .ml-counter{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;border-radius:18px;background:#f8fafc;border:1.5px solid #e2e8f0}.ml-counter button{width:38px;height:38px;border-radius:12px;background:#fff;border:2px solid #ddd6fe;color:#7c3aed;font-size:1.2rem;font-weight:1000}.ml-counter strong{min-width:34px;text-align:center;font-size:1.25rem;color:#312e81}
+        .ml-number-line{position:relative;padding:24px 8px 8px}.ml-number-line input[type=range]{width:100%;accent-color:#a855f7}.ml-number-line-labels{display:flex;justify-content:space-between;font-weight:900;color:#64748b;font-size:.8rem}.ml-number-line-value{text-align:center;font-size:1.35rem;font-weight:1000;color:#7e22ce;margin-bottom:4px}
+        .ml-dot{width:10px;height:10px;border-radius:50%;background:#a78bfa;display:inline-block;margin:2px}.ml-dotbox{max-width:420px;margin:auto;text-align:center;padding:14px;border-radius:20px;background:#faf5ff;border:1.5px dashed #d8b4fe}
+        .ml-feedback{border-radius:18px;padding:12px 14px;font-weight:900;line-height:1.45}.ml-feedback.ok{background:#ecfdf5;border:1.5px solid #6ee7b7;color:#047857}.ml-feedback.no{background:#fff1f2;border:1.5px solid #fda4af;color:#be123c}
+        .ml-hint{background:#fffbeb;border:1.5px solid #fde68a;color:#92400e;border-radius:16px;padding:10px 12px;font-weight:800}
+        .ml-step-dot{width:9px;height:9px;border-radius:999px;background:#e2e8f0}.ml-step-dot.done{background:#34d399}.ml-step-dot.current{width:22px;background:#a855f7}
+        .ml-chip{padding:7px 11px;border-radius:999px;background:#f5f3ff;border:1.5px solid #ddd6fe;color:#6d28d9;font-weight:900}
+        @media(max-width:640px){.ml-hero{padding:16px}.ml-hundred{width:54px;height:54px;background-size:5.4px 5.4px}.ml-ten{height:54px}.ml-track-card,.ml-journey-card{border-radius:20px}}
+    `;
+    document.head.appendChild(style);
+}
+
+async function loadMathLabData_() {
+    if (mathLabCache) return mathLabCache;
+    const res = await fetch(MATH_LAB_DATA_FILE);
+    if (!res.ok) throw new Error('Không thể tải dữ liệu Math Lab 12.1');
+    mathLabCache = await res.json();
+    return mathLabCache;
+}
+
+function mathLabProgress_() {
+    try { return JSON.parse(localStorage.getItem('mathLabG2ProgressV1') || '{}') || {}; }
+    catch (_) { return {}; }
+}
+function mathLabMarkDone_(activityId) {
+    const p = mathLabProgress_();
+    p[activityId] = { done:true, at:new Date().toISOString() };
+    localStorage.setItem('mathLabG2ProgressV1', JSON.stringify(p));
+}
+function mathLabJourneyProgress_(journey) {
+    const p = mathLabProgress_();
+    const acts = journey?.activities || [];
+    const done = acts.filter(a => p[a.id]?.done).length;
+    return { done, total:acts.length, pct: acts.length ? Math.round(done * 100 / acts.length) : 0 };
+}
+function mathLabTotalDone_(data) {
+    const p = mathLabProgress_();
+    const acts = (data?.journeys || []).flatMap(j => j.activities || []);
+    return { done:acts.filter(a => p[a.id]?.done).length, total:acts.length };
+}
+function resetMathLabActivityState_() {
+    mathLabState.selectedIndex = null;
+    mathLabState.selectedMulti = [];
+    mathLabState.build = { hundreds:0, tens:0, ones:0 };
+    mathLabState.rangeValue = null;
+    mathLabState.orderPicked = [];
+    mathLabState.tradeDone = false;
+    mathLabState.grouped = false;
+    mathLabState.feedback = null;
+    mathLabState.hintLevel = 0;
+}
+
+async function openMathLab() {
+    setAppShellRootMode_(false);
+    stopSpeaking();
+    ensureMathLabStyles_();
+    activeTopicId = 12;
+    activeExamContext = null;
+    activeRoadmapContext = null;
+    pendingTopicQuiz = null;
+    setMainTabActive_('discover');
+    mathLabState.view = 'home';
+    mathLabState.trackCode = null;
+    mathLabState.journeyIndex = null;
+    updateNavTabs('12. Math Lab – Toán tư duy Mỹ', '✨', null);
+    showLoadingOverlay('Đang mở Math Lab...');
+    try {
+        const data = await loadMathLabData_();
+        hideLoadingOverlay();
+        renderMathLabHome_(data);
+    } catch (err) {
+        hideLoadingOverlay();
+        showAppNotice(err.message || 'Không tải được Math Lab');
+    }
+}
+
+function renderMathLabHome_(data) {
+    ensureMathLabStyles_();
+    const container = document.getElementById('view-dashboard-grid');
+    if (!container) return;
+    const total = MATH_LAB_TRACKS_CONFIG.reduce((n,t)=>n+t.journeys,0);
+    const ready = MATH_LAB_TRACKS_CONFIG.filter(t=>t.ready).reduce((n,t)=>n+t.journeys,0);
+    container.className = 'w-full grid grid-cols-1 md:grid-cols-2 gap-3';
+    const tracksHtml = MATH_LAB_TRACKS_CONFIG.map(t => {
+        const active = t.ready;
+        const progress = t.code === '12.1' ? mathLabTotalDone_(data) : {done:0,total:0};
+        const pct = progress.total ? Math.round(progress.done*100/progress.total) : 0;
+        return `<button ${active ? `onclick="openMathLabTrack('${t.code}')"` : `onclick="showAppNotice('Lab này đang được biên soạn. Bé khám phá 12.1 trước nhé!')"`} class="ml-track-card ${active?'':'is-soon'} p-4 text-left min-h-[142px]">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start gap-3 min-w-0"><div class="w-11 h-11 rounded-2xl bg-fuchsia-50 border border-fuchsia-100 flex items-center justify-center text-2xl shrink-0">${t.icon}</div><div class="min-w-0"><div class="text-[11px] font-black text-fuchsia-500">${t.code}</div><h3 class="text-base md:text-lg font-black text-slate-800 leading-tight mt-0.5">${escapeHtml(t.title)}</h3></div></div>
+                <span class="ml-chip text-[11px] shrink-0">${active ? `${t.journeys} hành trình` : 'Sắp ra mắt'}</span>
+            </div>
+            <p class="text-sm font-bold text-slate-500 mt-3 leading-relaxed">${escapeHtml(t.desc)}</p>
+            ${t.code === '12.1' ? `<div class="mt-3"><div class="flex justify-between text-[11px] font-black text-slate-400 mb-1"><span>${progress.done}/${progress.total} trải nghiệm đã hoàn thành</span><span>${pct}%</span></div><div class="ml-progress"><i style="width:${pct}%"></i></div></div>` : ''}
+        </button>`;
+    }).join('');
+    container.innerHTML = `
+        <section class="ml-hero md:col-span-2">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div><div class="ml-kicker">Math Lab • Grade 2</div><h2 class="text-2xl md:text-4xl font-black text-slate-900 mt-1">Toán tư duy Mỹ</h2><p class="text-sm md:text-base font-bold text-slate-600 mt-2 max-w-3xl leading-relaxed">Cùng kiến thức Toán 2 Việt Nam, nhưng con học bằng khám phá, thao tác, mô hình, giải thích và nhiều cách giải.</p><p class="font-black text-fuchsia-600 mt-3">Khám phá • Mô hình • Nhiều cách giải</p></div>
+                <div class="rounded-2xl bg-white/80 border border-violet-200 px-5 py-3 text-center font-black text-violet-700 min-w-[210px]"><div class="text-2xl">${total}</div><div class="text-xs mt-1">hành trình trong khung chương trình</div><div class="text-[11px] text-slate-400 mt-1">${ready} hành trình đang mở</div></div>
+            </div>
+        </section>${tracksHtml}`;
+    updateNavTabs('12. Math Lab – Toán tư duy Mỹ', '✨', null);
+    switchAppView('view-dashboard-grid');
+}
+
+async function openMathLabTrack(code) {
+    if (code !== '12.1') return showAppNotice('Lab này đang được biên soạn. Bé khám phá 12.1 trước nhé!');
+    stopSpeaking();
+    showLoadingOverlay('Đang chuẩn bị Number Sense Lab...');
+    try {
+        const data = await loadMathLabData_();
+        hideLoadingOverlay();
+        mathLabState.view = 'track';
+        mathLabState.trackCode = '12.1';
+        mathLabState.journeyIndex = null;
+        renderMathLabTrack_(data);
+    } catch (err) {
+        hideLoadingOverlay();
+        showAppNotice(err.message || 'Không tải được Number Sense Lab');
+    }
+}
+
+function renderMathLabTrack_(data) {
+    const container = document.getElementById('view-dashboard-grid');
+    if (!container) return;
+    mathLabState.view = 'track';
+    mathLabState.trackCode = '12.1';
+    mathLabState.journeyIndex = null;
+    const total = mathLabTotalDone_(data);
+    const pctAll = total.total ? Math.round(total.done*100/total.total) : 0;
+    container.className = 'w-full grid grid-cols-1 md:grid-cols-2 gap-3';
+    const cards = (data.journeys || []).map((j, idx) => {
+        const p = mathLabJourneyProgress_(j);
+        const status = p.pct === 100 ? 'Hoàn thành' : p.done ? 'Đang khám phá' : 'Bắt đầu';
+        return `<button onclick="openMathLabJourney(${idx})" class="ml-journey-card p-4 text-left min-h-[154px]">
+            <div class="flex items-start justify-between gap-3"><div class="flex gap-3 min-w-0"><div class="w-11 h-11 rounded-2xl bg-violet-50 border border-violet-100 flex items-center justify-center text-2xl shrink-0">${j.icon || '✨'}</div><div><div class="text-[11px] font-black text-fuchsia-500">${escapeHtml(j.id)}</div><h3 class="font-black text-slate-800 text-base md:text-lg leading-tight mt-0.5">${escapeHtml(j.title)}</h3></div></div><span class="ml-chip text-[11px]">${status}</span></div>
+            <p class="text-sm font-bold text-slate-500 mt-2 leading-relaxed line-clamp-2">${escapeHtml(j.goal || '')}</p>
+            <div class="mt-3"><div class="flex justify-between text-[11px] font-black text-slate-400 mb-1"><span>${p.done}/${p.total} trải nghiệm</span><span>${p.pct}%</span></div><div class="ml-progress"><i style="width:${p.pct}%"></i></div></div>
+        </button>`;
+    }).join('');
+    container.innerHTML = `<section class="ml-hero md:col-span-2"><div class="flex items-start justify-between gap-4 flex-wrap"><div><div class="ml-kicker">12.1 • Number Sense Lab</div><h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-1">Cảm nhận số</h2><p class="text-sm md:text-base font-bold text-slate-600 mt-2 max-w-3xl">${escapeHtml(data.subtitle || '')}</p></div><div class="min-w-[190px]"><div class="flex justify-between text-xs font-black text-slate-500 mb-1"><span>Tiến trình</span><span>${pctAll}%</span></div><div class="ml-progress"><i style="width:${pctAll}%"></i></div><div class="text-[11px] font-bold text-slate-400 mt-1 text-right">${total.done}/${total.total} trải nghiệm</div></div></div></section>${cards}`;
+    updateNavTabs('12. Math Lab – Toán tư duy Mỹ', '✨', '12.1 Cảm nhận số');
+    switchAppView('view-dashboard-grid');
+}
+
+function openMathLabJourney(journeyIndex) {
+    if (!mathLabCache?.journeys?.[journeyIndex]) return;
+    stopSpeaking();
+    mathLabState.view = 'activity';
+    mathLabState.trackCode = '12.1';
+    mathLabState.journeyIndex = Number(journeyIndex);
+    const journey = mathLabCache.journeys[journeyIndex];
+    const progress = mathLabProgress_();
+    let firstIncomplete = (journey.activities || []).findIndex(a => !progress[a.id]?.done);
+    if (firstIncomplete < 0) firstIncomplete = 0;
+    mathLabState.activityIndex = firstIncomplete;
+    resetMathLabActivityState_();
+    renderMathLabActivity_();
+}
+
+function mathLabBase10Html_(model) {
+    if (!model || typeof model !== 'object') return '';
+    const h = Math.max(0, Number(model.hundreds || 0));
+    const t = Math.max(0, Number(model.tens || 0));
+    const o = Math.max(0, Number(model.ones || 0));
+    const hundreds = Array.from({length:Math.min(h,10)},()=>'<span class="ml-hundred"></span>').join('');
+    const tens = Array.from({length:Math.min(t,20)},()=>'<span class="ml-ten"></span>').join('');
+    const ones = Array.from({length:Math.min(o,30)},()=>'<span class="ml-one"></span>').join('');
+    return `<div class="ml-base10"><div class="ml-block-group">${hundreds}${tens}${ones}</div><div class="w-full text-center text-xs font-black text-slate-500 mt-1">${h?`${h} trăm · `:''}${t?`${t} chục · `:''}${o} đơn vị</div></div>`;
+}
+function mathLabChoiceHtml_(choice) {
+    if (choice && typeof choice === 'object' && !Array.isArray(choice)) return mathLabBase10Html_(choice);
+    return `<span>${escapeHtml(String(choice))}</span>`;
+}
+function mathLabStimulusHtml_(a) {
+    if (a.stimulus && typeof a.stimulus === 'object') return mathLabBase10Html_(a.stimulus);
+    if (typeof a.stimulus === 'string' || typeof a.stimulus === 'number') return `<div class="text-center text-4xl md:text-5xl font-black text-violet-700 py-3">${escapeHtml(String(a.stimulus))}</div>`;
+    if (a.collection?.clusters) {
+        const dots = a.collection.clusters.map((n,i)=>`<div class="inline-flex flex-wrap w-[58px] justify-center align-middle mx-1 p-1 rounded-xl bg-white/80 border border-violet-100">${Array.from({length:n},()=>'<i class="ml-dot"></i>').join('')}</div>`).join('');
+        return `<div class="ml-dotbox">${dots}</div>`;
+    }
+    if (Number.isFinite(a.number)) return `<div class="text-center text-4xl font-black text-violet-700 py-2">${a.number}</div>`;
+    if (Number.isFinite(a.left) && Number.isFinite(a.right)) return `<div class="flex justify-center gap-4 py-3"><span class="ml-chip text-lg">${a.left}</span><span class="text-2xl font-black text-slate-300">?</span><span class="ml-chip text-lg">${a.right}</span></div>`;
+    return '';
+}
+
+function mathLabInteractionHtml_(a) {
+    const feedbackLocked = !!mathLabState.feedback?.correct;
+    if (a.type === 'open_number_line') {
+        if (mathLabState.rangeValue === null) mathLabState.rangeValue = Math.round((Number(a.min)+Number(a.max))/2);
+        return `<div class="ml-number-line"><div class="ml-number-line-value">Vị trí con chọn: ${mathLabState.rangeValue}</div><input ${feedbackLocked?'disabled':''} type="range" min="${a.min}" max="${a.max}" step="1" value="${mathLabState.rangeValue}" oninput="mathLabSetRange(this.value)"><div class="ml-number-line-labels"><span>${a.min}</span><span>${Math.round((a.min+a.max)/2)}</span><span>${a.max}</span></div></div>`;
+    }
+    if (a.type === 'base10_build') {
+        const keys = a.allowed || ['hundreds','tens','ones'];
+        const labels = {hundreds:'Trăm',tens:'Chục',ones:'Đơn vị'};
+        const counters = keys.map(k=>`<div class="ml-counter"><span class="font-black text-slate-500 min-w-[52px]">${labels[k]}</span><button ${feedbackLocked?'disabled':''} onclick="mathLabChangeBuild('${k}',-1)">−</button><strong>${mathLabState.build[k]||0}</strong><button ${feedbackLocked?'disabled':''} onclick="mathLabChangeBuild('${k}',1)">+</button></div>`).join('');
+        return `<div class="space-y-3">${mathLabBase10Html_(mathLabState.build)}<div class="grid grid-cols-1 sm:grid-cols-${Math.min(3,keys.length)} gap-2">${counters}</div><div class="text-center text-sm font-black text-violet-700">Giá trị đang xây: ${(mathLabState.build.hundreds||0)*100+(mathLabState.build.tens||0)*10+(mathLabState.build.ones||0)}</div></div>`;
+    }
+    if (a.type === 'bundle_trade') {
+        const isHundreds = Number.isFinite(a.tens_available);
+        const before = isHundreds ? {hundreds:0,tens:a.tens_available,ones:0} : {hundreds:0,tens:0,ones:a.ones_available};
+        let after = before;
+        if (mathLabState.tradeDone) after = isHundreds ? {hundreds:1,tens:a.tens_available-a.target_bundle_tens,ones:0} : {hundreds:0,tens:1,ones:a.ones_available-a.target_bundle};
+        return `<div class="space-y-3">${mathLabBase10Html_(after)}<div class="text-center"><button ${feedbackLocked?'disabled':''} onclick="mathLabDoTrade()" class="px-5 py-3 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-black pastel-btn">${mathLabState.tradeDone ? '↩️ Đổi lại để quan sát' : (isHundreds?'🧺 Gom 10 chục → 1 trăm':'🧺 Bó 10 đơn vị → 1 chục')}</button></div></div>`;
+    }
+    if (a.type === 'estimate_then_count') {
+        const dots = Array.from({length:Number(a.actual||0)},()=>'<i class="ml-dot"></i>').join('');
+        return `<div class="space-y-3"><div class="ml-dotbox">${dots}</div>${mathLabState.grouped ? `<div class="text-center font-black text-violet-700">${a.expected_groups} nhóm 10 + ${a.remainder} vật lẻ = ${a.actual}</div>` : ''}<div class="text-center"><button ${feedbackLocked?'disabled':''} onclick="mathLabGroupEstimate()" class="px-5 py-3 rounded-2xl bg-violet-600 text-white font-black pastel-btn">🧺 Nhóm thành từng chục</button></div></div>`;
+    }
+    if (a.type === 'order_numbers') {
+        const picked = mathLabState.orderPicked || [];
+        const remaining = (a.numbers||[]).filter((_,i)=>!picked.some(x=>x.index===i));
+        return `<div class="space-y-3"><div class="flex flex-wrap justify-center gap-2 min-h-[48px]">${picked.length ? picked.map((x,i)=>`<span class="ml-chip text-lg">${i?'<b class="mr-2">→</b>':''}${x.value}</span>`).join('') : '<span class="text-sm font-bold text-slate-400">Chạm các số theo thứ tự từ bé đến lớn</span>'}</div><div class="flex flex-wrap justify-center gap-2">${(a.numbers||[]).map((n,i)=>picked.some(x=>x.index===i)?'':`<button ${feedbackLocked?'disabled':''} onclick="mathLabPickOrder(${i})" class="ml-choice !w-auto min-w-[88px] text-center text-xl">${n}</button>`).join('')}</div>${picked.length?'<div class="text-center"><button onclick="mathLabResetOrder()" class="text-xs font-black text-slate-500 underline">Làm lại thứ tự</button></div>':''}</div>`;
+    }
+    if (Array.isArray(a.choices)) {
+        const multi = Array.isArray(a.answer_indices);
+        return `<div class="grid grid-cols-1 ${a.choices.length===2?'sm:grid-cols-2':''} gap-2">${a.choices.map((c,i)=>{ const selected = multi ? mathLabState.selectedMulti.includes(i) : mathLabState.selectedIndex===i; let cls=selected?' is-selected':''; if (mathLabState.feedback?.correct && selected) cls+=' is-correct'; if (mathLabState.feedback && !mathLabState.feedback.correct && selected) cls+=' is-wrong'; return `<button ${feedbackLocked?'disabled':''} onclick="mathLabSelectChoice(${i},${multi?'true':'false'})" class="ml-choice${cls}">${mathLabChoiceHtml_(c)}</button>`;}).join('')}</div>`;
+    }
+    return `<div class="text-center text-sm font-bold text-slate-500">Hoạt động đang được chuẩn bị.</div>`;
+}
+
+function renderMathLabActivity_() {
+    const data = mathLabCache;
+    const journey = data?.journeys?.[mathLabState.journeyIndex];
+    const a = journey?.activities?.[mathLabState.activityIndex];
+    if (!journey || !a) return renderMathLabTrack_(data);
+    const container = document.getElementById('view-dashboard-grid');
+    if (!container) return;
+    container.className = 'w-full flex justify-center';
+    const progress = mathLabJourneyProgress_(journey);
+    const activityCount = journey.activities.length;
+    const dots = journey.activities.map((x,i)=>`<i class="ml-step-dot ${mathLabProgress_()[x.id]?.done?'done':''} ${i===mathLabState.activityIndex?'current':''}"></i>`).join('');
+    const hint = mathLabState.hintLevel>0 ? a.hints?.[mathLabState.hintLevel-1] : null;
+    const feedback = mathLabState.feedback;
+    const transferBadge = a.transfer ? '<span class="ml-chip text-[11px]">Transfer</span>' : '<span class="ml-chip text-[11px]">Khám phá</span>';
+    container.innerHTML = `<section class="w-full max-w-4xl ml-journey-card p-4 md:p-6">
+        <div class="flex flex-wrap items-start justify-between gap-3 border-b border-violet-100 pb-4"><div><div class="text-[11px] font-black text-fuchsia-500">${escapeHtml(journey.id)} • ${escapeHtml(journey.concept||'')}</div><h2 class="text-xl md:text-2xl font-black text-slate-900 mt-1">${journey.icon||'✨'} ${escapeHtml(journey.title)}</h2><div class="flex gap-1.5 items-center mt-2">${dots}</div></div><div class="text-right">${transferBadge}<div class="text-xs font-black text-slate-400 mt-2">Trải nghiệm ${mathLabState.activityIndex+1}/${activityCount}</div><div class="text-[11px] font-bold text-slate-400">${progress.done}/${progress.total} đã hoàn thành</div></div></div>
+        <div class="mt-4 ml-teacher"><div class="flex items-start gap-2"><span class="text-xl">🐰</span><div class="flex-1">${escapeHtml(a.teacher||'')}</div><button onclick="mathLabSpeakCurrent()" title="Nghe Cô Thỏ Ngọc" class="shrink-0 w-9 h-9 rounded-xl bg-white border border-violet-200 text-violet-600">🔊</button></div></div>
+        <div class="mt-5 ml-prompt">${escapeHtml(a.prompt||'')}</div>
+        <div class="mt-4">${mathLabStimulusHtml_(a)}</div>
+        <div class="mt-4">${mathLabInteractionHtml_(a)}</div>
+        ${hint ? `<div class="ml-hint mt-4">💡 ${escapeHtml(hint)}</div>` : ''}
+        ${feedback ? `<div class="ml-feedback ${feedback.correct?'ok':'no'} mt-4">${feedback.correct?'🌟':'🌱'} ${escapeHtml(feedback.message)}</div>` : ''}
+        <div class="mt-5 flex flex-wrap items-center justify-between gap-2"><div class="flex gap-2"><button onclick="mathLabBackActivity()" class="px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-slate-600 font-black pastel-btn">← ${mathLabState.activityIndex>0?'Trước':'Các hành trình'}</button><button onclick="mathLabShowHint()" class="px-4 py-2.5 rounded-xl bg-amber-50 border-2 border-amber-200 text-amber-700 font-black pastel-btn">💡 Gợi ý</button></div><div>${feedback?.correct ? `<button onclick="mathLabContinue()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-violet-600 text-white font-black pastel-btn">${mathLabState.activityIndex>=activityCount-1?'Hoàn thành Journey →':'Tiếp tục →'}</button>` : `<button onclick="mathLabCheckActivity()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-black pastel-btn">Kiểm tra cách nghĩ</button>`}</div></div>
+    </section>`;
+    updateNavTabs('12. Math Lab – Toán tư duy Mỹ','✨','12.1 Cảm nhận số',`${journey.id} ${journey.title}`);
+    switchAppView('view-dashboard-grid');
+}
+
+function mathLabSelectChoice(index, multi) {
+    if (mathLabState.feedback?.correct) return;
+    if (multi) {
+        const s = new Set(mathLabState.selectedMulti || []);
+        s.has(index) ? s.delete(index) : s.add(index);
+        mathLabState.selectedMulti = [...s];
+    } else mathLabState.selectedIndex = Number(index);
+    mathLabState.feedback = null;
+    renderMathLabActivity_();
+}
+function mathLabSetRange(value) { mathLabState.rangeValue = Number(value); mathLabState.feedback=null; const el=document.querySelector('.ml-number-line-value'); if(el) el.textContent=`Vị trí con chọn: ${mathLabState.rangeValue}`; }
+function mathLabChangeBuild(key, delta) { if(mathLabState.feedback?.correct)return; mathLabState.build[key]=Math.max(0,Math.min(20,(mathLabState.build[key]||0)+Number(delta))); mathLabState.feedback=null; renderMathLabActivity_(); }
+function mathLabDoTrade() { if(mathLabState.feedback?.correct)return; mathLabState.tradeDone=!mathLabState.tradeDone; mathLabState.feedback=null; renderMathLabActivity_(); }
+function mathLabGroupEstimate() { if(mathLabState.feedback?.correct)return; mathLabState.grouped=true; mathLabState.feedback=null; renderMathLabActivity_(); }
+function mathLabPickOrder(index) { if(mathLabState.feedback?.correct)return; const a=mathLabCache?.journeys?.[mathLabState.journeyIndex]?.activities?.[mathLabState.activityIndex]; if(!a)return; if(mathLabState.orderPicked.some(x=>x.index===index))return; mathLabState.orderPicked.push({index,value:a.numbers[index]}); mathLabState.feedback=null; renderMathLabActivity_(); }
+function mathLabResetOrder() { mathLabState.orderPicked=[]; mathLabState.feedback=null; renderMathLabActivity_(); }
+
+function mathLabEqual_(a,b) { return JSON.stringify(a) === JSON.stringify(b); }
+function mathLabCheckActivity() {
+    const journey = mathLabCache?.journeys?.[mathLabState.journeyIndex];
+    const a = journey?.activities?.[mathLabState.activityIndex];
+    if (!a) return;
+    let ok = false, hasResponse = true;
+    if (a.type === 'open_number_line') {
+        ok = mathLabState.rangeValue !== null && Math.abs(mathLabState.rangeValue - Number(a.target)) <= Number(a.tolerance||0);
+    } else if (a.type === 'base10_build') {
+        const exp = a.expected || {};
+        ok = ['hundreds','tens','ones'].every(k => Number(mathLabState.build[k]||0) === Number(exp[k]||0));
+    } else if (a.type === 'bundle_trade') {
+        hasResponse = mathLabState.tradeDone;
+        ok = mathLabState.tradeDone;
+    } else if (a.type === 'estimate_then_count') {
+        hasResponse = mathLabState.grouped;
+        ok = mathLabState.grouped;
+    } else if (a.type === 'order_numbers') {
+        hasResponse = mathLabState.orderPicked.length === (a.numbers||[]).length;
+        ok = hasResponse && mathLabEqual_(mathLabState.orderPicked.map(x=>x.value), a.answer);
+    } else if (Array.isArray(a.answer_indices)) {
+        hasResponse = (mathLabState.selectedMulti||[]).length > 0;
+        const x=[...(mathLabState.selectedMulti||[])].sort((m,n)=>m-n), y=[...a.answer_indices].sort((m,n)=>m-n);
+        ok = hasResponse && mathLabEqual_(x,y);
+    } else if (Array.isArray(a.choices)) {
+        hasResponse = mathLabState.selectedIndex !== null;
+        if (hasResponse) {
+            if (Number.isInteger(a.answer_index)) ok = Number(mathLabState.selectedIndex) === Number(a.answer_index);
+            else ok = mathLabEqual_(a.choices[mathLabState.selectedIndex], a.answer);
+        }
+    } else hasResponse = false;
+    if (!hasResponse) return showAppNotice('Con hãy thao tác hoặc chọn một cách nghĩ trước nhé!');
+    if (ok) {
+        mathLabMarkDone_(a.id);
+        mathLabState.feedback = {correct:true,message:a.success || 'Con đã hiểu đúng ý tưởng này!'};
+        if (a.success_audio) speakVietnamese(a.success_audio, 0.92);
+    } else {
+        mathLabState.feedback = {correct:false,message:a.wrong_audio || 'Chưa khớp rồi. Con thử quan sát lại nhé.'};
+        mathLabState.hintLevel = Math.max(1, mathLabState.hintLevel || 0);
+        if (a.wrong_audio) speakVietnamese(a.wrong_audio, 0.92);
+    }
+    renderMathLabActivity_();
+}
+function mathLabShowHint() {
+    const a=mathLabCache?.journeys?.[mathLabState.journeyIndex]?.activities?.[mathLabState.activityIndex];
+    if(!a?.hints?.length) return showAppNotice('Hoạt động này không cần thêm gợi ý.');
+    mathLabState.hintLevel = Math.min(a.hints.length, (mathLabState.hintLevel||0)+1);
+    if (a.hints_audio?.[mathLabState.hintLevel-1]) speakVietnamese(a.hints_audio[mathLabState.hintLevel-1],0.92);
+    renderMathLabActivity_();
+}
+function mathLabSpeakCurrent() {
+    const a=mathLabCache?.journeys?.[mathLabState.journeyIndex]?.activities?.[mathLabState.activityIndex];
+    if(!a)return;
+    speakVietnamese([a.teacher_audio||a.teacher,a.instruction_audio||a.prompt].filter(Boolean).join('. '),0.92);
+}
+function mathLabBackActivity() {
+    stopSpeaking();
+    if (mathLabState.activityIndex > 0) { mathLabState.activityIndex--; resetMathLabActivityState_(); return renderMathLabActivity_(); }
+    return renderMathLabTrack_(mathLabCache);
+}
+function mathLabContinue() {
+    const journey=mathLabCache?.journeys?.[mathLabState.journeyIndex];
+    if(!journey)return;
+    if(mathLabState.activityIndex < journey.activities.length-1){ mathLabState.activityIndex++; resetMathLabActivityState_(); return renderMathLabActivity_(); }
+    return renderMathLabJourneyComplete_();
+}
+function renderMathLabJourneyComplete_() {
+    const journey=mathLabCache?.journeys?.[mathLabState.journeyIndex];
+    if(!journey)return renderMathLabTrack_(mathLabCache);
+    const container=document.getElementById('view-dashboard-grid');
+    container.className='w-full flex justify-center';
+    const evidence=(journey.evidence||[]).map(x=>`<li class="flex gap-2"><span>✓</span><span>${escapeHtml(x)}</span></li>`).join('');
+    container.innerHTML=`<section class="w-full max-w-3xl ml-hero text-center"><div class="text-5xl mb-2">🌟</div><div class="ml-kicker">Journey complete</div><h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-1">${escapeHtml(journey.title)}</h2><p class="font-bold text-slate-600 mt-3">Con vừa hoàn thành một hành trình khám phá, không phải chỉ một bộ câu hỏi.</p><div class="mt-5 text-left bg-white/80 border border-violet-100 rounded-2xl p-4"><div class="text-sm font-black text-violet-700 mb-2">Con đã luyện cách:</div><ul class="space-y-2 text-sm font-bold text-slate-600">${evidence}</ul></div><div class="mt-5 flex flex-wrap justify-center gap-2"><button onclick="renderMathLabTrack_(mathLabCache)" class="px-5 py-3 rounded-xl bg-white border-2 border-violet-200 text-violet-700 font-black pastel-btn">← Chọn Journey khác</button><button onclick="openMathLabJourney(${mathLabState.journeyIndex})" class="px-5 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500 to-violet-600 text-white font-black pastel-btn">Khám phá lại</button></div></section>`;
+    updateNavTabs('12. Math Lab – Toán tư duy Mỹ','✨','12.1 Cảm nhận số',`${journey.id} ${journey.title}`);
+    switchAppView('view-dashboard-grid');
+}
 
 // ==========================================
 // 12. VƯỜN THƠ TOÁN HỌC
@@ -3486,7 +3898,7 @@ function loadQuestion() {
             ${practiceSpeakerBtnHtml}
         </div>`}
         
-        <div class="w-full ${isCarryLearning ? 'max-w-2xl' : (isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-1 md:grid-cols-2 gap-2.5'))} ${isCarryLearning ? 'mt-2' : 'mt-1'}">
+        <div class="w-full ${isCarryLearning ? 'max-w-2xl' : (isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5'))} ${isCarryLearning ? 'mt-2' : 'mt-1'}">
     `;
 
     q.options.forEach((opt, idx) => {
