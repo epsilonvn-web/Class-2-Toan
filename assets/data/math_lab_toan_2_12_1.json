@@ -1,0 +1,1435 @@
+{
+  "schema_version": "EPSILON_MATH_LAB_G2_NUMBER_SENSE_V1",
+  "data_version": "2026-09-28-v1",
+  "topic_id": 12,
+  "display_code": "12.1",
+  "internal_id": "MATH_LAB_G2_NUMBER_SENSE",
+  "engine": "math_lab_number_sense_g2",
+  "brand_label": "Math Lab",
+  "title": "12.1 Number Sense Lab - Cảm nhận số",
+  "subtitle": "Khám phá số đến 1000 bằng mô hình, khoảng cách và nhiều cách biểu diễn",
+  "parent_title": "12. Math Lab - Toán tư duy Mỹ",
+  "parent_tagline": "Khám phá • Mô hình • Nhiều cách giải",
+  "pedagogy": "Tình huống → thao tác → nhận thấy cấu trúc → mô hình → diễn đạt → ký hiệu/chiến lược → transfer → ôn lại",
+  "design_principles": [
+    "Vietnam Grade 2 curriculum defines the destination; Math Lab changes the learning path",
+    "Meaning and number sense before procedure",
+    "Concrete and visual models before abstract notation",
+    "Multiple representations of the same mathematical idea",
+    "Estimate before exact calculation when appropriate",
+    "Ask why and how, not only what answer",
+    "Productive struggle with graduated hints",
+    "Mastery requires independence, transfer and retention",
+    "No worksheet feel: journeys are interactive experiences, not question sets"
+  ],
+  "curriculum_scope": {
+    "grade": "Toán 2",
+    "upper_bound": 1000,
+    "sgk_destination": [
+      "Đọc và viết số trong phạm vi 1000",
+      "Đơn vị - chục - trăm - nghìn và giá trị hàng",
+      "Cấu tạo và tách gộp số",
+      "So sánh và sắp xếp số",
+      "Số liền trước - số liền sau",
+      "Số tròn chục - số tròn trăm",
+      "Tia số và vị trí số",
+      "Ước lượng số lượng và kiểm tra tính hợp lý"
+    ]
+  },
+  "mastery_states": [
+    "not_observed",
+    "emerging",
+    "supported",
+    "independent",
+    "generalized",
+    "retained"
+  ],
+  "journeys": [
+    {
+      "id": "NS2.1",
+      "order": 1,
+      "icon": "🎭",
+      "title": "Một số có thể nhìn theo nhiều cách",
+      "concept": "Multiple representations of number",
+      "prerequisite": [],
+      "goal": "Hiểu rằng cùng một số có thể được biểu diễn bằng đồ vật, khối cơ số 10, lời nói, số viết và tổng theo hàng mà giá trị không đổi.",
+      "evidence": [
+        "Nối được ít nhất 3 biểu diễn của cùng một số",
+        "Không bị hình dạng hay cách sắp xếp đánh lừa",
+        "Giải thích được vì sao các biểu diễn là cùng một số",
+        "Chuyển được sang số mới"
+      ],
+      "sgk_targets": [
+        "Đọc, viết số",
+        "Cấu tạo số theo hàng chục - đơn vị và trăm - chục - đơn vị",
+        "Tách số thành tổng theo hàng"
+      ],
+      "activities": [
+        {
+          "id": "NS2.1.A1",
+          "type": "representation_match",
+          "teacher": "Cô không đưa chữ số trước. Con hãy nhìn mô hình và tìm thẻ kể đúng cùng một lượng.",
+          "prompt": "Mô hình có 4 thanh chục và 7 ô đơn vị. Thẻ nào cùng giá trị?",
+          "stimulus": {
+            "tens": 4,
+            "ones": 7
+          },
+          "choices": [
+            "47",
+            "74",
+            "407"
+          ],
+          "answer": "47",
+          "hints": [
+            "Mỗi thanh dài là một chục.",
+            "Bốn chục là 40; thêm 7 đơn vị.",
+            "40 và 7 tạo thành 47."
+          ],
+          "success": "Đúng! 47 có thể được nhìn là 4 chục và 7 đơn vị.",
+          "teacher_audio": "Cô không đưa chữ số trước. Con hãy nhìn mô hình và tìm thẻ kể đúng cùng một lượng.",
+          "instruction_audio": "Mô hình có 4 thanh chục và 7 ô đơn vị. Thẻ nào cùng giá trị?",
+          "hints_audio": [
+            "Mỗi thanh dài là một chục.",
+            "Bốn chục là 40; thêm 7 đơn vị.",
+            "40 và 7 tạo thành 47."
+          ],
+          "success_audio": "Đúng! 47 có thể được nhìn là 4 chục và 7 đơn vị.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.1.A2",
+          "type": "representation_match",
+          "teacher": "Bây giờ số viết xuất hiện trước. Con hãy tìm mô hình tương ứng, không cần đếm từng ô một.",
+          "prompt": "Mô hình nào biểu diễn đúng 63?",
+          "stimulus": "63",
+          "choices": [
+            {
+              "tens": 6,
+              "ones": 3
+            },
+            {
+              "tens": 3,
+              "ones": 6
+            },
+            {
+              "tens": 6,
+              "ones": 0
+            }
+          ],
+          "answer_index": 0,
+          "hints": [
+            "63 có 6 chục và 3 đơn vị.",
+            "Tìm mô hình có đúng 6 thanh chục.",
+            "Sau 6 thanh chục phải có thêm 3 đơn vị."
+          ],
+          "success": "Chính xác! Con đã đi từ số viết trở lại mô hình.",
+          "teacher_audio": "Bây giờ số viết xuất hiện trước. Con hãy tìm mô hình tương ứng, không cần đếm từng ô một.",
+          "instruction_audio": "Mô hình nào biểu diễn đúng 63?",
+          "hints_audio": [
+            "63 có 6 chục và 3 đơn vị.",
+            "Tìm mô hình có đúng 6 thanh chục.",
+            "Sau 6 thanh chục phải có thêm 3 đơn vị."
+          ],
+          "success_audio": "Chính xác! Con đã đi từ số viết trở lại mô hình.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.1.A3",
+          "type": "representation_sort",
+          "teacher": "Một số có thể mặc nhiều “bộ quần áo”. Con hãy gom các thẻ nói về cùng một số.",
+          "prompt": "Chọn tất cả thẻ biểu diễn 128.",
+          "choices": [
+            "1 trăm 2 chục 8 đơn vị",
+            "100 + 20 + 8",
+            "12 chục + 8 đơn vị",
+            "1 trăm 8 chục 2 đơn vị"
+          ],
+          "answer_indices": [
+            0,
+            1,
+            2
+          ],
+          "hints": [
+            "128 gồm 1 trăm, 2 chục, 8 đơn vị.",
+            "100 + 20 + 8 cũng là 128.",
+            "12 chục và 8 đơn vị cũng tạo 128."
+          ],
+          "success": "Tuyệt! Con đang nhìn giá trị chứ không chỉ nhìn cách viết.",
+          "teacher_audio": "Một số có thể mặc nhiều “bộ quần áo”. Con hãy gom các thẻ nói về cùng một số.",
+          "instruction_audio": "Chọn tất cả thẻ biểu diễn 128.",
+          "hints_audio": [
+            "128 gồm 1 trăm, 2 chục, 8 đơn vị.",
+            "100 + 20 + 8 cũng là 128.",
+            "12 chục và 8 đơn vị cũng tạo 128."
+          ],
+          "success_audio": "Tuyệt! Con đang nhìn giá trị chứ không chỉ nhìn cách viết.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.1.A4",
+          "type": "explain_choice",
+          "teacher": "Cô đổi sang một số mới và không cho con mẫu. Hãy chọn lời giải thích đúng nhất.",
+          "prompt": "Vì sao 305 vẫn có hàng chục dù chữ số hàng chục là 0?",
+          "choices": [
+            "Vì mọi số đều phải có số 0",
+            "Vì hàng chục vẫn là một vị trí giá trị, chỉ đang có 0 chục",
+            "Vì 305 có 30 chục"
+          ],
+          "answer": "Vì hàng chục vẫn là một vị trí giá trị, chỉ đang có 0 chục",
+          "hints": [
+            "Hãy nghĩ theo ba vị trí trăm - chục - đơn vị.",
+            "0 chục nghĩa là vị trí hàng chục vẫn tồn tại nhưng không có chục nào.",
+            "305 là 3 trăm, 0 chục, 5 đơn vị."
+          ],
+          "success": "Rất tốt! Con đã hiểu vị trí hàng không biến mất chỉ vì chữ số ở đó là 0.",
+          "teacher_audio": "Cô đổi sang một số mới và không cho con mẫu. Hãy chọn lời giải thích đúng nhất.",
+          "instruction_audio": "Vì sao 305 vẫn có hàng chục dù chữ số hàng chục là 0?",
+          "hints_audio": [
+            "Hãy nghĩ theo ba vị trí trăm - chục - đơn vị.",
+            "0 chục nghĩa là vị trí hàng chục vẫn tồn tại nhưng không có chục nào.",
+            "305 là 3 trăm, 0 chục, 5 đơn vị."
+          ],
+          "success_audio": "Rất tốt! Con đã hiểu vị trí hàng không biến mất chỉ vì chữ số ở đó là 0.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.2",
+      "order": 2,
+      "icon": "🧺",
+      "title": "Mười đơn vị biến thành một chục",
+      "concept": "Regrouping 10 ones as 1 ten",
+      "prerequisite": [
+        "NS2.1"
+      ],
+      "goal": "Trải nghiệm việc gom đúng 10 đơn vị thành 1 chục và hiểu rằng đổi cách biểu diễn không làm đổi giá trị.",
+      "evidence": [
+        "Tạo được một chục từ 10 đơn vị",
+        "Đổi 10 đơn vị ↔ 1 chục theo cả hai chiều",
+        "Nhận ra 14 đơn vị = 1 chục 4 đơn vị",
+        "Giải thích được giá trị không đổi"
+      ],
+      "sgk_targets": [
+        "Đơn vị và chục",
+        "Cấu tạo số có hai chữ số",
+        "Chuẩn bị cho cộng có nhớ"
+      ],
+      "activities": [
+        {
+          "id": "NS2.2.A1",
+          "type": "bundle_trade",
+          "teacher": "Mỗi khi đủ 10 que rời, cô cho phép bó lại thành một bó chục. Con tự thử nhé.",
+          "prompt": "Kéo đủ 10 que vào vùng bó để đổi thành 1 chục.",
+          "ones_available": 13,
+          "target_bundle": 10,
+          "answer": {
+            "tens": 1,
+            "ones_remaining": 3
+          },
+          "hints": [
+            "Đếm số que trong vùng bó.",
+            "Chỉ khi đủ đúng 10 que mới được đổi.",
+            "10 đơn vị có cùng giá trị với 1 chục."
+          ],
+          "success": "Đúng! Mười que rời đã được đổi thành một bó chục.",
+          "teacher_audio": "Mỗi khi đủ 10 que rời, cô cho phép bó lại thành một bó chục. Con tự thử nhé.",
+          "instruction_audio": "Kéo đủ 10 que vào vùng bó để đổi thành 1 chục.",
+          "hints_audio": [
+            "Đếm số que trong vùng bó.",
+            "Chỉ khi đủ đúng 10 que mới được đổi.",
+            "10 đơn vị có cùng giá trị với 1 chục."
+          ],
+          "success_audio": "Đúng! Mười que rời đã được đổi thành một bó chục.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.2.A2",
+          "type": "trade_choice",
+          "teacher": "Cô đã đổi hình nhưng không đổi giá trị. Con kiểm tra xem hai bên có bằng nhau không.",
+          "prompt": "10 đơn vị và 1 chục có cùng giá trị không?",
+          "choices": [
+            "Bằng nhau",
+            "10 đơn vị lớn hơn",
+            "1 chục lớn hơn"
+          ],
+          "answer": "Bằng nhau",
+          "hints": [
+            "Không có vật nào được thêm hay bớt.",
+            "Chỉ thay 10 đơn vị bằng một nhóm chục.",
+            "Hai bên đều biểu diễn giá trị 10."
+          ],
+          "success": "Chính xác! Đổi cách đóng gói không làm đổi số lượng.",
+          "teacher_audio": "Cô đã đổi hình nhưng không đổi giá trị. Con kiểm tra xem hai bên có bằng nhau không.",
+          "instruction_audio": "10 đơn vị và 1 chục có cùng giá trị không?",
+          "hints_audio": [
+            "Không có vật nào được thêm hay bớt.",
+            "Chỉ thay 10 đơn vị bằng một nhóm chục.",
+            "Hai bên đều biểu diễn giá trị 10."
+          ],
+          "success_audio": "Chính xác! Đổi cách đóng gói không làm đổi số lượng.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.2.A3",
+          "type": "base10_build",
+          "teacher": "Con hãy dùng quyền “đổi 10 lấy 1” để dựng số nhanh hơn.",
+          "prompt": "Tạo số 34 từ các đơn vị rời và bó chục.",
+          "target": 34,
+          "allowed": [
+            "ones",
+            "tens"
+          ],
+          "expected": {
+            "tens": 3,
+            "ones": 4
+          },
+          "hints": [
+            "Nếu có 34 đơn vị rời, con có thể bó từng nhóm 10.",
+            "Ba nhóm 10 tạo 3 chục.",
+            "Còn 4 đơn vị chưa bó."
+          ],
+          "success": "Giỏi! 34 được tổ chức thành 3 chục và 4 đơn vị.",
+          "teacher_audio": "Con hãy dùng quyền “đổi 10 lấy 1” để dựng số nhanh hơn.",
+          "instruction_audio": "Tạo số 34 từ các đơn vị rời và bó chục.",
+          "hints_audio": [
+            "Nếu có 34 đơn vị rời, con có thể bó từng nhóm 10.",
+            "Ba nhóm 10 tạo 3 chục.",
+            "Còn 4 đơn vị chưa bó."
+          ],
+          "success_audio": "Giỏi! 34 được tổ chức thành 3 chục và 4 đơn vị.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.2.A4",
+          "type": "reasoning_choice",
+          "teacher": "Cô đổi số để xem con có hiểu quy tắc chứ không chỉ nhớ ví dụ.",
+          "prompt": "Lan có 27 que rời. Nếu bó được nhiều bó chục nhất thì Lan có mấy bó chục và mấy que lẻ?",
+          "choices": [
+            "2 chục và 7 đơn vị",
+            "7 chục và 2 đơn vị",
+            "1 chục và 17 đơn vị là cách bó được nhiều nhất"
+          ],
+          "answer": "2 chục và 7 đơn vị",
+          "hints": [
+            "Mỗi bó cần đúng 10 que.",
+            "Hai bó dùng 20 que.",
+            "Sau 20 còn 7 que."
+          ],
+          "success": "Đúng! 27 là 2 chục và 7 đơn vị.",
+          "teacher_audio": "Cô đổi số để xem con có hiểu quy tắc chứ không chỉ nhớ ví dụ.",
+          "instruction_audio": "Lan có 27 que rời. Nếu bó được nhiều bó chục nhất thì Lan có mấy bó chục và mấy que lẻ?",
+          "hints_audio": [
+            "Mỗi bó cần đúng 10 que.",
+            "Hai bó dùng 20 que.",
+            "Sau 20 còn 7 que."
+          ],
+          "success_audio": "Đúng! 27 là 2 chục và 7 đơn vị.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.3",
+      "order": 3,
+      "icon": "💯",
+      "title": "Mười chục biến thành một trăm",
+      "concept": "Regrouping 10 tens as 1 hundred",
+      "prerequisite": [
+        "NS2.2"
+      ],
+      "goal": "Mở rộng quy tắc nhóm 10: gom 10 chục thành 1 trăm và thấy cấu trúc hệ thập phân lặp lại theo từng hàng.",
+      "evidence": [
+        "Gom được 10 chục thành 1 trăm",
+        "Đổi 1 trăm ↔ 10 chục",
+        "Nhìn 130 là 1 trăm 3 chục",
+        "Liên hệ được quy tắc nhóm 10 giữa đơn vị-chục-trăm"
+      ],
+      "sgk_targets": [
+        "Đơn vị, chục, trăm, nghìn",
+        "Các số trong phạm vi 1000",
+        "Cấu tạo số có ba chữ số"
+      ],
+      "activities": [
+        {
+          "id": "NS2.3.A1",
+          "type": "bundle_trade",
+          "teacher": "Con đã biết 10 đơn vị đổi thành 1 chục. Bây giờ cô cho con thử điều tương tự với các chục.",
+          "prompt": "Gom đủ 10 thanh chục để đổi thành 1 tấm trăm.",
+          "tens_available": 12,
+          "target_bundle_tens": 10,
+          "answer": {
+            "hundreds": 1,
+            "tens_remaining": 2
+          },
+          "hints": [
+            "Đếm số thanh chục.",
+            "Mười chục là 100 đơn vị.",
+            "100 đơn vị chính là 1 trăm."
+          ],
+          "success": "Đúng! Hệ số lại lặp quy tắc nhóm 10: 10 chục = 1 trăm.",
+          "teacher_audio": "Con đã biết 10 đơn vị đổi thành 1 chục. Bây giờ cô cho con thử điều tương tự với các chục.",
+          "instruction_audio": "Gom đủ 10 thanh chục để đổi thành 1 tấm trăm.",
+          "hints_audio": [
+            "Đếm số thanh chục.",
+            "Mười chục là 100 đơn vị.",
+            "100 đơn vị chính là 1 trăm."
+          ],
+          "success_audio": "Đúng! Hệ số lại lặp quy tắc nhóm 10: 10 chục = 1 trăm.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.3.A2",
+          "type": "trade_choice",
+          "teacher": "Cô đổi một tấm trăm ra các thanh chục. Giá trị có đổi không?",
+          "prompt": "1 trăm được đổi thành 10 chục. Hai cách biểu diễn có bằng nhau không?",
+          "choices": [
+            "Bằng nhau",
+            "1 trăm lớn hơn",
+            "10 chục lớn hơn"
+          ],
+          "answer": "Bằng nhau",
+          "hints": [
+            "1 trăm là 100.",
+            "10 chục cũng là 100.",
+            "Chỉ đổi cách nhóm, không thêm bớt giá trị."
+          ],
+          "success": "Chính xác! Một trăm và mười chục là cùng một lượng.",
+          "teacher_audio": "Cô đổi một tấm trăm ra các thanh chục. Giá trị có đổi không?",
+          "instruction_audio": "1 trăm được đổi thành 10 chục. Hai cách biểu diễn có bằng nhau không?",
+          "hints_audio": [
+            "1 trăm là 100.",
+            "10 chục cũng là 100.",
+            "Chỉ đổi cách nhóm, không thêm bớt giá trị."
+          ],
+          "success_audio": "Chính xác! Một trăm và mười chục là cùng một lượng.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.3.A3",
+          "type": "base10_build",
+          "teacher": "Con hãy tổ chức số này bằng các khối lớn nhất có thể.",
+          "prompt": "Dựng 146 bằng trăm, chục và đơn vị.",
+          "target": 146,
+          "allowed": [
+            "hundreds",
+            "tens",
+            "ones"
+          ],
+          "expected": {
+            "hundreds": 1,
+            "tens": 4,
+            "ones": 6
+          },
+          "hints": [
+            "Bắt đầu bằng tấm trăm.",
+            "Sau 100 còn 46.",
+            "46 là 4 chục và 6 đơn vị."
+          ],
+          "success": "Rất tốt! 146 = 1 trăm + 4 chục + 6 đơn vị.",
+          "teacher_audio": "Con hãy tổ chức số này bằng các khối lớn nhất có thể.",
+          "instruction_audio": "Dựng 146 bằng trăm, chục và đơn vị.",
+          "hints_audio": [
+            "Bắt đầu bằng tấm trăm.",
+            "Sau 100 còn 46.",
+            "46 là 4 chục và 6 đơn vị."
+          ],
+          "success_audio": "Rất tốt! 146 = 1 trăm + 4 chục + 6 đơn vị.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.3.A4",
+          "type": "pattern_generalization",
+          "teacher": "Con nhìn hai lần đổi rồi rút ra quy luật nhé.",
+          "prompt": "Điền ý đúng: 10 đơn vị → 1 chục; 10 chục → 1 trăm; vậy hệ số đang nhóm theo ...?",
+          "choices": [
+            "nhóm 2",
+            "nhóm 5",
+            "nhóm 10"
+          ],
+          "answer": "nhóm 10",
+          "hints": [
+            "Hãy nhìn số lượng phần nhỏ tạo nên một phần lớn.",
+            "Cả hai lần đều dùng đúng 10 phần nhỏ.",
+            "Đó là cấu trúc theo nhóm 10."
+          ],
+          "success": "Xuất sắc! Con đã nhìn thấy cấu trúc cơ số 10 thay vì học rời từng hàng.",
+          "teacher_audio": "Con nhìn hai lần đổi rồi rút ra quy luật nhé.",
+          "instruction_audio": "Điền ý đúng: 10 đơn vị → 1 chục; 10 chục → 1 trăm; vậy hệ số đang nhóm theo ...?",
+          "hints_audio": [
+            "Hãy nhìn số lượng phần nhỏ tạo nên một phần lớn.",
+            "Cả hai lần đều dùng đúng 10 phần nhỏ.",
+            "Đó là cấu trúc theo nhóm 10."
+          ],
+          "success_audio": "Xuất sắc! Con đã nhìn thấy cấu trúc cơ số 10 thay vì học rời từng hàng.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.4",
+      "order": 4,
+      "icon": "🏗️",
+      "title": "Tự xây một số đến 1000",
+      "concept": "Build and rename three-digit numbers",
+      "prerequisite": [
+        "NS2.3"
+      ],
+      "goal": "Tự dựng số đến 1000 bằng vật liệu cơ số 10, đổi nhóm khi cần và đọc cấu tạo số từ mô hình.",
+      "evidence": [
+        "Dựng đúng số cho trước",
+        "Đọc đúng số từ mô hình",
+        "Xử lý đúng chữ số 0 ở một hàng",
+        "Đổi được cách dựng nhưng giữ nguyên giá trị"
+      ],
+      "sgk_targets": [
+        "Các số trong phạm vi 1000",
+        "Đọc, viết số có ba chữ số",
+        "Hàng trăm - chục - đơn vị"
+      ],
+      "activities": [
+        {
+          "id": "NS2.4.A1",
+          "type": "base10_build",
+          "teacher": "Cô đọc số, con là người xây. Hãy chọn khối lớn trước để đỡ phải kéo quá nhiều vật.",
+          "prompt": "Xây số 263.",
+          "target": 263,
+          "expected": {
+            "hundreds": 2,
+            "tens": 6,
+            "ones": 3
+          },
+          "hints": [
+            "263 có 2 trăm.",
+            "Sau 200 còn 63.",
+            "63 là 6 chục và 3 đơn vị."
+          ],
+          "success": "Đúng! Con đã xây 263 từ 2 trăm, 6 chục, 3 đơn vị.",
+          "teacher_audio": "Cô đọc số, con là người xây. Hãy chọn khối lớn trước để đỡ phải kéo quá nhiều vật.",
+          "instruction_audio": "Xây số 263.",
+          "hints_audio": [
+            "263 có 2 trăm.",
+            "Sau 200 còn 63.",
+            "63 là 6 chục và 3 đơn vị."
+          ],
+          "success_audio": "Đúng! Con đã xây 263 từ 2 trăm, 6 chục, 3 đơn vị.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.4.A2",
+          "type": "base10_read",
+          "teacher": "Lần này cô xây trước, con đọc số từ mô hình.",
+          "prompt": "Có 4 tấm trăm, 0 thanh chục và 8 đơn vị. Số nào?",
+          "stimulus": {
+            "hundreds": 4,
+            "tens": 0,
+            "ones": 8
+          },
+          "choices": [
+            "408",
+            "480",
+            "48"
+          ],
+          "answer": "408",
+          "hints": [
+            "Hàng trăm là 4.",
+            "Không có thanh chục nên hàng chục là 0.",
+            "Hàng đơn vị là 8."
+          ],
+          "success": "Chính xác! Mô hình biểu diễn 408.",
+          "teacher_audio": "Lần này cô xây trước, con đọc số từ mô hình.",
+          "instruction_audio": "Có 4 tấm trăm, 0 thanh chục và 8 đơn vị. Số nào?",
+          "hints_audio": [
+            "Hàng trăm là 4.",
+            "Không có thanh chục nên hàng chục là 0.",
+            "Hàng đơn vị là 8."
+          ],
+          "success_audio": "Chính xác! Mô hình biểu diễn 408.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.4.A3",
+          "type": "rename_number",
+          "teacher": "Một số không nhất thiết chỉ có một cách dựng. Con hãy đổi mà vẫn giữ nguyên giá trị.",
+          "prompt": "Số 230 có thể đổi 1 trăm thành 10 chục. Khi đó ta có cách biểu diễn nào?",
+          "choices": [
+            "1 trăm 13 chục",
+            "3 trăm 2 chục",
+            "23 trăm"
+          ],
+          "answer": "1 trăm 13 chục",
+          "hints": [
+            "230 ban đầu là 2 trăm 3 chục.",
+            "Đổi 1 trăm thành 10 chục.",
+            "Còn 1 trăm và tổng cộng 13 chục."
+          ],
+          "success": "Tốt! 230 có thể là 2 trăm 3 chục hoặc 1 trăm 13 chục.",
+          "teacher_audio": "Một số không nhất thiết chỉ có một cách dựng. Con hãy đổi mà vẫn giữ nguyên giá trị.",
+          "instruction_audio": "Số 230 có thể đổi 1 trăm thành 10 chục. Khi đó ta có cách biểu diễn nào?",
+          "hints_audio": [
+            "230 ban đầu là 2 trăm 3 chục.",
+            "Đổi 1 trăm thành 10 chục.",
+            "Còn 1 trăm và tổng cộng 13 chục."
+          ],
+          "success_audio": "Tốt! 230 có thể là 2 trăm 3 chục hoặc 1 trăm 13 chục.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.4.A4",
+          "type": "build_from_clue",
+          "teacher": "Cô không đọc số trực tiếp nữa. Con dùng manh mối để tự xây.",
+          "prompt": "Số có 5 trăm, ít hơn 6 chục đúng 1 chục, và 2 đơn vị. Đó là số nào?",
+          "choices": [
+            "552",
+            "562",
+            "525"
+          ],
+          "answer": "552",
+          "hints": [
+            "Ít hơn 6 chục đúng 1 chục là 5 chục.",
+            "Các hàng lần lượt là 5 trăm, 5 chục, 2 đơn vị.",
+            "Ghép ba chữ số theo hàng."
+          ],
+          "success": "Rất tốt! Con đã dựng được 552 từ lời mô tả.",
+          "teacher_audio": "Cô không đọc số trực tiếp nữa. Con dùng manh mối để tự xây.",
+          "instruction_audio": "Số có 5 trăm, ít hơn 6 chục đúng 1 chục, và 2 đơn vị. Đó là số nào?",
+          "hints_audio": [
+            "Ít hơn 6 chục đúng 1 chục là 5 chục.",
+            "Các hàng lần lượt là 5 trăm, 5 chục, 2 đơn vị.",
+            "Ghép ba chữ số theo hàng."
+          ],
+          "success_audio": "Rất tốt! Con đã dựng được 552 từ lời mô tả.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.5",
+      "order": 5,
+      "icon": "👕",
+      "title": "347 có thể “mặc” bao nhiêu bộ quần áo?",
+      "concept": "Flexible decomposition and renaming",
+      "prerequisite": [
+        "NS2.4"
+      ],
+      "goal": "Phát triển sự linh hoạt với cấu tạo số: tách và đổi tên cùng một số theo nhiều cách hợp lý, không phụ thuộc duy nhất dạng chuẩn.",
+      "evidence": [
+        "Viết được dạng chuẩn theo hàng",
+        "Tạo được ít nhất hai cách tách khác",
+        "Kiểm tra được hai biểu thức có cùng giá trị",
+        "Dùng đổi tên để chuẩn bị cho tính nhẩm và thuật toán"
+      ],
+      "sgk_targets": [
+        "Viết số thành tổng các trăm, chục, đơn vị",
+        "Cấu tạo số",
+        "Chuẩn bị cho cộng trừ trong phạm vi 1000"
+      ],
+      "activities": [
+        {
+          "id": "NS2.5.A1",
+          "type": "decompose_number",
+          "teacher": "Hãy bắt đầu bằng bộ quần áo quen thuộc nhất.",
+          "prompt": "347 được tách theo hàng như thế nào?",
+          "number": 347,
+          "choices": [
+            "300 + 40 + 7",
+            "30 + 40 + 7",
+            "300 + 4 + 7"
+          ],
+          "answer": "300 + 40 + 7",
+          "hints": [
+            "Hàng trăm là 3.",
+            "Hàng chục là 4.",
+            "Hàng đơn vị là 7."
+          ],
+          "success": "Đúng! 347 = 300 + 40 + 7.",
+          "teacher_audio": "Hãy bắt đầu bằng bộ quần áo quen thuộc nhất.",
+          "instruction_audio": "347 được tách theo hàng như thế nào?",
+          "hints_audio": [
+            "Hàng trăm là 3.",
+            "Hàng chục là 4.",
+            "Hàng đơn vị là 7."
+          ],
+          "success_audio": "Đúng! 347 = 300 + 40 + 7.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.5.A2",
+          "type": "rename_number",
+          "teacher": "Bây giờ con đổi một trăm thành chục để tạo “bộ quần áo” khác.",
+          "prompt": "347 còn có thể viết cách nào?",
+          "choices": [
+            "2 trăm 14 chục 7 đơn vị",
+            "3 trăm 14 chục 7 đơn vị",
+            "2 trăm 4 chục 17 đơn vị"
+          ],
+          "answer": "2 trăm 14 chục 7 đơn vị",
+          "hints": [
+            "Đổi 1 trăm thành 10 chục.",
+            "3 trăm 4 chục trở thành 2 trăm 14 chục.",
+            "Phần 7 đơn vị giữ nguyên."
+          ],
+          "success": "Chính xác! 347 = 2 trăm 14 chục 7 đơn vị.",
+          "teacher_audio": "Bây giờ con đổi một trăm thành chục để tạo “bộ quần áo” khác.",
+          "instruction_audio": "347 còn có thể viết cách nào?",
+          "hints_audio": [
+            "Đổi 1 trăm thành 10 chục.",
+            "3 trăm 4 chục trở thành 2 trăm 14 chục.",
+            "Phần 7 đơn vị giữ nguyên."
+          ],
+          "success_audio": "Chính xác! 347 = 2 trăm 14 chục 7 đơn vị.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.5.A3",
+          "type": "equivalence_check",
+          "teacher": "Không phải cách viết lạ nào cũng đúng. Con kiểm tra bằng giá trị.",
+          "prompt": "Cặp nào biểu diễn cùng một số?",
+          "choices": [
+            "326 và 2 trăm 12 chục 6 đơn vị",
+            "326 và 3 trăm 2 chục 16 đơn vị",
+            "326 và 32 trăm 6 đơn vị"
+          ],
+          "answer": "326 và 2 trăm 12 chục 6 đơn vị",
+          "hints": [
+            "Đổi từng cách về trăm - chục - đơn vị.",
+            "12 chục = 120.",
+            "200 + 120 + 6 = 326."
+          ],
+          "success": "Đúng! 326 và 2 trăm 12 chục 6 đơn vị có cùng giá trị.",
+          "teacher_audio": "Không phải cách viết lạ nào cũng đúng. Con kiểm tra bằng giá trị.",
+          "instruction_audio": "Cặp nào biểu diễn cùng một số?",
+          "hints_audio": [
+            "Đổi từng cách về trăm - chục - đơn vị.",
+            "12 chục = 120.",
+            "200 + 120 + 6 = 326."
+          ],
+          "success_audio": "Đúng! 326 và 2 trăm 12 chục 6 đơn vị có cùng giá trị.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.5.A4",
+          "type": "create_representation",
+          "teacher": "Lần này không có một đáp án mẫu duy nhất. Con hãy chọn một cách đổi tên hợp lệ.",
+          "prompt": "Cách nào là một biểu diễn khác đúng của 415?",
+          "choices": [
+            "3 trăm 11 chục 5 đơn vị",
+            "4 trăm 11 chục 5 đơn vị",
+            "3 trăm 1 chục 15 đơn vị"
+          ],
+          "answer": "3 trăm 11 chục 5 đơn vị",
+          "hints": [
+            "415 = 4 trăm 1 chục 5 đơn vị.",
+            "Có thể đổi 1 trăm thành 10 chục.",
+            "Khi đó 4 trăm 1 chục thành 3 trăm 11 chục."
+          ],
+          "success": "Tuyệt! Con đã dùng cấu trúc giá trị hàng một cách linh hoạt.",
+          "teacher_audio": "Lần này không có một đáp án mẫu duy nhất. Con hãy chọn một cách đổi tên hợp lệ.",
+          "instruction_audio": "Cách nào là một biểu diễn khác đúng của 415?",
+          "hints_audio": [
+            "415 = 4 trăm 1 chục 5 đơn vị.",
+            "Có thể đổi 1 trăm thành 10 chục.",
+            "Khi đó 4 trăm 1 chục thành 3 trăm 11 chục."
+          ],
+          "success_audio": "Tuyệt! Con đã dùng cấu trúc giá trị hàng một cách linh hoạt.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.6",
+      "order": 6,
+      "icon": "🛤️",
+      "title": "Số nằm ở đâu trên tia số?",
+      "concept": "Open number line and magnitude",
+      "prerequisite": [
+        "NS2.5"
+      ],
+      "goal": "Dùng tia số như một mô hình về độ lớn và khoảng cách, không chỉ là dãy số để đọc tuần tự.",
+      "evidence": [
+        "Đặt được số gần đúng vị trí trên tia số",
+        "Dùng mốc 0, 10, 100, 1000 để định vị",
+        "Nhìn được số nào gần mốc nào hơn",
+        "Giải thích bằng khoảng cách"
+      ],
+      "sgk_targets": [
+        "Tia số",
+        "So sánh số",
+        "Số liền trước - liền sau",
+        "Ước lượng và vị trí số"
+      ],
+      "activities": [
+        {
+          "id": "NS2.6.A1",
+          "type": "open_number_line",
+          "teacher": "Tia số lần này không chia sẵn từng vạch. Con dùng hai đầu mút để ước vị trí.",
+          "prompt": "Kéo 70 vào vị trí hợp lý trên đoạn từ 0 đến 100.",
+          "min": 0,
+          "max": 100,
+          "target": 70,
+          "tolerance": 6,
+          "hints": [
+            "70 lớn hơn nửa của 100.",
+            "70 cách 100 là 30.",
+            "Nó nên nằm khoảng 7 phần 10 quãng đường từ 0 đến 100."
+          ],
+          "success": "Đúng! Con đang dùng độ lớn để đặt số, không cần đủ 101 vạch.",
+          "teacher_audio": "Tia số lần này không chia sẵn từng vạch. Con dùng hai đầu mút để ước vị trí.",
+          "instruction_audio": "Kéo 70 vào vị trí hợp lý trên đoạn từ 0 đến 100.",
+          "hints_audio": [
+            "70 lớn hơn nửa của 100.",
+            "70 cách 100 là 30.",
+            "Nó nên nằm khoảng 7 phần 10 quãng đường từ 0 đến 100."
+          ],
+          "success_audio": "Đúng! Con đang dùng độ lớn để đặt số, không cần đủ 101 vạch.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.6.A2",
+          "type": "open_number_line",
+          "teacher": "Bây giờ phạm vi lớn hơn. Hãy dùng mốc giữa để giúp mắt.",
+          "prompt": "Số 450 nằm ở đâu trên đoạn từ 0 đến 1000?",
+          "min": 0,
+          "max": 1000,
+          "target": 450,
+          "tolerance": 60,
+          "hints": [
+            "500 là mốc giữa.",
+            "450 nhỏ hơn 500 một chút.",
+            "Nó phải nằm ngay bên trái mốc 500."
+          ],
+          "success": "Chính xác! 450 nằm gần giữa, hơi lệch về phía 0.",
+          "teacher_audio": "Bây giờ phạm vi lớn hơn. Hãy dùng mốc giữa để giúp mắt.",
+          "instruction_audio": "Số 450 nằm ở đâu trên đoạn từ 0 đến 1000?",
+          "hints_audio": [
+            "500 là mốc giữa.",
+            "450 nhỏ hơn 500 một chút.",
+            "Nó phải nằm ngay bên trái mốc 500."
+          ],
+          "success_audio": "Chính xác! 450 nằm gần giữa, hơi lệch về phía 0.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.6.A3",
+          "type": "benchmark_choice",
+          "teacher": "Không cần kéo chính xác. Con chỉ cần nhìn số gần mốc nào hơn.",
+          "prompt": "372 gần 300 hay 400 hơn?",
+          "choices": [
+            "300",
+            "400",
+            "Cách đều nhau"
+          ],
+          "answer": "400",
+          "hints": [
+            "Từ 372 đến 400 còn 28.",
+            "Từ 372 về 300 là 72.",
+            "Khoảng cách 28 ngắn hơn 72."
+          ],
+          "success": "Đúng! 372 gần 400 hơn.",
+          "teacher_audio": "Không cần kéo chính xác. Con chỉ cần nhìn số gần mốc nào hơn.",
+          "instruction_audio": "372 gần 300 hay 400 hơn?",
+          "hints_audio": [
+            "Từ 372 đến 400 còn 28.",
+            "Từ 372 về 300 là 72.",
+            "Khoảng cách 28 ngắn hơn 72."
+          ],
+          "success_audio": "Đúng! 372 gần 400 hơn.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.6.A4",
+          "type": "distance_reasoning",
+          "teacher": "Cô đổi hai số nhưng không hỏi số nào lớn hơn. Cô hỏi về khoảng cách.",
+          "prompt": "Trên tia số, 490 và 510 cách 500 như thế nào?",
+          "choices": [
+            "490 gần 500 hơn",
+            "510 gần 500 hơn",
+            "Hai số cách 500 bằng nhau"
+          ],
+          "answer": "Hai số cách 500 bằng nhau",
+          "hints": [
+            "490 cách 500 là 10.",
+            "510 cũng cách 500 là 10.",
+            "Hai số ở hai phía nhưng khoảng cách bằng nhau."
+          ],
+          "success": "Rất tốt! Con đã nhìn tia số như một bản đồ khoảng cách.",
+          "teacher_audio": "Cô đổi hai số nhưng không hỏi số nào lớn hơn. Cô hỏi về khoảng cách.",
+          "instruction_audio": "Trên tia số, 490 và 510 cách 500 như thế nào?",
+          "hints_audio": [
+            "490 cách 500 là 10.",
+            "510 cũng cách 500 là 10.",
+            "Hai số ở hai phía nhưng khoảng cách bằng nhau."
+          ],
+          "success_audio": "Rất tốt! Con đã nhìn tia số như một bản đồ khoảng cách.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.7",
+      "order": 7,
+      "icon": "⚖️",
+      "title": "Ai lớn hơn mà chưa cần tính?",
+      "concept": "Magnitude comparison by place value",
+      "prerequisite": [
+        "NS2.6"
+      ],
+      "goal": "So sánh số bằng cấu trúc giá trị hàng và độ lớn, biết chọn hàng quyết định thay vì đọc hoặc tính máy móc.",
+      "evidence": [
+        "So sánh được số 2 và 3 chữ số",
+        "Biết nhìn từ hàng có giá trị lớn nhất",
+        "Không bị chữ số lớn ở hàng thấp đánh lừa",
+        "Giải thích được hàng nào quyết định"
+      ],
+      "sgk_targets": [
+        "So sánh các số",
+        "Dấu > < =",
+        "Sắp xếp số"
+      ],
+      "activities": [
+        {
+          "id": "NS2.7.A1",
+          "type": "compare_reason",
+          "teacher": "Hai số cùng có hai chữ số. Con đừng cộng hay trừ, chỉ nhìn hàng nào quyết định trước.",
+          "prompt": "67 và 72, số nào lớn hơn?",
+          "left": 67,
+          "right": 72,
+          "choices": [
+            "67",
+            "72",
+            "Bằng nhau"
+          ],
+          "answer": "72",
+          "hints": [
+            "So hàng chục trước.",
+            "6 chục ít hơn 7 chục.",
+            "Không cần xét hàng đơn vị nữa."
+          ],
+          "success": "Đúng! 72 lớn hơn vì 7 chục lớn hơn 6 chục.",
+          "teacher_audio": "Hai số cùng có hai chữ số. Con đừng cộng hay trừ, chỉ nhìn hàng nào quyết định trước.",
+          "instruction_audio": "67 và 72, số nào lớn hơn?",
+          "hints_audio": [
+            "So hàng chục trước.",
+            "6 chục ít hơn 7 chục.",
+            "Không cần xét hàng đơn vị nữa."
+          ],
+          "success_audio": "Đúng! 72 lớn hơn vì 7 chục lớn hơn 6 chục.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.7.A2",
+          "type": "compare_reason",
+          "teacher": "Lần này hàng trăm giống nhau nên con phải nhìn tiếp.",
+          "prompt": "438 và 472, hàng nào quyết định số lớn hơn?",
+          "choices": [
+            "Hàng trăm",
+            "Hàng chục",
+            "Hàng đơn vị"
+          ],
+          "answer": "Hàng chục",
+          "hints": [
+            "Cả hai đều có 4 trăm.",
+            "So tiếp hàng chục: 3 chục và 7 chục.",
+            "7 chục lớn hơn 3 chục."
+          ],
+          "success": "Chính xác! Hàng chục quyết định vì hàng trăm đang bằng nhau.",
+          "teacher_audio": "Lần này hàng trăm giống nhau nên con phải nhìn tiếp.",
+          "instruction_audio": "438 và 472, hàng nào quyết định số lớn hơn?",
+          "hints_audio": [
+            "Cả hai đều có 4 trăm.",
+            "So tiếp hàng chục: 3 chục và 7 chục.",
+            "7 chục lớn hơn 3 chục."
+          ],
+          "success_audio": "Chính xác! Hàng chục quyết định vì hàng trăm đang bằng nhau.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.7.A3",
+          "type": "misconception_check",
+          "teacher": "Cô cố tình đưa một cái bẫy: chữ số 9 rất lớn nhưng đang ở hàng thấp.",
+          "prompt": "509 và 590, câu nào đúng?",
+          "choices": [
+            "509 > 590",
+            "509 < 590",
+            "509 = 590"
+          ],
+          "answer": "509 < 590",
+          "hints": [
+            "Cùng 5 trăm.",
+            "So hàng chục: 0 chục và 9 chục.",
+            "590 lớn hơn dù 509 có chữ số 9 ở hàng đơn vị."
+          ],
+          "success": "Đúng! Giá trị của chữ số phụ thuộc vào vị trí.",
+          "teacher_audio": "Cô cố tình đưa một cái bẫy: chữ số 9 rất lớn nhưng đang ở hàng thấp.",
+          "instruction_audio": "509 và 590, câu nào đúng?",
+          "hints_audio": [
+            "Cùng 5 trăm.",
+            "So hàng chục: 0 chục và 9 chục.",
+            "590 lớn hơn dù 509 có chữ số 9 ở hàng đơn vị."
+          ],
+          "success_audio": "Đúng! Giá trị của chữ số phụ thuộc vào vị trí.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.7.A4",
+          "type": "order_numbers",
+          "teacher": "Con hãy sắp theo độ lớn bằng cách nhìn hàng trăm rồi hàng chục.",
+          "prompt": "Sắp xếp 398, 403, 389 từ bé đến lớn.",
+          "numbers": [
+            398,
+            403,
+            389
+          ],
+          "answer": [
+            389,
+            398,
+            403
+          ],
+          "hints": [
+            "389 và 398 đều có 3 trăm; 403 có 4 trăm nên lớn nhất.",
+            "Giữa 389 và 398, so hàng chục 8 và 9.",
+            "389 < 398 < 403."
+          ],
+          "success": "Rất tốt! Con đã so sánh theo cấu trúc hàng.",
+          "teacher_audio": "Con hãy sắp theo độ lớn bằng cách nhìn hàng trăm rồi hàng chục.",
+          "instruction_audio": "Sắp xếp 398, 403, 389 từ bé đến lớn.",
+          "hints_audio": [
+            "389 và 398 đều có 3 trăm; 403 có 4 trăm nên lớn nhất.",
+            "Giữa 389 và 398, so hàng chục 8 và 9.",
+            "389 < 398 < 403."
+          ],
+          "success_audio": "Rất tốt! Con đã so sánh theo cấu trúc hàng.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.8",
+      "order": 8,
+      "icon": "🎯",
+      "title": "Mốc tròn chục và tròn trăm",
+      "concept": "Benchmarks and friendly numbers",
+      "prerequisite": [
+        "NS2.7"
+      ],
+      "goal": "Nhìn số tròn chục, tròn trăm như các mốc thân thiện để ước lượng, so sánh và chuẩn bị cho chiến lược tính linh hoạt.",
+      "evidence": [
+        "Nhận diện được số tròn chục/tròn trăm",
+        "Tìm được mốc gần nhất",
+        "Biết số còn thiếu để tới mốc",
+        "Dùng mốc để giải thích một ước lượng"
+      ],
+      "sgk_targets": [
+        "Số tròn chục, tròn trăm",
+        "Ước lượng",
+        "Chuẩn bị cho tính nhẩm cộng trừ"
+      ],
+      "activities": [
+        {
+          "id": "NS2.8.A1",
+          "type": "benchmark_sort",
+          "teacher": "Các số tròn chục giống như biển chỉ đường trên tia số.",
+          "prompt": "Chọn tất cả các số tròn chục.",
+          "choices": [
+            30,
+            47,
+            70,
+            105,
+            120
+          ],
+          "answer_indices": [
+            0,
+            2,
+            4
+          ],
+          "hints": [
+            "Số tròn chục có 0 ở hàng đơn vị.",
+            "30, 70, 120 đều kết thúc bằng 0.",
+            "105 không phải số tròn chục."
+          ],
+          "success": "Đúng! Con đã nhận ra cấu trúc của số tròn chục.",
+          "teacher_audio": "Các số tròn chục giống như biển chỉ đường trên tia số.",
+          "instruction_audio": "Chọn tất cả các số tròn chục.",
+          "hints_audio": [
+            "Số tròn chục có 0 ở hàng đơn vị.",
+            "30, 70, 120 đều kết thúc bằng 0.",
+            "105 không phải số tròn chục."
+          ],
+          "success_audio": "Đúng! Con đã nhận ra cấu trúc của số tròn chục.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.8.A2",
+          "type": "benchmark_choice",
+          "teacher": "Hãy xem số nào gần mốc tròn chục hơn.",
+          "prompt": "68 gần 60 hay 70 hơn?",
+          "choices": [
+            60,
+            70,
+            "Cách đều"
+          ],
+          "answer": 70,
+          "hints": [
+            "68 cách 70 là 2.",
+            "68 cách 60 là 8.",
+            "Khoảng cách 2 ngắn hơn."
+          ],
+          "success": "Chính xác! 68 gần 70 hơn.",
+          "teacher_audio": "Hãy xem số nào gần mốc tròn chục hơn.",
+          "instruction_audio": "68 gần 60 hay 70 hơn?",
+          "hints_audio": [
+            "68 cách 70 là 2.",
+            "68 cách 60 là 8.",
+            "Khoảng cách 2 ngắn hơn."
+          ],
+          "success_audio": "Chính xác! 68 gần 70 hơn.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.8.A3",
+          "type": "make_benchmark",
+          "teacher": "Mốc thân thiện giúp con nghĩ nhanh hơn.",
+          "prompt": "47 cần thêm bao nhiêu để tới 50?",
+          "start": 47,
+          "benchmark": 50,
+          "choices": [
+            2,
+            3,
+            4
+          ],
+          "answer": 3,
+          "hints": [
+            "50 là mốc tròn chục ngay sau 47.",
+            "Đi từ 47: 48, 49, 50.",
+            "Có 3 bước."
+          ],
+          "success": "Đúng! 47 chỉ thiếu 3 để thành 50.",
+          "teacher_audio": "Mốc thân thiện giúp con nghĩ nhanh hơn.",
+          "instruction_audio": "47 cần thêm bao nhiêu để tới 50?",
+          "hints_audio": [
+            "50 là mốc tròn chục ngay sau 47.",
+            "Đi từ 47: 48, 49, 50.",
+            "Có 3 bước."
+          ],
+          "success_audio": "Đúng! 47 chỉ thiếu 3 để thành 50.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.8.A4",
+          "type": "benchmark_reasoning",
+          "teacher": "Con không cần tính chính xác tổng này. Chỉ cần dùng mốc để suy luận.",
+          "prompt": "198 + 205 sẽ gần 300, 400 hay 500 nhất?",
+          "choices": [
+            300,
+            400,
+            500
+          ],
+          "answer": 400,
+          "hints": [
+            "198 gần 200.",
+            "205 cũng gần 200.",
+            "200 + 200 gần 400."
+          ],
+          "success": "Rất tốt! Con đã dùng số thân thiện để ước lượng trước khi tính.",
+          "teacher_audio": "Con không cần tính chính xác tổng này. Chỉ cần dùng mốc để suy luận.",
+          "instruction_audio": "198 + 205 sẽ gần 300, 400 hay 500 nhất?",
+          "hints_audio": [
+            "198 gần 200.",
+            "205 cũng gần 200.",
+            "200 + 200 gần 400."
+          ],
+          "success_audio": "Rất tốt! Con đã dùng số thân thiện để ước lượng trước khi tính.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.9",
+      "order": 9,
+      "icon": "👀",
+      "title": "Khoảng bao nhiêu? – Ước lượng trước khi đếm",
+      "concept": "Estimation and reasonableness",
+      "prerequisite": [
+        "NS2.8"
+      ],
+      "goal": "Phát triển cảm giác về lượng và tính hợp lý: ước lượng trước, rồi kiểm chứng bằng nhóm hóa hoặc đếm có tổ chức.",
+      "evidence": [
+        "Đưa ra được ước lượng hợp lý",
+        "Biết dùng nhóm 5, 10 hoặc mốc để ước",
+        "Phân biệt ước lượng với đoán ngẫu nhiên",
+        "Kiểm tra và điều chỉnh sau khi biết kết quả thật"
+      ],
+      "sgk_targets": [
+        "Ước lượng số lượng",
+        "Kiểm đếm",
+        "So sánh số",
+        "Ứng dụng số trong thực tế"
+      ],
+      "activities": [
+        {
+          "id": "NS2.9.A1",
+          "type": "estimate_collection",
+          "teacher": "Cô chỉ cho con nhìn nhanh. Không cần đếm từng chấm ngay.",
+          "prompt": "Nhóm chấm này gần 20, 40 hay 80 nhất?",
+          "collection": {
+            "clusters": [
+              9,
+              10,
+              8,
+              11
+            ]
+          },
+          "choices": [
+            20,
+            40,
+            80
+          ],
+          "answer": 40,
+          "hints": [
+            "Nhìn theo cụm thay vì từng chấm.",
+            "Có khoảng 4 cụm, mỗi cụm gần 10.",
+            "Vậy tổng gần 40."
+          ],
+          "success": "Đúng! Ước lượng tốt dựa vào cấu trúc nhìn thấy, không phải đoán bừa.",
+          "teacher_audio": "Cô chỉ cho con nhìn nhanh. Không cần đếm từng chấm ngay.",
+          "instruction_audio": "Nhóm chấm này gần 20, 40 hay 80 nhất?",
+          "hints_audio": [
+            "Nhìn theo cụm thay vì từng chấm.",
+            "Có khoảng 4 cụm, mỗi cụm gần 10.",
+            "Vậy tổng gần 40."
+          ],
+          "success_audio": "Đúng! Ước lượng tốt dựa vào cấu trúc nhìn thấy, không phải đoán bừa.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.9.A2",
+          "type": "estimate_then_count",
+          "teacher": "Bây giờ con được kiểm chứng ước lượng bằng cách nhóm.",
+          "prompt": "Con ước gần 50. Hãy nhóm các vật thành chục để kiểm tra.",
+          "actual": 47,
+          "group_size": 10,
+          "expected_groups": 4,
+          "remainder": 7,
+          "hints": [
+            "Tạo các nhóm 10 trước.",
+            "Bốn nhóm 10 là 40.",
+            "Thêm 7 vật lẻ thành 47, nên ước lượng 50 khá gần."
+          ],
+          "success": "Tuyệt! Con đã dùng kết quả thật để đánh giá ước lượng.",
+          "teacher_audio": "Bây giờ con được kiểm chứng ước lượng bằng cách nhóm.",
+          "instruction_audio": "Con ước gần 50. Hãy nhóm các vật thành chục để kiểm tra.",
+          "hints_audio": [
+            "Tạo các nhóm 10 trước.",
+            "Bốn nhóm 10 là 40.",
+            "Thêm 7 vật lẻ thành 47, nên ước lượng 50 khá gần."
+          ],
+          "success_audio": "Tuyệt! Con đã dùng kết quả thật để đánh giá ước lượng.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.9.A3",
+          "type": "reasonableness_check",
+          "teacher": "Ước lượng còn giúp phát hiện đáp án vô lý.",
+          "prompt": "Một hộp có khoảng 60 viên. Bạn Nam nói đếm được 612 viên. Điều gì hợp lý nhất?",
+          "choices": [
+            "612 rất hợp lý",
+            "612 có vẻ không hợp lý, cần kiểm tra lại",
+            "Không thể biết gì"
+          ],
+          "answer": "612 có vẻ không hợp lý, cần kiểm tra lại",
+          "hints": [
+            "So 612 với mốc 60.",
+            "612 lớn gấp khoảng 10 lần 60.",
+            "Có thể bạn đã ghi thừa một chữ số."
+          ],
+          "success": "Đúng! Number sense giúp con nhận ra kết quả không hợp lý.",
+          "teacher_audio": "Ước lượng còn giúp phát hiện đáp án vô lý.",
+          "instruction_audio": "Một hộp có khoảng 60 viên. Bạn Nam nói đếm được 612 viên. Điều gì hợp lý nhất?",
+          "hints_audio": [
+            "So 612 với mốc 60.",
+            "612 lớn gấp khoảng 10 lần 60.",
+            "Có thể bạn đã ghi thừa một chữ số."
+          ],
+          "success_audio": "Đúng! Number sense giúp con nhận ra kết quả không hợp lý.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.9.A4",
+          "type": "estimate_range",
+          "teacher": "Không phải lúc nào ước lượng cũng cần một số duy nhất. Con có thể chọn một khoảng hợp lý.",
+          "prompt": "Một rổ có số quả nhìn khoảng trên 30 nhưng chắc chắn dưới 50. Khoảng nào phù hợp nhất?",
+          "choices": [
+            "20-30",
+            "35-45",
+            "60-80"
+          ],
+          "answer": "35-45",
+          "hints": [
+            "Loại các khoảng không chứa vùng 30-50.",
+            "20-30 quá thấp.",
+            "35-45 nằm giữa vùng mô tả."
+          ],
+          "success": "Rất tốt! Ước lượng có thể là một khoảng hợp lý chứ không phải một con số thần kỳ.",
+          "teacher_audio": "Không phải lúc nào ước lượng cũng cần một số duy nhất. Con có thể chọn một khoảng hợp lý.",
+          "instruction_audio": "Một rổ có số quả nhìn khoảng trên 30 nhưng chắc chắn dưới 50. Khoảng nào phù hợp nhất?",
+          "hints_audio": [
+            "Loại các khoảng không chứa vùng 30-50.",
+            "20-30 quá thấp.",
+            "35-45 nằm giữa vùng mô tả."
+          ],
+          "success_audio": "Rất tốt! Ước lượng có thể là một khoảng hợp lý chứ không phải một con số thần kỳ.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    },
+    {
+      "id": "NS2.10",
+      "order": 10,
+      "icon": "👣",
+      "title": "Một bước trước, một bước sau và khoảng cách",
+      "concept": "Neighbors, intervals and distance",
+      "prerequisite": [
+        "NS2.9"
+      ],
+      "goal": "Hiểu số liền trước/liền sau như bước ±1 trên tia số, đồng thời mở rộng sang khoảng cách giữa hai số để chuẩn bị cho cộng trừ và bài toán chênh lệch.",
+      "evidence": [
+        "Tìm đúng số liền trước/liền sau",
+        "Giải thích bằng bước trên tia số",
+        "Tìm được khoảng cách đơn giản giữa hai số",
+        "Không nhầm số lớn hơn với khoảng cách lớn hơn"
+      ],
+      "sgk_targets": [
+        "Số liền trước, số liền sau",
+        "Dãy số",
+        "So sánh và khoảng cách số",
+        "Chuẩn bị cho cộng trừ"
+      ],
+      "activities": [
+        {
+          "id": "NS2.10.A1",
+          "type": "number_neighbor",
+          "teacher": "Mỗi bước sang phải trên tia số là thêm đúng 1.",
+          "prompt": "Số liền sau của 299 là số nào?",
+          "number": 299,
+          "direction": "next",
+          "choices": [
+            298,
+            300,
+            309
+          ],
+          "answer": 300,
+          "hints": [
+            "Từ 299 tiến một bước.",
+            "Sau 9 đơn vị phải đổi thành chục/trăm phù hợp.",
+            "299 + 1 = 300."
+          ],
+          "success": "Đúng! Qua một bước, 299 chuyển sang mốc 300.",
+          "teacher_audio": "Mỗi bước sang phải trên tia số là thêm đúng 1.",
+          "instruction_audio": "Số liền sau của 299 là số nào?",
+          "hints_audio": [
+            "Từ 299 tiến một bước.",
+            "Sau 9 đơn vị phải đổi thành chục/trăm phù hợp.",
+            "299 + 1 = 300."
+          ],
+          "success_audio": "Đúng! Qua một bước, 299 chuyển sang mốc 300.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.10.A2",
+          "type": "number_neighbor",
+          "teacher": "Đi sang trái một bước là bớt đúng 1.",
+          "prompt": "Số liền trước của 500 là số nào?",
+          "number": 500,
+          "direction": "previous",
+          "choices": [
+            490,
+            499,
+            501
+          ],
+          "answer": 499,
+          "hints": [
+            "Từ 500 lùi một bước.",
+            "Ngay trước mốc 500 là 499.",
+            "499 + 1 = 500."
+          ],
+          "success": "Chính xác! 499 đứng ngay trước 500.",
+          "teacher_audio": "Đi sang trái một bước là bớt đúng 1.",
+          "instruction_audio": "Số liền trước của 500 là số nào?",
+          "hints_audio": [
+            "Từ 500 lùi một bước.",
+            "Ngay trước mốc 500 là 499.",
+            "499 + 1 = 500."
+          ],
+          "success_audio": "Chính xác! 499 đứng ngay trước 500.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.10.A3",
+          "type": "number_distance",
+          "teacher": "Không hỏi số nào lớn hơn; hãy hỏi hai số cách nhau bao nhiêu bước.",
+          "prompt": "Từ 47 đến 52 cần đi mấy bước?",
+          "start": 47,
+          "end": 52,
+          "choices": [
+            4,
+            5,
+            6
+          ],
+          "answer": 5,
+          "hints": [
+            "Đi tiếp: 48, 49, 50, 51, 52.",
+            "Đếm số bước chứ không đếm cả số bắt đầu.",
+            "Có 5 bước."
+          ],
+          "success": "Đúng! Khoảng cách giữa 47 và 52 là 5 đơn vị.",
+          "teacher_audio": "Không hỏi số nào lớn hơn; hãy hỏi hai số cách nhau bao nhiêu bước.",
+          "instruction_audio": "Từ 47 đến 52 cần đi mấy bước?",
+          "hints_audio": [
+            "Đi tiếp: 48, 49, 50, 51, 52.",
+            "Đếm số bước chứ không đếm cả số bắt đầu.",
+            "Có 5 bước."
+          ],
+          "success_audio": "Đúng! Khoảng cách giữa 47 và 52 là 5 đơn vị.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé."
+        },
+        {
+          "id": "NS2.10.A4",
+          "type": "transfer_story",
+          "teacher": "Cô đổi tia số thành một tình huống thật. Con vẫn dùng ý tưởng khoảng cách.",
+          "prompt": "Thang máy đang ở tầng 198 và cần tới tầng 203. Thang máy phải đi lên mấy tầng?",
+          "choices": [
+            4,
+            5,
+            6
+          ],
+          "answer": 5,
+          "hints": [
+            "Đây là khoảng cách từ 198 đến 203.",
+            "Có thể đếm tiếp 199, 200, 201, 202, 203.",
+            "Có 5 bước đi lên."
+          ],
+          "success": "Xuất sắc! Con đã mang ý tưởng khoảng cách số sang một bối cảnh mới.",
+          "teacher_audio": "Cô đổi tia số thành một tình huống thật. Con vẫn dùng ý tưởng khoảng cách.",
+          "instruction_audio": "Thang máy đang ở tầng 198 và cần tới tầng 203. Thang máy phải đi lên mấy tầng?",
+          "hints_audio": [
+            "Đây là khoảng cách từ 198 đến 203.",
+            "Có thể đếm tiếp 199, 200, 201, 202, 203.",
+            "Có 5 bước đi lên."
+          ],
+          "success_audio": "Xuất sắc! Con đã mang ý tưởng khoảng cách số sang một bối cảnh mới.",
+          "wrong_audio": "Chưa khớp rồi. Con thử thao tác hoặc nhìn mô hình theo một cách khác nhé.",
+          "transfer": true
+        }
+      ]
+    }
+  ]
+}
