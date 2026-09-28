@@ -2230,7 +2230,8 @@ const MATH_LAB_TRACKS_CONFIG = [
     { code:'12.8', icon:'📊', title:'Data & Chance Lab – Dữ liệu & khả năng', journeys:5, desc:'Thu thập, phân loại, biểu đồ tranh và khả năng xảy ra.' },
     { code:'12.9', icon:'💡', title:'Problem Solving Studio – Giải quyết vấn đề', journeys:6, desc:'Mô hình hóa bài toán, nhiều cách giải, giải thích và thuyết phục.' }
 ];
-const MATH_LAB_DATA_FILES = Object.fromEntries(MATH_LAB_TRACKS_CONFIG.map(t => [t.code, `assets/data/math_lab_toan_2_${t.code.replace('.','_')}.json`]));
+const MATH_LAB_DATA_FILE = 'assets/data/math_lab_toan_2_12.json?v=20260929-2';
+let mathLabBundle = null;
 const mathLabCaches = {};
 let mathLabCache = null;
 let mathLabState = {
@@ -2267,11 +2268,38 @@ function ensureMathLabStyles_() {
         @media(max-width:640px){.ml-hero{padding:16px}.ml-hundred{width:54px;height:54px;background-size:5.4px 5.4px}.ml-ten{height:54px}.ml-track-card,.ml-journey-card{border-radius:20px}}
     `; document.head.appendChild(style);
 }
+async function loadMathLabBundle_() {
+    if (mathLabBundle) return mathLabBundle;
+    let res;
+    try {
+        res = await fetch(MATH_LAB_DATA_FILE, { cache: 'no-store' });
+    } catch (err) {
+        throw new Error('Không kết nối được dữ liệu Math Lab. Hãy kiểm tra file assets/data/math_lab_toan_2_12.json');
+    }
+    if(!res.ok) throw new Error(`Không tải được Math Lab (${res.status}). Cần file assets/data/math_lab_toan_2_12.json`);
+    let data;
+    try {
+        data = await res.json();
+    } catch (err) {
+        throw new Error('File math_lab_toan_2_12.json không phải JSON hợp lệ');
+    }
+    const labs = Array.isArray(data?.labs)
+        ? data.labs
+        : (Array.isArray(data?.tracks) ? data.tracks : (data?.display_code ? [data] : []));
+    if(!labs.length) throw new Error('Dữ liệu Math Lab không có Learning Lab');
+    mathLabBundle=data;
+    Object.keys(mathLabCaches).forEach(k => delete mathLabCaches[k]);
+    labs.forEach(lab=>{ if(lab?.display_code) mathLabCaches[String(lab.display_code)]=lab; });
+    if(!mathLabCaches['12.1']) throw new Error('Dữ liệu Math Lab thiếu Learning Lab 12.1');
+    return mathLabBundle;
+}
 async function loadMathLabData_(code='12.1') {
     if (mathLabCaches[code]) { mathLabCache=mathLabCaches[code]; return mathLabCache; }
-    const file=MATH_LAB_DATA_FILES[code]; if(!file) throw new Error('Không tìm thấy dữ liệu '+code);
-    const res=await fetch(file); if(!res.ok) throw new Error(`Không thể tải dữ liệu Math Lab ${code}`);
-    mathLabCaches[code]=await res.json(); mathLabCache=mathLabCaches[code]; return mathLabCache;
+    await loadMathLabBundle_();
+    const data=mathLabCaches[code];
+    if(!data) throw new Error('Không tìm thấy dữ liệu '+code);
+    mathLabCache=data;
+    return mathLabCache;
 }
 function mathLabProgress_(){try{return JSON.parse(localStorage.getItem('mathLabG2ProgressV1')||'{}')||{}}catch(_){return{}}}
 function mathLabMarkDone_(id){const p=mathLabProgress_();p[id]={done:true,at:new Date().toISOString()};localStorage.setItem('mathLabG2ProgressV1',JSON.stringify(p))}
