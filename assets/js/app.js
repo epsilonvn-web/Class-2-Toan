@@ -502,6 +502,18 @@ function beautifySubtopicName(name) {
     return s;
 }
 
+// Nhãn mục con hiển thị theo số Mục đang thấy trên giao diện (3.1, 4.1, 5.1...).
+// Dữ liệu JSON vẫn giữ nguyên sub_topic cũ để không làm vỡ roadmap/bài tập; chỉ chuẩn hóa presentation.
+function getExploreSubtopicDisplayLabel_(topicNum, index, rawLabel) {
+    const major = Number(topicNum);
+    const minor = Number(index) + 1;
+    let label = beautifySubtopicName(rawLabel);
+    // Nếu dữ liệu cũ đã có tiền tố số (ví dụ 3.1), bỏ nó đi rồi gắn lại theo Mục hiện tại.
+    label = label.replace(/^\s*\d+(?:\.\d+)?[.)]?\s*/, '').trim();
+    if (!Number.isFinite(major) || major <= 0 || !Number.isFinite(minor) || minor <= 0) return label;
+    return `${major}.${minor}${label ? ` ${label}` : ''}`;
+}
+
 const DATA_VERSION = '20260927-2135-muldiv-visual';
 const TOPICS_DATA_FILES = [
     'assets/data/kho_hoc_toan_2_hk1.json',
@@ -953,7 +965,12 @@ function returnToLevel3FromHeader() {
             return renderExploreComparisonBranches(2, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
         }
         const label = document.getElementById('header-level3-title')?.textContent || '';
-        const idx = (pendingTopicQuiz.groups || []).findIndex(k => beautifySubtopicName(pendingTopicQuiz.groupLabels?.[k] || k) === label);
+        const groups = pendingTopicQuiz.groups || [];
+        const idx = groups.findIndex((k, i) => {
+            const displayLabel = pendingTopicQuiz.groupDisplayLabels?.[k]
+                || getExploreSubtopicDisplayLabel_(pendingTopicQuiz.topicNum, i, pendingTopicQuiz.groupLabels?.[k] || k);
+            return displayLabel === label || beautifySubtopicName(pendingTopicQuiz.groupLabels?.[k] || k) === label;
+        });
         if (idx >= 0) return selectSubtopic(idx);
         return returnToTopicLecture();
     }
@@ -1840,9 +1857,15 @@ function renderExploreSubtopics(topicNum, topicName, topicObj) {
         });
     }
 
+    const groupDisplayLabels = {};
+    groups.forEach((subName, idx) => {
+        groupDisplayLabels[subName] = getExploreSubtopicDisplayLabel_(topicNum, idx, groupLabels[subName]);
+    });
+
     pendingTopicQuiz.groups = groups;
     pendingTopicQuiz.groupMap = groupMap;
     pendingTopicQuiz.groupLabels = groupLabels;
+    pendingTopicQuiz.groupDisplayLabels = groupDisplayLabels;
 
     const container = document.getElementById('view-dashboard-grid');
     if (!container) return;
@@ -1852,7 +1875,8 @@ function renderExploreSubtopics(topicNum, topicName, topicObj) {
     const compactTopic3Cards = Number(topicNum) === 3;
     groups.forEach((subName, idx) => {
         const style = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
-        const displayTitle = beautifySubtopicName(groupLabels[subName]);
+        const displayTitle = beautifySubtopicName(groupLabels[subName]).replace(/^\s*\d+(?:\.\d+)?[.)]?\s*/, '').trim();
+        const displayCode = `${Number(topicNum)}.${idx + 1}`;
         const count = groupMap[subName].length;
         const topic3PedagogyDesc = {
             '2.2': 'Cầu 10: tách số → về 10 → tính phần còn lại',
@@ -1870,7 +1894,7 @@ function renderExploreSubtopics(topicNum, topicName, topicObj) {
         subHtml += `
             <button onclick="selectSubtopic(${idx})" class="${cardSizeClass} ${style.card} border-2 rounded-2xl font-bold text-left transition-all flex flex-col justify-between shadow-sm pastel-btn">
                 <div class="flex items-start justify-between gap-3 w-full">
-                    <span class="text-base md:text-lg leading-snug"><strong class="${style.num} mr-1.5">${idx + 1}.</strong> ${escapeHtml(displayTitle)}</span>
+                    <span class="text-base md:text-lg leading-snug"><strong class="${style.num} mr-1.5">${escapeHtml(displayCode)}</strong> ${escapeHtml(displayTitle)}</span>
                     <span class="text-xs font-extrabold ${style.badge} px-2.5 py-0.5 rounded-full border shrink-0 shadow-inner">${count} câu</span>
                 </div>
                 ${desc ? `<span class="mt-2 text-xs md:text-sm font-bold text-slate-500 leading-snug">${escapeHtml(desc)}</span>` : ''}
@@ -2235,10 +2259,12 @@ function selectSubtopic(idx) {
     if (Number(pendingTopicQuiz.topicNum) === 2) {
         return renderExploreComparisonBranches(2, pendingTopicQuiz.topicName, pendingTopicQuiz.questions || []);
     }
-    const { topicNum, topicName, questions, groups, groupMap, groupLabels } = pendingTopicQuiz;
+    const { topicNum, topicName, questions, groups, groupMap, groupLabels, groupDisplayLabels } = pendingTopicQuiz;
     const subLabel = idx !== null ? groups[idx] : null;
     const pool = idx !== null ? groupMap[subLabel] : questions;
-    const displayLabel = subLabel ? beautifySubtopicName(groupLabels[subLabel]) : null;
+    const displayLabel = subLabel
+        ? (groupDisplayLabels?.[subLabel] || getExploreSubtopicDisplayLabel_(topicNum, idx, groupLabels[subLabel]))
+        : null;
 
     if (Number(topicNum) === 3 && isCarryLearningSub_(subLabel)) {
         return renderCarryLearningModes_(subLabel, displayLabel, pool);
