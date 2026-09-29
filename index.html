@@ -806,7 +806,7 @@
                                 <h2 class="text-base md:text-lg font-extrabold text-indigo-600 flex items-center space-x-2">
                                     <span>✏️</span><span>Bài tập</span>
                                 </h2>
-                                <p class="text-[11px] md:text-xs text-gray-500 font-bold">20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo · đánh giá theo 6 năng lực.</p>
+                                <p class="text-[11px] md:text-xs text-gray-500 font-bold">20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo · dùng khung 6 năng lực nhưng chỉ đánh giá nhóm có đủ dữ liệu.</p>
                             </div>
                             
                             <div class="flex items-center space-x-2 shrink-0">
@@ -866,7 +866,7 @@
                             <h2 class="font-extrabold text-amber-600 text-lg md:text-xl flex items-center justify-center space-x-2">
                                 <span>🏆</span><span>Đấu trường đề thi thử</span>
                             </h2>
-                            <p class="text-xs md:text-sm text-gray-500 font-bold mt-1">Thử sức các bộ đề thi chuẩn ma trận 13 câu - 6 nhóm năng lực</p>
+                            <p class="text-xs md:text-sm text-gray-500 font-bold mt-1">Mỗi đề bám đúng phạm vi kỳ học · không ép đủ 6 năng lực vào một đề</p>
                         </div>
                         <div id="exam-categories-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                     </div>
@@ -903,8 +903,9 @@
                     <div class="bg-white rounded-3xl p-4 sm:p-5 border border-pink-100 soft-shadow-pink space-y-2.5">
                         <h3 class="text-sm sm:text-base font-black text-slate-800 tracking-tight flex items-center space-x-2">
                             <i class="fa-solid fa-chart-bar text-pink-600"></i>
-                            <span>Bóc tách điểm số & đánh giá năng lực 6 chủ đề</span>
+                            <span>Bóc tách điểm số & năng lực thực sự được đo</span>
                         </h3>
+                        <p class="text-[11px] sm:text-xs font-bold text-slate-500 leading-relaxed">Khung C1–C6 là khung toàn chương trình, không phải checklist của từng đề. Nhóm không có câu đo sẽ hiển thị <strong>Chưa đánh giá</strong>; nhóm có quá ít câu sẽ hiển thị <strong>Chưa đủ dữ liệu</strong> — tuyệt đối không quy thành 0%.</p>
                         <div id="report-topics-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
                     </div>
 
@@ -965,7 +966,7 @@
                             </div>
                             <div>
                                 <h3 class="font-black text-base sm:text-lg text-pink-950" id="hist-modal-title">Kết quả tiến trình học tập</h3>
-                                <p class="text-xs font-bold text-pink-600 whitespace-nowrap">Phân tích chuyên sâu 6 chủ đề & nhận xét sư phạm chi tiết</p>
+                                <p class="text-xs font-bold text-pink-600 whitespace-nowrap">Phân tích theo dữ liệu thực đo · không được đo ≠ 0%</p>
                             </div>
                         </div>
 
@@ -1003,10 +1004,13 @@
                         </div>
 
                         <div class="w-full md:w-[40%] bg-pink-50/40 border border-pink-100 rounded-2xl p-4 flex flex-col justify-between shadow-xs">
-                            <h4 class="text-xs sm:text-sm font-black text-slate-800 mb-2 flex items-center space-x-1.5">
-                                <i class="fa-solid fa-chart-bar text-rose-600"></i>
-                                <span>Năng lực trung bình 6 chủ đề (%)</span>
-                            </h4>
+                            <div class="mb-2">
+                                <h4 class="text-xs sm:text-sm font-black text-slate-800 flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-chart-bar text-rose-600"></i>
+                                    <span>Năng lực trung bình theo dữ liệu đã đo (%)</span>
+                                </h4>
+                                <p class="text-[10px] text-slate-500 font-bold mt-1">Cột trống nghĩa là chưa có dữ liệu đánh giá hợp lệ, không phải 0%.</p>
+                            </div>
                             <div class="h-64 w-full relative">
                                 <canvas id="topicRadarChartCanvas"></canvas>
                             </div>
@@ -1024,7 +1028,7 @@
                                 </div>
                                 <div>
                                     <h4 class="text-base font-black text-amber-950 leading-tight">Nhận xét sư phạm & kế hoạch bồi dưỡng của giáo viên</h4>
-                                    <p class="text-xs font-bold text-amber-700">Đánh giá năng lực tư duy 6 chủ đề & lời khuyên phụ huynh đồng hành</p>
+                                    <p class="text-xs font-bold text-amber-700">Chỉ nhận xét nhóm có đủ dữ liệu · nhóm chưa được đo không bị quy thành 0%</p>
                                 </div>
                             </div>
                             <button onclick="speakPedagogicalEvaluation()" class="no-print shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 rounded-xl text-xs font-black flex items-center space-x-1.5 pastel-btn shadow-xs">
@@ -1037,10 +1041,13 @@
 
                 <!-- TRANG 3: BẢNG THỐNG KÊ CHI TIẾT TỪNG BÀI THI -->
                 <div class="space-y-3 page-break-3">
-                    <h4 class="text-base font-black text-slate-900 flex items-center space-x-2">
-                        <i class="fa-solid fa-table text-pink-600"></i>
-                        <span>Bảng thống kê điểm số chi tiết từng bài thi</span>
-                    </h4>
+                    <div>
+                        <h4 class="text-base font-black text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-table text-pink-600"></i>
+                            <span>Bảng thống kê điểm số chi tiết từng bài thi</span>
+                        </h4>
+                        <p class="text-[10px] sm:text-xs text-slate-500 font-bold mt-1">“Chưa ĐG” = chưa đánh giá; “Chưa đủ DL” = chưa đủ dữ liệu để kết luận năng lực.</p>
+                    </div>
                     <div class="border border-pink-200 rounded-2xl overflow-hidden shadow-xs bg-white overflow-x-auto">
                         <table class="w-full text-center text-xs border-collapse">
                             <thead class="bg-pink-100/70 text-pink-950 font-black border-b border-pink-200">
@@ -1087,7 +1094,7 @@
     </footer>
 
     <!-- NẠP ENGINE JAVASCRIPT ĐỒNG BỘ -->
-    <script src="assets/js/app.js?v=12.2-mathlab-onejson-20260929"></script>
+    <script src="assets/js/app.js?v=12.3-assessment-policy-20260929"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
