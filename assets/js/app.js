@@ -105,6 +105,29 @@ const SKILL_TAXONOMY = {
     C6: { code: 'C6', sheetCol: 'C6_TuDuy', totalCol: 'C6_TuDuy_Tong', name: 'Tư duy logic và IQ', advice: 'Rèn kỹ năng suy luận logic, giải các bài toán cân thăng bằng và đếm hình phức tạp.' }
 };
 
+// Chuẩn đánh giá năng lực: khung C1-C6 là khung TOÀN CHƯƠNG TRÌNH, không phải checklist bắt buộc của từng đề.
+// Không có câu đo năng lực => Chưa đánh giá. Có quá ít câu => Chưa đủ dữ liệu. Tuyệt đối không quy thành 0%.
+const DEFAULT_ASSESSMENT_POLICY = {
+    minQuestions: 2,
+    noDataLabel: 'Chưa đánh giá',
+    insufficientLabel: 'Chưa đủ dữ liệu'
+};
+
+function extractSkillKey_(value) {
+    const m = String(value || '').toUpperCase().match(/C([1-6])/);
+    return m ? `C${m[1]}` : null;
+}
+
+function getAssessmentPolicy_() {
+    const p = activeExamContext?.assessmentPolicy || examsCache['de_thi_toan_2.json']?.assessment_policy || {};
+    const minQuestions = Math.max(1, Number(p.min_questions_for_competency ?? p.minQuestions ?? DEFAULT_ASSESSMENT_POLICY.minQuestions) || DEFAULT_ASSESSMENT_POLICY.minQuestions);
+    return {
+        minQuestions,
+        noDataLabel: p.no_data_label || p.noDataLabel || DEFAULT_ASSESSMENT_POLICY.noDataLabel,
+        insufficientLabel: p.insufficient_data_label || p.insufficientLabel || DEFAULT_ASSESSMENT_POLICY.insufficientLabel
+    };
+}
+
 const GREETINGS_STUDENT = [
     "Chào {name}, cô Thỏ Ngọc đố con hôm nay mình tính nhanh và chính xác đến đâu nhé!",
     "Chào mừng {name} quay lại! Não bộ đã khởi động, sẵn sàng chinh phục những con số chưa nào!",
@@ -383,7 +406,12 @@ function normalizeQuestion(q) {
         audio_text: q.aud ?? q.audio_text ?? '',
         reading_title: q.r_title ?? q.reading_title ?? '',
         reading_passage: q.r_passage ?? q.reading_passage ?? q.passage_text ?? '',
-        skill_tag: q.skill_tag ?? q.tag ?? 'TOAN_C1',
+        skill_tag: q.skill_tag ?? q.tag ?? '',
+        skill: q.skill ?? '',
+        difficulty: q.difficulty ?? '',
+        semester: q.semester ?? '',
+        scope: q.scope ?? '',
+        source_basis: Array.isArray(q.source_basis) ? q.source_basis : [],
         explore_topic_id: Number(q.explore_topic_id ?? inferExploreTopicIdFromSubCode_(q.sub_code ?? q.sub_id ?? q.sub ?? q.sub_topic)),
         explore_topic: q.explore_topic ?? '',
         explore_group: q.explore_group ?? '',
@@ -550,7 +578,7 @@ async function fetchAllTopicsData() {
 
 async function loadExamDataFile(file) {
     if (examsCache[file]) return examsCache[file];
-    const res = await fetch(`assets/data/${file}`);
+    const res = await fetch(`assets/data/${file}`, { cache: 'no-store' });
     if (!res.ok) throw new Error("Không thể tải file đề thi");
     const data = await res.json();
     if (data && Array.isArray(data.exams)) {
@@ -627,10 +655,23 @@ async function startRandomExam(categoryKey) {
 
         const exam = candidates[Math.floor(Math.random() * candidates.length)];
         const examIndex = pool.indexOf(exam);
+        const examId = String(exam.exam_id || '');
+        const parsedExamNo = Number(examId.split('.').pop());
+        const categoryExamIndex = candidates.indexOf(exam);
+        const examNo = Number.isFinite(parsedExamNo) && parsedExamNo > 0 ? parsedExamNo : (categoryExamIndex + 1);
         const examLabel = examFileMap[categoryKey]?.label || 'Đề thi';
-        const examTitle = exam.exam_title || exam.name || exam.title || `${examLabel} - Đề số ${examIndex + 1}`;
+        const examTitle = exam.exam_title || exam.name || exam.title || `${examLabel} - Đề số ${examNo}`;
 
-        activeExamContext = { categoryKey, examIndex, examTitle };
+        activeExamContext = {
+            categoryKey,
+            examIndex,
+            examNo,
+            examId,
+            examTitle,
+            measuredCompetencies: Array.isArray(exam.measured_competencies) ? exam.measured_competencies : [],
+            assessmentPolicy: examData?.assessment_policy || null,
+            scopeSummary: exam.scope_summary || ''
+        };
         activeRoadmapContext = null;
         pendingTopicQuiz = null;
 
@@ -3992,7 +4033,7 @@ function showResultScreen() {
                 question_number: idx + 1,
                 question_text: q.question_text,
                 sub_topic: q.sub_topic || 'Chủ đề tổng hợp',
-                skill_tag: q.skill_tag || 'C1',
+                skill_tag: q.skill_tag || '',
                 dap_an_chon: studentAns || 'Chưa trả lời',
                 dap_an_dung: q.answer,
                 explanation: q.explanation || 'Không có giải thích chi tiết.'
@@ -4001,7 +4042,7 @@ function showResultScreen() {
         quizAnsweredLog.push({
             question_id: q.question_id,
             question_text: q.question_text,
-            skill_tag: q.skill_tag || 'C1',
+            skill_tag: q.skill_tag || '',
             source_topic_id: q.source_topic_id,
             diem: q.diem ?? 0.5,
             isCorrect,
@@ -4066,17 +4107,16 @@ function renderReportTopicsBreakdown() {
 
     const isRoadmap = !!activeRoadmapContext;
     const skillKeys = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
+    const policy = getAssessmentPolicy_();
     const skillStats = {};
     skillKeys.forEach(k => {
         skillStats[k] = { total: 0, correct: 0, maxScore: 0, earnedScore: 0 };
     });
 
     activeQuestionsList.forEach((q, idx) => {
-        let rawTag = String(q.skill_tag || 'TOAN_C1').toUpperCase();
-        let m = rawTag.match(/C([1-6])/);
-        let tag = m ? 'C' + m[1] : 'C1';
+        const tag = extractSkillKey_(q.skill_tag);
+        if (!tag || !skillStats[tag]) return; // Không tự đẩy tag lỗi về C1 vì sẽ làm sai hồ sơ năng lực.
 
-        if (!skillStats[tag]) skillStats[tag] = { total: 0, correct: 0, maxScore: 0, earnedScore: 0 };
         skillStats[tag].total++;
         skillStats[tag].maxScore += (q.diem ?? 0.5);
         if (userAnswers[idx] === q.answer) {
@@ -4088,29 +4128,51 @@ function renderReportTopicsBreakdown() {
     let html = '';
     skillKeys.forEach(k => {
         const data = skillStats[k];
-        const pct = isRoadmap
-            ? (data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0)
-            : (data.maxScore > 0 ? Math.round((data.earnedScore / data.maxScore) * 100) : 0);
-        const isPassed = pct >= 50;
-        const badgeClass = isPassed ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-rose-50 text-rose-700 border border-rose-200';
-        const badgeText = isPassed ? 'Đạt yêu cầu' : 'Cần luyện tập thêm';
-        const barColor = isPassed ? 'bg-gradient-to-r from-amber-400 to-orange-400' : 'bg-gradient-to-r from-pink-400 to-rose-400';
-        const scoreLine = isRoadmap
-            ? `<span>Số câu đúng: <strong class="text-pink-600">${data.correct}/${data.total} câu</strong></span>`
-            : `<span>Điểm đạt: <strong class="text-pink-600">${data.earnedScore.toFixed(1)} / ${data.maxScore.toFixed(1)}đ</strong></span>`;
+        const noData = data.total === 0;
+        const insufficient = !noData && data.total < policy.minQuestions;
+        const canEvaluate = !noData && !insufficient;
+        const pct = canEvaluate
+            ? (isRoadmap
+                ? Math.round((data.correct / data.total) * 100)
+                : Math.round((data.earnedScore / data.maxScore) * 100))
+            : null;
+
+        let badgeClass, badgeText, barColor, scoreLine, pctText;
+        if (noData) {
+            badgeClass = 'bg-slate-100 text-slate-600 border border-slate-200';
+            badgeText = policy.noDataLabel;
+            barColor = 'bg-slate-200';
+            scoreLine = `<span class="text-slate-500">Đề này không có câu đo năng lực này</span>`;
+            pctText = '—';
+        } else if (insufficient) {
+            badgeClass = 'bg-amber-50 text-amber-700 border border-amber-200';
+            badgeText = policy.insufficientLabel;
+            barColor = 'bg-amber-200';
+            scoreLine = `<span class="text-amber-700">Mới có <strong>${data.total}</strong> câu · cần tối thiểu ${policy.minQuestions} câu</span>`;
+            pctText = '—';
+        } else {
+            const isPassed = pct >= 50;
+            badgeClass = isPassed ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200';
+            badgeText = isPassed ? 'Đạt yêu cầu' : 'Cần luyện tập thêm';
+            barColor = isPassed ? 'bg-gradient-to-r from-emerald-400 to-teal-400' : 'bg-gradient-to-r from-pink-400 to-rose-400';
+            scoreLine = isRoadmap
+                ? `<span>Số câu đúng: <strong class="text-pink-600">${data.correct}/${data.total} câu</strong></span>`
+                : `<span>Điểm đạt: <strong class="text-pink-600">${data.earnedScore.toFixed(1)} / ${data.maxScore.toFixed(1)}đ</strong> · ${data.total} câu đo</span>`;
+            pctText = `${pct}%`;
+        }
 
         html += `
             <div class="bg-pink-50/40 border border-pink-100 rounded-2xl p-3 flex flex-col justify-between space-y-2">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-2">
                     <span class="font-black text-slate-800 text-xs sm:text-sm">${SKILL_TAXONOMY[k].name}</span>
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${badgeClass}">${badgeText}</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold whitespace-nowrap ${badgeClass}">${badgeText}</span>
                 </div>
-                <div class="flex items-center justify-between text-xs font-bold text-slate-600">
+                <div class="flex items-center justify-between gap-2 text-xs font-bold text-slate-600">
                     ${scoreLine}
-                    <span class="font-math font-black">${pct}%</span>
+                    <span class="font-math font-black shrink-0">${pctText}</span>
                 </div>
-                <div class="w-full bg-pink-100 rounded-full h-2 overflow-hidden">
-                    <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                <div class="w-full ${canEvaluate ? 'bg-pink-100' : 'bg-slate-100'} rounded-full h-2 overflow-hidden">
+                    <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${canEvaluate ? pct : 0}%"></div>
                 </div>
             </div>
         `;
@@ -4159,45 +4221,62 @@ function closeReviewWrongModal() {
 // LƯU KẾT QUẢ & ĐỒNG BỘ ĐIỂM C1-C6 LÊN GOOGLE SHEETS
 // ==========================================
 async function saveExamResultToSheet() {
-    const { categoryKey, examIndex } = activeExamContext;
+    const { categoryKey, examNo, examId } = activeExamContext;
     const thoiGianLamBai = quizStartTime ? formatDuration(Date.now() - quizStartTime) : '';
-    
-    const skillScores = { C1: 0, C2: 0, C3: 0, C4: 0, C5: 0, C6: 0 };
-    quizAnsweredLog.forEach(item => {
-        let rawTag = String(item.skill_tag || 'C1').toUpperCase();
-        let m = rawTag.match(/C([1-6])/);
-        let tag = m ? 'C' + m[1] : 'C1';
+    const policy = getAssessmentPolicy_();
 
-        if (item.isCorrect && skillScores[tag] !== undefined) {
-            skillScores[tag] += (item.diem || 0.5);
+    const skillStats = {};
+    Object.keys(SKILL_TAXONOMY).forEach(k => {
+        skillStats[k] = { earnedScore: 0, maxScore: 0, totalQuestions: 0, correctQuestions: 0 };
+    });
+
+    quizAnsweredLog.forEach(item => {
+        const tag = extractSkillKey_(item.skill_tag);
+        if (!tag || !skillStats[tag]) return;
+        const diem = Number(item.diem ?? 0.5) || 0.5;
+        skillStats[tag].totalQuestions++;
+        skillStats[tag].maxScore += diem;
+        if (item.isCorrect) {
+            skillStats[tag].correctQuestions++;
+            skillStats[tag].earnedScore += diem;
         }
     });
 
     const payload = {
         maHS: currentUser.maHS,
-        token: currentUser.token, // bắt buộc để server xác nhận đúng chủ tài khoản mới cho ghi điểm
+        token: currentUser.token,
         hoTen: currentUser.hoTen,
         lop: currentUser.lop,
         examCategory: categoryKey,
+        examId: examId || '',
         sheetName: examFileMap[categoryKey]?.sheet || 'LichSuBaiThi_HK1',
-        deSo: examIndex + 1,
+        deSo: examNo || 1,
         thoiGianLamBai,
         tongDiem: score.toFixed(1),
         soCauDung: quizAnsweredLog.filter(x => x.isCorrect).length,
         tongCauHoi: activeQuestionsList.length,
-        diemC1: skillScores.C1.toFixed(1),
-        diemC2: skillScores.C2.toFixed(1),
-        diemC3: skillScores.C3.toFixed(1),
-        diemC4: skillScores.C4.toFixed(1),
-        diemC5: skillScores.C5.toFixed(1),
-        diemC6: skillScores.C6.toFixed(1),
+        measuredCompetencies: Object.keys(skillStats).filter(k => skillStats[k].totalQuestions > 0).map(k => `TOAN_${k}`).join(','),
+        assessmentMinQuestions: policy.minQuestions,
         wrongQuestions: quizWrongAnswers
     };
-    // Ghi điểm từng nhóm năng lực vào ĐÚNG tên cột khai báo trong SKILL_TAXONOMY (C1_NhanBiet, C2_PhepTinh...)
-    // — không hard-code tên cột, tránh lệch dữ liệu nếu sau này đổi lại taxonomy.
+
     Object.keys(SKILL_TAXONOMY).forEach(k => {
-        payload[SKILL_TAXONOMY[k].sheetCol] = skillScores[k].toFixed(1);
+        const s = skillStats[k];
+        const taxo = SKILL_TAXONOMY[k];
+        const measured = s.totalQuestions > 0;
+        const status = !measured ? policy.noDataLabel : (s.totalQuestions < policy.minQuestions ? policy.insufficientLabel : 'Đã đánh giá');
+
+        // Nhóm không có câu hỏi được lưu RỖNG chứ không lưu 0 để tránh hiểu nhầm "0%".
+        payload[`diem${k}`] = measured ? s.earnedScore.toFixed(1) : '';
+        payload[taxo.sheetCol] = measured ? s.earnedScore.toFixed(1) : '';
+        // Trên sheet đề thi, *_Tong là tổng điểm tối đa của chính nhóm năng lực trong đề đó.
+        // Có mẫu số này client mới được phép tính phần trăm năng lực ở lịch sử.
+        payload[taxo.totalCol] = measured ? s.maxScore.toFixed(1) : '';
+        payload[`soCau${k}`] = measured ? s.totalQuestions : '';
+        payload[`dung${k}`] = measured ? s.correctQuestions : '';
+        payload[`trangThai${k}`] = status;
     });
+
     try { await callAppsScript('saveExamResult', payload); } catch (e) {}
 }
 
@@ -4312,6 +4391,34 @@ function getSkillCell(row, skillKey) {
     return { correct: isNaN(correct) ? 0 : correct, total };
 }
 
+
+function getExamSkillCell(row, skillKey) {
+    const taxo = SKILL_TAXONOMY[skillKey];
+    const policy = getAssessmentPolicy_();
+    const earnedRaw = row[`diem${skillKey}`] ?? row[taxo.sheetCol] ?? row[`diem_${skillKey.toLowerCase()}`] ?? row[skillKey];
+    const maxRaw = row[taxo.totalCol] ?? row[`maxDiem${skillKey}`] ?? row[`tongDiem${skillKey}`];
+    const questionRaw = row[`soCau${skillKey}`] ?? row[`tongCau${skillKey}`] ?? row[`count${skillKey}`];
+
+    const hasEarnedField = earnedRaw !== undefined && earnedRaw !== null && earnedRaw !== '' && earnedRaw !== '--';
+    const maxScore = (maxRaw !== undefined && maxRaw !== null && maxRaw !== '' && maxRaw !== '--') ? Number(maxRaw) : NaN;
+
+    // Dữ liệu cũ chỉ lưu điểm C1-C6 nhưng không lưu mẫu số. Ta không thể biết 0 là "làm sai" hay "không được đo".
+    // Vì vậy phải trả Chưa đủ dữ liệu, tuyệt đối không suy thành 0%.
+    if (!Number.isFinite(maxScore) || maxScore <= 0) {
+        return hasEarnedField ? { status: 'insufficient', earned: null, maxScore: null, questionCount: null } : { status: 'unmeasured', earned: null, maxScore: null, questionCount: 0 };
+    }
+
+    const earnedNum = Number(earnedRaw);
+    const earned = Number.isFinite(earnedNum) ? earnedNum : 0;
+    const qNum = (questionRaw !== undefined && questionRaw !== null && questionRaw !== '' && questionRaw !== '--') ? Number(questionRaw) : NaN;
+    const questionCount = Number.isFinite(qNum) && qNum >= 0 ? qNum : null;
+
+    if (questionCount !== null && questionCount > 0 && questionCount < policy.minQuestions) {
+        return { status: 'insufficient', earned, maxScore, questionCount };
+    }
+    return { status: 'measured', earned, maxScore, questionCount };
+}
+
 function formatDateOnly(value) {
     if (!value) return '--';
     const d = new Date(value);
@@ -4329,7 +4436,7 @@ function renderHistoryReport(rows, sheetName) {
     const isWeekly = sheetName === 'LichSuTienTrinhTuan';
     const labels = rows.map((r, i) => {
         const dm = formatDateShort(r.Timestamp || r.ngayLam);
-        const label = isWeekly ? `Tuần ${r.tuan || i + 1}` : (r.deSo ? `Đề ${r.deSo}` : `Tuần ${r.tuan || i + 1}`);
+        const label = isWeekly ? `Tuần ${r.tuan || i + 1}` : (r.deSo ? `Đề ${r.deSo}` : `Lần ${i + 1}`);
         return dm ? `${dm} ${label}` : label;
     });
     const scores = rows.map(r => Number(r.score || r.tongDiem || ((r.soCauDung / (r.tongCauHoi || 30)) * 10).toFixed(1)));
@@ -4343,7 +4450,7 @@ function renderHistoryReport(rows, sheetName) {
             labels: labels.length ? labels : ['Chưa có bài thi'],
             datasets: [{
                 label: 'Điểm số (/10)',
-                data: scores.length ? scores : [0],
+                data: scores.length ? scores : [null],
                 borderColor: '#e11d48',
                 backgroundColor: 'rgba(254, 226, 226, 0.5)',
                 borderWidth: 3.5,
@@ -4379,13 +4486,12 @@ function renderHistoryReport(rows, sheetName) {
     });
 
     const skillKeys = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
-    const skillAverages = isWeekly
-        ? { C1: 0, C2: 0, C3: 0, C4: 0, C5: 0, C6: 0 }
-        : { C1: 85, C2: 78, C3: 92, C4: 70, C5: 80, C6: 75 };
+    const policy = getAssessmentPolicy_();
+    const skillAverages = { C1: null, C2: null, C3: null, C4: null, C5: null, C6: null };
     const touchedSkills = [];
+    const insufficientSkills = [];
 
     if (rows.length && isWeekly) {
-        // Tiến trình tuần: % = tổng số câu đúng / tổng số câu đã làm THẬT của nhóm kỹ năng đó
         skillKeys.forEach((k) => {
             let sumCorrect = 0, sumTotal = 0;
             rows.forEach(r => {
@@ -4394,22 +4500,36 @@ function renderHistoryReport(rows, sheetName) {
                 sumCorrect += cell.correct;
                 sumTotal += cell.total;
             });
-            if (sumTotal > 0) {
+            if (sumTotal >= policy.minQuestions) {
                 skillAverages[k] = Math.min(100, Math.round((sumCorrect / sumTotal) * 100));
                 touchedSkills.push(k);
+            } else if (sumTotal > 0) {
+                insufficientSkills.push(k);
             }
         });
     } else if (rows.length) {
         skillKeys.forEach((k) => {
-            const colName = SKILL_TAXONOMY[k].sheetCol;
-            const vals = rows.map(r => {
-                const val = r[`diem${k}`] ?? r[colName] ?? r[`diem_${k.toLowerCase()}`] ?? r[k];
-                return (val !== undefined && val !== null && val !== '--') ? Number(val) : 0;
+            let sumEarned = 0, sumMax = 0, questionCount = 0, hasQuestionCount = false, hadInsufficient = false;
+            rows.forEach(r => {
+                const cell = getExamSkillCell(r, k);
+                if (!cell) return;
+                if (cell.status === 'measured') {
+                    sumEarned += cell.earned;
+                    sumMax += cell.maxScore;
+                    if (cell.questionCount !== null) {
+                        questionCount += cell.questionCount;
+                        hasQuestionCount = true;
+                    }
+                } else if (cell.status === 'insufficient') {
+                    hadInsufficient = true;
+                }
             });
-            const sum = vals.reduce((a, b) => a + b, 0);
-            if (vals.length > 0) {
-                skillAverages[k] = Math.min(100, Math.round((sum / (vals.length * 1.5)) * 100)) || 75;
+            const enoughByCount = !hasQuestionCount || questionCount >= policy.minQuestions;
+            if (sumMax > 0 && enoughByCount) {
+                skillAverages[k] = Math.min(100, Math.round((sumEarned / sumMax) * 100));
                 touchedSkills.push(k);
+            } else if (hadInsufficient || (sumMax > 0 && !enoughByCount)) {
+                insufficientSkills.push(k);
             }
         });
     }
@@ -4448,7 +4568,11 @@ function renderHistoryReport(rows, sheetName) {
             },
             plugins: {
                 legend: { display: false },
-                tooltip: { callbacks: { label: (ctx) => ` Độ thành thạo: ${ctx.raw}%` } }
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => ctx.raw === null ? ` ${policy.noDataLabel}` : ` Độ thành thạo: ${ctx.raw}%`
+                    }
+                }
             }
         },
         plugins: [{
@@ -4456,6 +4580,7 @@ function renderHistoryReport(rows, sheetName) {
             afterDatasetsDraw(chart) {
                 const { ctx } = chart;
                 chart.data.datasets[0].data.forEach((val, i) => {
+                    if (val === null || val === undefined || Number.isNaN(val)) return;
                     const meta = chart.getDatasetMeta(0).data[i];
                     if (!meta) return;
                     ctx.save();
@@ -4470,11 +4595,11 @@ function renderHistoryReport(rows, sheetName) {
         }]
     });
 
-    renderPedagogicalEvaluation(rows, skillAverages, touchedSkills);
+    renderPedagogicalEvaluation(rows, skillAverages, touchedSkills, insufficientSkills);
     renderHistoryTable(rows, sheetName);
 }
 
-function renderPedagogicalEvaluation(rows, skillAverages, touchedSkills) {
+function renderPedagogicalEvaluation(rows, skillAverages, touchedSkills, insufficientSkills = []) {
     const box = document.getElementById('pedagogical-evaluation-box');
     if (!box) return;
 
@@ -4482,62 +4607,85 @@ function renderPedagogicalEvaluation(rows, skillAverages, touchedSkills) {
     const count = rows.length;
     const avgScore = count ? (rows.reduce((acc, r) => acc + Number(r.score || r.tongDiem || 0), 0) / count) : 0;
     const avgScoreStr = avgScore.toFixed(1);
+    const skillKeys = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
+    const validSkills = (touchedSkills && touchedSkills.length) ? touchedSkills : [];
+    const validSet = new Set(validSkills);
+    const insufficientSet = new Set(insufficientSkills || []);
+    const notEvaluated = skillKeys.filter(k => !validSet.has(k) && !insufficientSet.has(k));
 
-    // 1. Đánh giá tổng quan — phải khớp thật với điểm số, không khen chung chung bất kể kết quả
     let overviewText;
-    if (avgScore >= 8) {
-        overviewText = `Con nắm rất vững kiến thức trọng tâm, làm bài nghiêm túc và đạt kết quả xuất sắc.`;
+    if (count === 0) {
+        overviewText = `Chưa có bài kiểm tra nào được ghi nhận nên hệ thống chưa đưa ra kết luận về kết quả học tập.`;
+    } else if (avgScore >= 8) {
+        overviewText = `Con nắm rất vững kiến thức trọng tâm của các bài đã làm và đạt kết quả tốt.`;
     } else if (avgScore >= 6.5) {
-        overviewText = `Con nắm khá tốt kiến thức trọng tâm, tuy nhiên vẫn còn một vài chỗ cần luyện thêm để đạt kết quả cao hơn.`;
+        overviewText = `Con nắm khá tốt kiến thức trọng tâm của các bài đã làm, tuy nhiên vẫn còn một vài chỗ cần luyện thêm.`;
     } else if (avgScore >= 5) {
-        overviewText = `Con đã nắm được kiến thức cơ bản nhưng chưa thật chắc, cần ôn luyện thêm để tiến bộ hơn.`;
+        overviewText = `Con đã nắm được kiến thức cơ bản trong các bài đã làm nhưng chưa thật chắc, cần ôn luyện thêm.`;
     } else {
-        overviewText = `Con còn gặp khó khăn với nội dung này, ba mẹ nên đồng hành ôn luyện thêm cùng con nhé.`;
+        overviewText = `Kết quả các bài đã làm còn thấp; ba mẹ nên đồng hành ôn lại đúng những nội dung đã được kiểm tra.`;
     }
 
-    // 2 & 3. Thế mạnh / điểm cần khắc phục — CHỈ lấy từ những nhóm bé đã thực sự luyện tập,
-    // tuyệt đối không nhận xét về nhóm bé chưa hề động tới (tránh nói sai với thực tế).
-    const validSkills = (touchedSkills && touchedSkills.length) ? touchedSkills : [];
     const sortedValid = [...validSkills].sort((a, b) => skillAverages[b] - skillAverages[a]);
-
     let strengthHtml, weaknessHtml;
     if (sortedValid.length >= 2) {
         const top1 = SKILL_TAXONOMY[sortedValid[0]].name;
         const top2 = SKILL_TAXONOMY[sortedValid[1]].name;
-        strengthHtml = `Con đạt độ thành thạo tốt ở các nhóm: <strong>${escapeHtml(top1)}</strong> (${skillAverages[sortedValid[0]]}%) và <strong>${escapeHtml(top2)}</strong> (${skillAverages[sortedValid[1]]}%).`;
+        strengthHtml = `Trong những năng lực đã có đủ dữ liệu, con đạt tốt ở <strong>${escapeHtml(top1)}</strong> (${skillAverages[sortedValid[0]]}%) và <strong>${escapeHtml(top2)}</strong> (${skillAverages[sortedValid[1]]}%).`;
 
         const weak1 = sortedValid[sortedValid.length - 1];
-        weaknessHtml = `Con cần luyện thêm ở mảng: <strong>${escapeHtml(SKILL_TAXONOMY[weak1].name)}</strong> (${skillAverages[weak1]}%). ${escapeHtml(SKILL_TAXONOMY[weak1].advice)}`;
+        const weakPct = skillAverages[weak1];
+        weaknessHtml = weakPct < 70
+            ? `Trong những năng lực đã được đo, mảng cần ưu tiên luyện thêm là <strong>${escapeHtml(SKILL_TAXONOMY[weak1].name)}</strong> (${weakPct}%). ${escapeHtml(SKILL_TAXONOMY[weak1].advice)}`
+            : `Trong những năng lực đã được đo, chưa có nhóm nào dưới 70%. Bé nên tiếp tục luyện đều để duy trì kết quả.`;
     } else if (sortedValid.length === 1) {
         const only1 = sortedValid[0];
-        strengthHtml = `Con đạt ${skillAverages[only1]}% ở nhóm <strong>${escapeHtml(SKILL_TAXONOMY[only1].name)}</strong> — mảng duy nhất bé đã luyện tập tới thời điểm này.`;
-        weaknessHtml = `Bé mới luyện tập 1 nhóm kỹ năng, cô chưa đủ dữ liệu để đánh giá toàn diện. Ba mẹ khuyến khích con hoàn thành thêm các tuần khác nhé!`;
+        strengthHtml = `Hiện chỉ có đủ dữ liệu cho nhóm <strong>${escapeHtml(SKILL_TAXONOMY[only1].name)}</strong>, đạt ${skillAverages[only1]}%.`;
+        weaknessHtml = `Chưa đủ dữ liệu để kết luận điểm yếu ở các nhóm năng lực khác.`;
     } else {
-        strengthHtml = `Bé chưa có đủ dữ liệu luyện tập để đánh giá thế mạnh.`;
-        weaknessHtml = `Bé chưa có đủ dữ liệu luyện tập để đánh giá điểm cần khắc phục.`;
+        strengthHtml = `Chưa có đủ dữ liệu hợp lệ để xác định thế mạnh theo năng lực.`;
+        weaknessHtml = `Chưa có đủ dữ liệu hợp lệ để xác định nhóm cần khắc phục.`;
     }
+
+    const coverageParts = [];
+    if (insufficientSet.size) {
+        const names = [...insufficientSet].map(k => SKILL_TAXONOMY[k].name).join(', ');
+        coverageParts.push(`<strong>Chưa đủ dữ liệu:</strong> ${escapeHtml(names)}.`);
+    }
+    if (notEvaluated.length) {
+        const names = notEvaluated.map(k => SKILL_TAXONOMY[k].name).join(', ');
+        coverageParts.push(`<strong>Chưa đánh giá:</strong> ${escapeHtml(names)}.`);
+    }
+    const coverageHtml = coverageParts.length
+        ? `${coverageParts.join(' ')} Các nhóm này <strong>không được quy thành 0%</strong> và không dùng để kết luận bé yếu.`
+        : `Các nhóm hiển thị phần trăm đều đã có dữ liệu đo hợp lệ.`;
 
     box.innerHTML = `
         <div class="bg-white/80 p-3 rounded-xl border border-amber-200">
-            <span class="text-amber-700 font-extrabold block mb-0.5">🌟 1. Đánh giá tổng quan năng lực & xu hướng tiến bộ:</span>
-            <p class="text-gray-700">Học sinh <strong>${escapeHtml(currentUser.hoTen)}</strong> đã hoàn thành <strong>${count} bài kiểm tra</strong> với điểm số trung bình tích lũy đạt <strong class="text-pink-600">${avgScoreStr}/10 điểm</strong>. ${overviewText}</p>
+            <span class="text-amber-700 font-extrabold block mb-0.5">🌟 1. Đánh giá tổng quan kết quả:</span>
+            <p class="text-gray-700">${count > 0 ? `Học sinh <strong>${escapeHtml(currentUser.hoTen)}</strong> đã hoàn thành <strong>${count} bài kiểm tra</strong> với điểm số trung bình tích lũy <strong class="text-pink-600">${avgScoreStr}/10 điểm</strong>. ${overviewText}` : overviewText}</p>
+        </div>
+
+        <div class="bg-sky-50/70 p-3 rounded-xl border border-sky-200">
+            <span class="text-sky-700 font-extrabold block mb-0.5">📌 2. Phạm vi dữ liệu năng lực:</span>
+            <p class="text-gray-700">${coverageHtml}</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div class="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200">
-                <span class="text-emerald-700 font-extrabold block mb-0.5">✅ 2. Khen ngợi & thế mạnh nổi trội:</span>
+                <span class="text-emerald-700 font-extrabold block mb-0.5">✅ 3. Thế mạnh trong phần đã đo:</span>
                 <p class="text-gray-700">${strengthHtml}</p>
             </div>
 
             <div class="bg-rose-50/70 p-3 rounded-xl border border-rose-200">
-                <span class="text-rose-700 font-extrabold block mb-0.5">⚠️ 3. Điểm cần lưu ý & khắc phục:</span>
+                <span class="text-rose-700 font-extrabold block mb-0.5">⚠️ 4. Nội dung cần ưu tiên:</span>
                 <p class="text-gray-700">${weaknessHtml}</p>
             </div>
         </div>
 
         <div class="bg-white/80 p-3 rounded-xl border border-purple-200">
-            <span class="text-purple-700 font-extrabold block mb-0.5">💡 4. Kế hoạch bồi dưỡng & hướng dẫn phụ huynh:</span>
-            <p class="text-gray-700">Ba mẹ nên dành 15 phút mỗi tối cùng con ôn lại các phép tính, đặt câu hỏi gợi mở và khen ngợi kịp thời để giúp ${studentName} giữ vững niềm yêu thích môn Toán nhé!</p>
+            <span class="text-purple-700 font-extrabold block mb-0.5">💡 5. Gợi ý đồng hành:</span>
+            <p class="text-gray-700">Ba mẹ nên ưu tiên cho ${studentName} ôn đúng những nội dung đã được kiểm tra và còn chưa chắc; không nên coi nhóm chưa được đo là điểm yếu của con.</p>
         </div>
     `;
 }
@@ -4553,11 +4701,7 @@ function renderHistoryTable(rows, sheetName) {
 
     const isWeekly = sheetName === 'LichSuTienTrinhTuan';
     const skillKeys = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
-
-    const getScoreVal = (r, num, colName) => {
-        const val = r[`diemC${num}`] ?? r[colName] ?? r[`diem_c${num}`] ?? r[`C${num}`];
-        return (val !== undefined && val !== null && val !== '') ? Number(val) : 0;
-    };
+    const policy = getAssessmentPolicy_();
 
     const totalRows = rows.length;
     let sumTongDiem = 0;
@@ -4568,7 +4712,6 @@ function renderHistoryTable(rows, sheetName) {
     let bodyRows = '';
 
     if (isWeekly) {
-        // Tổng hợp: % = tổng câu đúng / tổng câu đã làm THẬT của đúng nhóm kỹ năng đó
         const agg = {};
         skillKeys.forEach(k => { agg[k] = { correct: 0, total: 0 }; });
         rows.forEach(r => {
@@ -4581,7 +4724,9 @@ function renderHistoryTable(rows, sheetName) {
         });
         skillKeys.forEach(k => {
             const a = agg[k];
-            summaryCells += `<td class="py-2 px-1">${a.total > 0 ? Math.round((a.correct / a.total) * 100) + '%' : '--'}</td>`;
+            if (a.total >= policy.minQuestions) summaryCells += `<td class="py-2 px-1">${Math.round((a.correct / a.total) * 100)}%</td>`;
+            else if (a.total > 0) summaryCells += `<td class="py-2 px-1 text-amber-600">Chưa đủ DL</td>`;
+            else summaryCells += `<td class="py-2 px-1 text-slate-400">Chưa ĐG</td>`;
         });
 
         rows.forEach((r, idx) => {
@@ -4592,8 +4737,9 @@ function renderHistoryTable(rows, sheetName) {
             let skillCells = '';
             skillKeys.forEach(k => {
                 const cell = getSkillCell(r, k);
-                if (!cell) { skillCells += `<td class="py-2 px-1 text-gray-300">--</td>`; return; }
-                const pct = cell.total > 0 ? Math.round((cell.correct / cell.total) * 100) : 0;
+                if (!cell) { skillCells += `<td class="py-2 px-1 text-slate-400">Chưa ĐG</td>`; return; }
+                if (cell.total < policy.minQuestions) { skillCells += `<td class="py-2 px-1 text-amber-600">Chưa đủ DL</td>`; return; }
+                const pct = Math.round((cell.correct / cell.total) * 100);
                 skillCells += `<td class="py-2 px-1">${cell.correct}/${cell.total} <span class="text-gray-400">(${pct}%)</span></td>`;
             });
 
@@ -4609,9 +4755,16 @@ function renderHistoryTable(rows, sheetName) {
             `;
         });
     } else {
-        skillKeys.forEach((k, i) => {
-            const sum = rows.reduce((acc, r) => acc + getScoreVal(r, i + 1, SKILL_TAXONOMY[k].sheetCol), 0);
-            summaryCells += `<td class="py-2 px-1">${(sum / totalRows).toFixed(1)}</td>`;
+        skillKeys.forEach(k => {
+            let earned = 0, maxScore = 0, hadInsufficient = false;
+            rows.forEach(r => {
+                const cell = getExamSkillCell(r, k);
+                if (cell.status === 'measured') { earned += cell.earned; maxScore += cell.maxScore; }
+                else if (cell.status === 'insufficient') hadInsufficient = true;
+            });
+            if (maxScore > 0) summaryCells += `<td class="py-2 px-1">${Math.round((earned / maxScore) * 100)}%</td>`;
+            else if (hadInsufficient) summaryCells += `<td class="py-2 px-1 text-amber-600">Chưa đủ DL</td>`;
+            else summaryCells += `<td class="py-2 px-1 text-slate-400">Chưa ĐG</td>`;
         });
 
         rows.forEach((r, idx) => {
@@ -4620,14 +4773,22 @@ function renderHistoryTable(rows, sheetName) {
             const durationStr = r.thoiGianLamBai || '--';
 
             let examSkillCells = '';
-            skillKeys.forEach((k, i) => {
-                examSkillCells += `<td class="py-2 px-1">${getScoreVal(r, i + 1, SKILL_TAXONOMY[k].sheetCol)}</td>`;
+            skillKeys.forEach(k => {
+                const cell = getExamSkillCell(r, k);
+                if (cell.status === 'unmeasured') {
+                    examSkillCells += `<td class="py-2 px-1 text-slate-400">Chưa ĐG</td>`;
+                } else if (cell.status === 'insufficient') {
+                    examSkillCells += `<td class="py-2 px-1 text-amber-600">Chưa đủ DL</td>`;
+                } else {
+                    const pct = Math.round((cell.earned / cell.maxScore) * 100);
+                    examSkillCells += `<td class="py-2 px-1">${cell.earned.toFixed(1)}/${cell.maxScore.toFixed(1)} <span class="text-gray-400">(${pct}%)</span></td>`;
+                }
             });
 
             bodyRows += `
                 <tr class="hover:bg-pink-50/30 transition-colors">
                     <td class="py-2.5 px-2">${idx + 1}</td>
-                    <td class="py-2.5 px-2 font-black">${r.deSo ? `Đề ${r.deSo}` : `Tuần ${r.tuan || (idx + 1)}`}</td>
+                    <td class="py-2.5 px-2 font-black">${r.deSo ? `Đề ${r.deSo}` : `Lần ${idx + 1}`}</td>
                     <td class="py-2.5 px-2 font-black text-rose-600">${itemDiem}</td>
                     ${examSkillCells}
                     <td class="py-2.5 px-2 text-gray-500">${dateStr}</td>
@@ -4639,7 +4800,7 @@ function renderHistoryTable(rows, sheetName) {
 
     const html = `
         <tr class="bg-amber-100/90 text-amber-950 font-black border-b-2 border-amber-200">
-            <td class="py-2.5 px-2" colspan="2">Điểm trung bình</td>
+            <td class="py-2.5 px-2" colspan="2">Trung bình / tổng hợp</td>
             <td class="py-2.5 px-2 text-rose-600">${avgTong}</td>
             ${summaryCells}
             <td class="py-2.5 px-2" colspan="2">--</td>
