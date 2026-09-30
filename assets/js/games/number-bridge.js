@@ -9,7 +9,7 @@
     l2: { label: 'Cấp 2 · Cầu đến 100', mode: 'to100' },
     l3: { label: 'Cấp 3 · Còn thiếu bao nhiêu?', mode: 'missing' },
     l4: { label: 'Cấp 4 · Đúng 2–3 đoạn', mode: 'exactPieces' },
-    l5: { label: 'Cấp 5 · Không dùng đoạn 5', mode: 'banFive' },
+    l5: { label: 'Cấp 5 · Ghép cầu thử thách', mode: 'banFive' },
     l6: { label: 'Cấp 6 · Tìm 2 cách khác nhau', mode: 'alternate' }
   };
 
@@ -221,17 +221,16 @@
 
     if (mode === 'banFive') {
       st.target = rand_(2, 9) * 10;
-      st.banned = 5;
       const count = rand_(2, 3);
-      solution = makePiecesForTarget_(st.target, count, 45, true).map(n => n === 5 ? 10 : n);
-      // Neu doi 5 -> 10 lam lech tong, tao lai bang phuong phap chac chan.
+      // Cấp 5 tạo thử thách bằng chính kho vật liệu: không đưa đoạn 5 ô vào kho.
+      // Bé chỉ cần nhìn các đoạn đang có và tìm cách ghép, không phải đọc thêm một điều kiện cấm.
+      solution = makePiecesForTarget_(st.target, count, 45, true);
       let guard = 0;
-      while ((sum_(solution) !== st.target || solution.includes(5)) && guard++ < 30) {
+      while ((sum_(solution) !== st.target || solution.includes(5)) && guard++ < 40) {
         solution = makePiecesForTarget_(st.target, count, 45, true);
       }
       if (solution.includes(5) || sum_(solution) !== st.target) solution = [10, st.target - 10];
-      st.inventory = buildInventory_(solution, st.target, mode);
-      if (!st.inventory.includes(5)) st.inventory = uniq_([5].concat(st.inventory)).sort((a,b)=>a-b);
+      st.inventory = buildInventory_(solution, st.target, mode).filter(n => n !== 5);
     }
 
     if (mode === 'alternate') {
@@ -263,7 +262,7 @@
       return `<strong>🧩 Còn thiếu bao nhiêu?</strong><div>Cầu cần dài <b>${st.target} ô</b>, đã có <b>${fixed} = ${sum_(st.fixed)} ô</b>.</div><div class="nb-condition">? = ${st.target} − ${sum_(st.fixed)}</div><div class="nb-hint">💡 Chỉ chọn <b>1 đoạn</b> còn thiếu để cầu vừa khít.</div>`;
     }
     if (mode === 'exactPieces') return `<strong>🎯 Đúng số đoạn</strong><div class="nb-goal-line">Mục tiêu: <span class="nb-big-target">${st.target} ô</span></div><div class="nb-goal-line">Chỉ dùng: <span class="nb-exact-count">${st.exactCount}</span> đoạn</div><div class="nb-hint">💡 Tổng đúng nhưng sai số đoạn vẫn chưa hoàn thành.</div>`;
-    if (mode === 'banFive') return `<strong>🚫 Cầu có điều kiện</strong><div>Xây cầu dài đúng <b>${st.target} ô</b>.</div><div class="nb-condition">Không được dùng đoạn <b>5 ô</b>.</div><div class="nb-hint">💡 Hãy đổi 5 ô bằng một cách ghép khác.</div>`;
+    if (mode === 'banFive') return `<div class="nb-goal-line">🎯 Mục tiêu: <span class="nb-big-target">${st.target} ô</span></div><div class="nb-goal-line">🧩 Ghép cầu vừa khít</div>`;
     if (mode === 'alternate') return `<strong>🧠 Hai cách khác nhau</strong><div>Tìm <b>2 cách ghép khác nhau</b> cùng tạo cây cầu dài <b>${st.target} ô</b>.</div>${st.firstSolution ? `<div class="nb-first-solution">Cách 1: <b>${st.firstSolution.replaceAll('+', ' + ')} = ${st.target}</b><br>Giờ tìm cách 2 khác nhé!</div>` : `<div class="nb-hint">💡 Hai cách khác nhau phải dùng bộ đoạn khác nhau, không chỉ đổi thứ tự.</div>`}`;
     return '';
   }
@@ -329,7 +328,7 @@
 
     const box = document.getElementById('nb-pieces');
     box.innerHTML = st.inventory.map((n, i) => {
-      const bannedCls = st.banned === n ? 'is-banned' : '';
+      const bannedCls = '';
       const disabled = st.solved || st.lock || (mode === 'missing' && st.pieces.length >= 1);
       const barW = Math.round(26 + Math.min(34, n / Math.max(1, st.target) * 90));
       return `<button type="button" draggable="true" ondragstart="numberBridgeDragStart(event,${n})" onclick="numberBridgeAdd(${n})" class="nb-piece-btn ${bannedCls}" ${disabled ? 'disabled' : ''}><span class="nb-mini-bar" style="width:${barW}px;background:${PALETTES[i % PALETTES.length]}"></span>${n} ô</button>`;
@@ -347,7 +346,6 @@
     const arr = st.fixed.concat(st.pieces);
     if (mode === 'missing' && st.pieces.length !== 1) return 'Màn này chỉ cần một đoạn còn thiếu.';
     if (st.exactCount != null && arr.length !== st.exactCount) return `Cầu đủ dài nhưng con dùng ${arr.length} đoạn. Nhiệm vụ cần đúng ${st.exactCount} đoạn.`;
-    if (st.banned != null && arr.includes(st.banned)) return `Độ dài đúng nhưng nhiệm vụ không cho dùng đoạn ${st.banned} ô.`;
     return '';
   }
 
@@ -386,7 +384,7 @@
     let msg = `Cầu vừa khít! ${arr.join(' + ')} = ${st.target}.`;
     if (mode === 'missing') msg = `Đúng rồi! Còn thiếu ${st.missingAnswer} ô vì ${st.target} − ${sum_(st.fixed)} = ${st.missingAnswer}.`;
     if (mode === 'exactPieces') msg = `Đúng! ${arr.join(' + ')} = ${st.target} và con dùng đúng ${st.exactCount} đoạn.`;
-    if (mode === 'banFive') msg = `Xuất sắc! ${arr.join(' + ')} = ${st.target} mà không cần đoạn 5 ô.`;
+    if (mode === 'banFive') msg = `Đúng rồi! ${arr.join(' + ')} = ${st.target}.`;
     if (mode === 'alternate') msg = `Tuyệt! Con đã tìm được cách thứ hai: ${arr.join(' + ')} = ${st.target}.`;
     feedback_(msg);
 
@@ -402,12 +400,6 @@
     if (!Number.isFinite(n) || st.solved || st.lock) return;
     const mode = LEVELS[st.level].mode;
 
-    if (st.banned === n) {
-      st.errors++;
-      render_();
-      feedback_(`Lượt này không được dùng đoạn ${n} ô. Con chọn cách ghép khác nhé!`);
-      return;
-    }
     if (mode === 'missing' && st.pieces.length >= 1) return;
 
     st.pieces.push(n);
@@ -475,7 +467,7 @@
     if (Number.isFinite(n)) addPiece_(n);
   };
   window.numberBridgeSpeakRules = function () {
-    if (typeof speakVietnamese === 'function') speakVietnamese('Con hãy kéo hoặc chạm các đoạn cầu để ghép vừa đúng độ dài cần xây. Toán lớp hai có sáu cấp: cầu đến hai mươi, cầu đến một trăm, tìm đoạn còn thiếu, dùng đúng hai hoặc ba đoạn, không dùng đoạn năm, và tìm hai cách ghép khác nhau. Nếu cầu còn ngắn, con tính phần còn thiếu. Nếu cầu quá dài, con tháo đoạn cuối và thử lại.', .88);
+    if (typeof speakVietnamese === 'function') speakVietnamese('Con hãy kéo hoặc chạm các đoạn cầu để ghép vừa đúng độ dài cần xây. Toán lớp hai có sáu cấp: cầu đến hai mươi, cầu đến một trăm, tìm đoạn còn thiếu, dùng đúng hai hoặc ba đoạn, ghép cầu thử thách, và tìm hai cách ghép khác nhau. Nếu cầu còn ngắn, con tính phần còn thiếu. Nếu cầu quá dài, con tháo đoạn cuối và thử lại.', .88);
   };
   window.stopNumberBridgeGame = function () {};
   window.startNumberBridgeGame = function () { shell_(); if (st.round === 0) makeRound_(); else render_(); };
