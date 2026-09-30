@@ -813,11 +813,11 @@ async function renderExamHubGrid() {
 const MINIGAME_LIST = [
     { id: 'sudoku', title: '1. Sudoku', desc: 'Điền số đúng theo hàng, cột và từng ô nhỏ', icon: '🔢', ready: true },
     { id: 'balance-scale', title: '2. Balance Scale', desc: 'Cân bằng hai vế bằng tư duy phép tính', icon: '⚖️', ready: true },
-    { id: 'math-train', title: '3. Math Train', desc: 'Ghép toa để hoàn thành phép tính', icon: '🚂', ready: true },
-    { id: 'target-number', title: '4. Target Number', desc: 'Tính nhanh để chạm số mục tiêu', icon: '🎯', ready: true },
-    { id: 'number-river', title: '5. Number River', desc: 'Nhảy qua đúng kết quả để qua sông', icon: '🐸', ready: true },
-    { id: 'missing-number', title: '6. Missing Number', desc: 'Tìm số còn thiếu trong phép tính', icon: '🧩', ready: true },
-    { id: 'pattern-detective', title: '7. Pattern Detective', desc: 'Phá án quy luật dãy số', icon: '🕵️', ready: true },
+    { id: 'place-value-factory', title: '3. Nhà máy đổi chục', desc: 'Xây số bằng khối trăm, chục và đơn vị', icon: '🏭', ready: true },
+    { id: 'equal-share-farm', title: '4. Nông trại chia đều', desc: 'Chia nhóm bằng nhau để hiểu nhân và chia', icon: '🥕', ready: true },
+    { id: 'number-bridge', title: '5. Cây cầu số', desc: 'Ghép các đoạn cầu vừa khít bằng cộng và tách số', icon: '🌉', ready: true },
+    { id: 'delivery-robot', title: '6. Robot giao hàng', desc: 'Xếp lệnh, đếm bước và tìm đường giao hàng', icon: '🤖', ready: true },
+    { id: 'data-detective', title: '7. Thám tử dữ liệu', desc: 'Phân loại, kiểm đếm và sửa báo cáo sai', icon: '🕵️', ready: true },
     { id: 'shape-builder', title: '8. Shape Builder', desc: 'Ghép hình và khám phá hình học', icon: '📐', ready: true },
     { id: 'time-master', title: '9. Time Master', desc: 'Chinh phục đồng hồ và thời gian', icon: '🕐', ready: true },
     { id: 'little-shop', title: '10. Little Shop', desc: 'Mua bán, tính tiền và tiền thừa', icon: '🛒', ready: true },
@@ -834,25 +834,25 @@ const MINIGAME_PALETTES = [
 ];
 const GAME_SCRIPT_MAP = {
     'sudoku': 'assets/js/games/sudoku.js?v=20260930-wide-numpad-side', 'balance-scale': 'assets/js/games/balance-scale.js?v=20260930-interactive-v2',
-    'math-train': 'assets/js/games/math-train.js?v=20260930-interactive-v2', 'target-number': 'assets/js/games/target-number.js?v=20260930-interactive-v2',
-    'number-river': 'assets/js/games/number-river.js?v=20260930-interactive-v2', 'missing-number': 'assets/js/games/missing-number.js?v=20260930-interactive-v2',
-    'pattern-detective': 'assets/js/games/pattern-detective.js?v=20260930-interactive-v2', 'shape-builder': 'assets/js/games/shape-builder.js?v=20260930-interactive-v2',
+    'place-value-factory': 'assets/js/games/place-value-factory.js?v=20260930-v1', 'equal-share-farm': 'assets/js/games/equal-share-farm.js?v=20260930-v1',
+    'number-bridge': 'assets/js/games/number-bridge.js?v=20260930-v1', 'delivery-robot': 'assets/js/games/delivery-robot.js?v=20260930-v1',
+    'data-detective': 'assets/js/games/data-detective.js?v=20260930-v1', 'shape-builder': 'assets/js/games/shape-builder.js?v=20260930-interactive-v2',
     'time-master': 'assets/js/games/time-master.js?v=20260930-interactive-v2', 'little-shop': 'assets/js/games/little-shop.js?v=20260930-interactive-v2',
     'math-factory': 'assets/js/games/math-factory.js?v=20260930-interactive-v2', 'math-race': 'assets/js/games/math-race.js?v=20260930-interactive-v2'
 };
 const GAME_START_FN_MAP = {
     'sudoku': 'startSudokuGame', 'balance-scale': 'startBalanceScaleGame',
-    'math-train': 'startMathTrainGame', 'target-number': 'startTargetNumberGame',
-    'number-river': 'startNumberRiverGame', 'missing-number': 'startMissingNumberGame',
-    'pattern-detective': 'startPatternDetectiveGame', 'shape-builder': 'startShapeBuilderGame',
+    'place-value-factory': 'startPlaceValueFactoryGame', 'equal-share-farm': 'startEqualShareFarmGame',
+    'number-bridge': 'startNumberBridgeGame', 'delivery-robot': 'startDeliveryRobotGame',
+    'data-detective': 'startDataDetectiveGame', 'shape-builder': 'startShapeBuilderGame',
     'time-master': 'startTimeMasterGame', 'little-shop': 'startLittleShopGame',
     'math-factory': 'startMathFactoryGame', 'math-race': 'startMathRaceGame'
 };
 const GAME_STOP_FN_MAP = {
     'sudoku': 'stopSudokuGame', 'balance-scale': 'stopBalanceScaleGame',
-    'math-train': 'stopMathTrainGame', 'target-number': 'stopTargetNumberGame',
-    'number-river': 'stopNumberRiverGame', 'missing-number': 'stopMissingNumberGame',
-    'pattern-detective': 'stopPatternDetectiveGame', 'shape-builder': 'stopShapeBuilderGame',
+    'place-value-factory': 'stopPlaceValueFactoryGame', 'equal-share-farm': 'stopEqualShareFarmGame',
+    'number-bridge': 'stopNumberBridgeGame', 'delivery-robot': 'stopDeliveryRobotGame',
+    'data-detective': 'stopDataDetectiveGame', 'shape-builder': 'stopShapeBuilderGame',
     'time-master': 'stopTimeMasterGame', 'little-shop': 'stopLittleShopGame',
     'math-factory': 'stopMathFactoryGame', 'math-race': 'stopMathRaceGame'
 };
