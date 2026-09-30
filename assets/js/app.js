@@ -811,18 +811,18 @@ async function renderExamHubGrid() {
 // MINI GAME TOÁN 2 — HUB 12 GAME + LAZY LOAD
 // ==========================================
 const MINIGAME_LIST = [
-    { id: 'balance-scale', title: '1. Balance Scale', desc: 'Cân bằng hai vế bằng tư duy phép tính', icon: '⚖️', ready: true },
-    { id: 'number-hunt', title: '2. Number Hunt', desc: 'Săn con số đúng theo yêu cầu', icon: '🔎', ready: false },
-    { id: 'math-train', title: '3. Math Train', desc: 'Ghép toa để hoàn thành phép tính', icon: '🚂', ready: false },
-    { id: 'target-number', title: '4. Target Number', desc: 'Tính nhanh để chạm số mục tiêu', icon: '🎯', ready: false },
-    { id: 'number-river', title: '5. Number River', desc: 'Nhảy qua đúng kết quả để qua sông', icon: '🐸', ready: false },
-    { id: 'missing-number', title: '6. Missing Number', desc: 'Tìm số còn thiếu trong phép tính', icon: '🧩', ready: false },
-    { id: 'pattern-detective', title: '7. Pattern Detective', desc: 'Phá án quy luật dãy số', icon: '🕵️', ready: false },
-    { id: 'shape-builder', title: '8. Shape Builder', desc: 'Ghép hình và khám phá hình học', icon: '📐', ready: false },
-    { id: 'time-master', title: '9. Time Master', desc: 'Chinh phục đồng hồ và thời gian', icon: '🕐', ready: false },
-    { id: 'little-shop', title: '10. Little Shop', desc: 'Mua bán, tính tiền và tiền thừa', icon: '🛒', ready: false },
-    { id: 'math-factory', title: '11. Math Factory', desc: 'Phân loại số và phép tính vào đúng máy', icon: '🏭', ready: false },
-    { id: 'math-race', title: '12. Math Race', desc: 'Đua xe bằng phản xạ tính toán', icon: '🏎️', ready: false }
+    { id: 'sudoku', title: '1. Sudoku', desc: 'Điền số đúng theo hàng, cột và từng ô nhỏ', icon: '🔢', ready: true },
+    { id: 'balance-scale', title: '2. Balance Scale', desc: 'Cân bằng hai vế bằng tư duy phép tính', icon: '⚖️', ready: true },
+    { id: 'math-train', title: '3. Math Train', desc: 'Ghép toa để hoàn thành phép tính', icon: '🚂', ready: true },
+    { id: 'target-number', title: '4. Target Number', desc: 'Tính nhanh để chạm số mục tiêu', icon: '🎯', ready: true },
+    { id: 'number-river', title: '5. Number River', desc: 'Nhảy qua đúng kết quả để qua sông', icon: '🐸', ready: true },
+    { id: 'missing-number', title: '6. Missing Number', desc: 'Tìm số còn thiếu trong phép tính', icon: '🧩', ready: true },
+    { id: 'pattern-detective', title: '7. Pattern Detective', desc: 'Phá án quy luật dãy số', icon: '🕵️', ready: true },
+    { id: 'shape-builder', title: '8. Shape Builder', desc: 'Ghép hình và khám phá hình học', icon: '📐', ready: true },
+    { id: 'time-master', title: '9. Time Master', desc: 'Chinh phục đồng hồ và thời gian', icon: '🕐', ready: true },
+    { id: 'little-shop', title: '10. Little Shop', desc: 'Mua bán, tính tiền và tiền thừa', icon: '🛒', ready: true },
+    { id: 'math-factory', title: '11. Math Factory', desc: 'Phân loại số và phép tính vào đúng máy', icon: '🏭', ready: true },
+    { id: 'math-race', title: '12. Math Race', desc: 'Đua xe bằng phản xạ tính toán', icon: '🏎️', ready: true }
 ];
 const MINIGAME_PALETTES = [
     ['bg-rose-50/80','border-rose-300','text-rose-600'], ['bg-sky-50/80','border-sky-300','text-sky-600'],
@@ -833,15 +833,48 @@ const MINIGAME_PALETTES = [
     ['bg-purple-50/80','border-purple-300','text-purple-600'], ['bg-teal-50/80','border-teal-300','text-teal-600']
 ];
 const GAME_SCRIPT_MAP = {
-    'balance-scale': 'assets/js/games/balance-scale.js', 'number-hunt': 'assets/js/games/number-hunt.js',
-    'math-train': 'assets/js/games/math-train.js', 'target-number': 'assets/js/games/target-number.js',
-    'number-river': 'assets/js/games/number-river.js', 'missing-number': 'assets/js/games/missing-number.js',
-    'pattern-detective': 'assets/js/games/pattern-detective.js', 'shape-builder': 'assets/js/games/shape-builder.js',
-    'time-master': 'assets/js/games/time-master.js', 'little-shop': 'assets/js/games/little-shop.js',
-    'math-factory': 'assets/js/games/math-factory.js', 'math-race': 'assets/js/games/math-race.js'
+    'sudoku': 'assets/js/games/sudoku.js?v=20260930-wide-numpad-side', 'balance-scale': 'assets/js/games/balance-scale.js?v=20260930-full-games',
+    'math-train': 'assets/js/games/math-train.js?v=20260930-full-games', 'target-number': 'assets/js/games/target-number.js?v=20260930-full-games',
+    'number-river': 'assets/js/games/number-river.js?v=20260930-full-games', 'missing-number': 'assets/js/games/missing-number.js?v=20260930-full-games',
+    'pattern-detective': 'assets/js/games/pattern-detective.js?v=20260930-full-games', 'shape-builder': 'assets/js/games/shape-builder.js?v=20260930-full-games',
+    'time-master': 'assets/js/games/time-master.js?v=20260930-full-games', 'little-shop': 'assets/js/games/little-shop.js?v=20260930-full-games',
+    'math-factory': 'assets/js/games/math-factory.js?v=20260930-full-games', 'math-race': 'assets/js/games/math-race.js?v=20260930-full-games'
 };
+const GAME_START_FN_MAP = {
+    'sudoku': 'startSudokuGame', 'balance-scale': 'startBalanceScaleGame',
+    'math-train': 'startMathTrainGame', 'target-number': 'startTargetNumberGame',
+    'number-river': 'startNumberRiverGame', 'missing-number': 'startMissingNumberGame',
+    'pattern-detective': 'startPatternDetectiveGame', 'shape-builder': 'startShapeBuilderGame',
+    'time-master': 'startTimeMasterGame', 'little-shop': 'startLittleShopGame',
+    'math-factory': 'startMathFactoryGame', 'math-race': 'startMathRaceGame'
+};
+const GAME_STOP_FN_MAP = {
+    'sudoku': 'stopSudokuGame', 'balance-scale': 'stopBalanceScaleGame',
+    'math-train': 'stopMathTrainGame', 'target-number': 'stopTargetNumberGame',
+    'number-river': 'stopNumberRiverGame', 'missing-number': 'stopMissingNumberGame',
+    'pattern-detective': 'stopPatternDetectiveGame', 'shape-builder': 'stopShapeBuilderGame',
+    'time-master': 'stopTimeMasterGame', 'little-shop': 'stopLittleShopGame',
+    'math-factory': 'stopMathFactoryGame', 'math-race': 'stopMathRaceGame'
+};
+let activeMiniGameId_ = null;
 const loadedGameScripts = {};
+function stopActiveMiniGame_() {
+    if (!activeMiniGameId_) return;
+    const fnName = GAME_STOP_FN_MAP[activeMiniGameId_];
+    const fn = fnName ? window[fnName] : null;
+    if (typeof fn === 'function') {
+        try { fn(); } catch (_) {}
+    }
+    activeMiniGameId_ = null;
+}
+function rewardMiniGameStar_(message) {
+    starGreenCount++;
+    const el = document.getElementById('star-green-count');
+    if (el) el.textContent = starGreenCount;
+    if (message) showAppNotice(message, { title: 'Xuất sắc!', icon: '⭐', okText: 'Chơi tiếp' });
+}
 function openMiniGameHub() {
+    stopActiveMiniGame_();
     setAppShellRootMode_(true);
     if (!isPremiumUser()) { showPremiumAccessModal('Mini Game'); return; }
     setMainTabActive_('games');
@@ -868,7 +901,15 @@ async function openGamePlay(gameId) {
     updateNavTabs(game.title, '🎮', null); switchAppView('view-game-play');
     const container = document.getElementById('game-play-container'); if (container) container.innerHTML = '<p class="text-center text-gray-400 font-bold py-8"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải game...</p>';
     try { await loadGameScript(GAME_SCRIPT_MAP[gameId]); } catch (e) { if (container) container.innerHTML = '<p class="text-center text-rose-500 font-bold py-8">Không tải được game, bé thử lại nhé!</p>'; return; }
-    if (gameId === 'balance-scale' && typeof startBalanceScaleGame === 'function') startBalanceScaleGame();
+    const startFnName = GAME_START_FN_MAP[gameId];
+    const startFn = startFnName ? window[startFnName] : null;
+    if (typeof startFn === 'function') {
+        stopActiveMiniGame_();
+        activeMiniGameId_ = gameId;
+        startFn();
+    } else if (container) {
+        container.innerHTML = '<p class="text-center text-amber-600 font-bold py-8">Game đã tải nhưng chưa tìm thấy hàm khởi động. Bé thử tải lại trang nhé!</p>';
+    }
 }
 
 // ============================================================
@@ -1046,6 +1087,7 @@ function setMainTabActive_(tabName) {
 }
 
 function openMainTab(tabName) {
+    stopActiveMiniGame_();
     stopSpeaking();
     clearInterval(quizTimerInterval);
     switch (tabName) {
@@ -1095,6 +1137,7 @@ async function openReviewHubFromQuestionBank() {
 }
 
 function goHome() {
+    stopActiveMiniGame_();
     setAppShellRootMode_(true);
     stopSpeaking();
     clearInterval(quizTimerInterval);
@@ -3717,7 +3760,7 @@ function loadQuestion() {
                 </button>`;
         } else {
             html += `
-                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-1.5 md:py-2 min-h-[42px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-2.5 md:p-3 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-sm md:text-base' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
+                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-1.5 md:py-2 min-h-[42px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
                     <span>${exploreMath ? '' : `<strong class="text-pink-600 mr-2 text-base md:text-lg">${letter}.</strong>`} ${escapeHtml(formattedOpt)}</span>
                     <span class="option-icon text-pink-500 text-base md:text-lg"></span>
                 </button>`;
