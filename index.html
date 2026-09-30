@@ -587,6 +587,26 @@
             }
         }
 
+
+
+        /* MINI GAME TOAN 2 - tang co chu toan bo man choi 2026-09-30 */
+        #view-game-play > div > div:first-child h2 { font-size: 1.45rem !important; line-height: 1.25 !important; }
+        #view-game-play > div > div:first-child button { font-size: 0.95rem !important; }
+        #game-play-container .text-\[11px\] { font-size: 0.94rem !important; line-height: 1.45 !important; }
+        #game-play-container .text-xs { font-size: 0.96rem !important; line-height: 1.45 !important; }
+        #game-play-container .text-sm { font-size: 1.06rem !important; line-height: 1.45 !important; }
+        #game-play-container .text-base { font-size: 1.14rem !important; line-height: 1.45 !important; }
+        #game-play-container .text-lg { font-size: 1.32rem !important; line-height: 1.35 !important; }
+        #game-play-container .text-xl { font-size: 1.5rem !important; line-height: 1.3 !important; }
+        #game-play-container button { line-height: 1.25; }
+        @media (max-width: 640px) {
+            #view-game-play > div > div:first-child h2 { font-size: 1.25rem !important; }
+            #game-play-container .text-\[11px\], #game-play-container .text-xs { font-size: 0.88rem !important; }
+            #game-play-container .text-sm { font-size: 0.98rem !important; }
+            #game-play-container .text-base { font-size: 1.06rem !important; }
+            #game-play-container .text-lg { font-size: 1.18rem !important; }
+            #game-play-container .text-xl { font-size: 1.34rem !important; }
+        }
 </style>
 </head>
 <body class="p-1 md:p-2 w-full" style="padding-top:0;padding-bottom:max(0.25rem,env(safe-area-inset-bottom));padding-left:max(0.25rem,env(safe-area-inset-left));padding-right:max(0.25rem,env(safe-area-inset-right));">
@@ -850,7 +870,7 @@
 
                 <!-- VIEW: MÀN CHƠI GAME -->
                 <div id="view-game-play" class="w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center">
-                    <div class="w-full max-w-3xl">
+                    <div class="w-full max-w-6xl">
                         <div class="flex items-center justify-between mb-3 gap-2">
                             <h2 id="game-play-title" class="text-base md:text-lg font-extrabold text-teal-600 flex items-center gap-2 min-w-0"></h2>
                             <button onclick="openMiniGameHub()" class="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-extrabold rounded-xl text-xs md:text-sm shadow-sm pastel-btn shrink-0"><i class="fa-solid fa-arrow-left"></i> Chọn game khác</button>
@@ -1094,7 +1114,7 @@
     </footer>
 
     <!-- NẠP ENGINE JAVASCRIPT ĐỒNG BỘ -->
-    <script src="assets/js/app.js?v=12.5-topic4-option-font-20260929"></script>
+    <script src="assets/js/app.js?v=12.8-minigame-wide-sudoku-20260930"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
