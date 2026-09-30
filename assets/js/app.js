@@ -9,7 +9,7 @@ const TOPICS_CONFIG = [
     { id: 5, title: "5. Hình học", desc: "Đường thẳng, hình phẳng, khối hình, xếp hình", icon: "📐", color: "amber" },
     { id: 6, title: "6. Đơn vị đo và thời gian", desc: "Độ dài, khối lượng, dung tích, giờ, lịch, tiền", icon: "⏰", color: "emerald" },
     { id: 7, title: "7. Tìm số chưa biết", desc: "Tìm x trong phép cộng, trừ, nhân, chia", icon: "❓", color: "violet" },
-    { id: 8, title: "8. Quy luật nâng cao & IQ", desc: "Khoảng cách biến đổi, sơ đồ liên kết và chuỗi hình ảnh IQ", icon: "🔗", color: "cyan" },
+    { id: 8, title: "8. Quy luật nâng cao & IQ", desc: "Dãy số, bước nhảy lặp lại, sơ đồ số và quy luật hình trực quan", icon: "🔗", color: "cyan" },
     { id: 9, title: "9. Toán có lời văn", desc: "Thêm bớt, nhiều hơn ít hơn, giải 2 bước tính", icon: "📝", color: "rose" },
     { id: 10, title: "10. Thống kê và xác suất", desc: "Kiểm đếm, biểu đồ tranh, khả năng xảy ra", icon: "📊", color: "blue" },
     { id: 11, title: "11. Toán nâng cao", desc: "Tính nhanh, cấu tạo số, hình học và IQ nâng cao", icon: "🧠", color: "yellow" },
@@ -40,7 +40,7 @@ const roadmapConfig = {
     10: { name: "Tuần 10: Thời Gian & Tiền Tệ", subIds: ["5.3", "5.4", "5.5", "5.6"], desc: "Đọc đồng hồ chính xác đến 5 phút, quy tắc ngày giờ 24h, lịch tờ, lịch tháng; mệnh giá tiền giấy và mua bán nhỏ.", icon: "⏰" },
     11: { name: "Tuần 11: Bảng Tính 2 & 5 & Ôn Tập", subIds: ["3.2", "3.3", "11.1"], desc: "Thuộc lòng bảng nhân/chia 2 và 5; ôn tập tổng hợp kiến thức số học, đo lường và hình học Học kỳ I.", icon: "🔢" },
     12: { name: "Tuần 12: Đấu Trường Học Kỳ I", isExam: true, subIds: [], desc: "Bé thực hành làm đề kiểm tra cuối kì I tổng hợp chuẩn ma trận 13 câu (40 phút, đạt >= 80% vượt ải).", icon: "🏆" },
-    13: { name: "Tuần 13: Quy Luật & Dãy Số", subIds: ["6.1", "6.2", "6.3", "6.4"], desc: "Tìm quy luật dãy số cách đều tăng/giảm, dãy số tăng khoảng cách, nhóm sơ đồ liên kết, chuỗi hình IQ tuần hoàn.", icon: "🔗" },
+    13: { name: "Tuần 13: Quy Luật & Dãy Số", subIds: ["6.1", "6.2", "6.3", "6.4"], desc: "Tìm dãy số cách đều, nhận ra bước nhảy lặp lại, giải sơ đồ liên kết số và hoàn thành chuỗi hình trực quan.", icon: "🔗" },
     14: { name: "Tuần 14: Tìm Số Chưa Biết Cơ Bản", subIds: ["7.1", "7.2"], desc: "Đi tìm ẩn số x trong phép tính cộng (tìm số hạng) và phép tính trừ (tìm số bị trừ, tìm số trừ chưa biết).", icon: "❓" },
     15: { name: "Tuần 15: Tìm x Nâng Cao", subIds: ["7.3", "7.4"], desc: "Tìm thừa số chưa biết, tìm số bị chia; giải bài toán tìm x nâng cao chứa 2 phép tính phức tạp.", icon: "❓" },
     16: { name: "Tuần 16: Toán Lời Văn Thêm Bớt", subIds: ["8.1", "8.2"], desc: "Bài toán đơn có lời văn dạng thêm, bớt một số đơn vị; bài toán nhiều hơn, ít hơn và chênh lệch hơn kém.", icon: "📝" },
@@ -514,7 +514,7 @@ function getExploreSubtopicDisplayLabel_(topicNum, index, rawLabel) {
     return `${major}.${minor}${label ? ` ${label}` : ''}`;
 }
 
-const DATA_VERSION = '20260927-2135-muldiv-visual';
+const DATA_VERSION = '20260930-topic6-visual-v1';
 const TOPICS_DATA_FILES = [
     'assets/data/kho_hoc_toan_2_hk1.json',
     'assets/data/kho_hoc_toan_2_hk2.json'
@@ -3173,9 +3173,413 @@ function revealMulDivFeedback_() {
     document.querySelectorAll('[data-muldiv-feedback]').forEach(el => el.classList.remove('hidden'));
 }
 
+
+function buildMeasureTimePresentation_(q) {
+    const sub = String(q?.sub_topic || q?.sub_id || '').trim();
+    if (!/^5\.[1-6]$/.test(sub) || !q?.explore_type) return null;
+    const vd = q.visual_data || {};
+    const esc = (v) => escapeHtml(String(v ?? ''));
+    const panel = (inner, note='') => `
+        <div class="w-full h-full min-h-[260px] flex flex-col items-center justify-center rounded-3xl border-2 border-emerald-100 bg-gradient-to-br from-white via-emerald-50/55 to-cyan-50/55 p-3 md:p-4 overflow-hidden">
+            ${inner}
+            ${note ? `<div class="mt-3 text-xs md:text-sm font-extrabold text-slate-500 text-center leading-snug">${esc(note)}</div>` : ''}
+        </div>`;
+    const clockSvg = (hour, minute, label='') => {
+        const h = Number(hour) || 0, m = Number(minute) || 0;
+        const hourAngle = ((h % 12) + m / 60) * 30 - 90;
+        const minAngle = m * 6 - 90;
+        const cx=110, cy=105;
+        const pt=(ang,len)=>({x:cx+Math.cos(ang*Math.PI/180)*len,y:cy+Math.sin(ang*Math.PI/180)*len});
+        const hp=pt(hourAngle,46), mp=pt(minAngle,67);
+        const ticks=Array.from({length:12},(_,i)=>{
+            const a=(i*30-90)*Math.PI/180; const x=cx+Math.cos(a)*82, y=cy+Math.sin(a)*82;
+            return `<text x="${x.toFixed(1)}" y="${(y+5).toFixed(1)}" text-anchor="middle" font-size="13" font-weight="800" fill="#475569">${i===0?12:i}</text>`;
+        }).join('');
+        return `<svg viewBox="0 0 220 220" class="w-full max-w-[250px]" aria-label="Đồng hồ minh họa">
+            <circle cx="110" cy="105" r="96" fill="#fff" stroke="#a7f3d0" stroke-width="6"/>
+            <circle cx="110" cy="105" r="86" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+            ${ticks}
+            <line x1="110" y1="105" x2="${hp.x.toFixed(1)}" y2="${hp.y.toFixed(1)}" stroke="#7c3aed" stroke-width="8" stroke-linecap="round"/>
+            <line x1="110" y1="105" x2="${mp.x.toFixed(1)}" y2="${mp.y.toFixed(1)}" stroke="#ec4899" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="110" cy="105" r="8" fill="#0f766e"/>
+            ${label ? `<text x="110" y="216" text-anchor="middle" font-size="14" font-weight="900" fill="#0f766e">${esc(label)}</text>` : ''}
+        </svg>`;
+    };
+    const noteSvg = (value) => `<div class="min-w-[112px] rounded-2xl border-2 border-emerald-200 bg-white px-4 py-3 text-center shadow-sm"><div class="text-[11px] font-black uppercase tracking-wide text-emerald-600">TIỀN HỌC TẬP</div><div class="mt-1 text-xl md:text-2xl font-black text-slate-800">${Number(value).toLocaleString('vi-VN')}</div><div class="text-sm font-black text-slate-500">đồng</div></div>`;
+
+    let visual='';
+    const type=String(q.explore_type);
+    if (type==='length_ruler') {
+        const start=Number(vd.start||0), end=Number(vd.end||0), max=Math.max(Number(vd.max||10),end+1);
+        const x0=36, width=430, step=width/max;
+        const ticks=Array.from({length:max+1},(_,i)=>`<g><line x1="${x0+i*step}" y1="130" x2="${x0+i*step}" y2="${i%5===0?102:112}" stroke="#64748b" stroke-width="2"/><text x="${x0+i*step}" y="151" text-anchor="middle" font-size="13" font-weight="800" fill="#475569">${i}</text></g>`).join('');
+        const ox=x0+start*step, ow=(end-start)*step;
+        visual=panel(`<svg viewBox="0 0 500 190" class="w-full max-w-[560px]">
+            <rect x="24" y="92" width="455" height="68" rx="16" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+            ${ticks}<text x="468" y="151" text-anchor="end" font-size="13" font-weight="900" fill="#92400e">cm</text>
+            <rect x="${ox}" y="48" width="${Math.max(34,ow)}" height="28" rx="14" fill="#f0abfc" stroke="#c026d3" stroke-width="3"/>
+            <text x="${ox+Math.max(34,ow)/2}" y="68" text-anchor="middle" font-size="18" font-weight="900" fill="#701a75">${esc(vd.emoji||'✏️')} ${esc(vd.object||'vật')}</text>
+            <line x1="${ox}" y1="80" x2="${ox}" y2="128" stroke="#db2777" stroke-width="3" stroke-dasharray="5 4"/>
+            <line x1="${ox+ow}" y1="80" x2="${ox+ow}" y2="128" stroke="#db2777" stroke-width="3" stroke-dasharray="5 4"/>
+        </svg>`,'Đọc vạch đầu và vạch cuối rồi tìm độ dài.');
+    } else if (type==='length_unit_choice' || type==='length_estimate') {
+        const scale=String(vd.scale||'');
+        const context=scale==='far'?'Quãng đường':(scale==='medium'?'Kích thước trong phòng':'Đồ vật cầm tay');
+        const valueChip = type==='length_unit_choice' && vd.value_text
+            ? `<span class="px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-black">Số đo: ${esc(vd.value_text)} ?</span>`
+            : `<span class="px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-black">Ước lượng trước · đo sau</span>`;
+        visual=panel(`<div class="text-7xl md:text-8xl leading-none">${esc(vd.emoji||'📏')}</div><div class="mt-3 text-xl md:text-2xl font-black text-emerald-800">${esc(vd.object||'Đồ vật')}</div><div class="mt-3 flex items-center gap-2 flex-wrap justify-center"><span class="px-3 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 font-black">${esc(context)}</span>${valueChip}</div>`,'Chọn đơn vị theo kích thước thật, không chỉ nhìn con số.');
+    } else if (type==='length_convert') {
+        const val=Number(vd.value||0), from=esc(vd.from_unit), to=esc(vd.to_unit);
+        const measureModel = val <= 8
+            ? `<div class="flex items-end justify-center gap-1.5 flex-wrap">${Array.from({length:Math.max(1,val)},()=>`<div class="w-9 md:w-11 h-24 rounded-xl border-2 border-cyan-300 bg-cyan-100 flex items-center justify-center font-black text-cyan-800">1 ${from}</div>`).join('')}</div>`
+            : `<div class="w-full max-w-sm rounded-3xl border-2 border-cyan-200 bg-cyan-50 px-5 py-5 text-center"><div class="text-sm font-black text-cyan-600">SỐ ĐO BAN ĐẦU</div><div class="mt-1 text-4xl md:text-5xl font-black text-cyan-800">${val} ${from}</div></div>`;
+        visual=panel(`${measureModel}<div class="mt-4 flex items-center gap-3 text-2xl md:text-3xl font-black"><span class="text-purple-700">${val} ${from}</span><span class="text-pink-500">→</span><span class="text-emerald-700">? ${to}</span></div>`,'Nhớ các mốc 1 dm = 10 cm, 1 m = 10 dm = 100 cm, 1 km = 1000 m.');
+    } else if (type==='length_path') {
+        const a=Number(vd.a||0), b=Number(vd.b||0), unit=esc(vd.unit||'m'), op=String(vd.op||'+');
+        visual=panel(`<svg viewBox="0 0 520 230" class="w-full max-w-[570px]">
+            <path d="M45 170 C145 40, 225 205, 330 85 S455 140,480 55" fill="none" stroke="#86efac" stroke-width="24" stroke-linecap="round"/>
+            <path d="M45 170 C145 40, 225 205, 330 85 S455 140,480 55" fill="none" stroke="#16a34a" stroke-width="3" stroke-dasharray="9 8"/>
+            <circle cx="45" cy="170" r="18" fill="#f472b6"/><text x="45" y="176" text-anchor="middle" font-size="18">🚩</text>
+            <circle cx="480" cy="55" r="18" fill="#60a5fa"/><text x="480" y="61" text-anchor="middle" font-size="18">🏁</text>
+            <rect x="100" y="54" width="110" height="42" rx="18" fill="#fff" stroke="#f9a8d4" stroke-width="3"/><text x="155" y="81" text-anchor="middle" font-size="20" font-weight="900" fill="#be185d">${a} ${unit}</text>
+            <rect x="315" y="145" width="110" height="42" rx="18" fill="#fff" stroke="#a7f3d0" stroke-width="3"/><text x="370" y="172" text-anchor="middle" font-size="20" font-weight="900" fill="#047857">${b} ${unit}</text>
+            <text x="260" y="218" text-anchor="middle" font-size="25" font-weight="900" fill="#7c3aed">${op==='+'?'Cộng hai đoạn':'Tìm phần chênh lệch'}</text>
+        </svg>`,'Các số đo đã cùng đơn vị.');
+    } else if (type==='weight_balance') {
+        const ws=Array.isArray(vd.weights)?vd.weights.map(Number):[];
+        visual=panel(`<svg viewBox="0 0 520 260" class="w-full max-w-[560px]">
+            <line x1="260" y1="70" x2="260" y2="205" stroke="#64748b" stroke-width="8"/><polygon points="220,220 300,220 260,160" fill="#94a3b8"/>
+            <line x1="90" y1="105" x2="430" y2="105" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+            <line x1="120" y1="105" x2="120" y2="155" stroke="#64748b" stroke-width="3"/><line x1="400" y1="105" x2="400" y2="155" stroke="#64748b" stroke-width="3"/>
+            <path d="M45 155 Q120 205 195 155" fill="#dbeafe" stroke="#3b82f6" stroke-width="4"/><path d="M325 155 Q400 205 475 155" fill="#dcfce7" stroke="#22c55e" stroke-width="4"/>
+            <text x="120" y="170" text-anchor="middle" font-size="46">${esc(vd.object_emoji||'📦')}</text>
+            ${ws.map((w,i)=>`<g><rect x="${350+i*55}" y="132" width="48" height="42" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/><text x="${374+i*55}" y="159" text-anchor="middle" font-size="16" font-weight="900" fill="#92400e">${w}kg</text></g>`).join('')}
+            <circle cx="260" cy="105" r="11" fill="#f43f5e"/>
+        </svg>`,'Cân thăng bằng: hai bên có khối lượng bằng nhau.');
+    } else if (type==='weight_arithmetic') {
+        visual=panel(`<div class="flex items-center justify-center gap-3 md:gap-5"><div class="text-5xl">⚖️</div><div class="rounded-2xl border-2 border-amber-200 bg-amber-50 px-5 py-4 text-2xl md:text-3xl font-black text-amber-800">${esc(vd.a)} kg</div><div class="text-3xl font-black text-pink-500">${esc(vd.op)}</div><div class="rounded-2xl border-2 border-cyan-200 bg-cyan-50 px-5 py-4 text-2xl md:text-3xl font-black text-cyan-800">${esc(vd.b)} kg</div></div>`,'Tính với số đo rồi nhớ ghi kg.');
+    } else if (type==='weight_compare') {
+        visual=panel(`<div class="grid grid-cols-2 gap-4 w-full max-w-md"><div class="rounded-3xl border-2 border-cyan-200 bg-cyan-50 p-5 text-center"><div class="text-5xl">🛍️</div><div class="mt-2 text-2xl font-black text-cyan-800">${esc(vd.a)} kg</div></div><div class="rounded-3xl border-2 border-pink-200 bg-pink-50 p-5 text-center"><div class="text-5xl">🛍️</div><div class="mt-2 text-2xl font-black text-pink-800">${esc(vd.b)} kg</div></div></div>`,'So sánh trực tiếp hai số đo cùng đơn vị kg.');
+    } else if (type==='liter_measure') {
+        const a=Number(vd.a||0), b=Number(vd.b||0), kind=String(vd.kind||'plus');
+        const cup=(v,tone)=>`<div class="relative w-24 h-32 rounded-b-3xl rounded-t-lg border-4 ${tone==='a'?'border-cyan-300':'border-pink-300'} bg-white overflow-hidden"><div class="absolute inset-x-0 bottom-0 ${tone==='a'?'bg-cyan-200':'bg-pink-200'}" style="height:${Math.max(18,Math.min(92,v*8))}%"></div><div class="absolute inset-0 flex items-center justify-center text-xl font-black text-slate-700">${v} l</div></div>`;
+        if (kind==='cups') {
+            visual=panel(`<div class="flex flex-col items-center"><div class="text-6xl">🫗</div><div class="mt-3 flex flex-wrap justify-center gap-2">${Array.from({length:a},()=>`<div class="w-16 h-20 rounded-b-2xl border-3 border-cyan-300 bg-cyan-100 flex items-center justify-center font-black text-cyan-800">${b} l</div>`).join('')}</div></div>`,'Ghép các cốc 1 l để thấy dung tích của bình.');
+        } else if (kind==='groups') {
+            visual=panel(`<div class="flex items-center justify-center gap-4 md:gap-7">${cup(a,'a')}<div class="text-4xl font-black text-purple-500">÷</div>${cup(b,'b')}<div class="text-4xl font-black text-pink-500">= ? can</div></div>`,'Lấy tổng số lít chia cho số lít trong mỗi can.');
+        } else {
+            visual=panel(`<div class="flex items-center justify-center gap-4 md:gap-7">${cup(a,'a')}<div class="text-3xl font-black text-purple-500">${['minus','difference'].includes(kind)?'−':(kind==='compare'?'↔':'+')}</div>${cup(b,'b')}</div>`,'Lít (l) dùng để đo lượng chất lỏng.');
+        }
+    } else if (type==='measure_choice') {
+        visual=panel(`<div class="text-7xl md:text-8xl">${esc(vd.emoji||'⚖️')}</div><div class="mt-4 flex gap-3"><span class="rounded-2xl border-2 border-amber-200 bg-amber-50 px-4 py-2 text-xl font-black text-amber-800">kg</span><span class="rounded-2xl border-2 border-cyan-200 bg-cyan-50 px-4 py-2 text-xl font-black text-cyan-800">l</span></div>`,'Xác định đại lượng trước rồi chọn đơn vị.');
+    } else if (type.startsWith('calendar_')) {
+        const month=Number(vd.month||1), days=Number(vd.days||30), start=Number(vd.start_weekday||0);
+        const hi=new Set((vd.highlight_days||[]).map(Number));
+        if(vd.highlight) hi.add(Number(vd.highlight));
+        if(vd.from) hi.add(Number(vd.from));
+        // Với bài “sau 1 tuần”, chỉ tô ngày xuất phát để bé tự tìm ngày cùng cột ở tuần kế tiếp.
+        if(vd.to && type!=='calendar_week_jump') hi.add(Number(vd.to));
+        const names=['T2','T3','T4','T5','T6','T7','CN'];
+        const cells=[]; for(let i=0;i<start;i++)cells.push(''); for(let d=1;d<=days;d++)cells.push(d); while(cells.length%7)cells.push('');
+        const weekCue=type==='calendar_week_jump'?`<div class="mt-2 inline-flex items-center gap-2 rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-sm font-black text-purple-700"><span>Ngày ${esc(vd.from)}</span><span>→ + 7 ngày →</span><span>?</span></div>`:'';
+        visual=panel(`<div class="w-full max-w-[500px]"><div class="rounded-t-2xl bg-emerald-600 px-4 py-2 text-center text-xl md:text-2xl font-black text-white">THÁNG ${month}</div><div class="grid grid-cols-7 border-x-2 border-b-2 border-emerald-200 rounded-b-2xl overflow-hidden">${names.map(n=>`<div class="bg-emerald-50 py-2 text-center text-xs md:text-sm font-black text-emerald-800">${n}</div>`).join('')}${cells.map(d=>`<div class="min-h-[38px] md:min-h-[44px] border-t border-r border-slate-100 flex items-center justify-center text-sm md:text-base font-black ${d&&hi.has(Number(d))?'bg-pink-100 text-pink-700 ring-2 ring-inset ring-pink-300':'bg-white text-slate-700'}">${d||''}</div>`).join('')}</div>${weekCue}</div>`,'Đọc theo cột thứ và hàng tuần.');
+    } else if (type==='clock_read') {
+        visual=panel(clockSvg(vd.hour,vd.minute),'Kim ngắn chỉ giờ · kim dài chỉ phút.');
+    } else if (type==='clock_compare') {
+        const labelA=esc(vd.label_a||'Đồng hồ A'), labelB=esc(vd.label_b||'Đồng hồ B');
+        visual=panel(`<div class="grid grid-cols-2 gap-2 md:gap-4 w-full"><div class="text-center"><div class="text-sm font-black text-purple-600">${labelA}</div>${clockSvg(vd.a?.hour,vd.a?.minute)}</div><div class="text-center"><div class="text-sm font-black text-pink-600">${labelB}</div>${clockSvg(vd.b?.hour,vd.b?.minute)}</div></div>`,'So giờ trước; nếu cùng giờ thì so tiếp số phút.');
+    } else if (type==='clock_duration') {
+        visual=panel(`<div class="grid grid-cols-[1fr_auto_1fr] gap-1 md:gap-3 items-center w-full"><div>${clockSvg(vd.start?.hour,vd.start?.minute,'Bắt đầu')}</div><div class="text-3xl font-black text-pink-500">→</div><div>${clockSvg(vd.end?.hour,vd.end?.minute,'Kết thúc')}</div></div>`,'Tiến kim theo các mốc quen thuộc rồi cộng thời gian.');
+    } else if (type==='money_note') {
+        const notes=Array.isArray(vd.notes)?vd.notes:[];
+        visual=panel(`<div class="flex flex-wrap items-center justify-center gap-3">${notes.map(noteSvg).join('')}</div>`,'Đây là thẻ tiền học tập, dùng để nhận biết mệnh giá và tính tiền.');
+    } else if (type==='money_shop' || type==='money_make') {
+        const price=Number(vd.price||vd.target||0);
+        const notes=type==='money_make' ? [100,200,500,1000] : (Array.isArray(vd.notes)?vd.notes:[]);
+        const helperText=type==='money_make' ? 'Chọn cách ghép các mệnh giá để đủ đúng số tiền.' : 'Cộng tiền đang có rồi so với giá cần trả.';
+        visual=panel(`<div class="flex flex-col items-center"><div class="text-6xl">${esc(vd.emoji||'🛒')}</div><div class="mt-2 rounded-full bg-amber-50 border-2 border-amber-200 px-4 py-1.5 text-lg font-black text-amber-800">${vd.item?esc(vd.item)+' · ':''}${price.toLocaleString('vi-VN')} đồng</div><div class="mt-4 flex flex-wrap justify-center gap-2">${notes.map(noteSvg).join('')}</div></div>`,helperText);
+    } else if (type==='clock_24h') {
+        const h24=Number(vd.hour24||0), m=Number(vd.minute||0), h12=(h24%12)||12;
+        visual=panel(`<div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3 items-center w-full"><div>${clockSvg(h12,m)}</div><div class="flex flex-col items-center gap-2"><div class="text-5xl">${esc(vd.period_icon||'🕒')}</div><div class="rounded-2xl border-2 border-emerald-200 bg-white px-4 py-3 text-2xl md:text-3xl font-black text-emerald-800">${String(h24).padStart(2,'0')}:${String(m).padStart(2,'0')}</div></div></div>`,'Hệ 24 giờ giúp phân biệt rõ sáng, chiều, tối và đêm.');
+    } else if (type==='daily_schedule') {
+        const h24=Number(vd.hour24||0), m=Number(vd.minute||0), h12=(h24%12)||12;
+        visual=panel(`<div class="flex flex-col items-center"><div class="text-6xl">${esc(vd.period_icon||'🌤️')}</div><div class="mt-2 text-xl md:text-2xl font-black text-emerald-800">${esc(vd.activity||'Hoạt động')}</div><div class="mt-2 w-full max-w-[260px]">${clockSvg(h12,m)}</div></div>`,'Nhìn hoạt động và buổi trong ngày để đổi sang hệ 24 giờ.');
+    } else if (type==='time_reasoning') {
+        const kind=String(vd.kind||'');
+        if(kind==='day') {
+            visual=panel(`<div class="grid grid-cols-4 gap-2 md:gap-3 w-full max-w-md">${['🌅','☀️','🌇','🌙'].map((x,i)=>`<div class="rounded-2xl border-2 border-cyan-100 bg-white p-3 text-center"><div class="text-4xl">${x}</div><div class="mt-1 text-xs font-black text-slate-500">${['Sáng','Trưa','Chiều','Đêm'][i]}</div></div>`).join('')}</div>`,'Một ngày gồm các buổi nối tiếp nhau. Con nhớ lại mốc của một ngày.');
+        } else if(kind==='hour') {
+            visual=panel(`<svg viewBox="0 0 360 170" class="w-full max-w-[430px]"><circle cx="180" cy="82" r="64" fill="#fff" stroke="#c4b5fd" stroke-width="5"/>${Array.from({length:12},(_,i)=>{const a=(i*30-90)*Math.PI/180;const x1=180+Math.cos(a)*51,y1=82+Math.sin(a)*51,x2=180+Math.cos(a)*61,y2=82+Math.sin(a)*61;return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#7c3aed" stroke-width="4" stroke-linecap="round"/>`}).join('')}<circle cx="180" cy="82" r="6" fill="#ec4899"/><text x="180" y="162" text-anchor="middle" font-size="16" font-weight="900" fill="#475569">Một vòng của kim phút</text></svg>`,'Hãy nhớ kim phút đi trọn một vòng thì kim giờ tiến thêm một số.');
+        } else {
+            const h24=Number(vd.hour24 ?? vd.a ?? 0), m=Number(vd.minute||0), h12=(h24%12)||12;
+            visual=panel(`<div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3 items-center w-full"><div>${clockSvg(h12,m)}</div><div class="flex flex-col items-center gap-2"><div class="text-5xl">${esc(vd.period_icon||'🕒')}</div><div class="rounded-2xl border-2 border-emerald-200 bg-white px-4 py-3 text-2xl md:text-3xl font-black text-emerald-800">${String(h24).padStart(2,'0')}:${String(m).padStart(2,'0')}</div></div></div>`,'Nhìn thời điểm và xác định cách gọi phù hợp trong ngày.');
+        }
+    }
+    if (!visual) return null;
+    return {prompt:q.question_text, visual, layout:'measure_split', inlineSpeaker:true};
+}
+
+
+function buildPatternLogicPresentation_(q) {
+    const sub = String(q?.sub_topic || q?.sub_id || '').trim();
+    if (!/^6\.[1-4]$/.test(sub) || !q?.explore_type) return null;
+    const vd = q.visual_data || {};
+    const esc = (v) => escapeHtml(String(v ?? ''));
+    const chip = (v, tone='cyan', blank=false) => `<div class="min-w-[54px] h-[54px] md:min-w-[64px] md:h-[64px] px-2 rounded-2xl border-2 ${blank ? 'border-dashed border-fuchsia-300 bg-white text-fuchsia-500' : `border-${tone}-200 bg-${tone}-50 text-${tone}-800`} flex items-center justify-center text-xl md:text-2xl font-black shadow-sm">${blank ? '?' : esc(v)}</div>`;
+    const arrow = (label='', tone='slate') => `<div class="flex flex-col items-center justify-center shrink-0 px-0.5"><span class="text-[10px] md:text-xs font-black text-${tone}-500 min-h-[16px]">${label ? esc(label) : '&nbsp;'}</span><span class="text-xl md:text-2xl font-black text-${tone}-300">→</span></div>`;
+    const panel = (inner, note='') => `<div class="w-full h-full min-h-[270px] flex flex-col items-center justify-center rounded-3xl border-2 border-cyan-100 bg-gradient-to-br from-white via-cyan-50/55 to-indigo-50/55 p-3 md:p-4 overflow-hidden">${inner}${note ? `<div class="mt-4 text-xs md:text-sm font-extrabold text-slate-500 text-center leading-snug">${esc(note)}</div>` : ''}</div>`;
+
+    const shapeHtml = (key, blank=false) => {
+        if (blank) return `<div class="w-16 h-16 md:w-[74px] md:h-[74px] rounded-2xl border-3 border-dashed border-fuchsia-300 bg-white flex items-center justify-center text-3xl font-black text-fuchsia-500 shadow-sm">?</div>`;
+        const k=String(key||'');
+        if (k==='circle') return `<div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-sky-400 border-4 border-sky-200 shadow-sm"></div>`;
+        if (k==='square') return `<div class="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-amber-300 border-4 border-amber-100 shadow-sm"></div>`;
+        if (k==='triangle') return `<div class="w-0 h-0 border-l-[30px] md:border-l-[34px] border-r-[30px] md:border-r-[34px] border-b-[56px] md:border-b-[64px] border-l-transparent border-r-transparent border-b-emerald-400 drop-shadow-sm"></div>`;
+        if (k==='rectangle') return `<div class="w-[76px] h-12 md:w-[88px] md:h-14 rounded-xl bg-violet-400 border-4 border-violet-200 shadow-sm"></div>`;
+        return `<div class="w-14 h-14 rounded-xl bg-slate-100 border-2 border-slate-200"></div>`;
+    };
+
+    let visual='';
+    const type=String(q.explore_type||'');
+    if (type==='pattern_constant_step') {
+        const seq=Array.isArray(vd.sequence)?vd.sequence:[];
+        const label = vd.show_step_hint ? `${String(vd.direction)==='down' ? '−' : '+'}${Math.abs(Number(vd.step)||0)}` : '';
+        visual=panel(`<div class="flex items-center justify-center flex-wrap gap-y-3">${seq.map((v,i)=>`${chip(v,'cyan',v===null)}${i<seq.length-1?arrow(label,'cyan'):''}`).join('')}</div>`, vd.show_step_hint ? 'Mỗi bước thay đổi cùng một lượng.' : 'So sánh khoảng cách giữa các số liền nhau.');
+    } else if (type==='pattern_cycle_steps') {
+        const seq=Array.isArray(vd.sequence)?vd.sequence:[];
+        const steps=Array.isArray(vd.steps)?vd.steps.map(Number):[0,0];
+        visual=panel(`<div class="flex items-center justify-center flex-wrap gap-y-3">${seq.map((v,i)=>{ const st=steps[i%2]||0; const lab=vd.show_steps ? `${st>=0?'+':'−'}${Math.abs(st)}` : ''; return `${chip(v,i%2?'indigo':'cyan',v===null)}${i<seq.length-1?arrow(lab,i%2?'indigo':'fuchsia'):''}`; }).join('')}</div><div class="mt-4 flex gap-2"><span class="rounded-full border border-fuchsia-200 bg-fuchsia-50 px-3 py-1 text-xs font-black text-fuchsia-700">Bước 1</span><span class="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-black text-indigo-700">Bước 2</span></div>`, vd.show_steps ? 'Hai bước nhảy lặp lại theo đúng thứ tự.' : 'Tìm hai bước nhảy rồi kiểm tra xem chúng có lặp lại không.');
+    } else if (type==='number_triangle_sum') {
+        const val=(x)=>x===null||x===undefined?'?':x;
+        const cls=(x)=>x===null||x===undefined?'fill:#fff;stroke:#e879f9;stroke-dasharray:7 5':'fill:#fff;stroke:#67e8f9';
+        visual=panel(`<svg viewBox="0 0 430 280" class="w-full max-w-[470px]" aria-label="Sơ đồ tam giác số">
+            <path d="M215 42 L76 226 L354 226 Z" fill="none" stroke="#c4b5fd" stroke-width="7" stroke-linejoin="round"/>
+            <circle cx="215" cy="42" r="38" style="${cls(vd.top)}" stroke-width="5"/><text x="215" y="51" text-anchor="middle" font-size="26" font-weight="900" fill="#4338ca">${esc(val(vd.top))}</text>
+            <circle cx="76" cy="226" r="38" style="${cls(vd.left)}" stroke-width="5"/><text x="76" y="235" text-anchor="middle" font-size="26" font-weight="900" fill="#0e7490">${esc(val(vd.left))}</text>
+            <circle cx="354" cy="226" r="38" style="${cls(vd.right)}" stroke-width="5"/><text x="354" y="235" text-anchor="middle" font-size="26" font-weight="900" fill="#0e7490">${esc(val(vd.right))}</text>
+            <circle cx="215" cy="157" r="48" style="${cls(vd.center)}" stroke-width="6"/><text x="215" y="167" text-anchor="middle" font-size="30" font-weight="900" fill="#be185d">${esc(val(vd.center))}</text>
+            <text x="215" y="270" text-anchor="middle" font-size="15" font-weight="900" fill="#64748b">3 đỉnh cộng lại → số ở giữa</text>
+        </svg>`,'Có thể cộng hai số thuận tiện trước, rồi cộng số còn lại.');
+    } else if (type==='shape_repeat_pattern') {
+        const seq=Array.isArray(vd.sequence)?vd.sequence:[];
+        visual=panel(`<div class="flex items-center justify-center flex-wrap gap-2 md:gap-3">${seq.map((k,i)=>`<div class="flex items-center gap-2 md:gap-3">${shapeHtml(k,k===null)}${i<seq.length-1?'<span class="text-2xl font-black text-slate-300">→</span>':''}</div>`).join('')}</div>`, 'Tìm nhóm hình ngắn nhất đang lặp lại rồi tiếp tục đúng thứ tự.');
+    }
+    if (!visual) return null;
+    return {prompt:q.question_text, visual, layout:'pattern_split', inlineSpeaker:true};
+}
+
+
+function isUnknownNumberQuestion_(q) {
+    const sub = String(q?.sub_topic || q?.sub_id || '').trim();
+    return /^7\.[1-4]$/.test(sub);
+}
+
+function buildUnknownBridgeSplit_(total, known, answer) {
+    total = Number(total); known = Number(known); answer = Number(answer);
+    if (![total, known, answer].every(Number.isFinite) || known <= 1) return null;
+
+    // Ưu tiên tách để phép trừ thứ nhất đưa số bị trừ về một số tròn chục
+    // gần đáp án. Ví dụ: 52 - 23 -> tách 23 = 22 + 1 -> 52 - 22 = 30.
+    const targetTen = Math.ceil(answer / 10) * 10;
+    const first = total - targetTen;
+    const second = known - first;
+    if (first > 0 && second > 0 && first < known && first + second === known) {
+        return { first, second, target: targetTen };
+    }
+
+    // Nếu đáp án đã tròn chục, dùng cách tách chục - đơn vị quen thuộc.
+    const tens = Math.floor(known / 10) * 10;
+    const ones = known - tens;
+    if (tens > 0 && ones > 0) {
+        return { first: tens, second: ones, target: total - tens };
+    }
+    return null;
+}
+
+function getUnknownNumberMeta_(q) {
+    if (!isUnknownNumberQuestion_(q)) return null;
+    const sub = String(q?.sub_topic || q?.sub_id || '').trim();
+    const raw = String(q?.question_text || '').replace(/−/g, '-');
+    const answer = Number(q?.answer);
+    if (!Number.isFinite(answer)) return null;
+
+    let match = null;
+    let meta = { sub, raw, answer, kind: '', operands: [], operators: [], prompt: '' };
+
+    if (sub === '7.1') {
+        match = raw.match(/\bx\s*\+\s*(\d+)\s*=\s*(\d+)/i);
+        if (match) {
+            const known = Number(match[1]), total = Number(match[2]);
+            meta = { ...meta, kind: 'unknown_addend', known, total,
+                operands: ['x', known, total], operators: ['+', '='] };
+        }
+    } else if (sub === '7.2') {
+        match = raw.match(/\bx\s*-\s*(\d+)\s*=\s*(\d+)/i);
+        if (match) {
+            const subtrahend = Number(match[1]), difference = Number(match[2]);
+            meta = { ...meta, kind: 'unknown_minuend', subtrahend, difference,
+                operands: ['x', subtrahend, difference], operators: ['−', '='] };
+        } else {
+            match = raw.match(/(\d+)\s*-\s*x\s*=\s*(\d+)/i);
+            if (match) {
+                const minuend = Number(match[1]), difference = Number(match[2]);
+                meta = { ...meta, kind: 'unknown_subtrahend', minuend, difference,
+                    operands: [minuend, 'x', difference], operators: ['−', '='] };
+            }
+        }
+    } else if (sub === '7.3') {
+        match = raw.match(/\bx\s*(?:x|×|\*)\s*(\d+)\s*=\s*(\d+)/i);
+        if (match) {
+            const factor = Number(match[1]), product = Number(match[2]);
+            meta = { ...meta, kind: 'unknown_factor', factor, product,
+                operands: ['x', factor, product], operators: ['×', '='] };
+        } else {
+            match = raw.match(/\bx\s*[:÷]\s*(\d+)\s*=\s*(\d+)/i);
+            if (match) {
+                const divisor = Number(match[1]), quotient = Number(match[2]);
+                meta = { ...meta, kind: 'unknown_dividend', divisor, quotient,
+                    operands: ['x', divisor, quotient], operators: ['÷', '='] };
+            }
+        }
+    } else if (sub === '7.4') {
+        match = raw.match(/\bx\s*\+\s*(\d+)\s*\+\s*(\d+)\s*=\s*(\d+)/i);
+        if (match) {
+            const a = Number(match[1]), b = Number(match[2]), total = Number(match[3]);
+            meta = { ...meta, kind: 'unknown_two_step_add', a, b, total,
+                operands: ['x', a, b, total], operators: ['+', '+', '='] };
+        }
+    }
+
+    if (!match || !meta.kind) return null;
+    const idx = match.index ?? raw.indexOf(match[0]);
+    let prompt = idx >= 0 ? raw.slice(0, idx) : raw;
+    prompt = prompt.replace(/[\s:]+$/g, '').trim();
+    if (!prompt) prompt = 'Bé hãy tìm giá trị của x nhé!';
+    meta.prompt = prompt;
+    return meta;
+}
+
+function buildUnknownSolutionHtml_(meta) {
+    if (!meta) return '';
+    const xRed = '<span class="text-rose-600">x</span>';
+    const line = (html, strong=false) => `<div class="${strong ? 'text-2xl md:text-3xl text-rose-700' : 'text-xl md:text-2xl text-slate-700'} font-black leading-relaxed">${html}</div>`;
+    const hint = (html) => `<div class="inline-flex items-center gap-2 rounded-2xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-base md:text-lg font-black text-amber-800">💡 ${html}</div>`;
+    const lines = [];
+    let hintHtml = '';
+    let ruleText = '';
+    let checkText = '';
+
+    if (meta.kind === 'unknown_addend') {
+        ruleText = 'Muốn tìm số hạng chưa biết, lấy tổng trừ số hạng đã biết.';
+        checkText = `Kiểm tra: ${meta.answer} + ${meta.known} = ${meta.total} ✓`;
+        lines.push(line(`${xRed} = ${meta.total} − ${meta.known}`));
+        const split = buildUnknownBridgeSplit_(meta.total, meta.known, meta.answer);
+        if (split) {
+            hintHtml = hint(`Tách ${meta.known} = ${split.first} + ${split.second}`);
+            lines.push(line(`${xRed} = ${meta.total} − ${split.first} − ${split.second}`));
+            lines.push(line(`${xRed} = ${meta.total - split.first} − ${split.second}`));
+        }
+        lines.push(line(`${xRed} = <span class="text-rose-600">${meta.answer}</span>`, true));
+    } else if (meta.kind === 'unknown_minuend') {
+        ruleText = 'Muốn tìm số bị trừ chưa biết, lấy hiệu cộng số trừ.';
+        checkText = `Kiểm tra: ${meta.answer} − ${meta.subtrahend} = ${meta.difference} ✓`;
+        lines.push(line(`${xRed} = ${meta.difference} + ${meta.subtrahend}`));
+        lines.push(line(`${xRed} = <span class="text-rose-600">${meta.answer}</span>`, true));
+    } else if (meta.kind === 'unknown_subtrahend') {
+        ruleText = 'Muốn tìm số trừ chưa biết, lấy số bị trừ trừ đi hiệu.';
+        checkText = `Kiểm tra: ${meta.minuend} − ${meta.answer} = ${meta.difference} ✓`;
+        lines.push(line(`${xRed} = ${meta.minuend} − ${meta.difference}`));
+        const split = buildUnknownBridgeSplit_(meta.minuend, meta.difference, meta.answer);
+        if (split) {
+            hintHtml = hint(`Tách ${meta.difference} = ${split.first} + ${split.second}`);
+            lines.push(line(`${xRed} = ${meta.minuend} − ${split.first} − ${split.second}`));
+            lines.push(line(`${xRed} = ${meta.minuend - split.first} − ${split.second}`));
+        }
+        lines.push(line(`${xRed} = <span class="text-rose-600">${meta.answer}</span>`, true));
+    } else if (meta.kind === 'unknown_factor') {
+        ruleText = 'Muốn tìm thừa số chưa biết, lấy tích chia cho thừa số đã biết.';
+        checkText = `Kiểm tra: ${meta.answer} × ${meta.factor} = ${meta.product} ✓`;
+        lines.push(line(`${xRed} = ${meta.product} ÷ ${meta.factor}`));
+        lines.push(line(`${xRed} = <span class="text-rose-600">${meta.answer}</span>`, true));
+    } else if (meta.kind === 'unknown_dividend') {
+        ruleText = 'Muốn tìm số bị chia chưa biết, lấy thương nhân với số chia.';
+        checkText = `Kiểm tra: ${meta.answer} ÷ ${meta.divisor} = ${meta.quotient} ✓`;
+        lines.push(line(`${xRed} = ${meta.quotient} × ${meta.divisor}`));
+        lines.push(line(`${xRed} = <span class="text-rose-600">${meta.answer}</span>`, true));
+    } else if (meta.kind === 'unknown_two_step_add') {
+        const known = meta.a + meta.b;
+        ruleText = 'Gộp các số hạng đã biết trước, rồi tìm số hạng chưa biết.';
+        checkText = `Kiểm tra: ${meta.answer} + ${meta.a} + ${meta.b} = ${meta.total} ✓`;
+        hintHtml = hint(`Gộp trước: ${meta.a} + ${meta.b} = ${known}`);
+        lines.push(line(`${xRed} + ${known} = ${meta.total}`));
+        lines.push(line(`${xRed} = ${meta.total} − ${known}`));
+        const split = buildUnknownBridgeSplit_(meta.total, known, meta.answer);
+        if (split) {
+            lines.push(line(`${xRed} = ${meta.total} − ${split.first} − ${split.second}`));
+        }
+        lines.push(line(`${xRed} = <span class="text-rose-600">${meta.answer}</span>`, true));
+    }
+
+    return `<div data-unknown-solution class="hidden mt-5 w-full rounded-3xl border-2 border-emerald-200 bg-gradient-to-r from-emerald-50/90 to-cyan-50/80 p-4 md:p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="text-xl md:text-2xl font-black text-emerald-700">🌱 Cùng xem lời giải</div>
+            ${hintHtml}
+        </div>
+        ${ruleText ? `<div class="mb-4 rounded-2xl border-2 border-violet-200 bg-white/90 px-4 py-3 text-lg md:text-xl font-black text-violet-800 text-left"><span class="text-violet-500">Quy tắc:</span> ${ruleText}</div>` : ''}
+        <div class="rounded-2xl bg-white/75 border border-emerald-100 px-3 py-3 md:px-5 md:py-4 space-y-1.5 text-center">${lines.join('')}</div>
+        ${checkText ? `<div class="mt-4 rounded-2xl border-2 border-sky-200 bg-sky-50 px-4 py-3 text-base md:text-lg font-black text-sky-800 text-center">✅ ${checkText}</div>` : ''}
+    </div>`;
+}
+
+function buildUnknownNumberPresentation_(q) {
+    const meta = getUnknownNumberMeta_(q);
+    if (!meta) return null;
+    const esc = (v) => escapeHtml(String(v));
+    const numberBox = (value) => {
+        const unknown = String(value).toLowerCase() === 'x';
+        return `<div ${unknown ? 'data-unknown-slot' : ''} class="relative min-w-[76px] h-[68px] md:min-w-[92px] md:h-[82px] px-3 rounded-2xl border-3 ${unknown ? 'border-rose-300 bg-rose-50 text-rose-600' : 'border-violet-200 bg-white text-violet-800'} flex items-center justify-center text-3xl md:text-4xl font-black shadow-sm">${unknown ? '<span class="text-rose-600">x</span>' : esc(value)}</div>`;
+    };
+    const op = (value) => `<span class="px-1 md:px-2 text-3xl md:text-4xl font-black text-slate-500">${esc(value)}</span>`;
+    const pieces = [];
+    meta.operands.forEach((value, i) => {
+        pieces.push(numberBox(value));
+        if (i < meta.operators.length) pieces.push(op(meta.operators[i]));
+    });
+    const visual = `<div class="w-full rounded-3xl border-2 border-violet-150 bg-gradient-to-br from-white via-violet-50/65 to-pink-50/55 px-3 py-5 md:px-5 md:py-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3">${pieces.join('')}</div>
+    </div>`;
+    return {
+        layout: 'unknown_number',
+        prompt: meta.prompt,
+        visual,
+        solutionHtml: buildUnknownSolutionHtml_(meta),
+        inlineSpeaker: true,
+        isUnknownNumber: true
+    };
+}
+
+function revealUnknownNumberFeedback_(q, fillAnswer = true) {
+    if (!isUnknownNumberQuestion_(q)) return;
+    if (fillAnswer) {
+        const answer = escapeHtml(String(q?.answer ?? ''));
+        document.querySelectorAll('[data-unknown-slot]').forEach((slot) => {
+            slot.classList.remove('border-rose-300', 'bg-rose-50');
+            slot.classList.add('border-rose-400', 'bg-white', 'ring-4', 'ring-rose-100');
+            slot.innerHTML = `<span class="absolute top-0.5 left-2 text-[10px] md:text-xs font-black uppercase tracking-wide text-rose-500">x</span><span class="text-rose-600">${answer}</span>`;
+        });
+    }
+    // Mục 7 là phần kiến thức khó: sau MỌI lần bé chọn đáp án đều mở lời giải
+    // để bé hiểu quy tắc và cách biến đổi, không chỉ biết đúng/sai.
+    document.querySelectorAll('[data-unknown-solution]').forEach((panel) => panel.classList.remove('hidden'));
+}
+
 function getExploreMathPresentation(q) {
     const sub = String(q?.sub_topic || '');
-    if (!/^[123]\./.test(sub) || activeExamContext || activeRoadmapContext) return null;
+    if (activeExamContext || activeRoadmapContext) return null;
+    const unknownNumberPresentation = buildUnknownNumberPresentation_(q);
+    if (unknownNumberPresentation) return unknownNumberPresentation;
+    if (!/^[12356]\./.test(sub)) return null;
     const raw = String(q.question_text || '').replace(/×/g,'x').replace(/−/g,'-');
     const nums = (raw.match(/\d+/g)||[]).map(Number);
     const math = raw.match(/(\d+)\s*([+\-x:])\s*(\d+)\s*=\s*\?/i);
@@ -3363,6 +3767,12 @@ function getExploreMathPresentation(q) {
         }
         return {prompt, promptHtml, visual};
     }
+
+    const measureTimePresentation = buildMeasureTimePresentation_(q);
+    if (measureTimePresentation) return measureTimePresentation;
+
+    const patternLogicPresentation = buildPatternLogicPresentation_(q);
+    if (patternLogicPresentation) return patternLogicPresentation;
 
     // ===== MỤC 3 - CỘNG TRỪ: hai cấp độ dùng cùng một kho câu hỏi =====
     // Cấp 1 có bảng/gợi ý và chỉ hiện đầy đủ cách làm sau khi bé trả lời đúng.
@@ -3590,6 +4000,13 @@ function handleOrderNumberPick_(value) {
     }
 }
 
+function highlightQuestionNumbers_(text) {
+    // Escape trước rồi mới bọc các số để dữ liệu JSON không thể chèn HTML.
+    return escapeHtml(String(text ?? '')).replace(/\d+(?:[.,]\d+)?/g, (num) =>
+        `<span class="text-rose-600 font-black">${num}</span>`
+    );
+}
+
 function loadQuestion() {
     stopSpeaking();
     const q = activeQuestionsList[currentQIndex];
@@ -3602,6 +4019,9 @@ function loadQuestion() {
     // Mục 3 (Cộng - trừ) và Mục 4 (Nhân - chia) có đáp án ngắn,
     // nên dùng bố cục gọn: 4 đáp án trên một hàng ở desktop.
     const isCompactTopic34 = !isEvaluationMode && [3, 4].includes(Number(pendingTopicQuiz?.topicNum));
+    // Mục 8-9-10: tăng cỡ chữ và tô đỏ riêng các con số trong câu hỏi.
+    const isLargeTopic8910 = !isEvaluationMode && [8, 9, 10].includes(Number(pendingTopicQuiz?.topicNum));
+    const topic8910QuestionHtml = isLargeTopic8910 ? highlightQuestionNumbers_(q.question_text) : escapeHtml(q.question_text);
     const isOperationTerms = !isEvaluationMode && q.explore_type === 'operation_terms';
     const isCarryConcept = !isEvaluationMode && isCarryConceptQuestion_(q);
     const isCarryLearning = !isEvaluationMode && !!exploreMath?.isCarryLearning;
@@ -3701,6 +4121,81 @@ function loadQuestion() {
                     <span class="text-xs md:text-sm font-extrabold text-rose-600">${escapeHtml(q.mascot_text)}</span>
                 </div>`;
         }
+    } else if (exploreMath?.layout === 'measure_split') {
+        // Mục đo lường – thời gian: giữ layout quen thuộc, minh họa tự vẽ bên trái, câu hỏi + đáp án bên phải.
+        html = `
+        ${mediaHtml}
+        ${passageHtml}
+        <div class="w-full max-w-6xl rounded-3xl border-2 border-emerald-200 bg-gradient-to-br from-white via-emerald-50/45 to-cyan-50/45 shadow-sm p-3 md:p-4">
+            <div class="grid grid-cols-1 md:grid-cols-[1.08fr_0.92fr] gap-3 md:gap-5 items-stretch">
+                <div class="min-w-0 flex items-center justify-center">
+                    ${exploreMath.visual || ''}
+                </div>
+                <div class="min-w-0 flex flex-col justify-center rounded-3xl border-2 border-purple-100 bg-white/85 px-4 py-4 md:px-5 md:py-5">
+                    <div class="flex items-start justify-between gap-3 mb-4">
+                        <h3 class="text-lg md:text-xl lg:text-2xl font-black leading-snug text-purple-800 text-left">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
+                        <button onclick="speakCurrentQuestion()" class="shrink-0 w-10 h-10 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
+                            <i class="fa-solid fa-volume-high text-pink-600"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 md:gap-3">`;
+        q.options.forEach((opt) => {
+            const formattedOpt = capitalizeFirstLetter(opt);
+            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[64px] w-full px-3 py-3 bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-2xl font-black text-slate-800 text-center text-base md:text-lg transition-all flex items-center justify-center shadow-xs pastel-btn"><span>${escapeHtml(formattedOpt)}</span><span class="option-icon text-pink-500 text-base md:text-lg"></span></button>`;
+        });
+        html += `</div></div></div></div>`;
+    } else if (exploreMath?.layout === 'unknown_number') {
+        // Mục 7 - Tìm số chưa biết: câu hỏi lớn ở trên, biểu thức tách xuống hẳn bên dưới.
+        // Mỗi số nằm trong một ô riêng; khi đúng, ô x đổi thành đáp án và hiện cách giải.
+        html = `
+        ${mediaHtml}
+        ${passageHtml}
+        <div class="w-full max-w-6xl rounded-3xl border-2 border-violet-200 bg-gradient-to-br from-white via-violet-50/40 to-pink-50/35 shadow-sm px-4 py-4 md:px-6 md:py-5">
+            <div class="flex items-start justify-center gap-3 md:gap-4">
+                <h3 class="text-2xl md:text-3xl lg:text-[32px] font-black leading-snug text-slate-900 text-center">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
+                <button onclick="speakCurrentQuestion()" class="shrink-0 w-11 h-11 md:w-12 md:h-12 bg-pink-50 hover:bg-pink-100 text-pink-700 border-2 border-pink-200 rounded-2xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
+                    <i class="fa-solid fa-volume-high text-pink-600 text-lg"></i>
+                </button>
+            </div>
+
+            <div class="mt-5 md:mt-6">
+                ${exploreMath.visual || ''}
+            </div>
+
+            ${exploreMath.solutionHtml || ''}
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-5 md:mt-6">`;
+        q.options.forEach((opt, idx) => {
+            const formattedOpt = capitalizeFirstLetter(opt);
+            const letter = String.fromCharCode(65 + idx);
+            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[72px] md:min-h-[78px] w-full px-4 py-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-2 border-pink-200 rounded-2xl font-black text-slate-900 text-center text-xl md:text-2xl transition-all flex items-center justify-center gap-2 shadow-xs pastel-btn">
+                <strong class="text-rose-600 text-lg md:text-xl">${letter}.</strong><span>${escapeHtml(formattedOpt)}</span><span class="option-icon text-pink-500 text-lg"></span>
+            </button>`;
+        });
+        html += `</div></div>`;
+    } else if (exploreMath?.layout === 'pattern_split') {
+        // Mục quy luật: minh họa trực quan bên trái, câu hỏi + đáp án bên phải.
+        html = `
+        ${mediaHtml}
+        ${passageHtml}
+        <div class="w-full max-w-6xl rounded-3xl border-2 border-cyan-200 bg-gradient-to-br from-white via-cyan-50/45 to-indigo-50/45 shadow-sm p-3 md:p-4">
+            <div class="grid grid-cols-1 md:grid-cols-[1.10fr_0.90fr] gap-3 md:gap-5 items-stretch">
+                <div class="min-w-0 flex items-center justify-center">
+                    ${exploreMath.visual || ''}
+                </div>
+                <div class="min-w-0 flex flex-col justify-center rounded-3xl border-2 border-indigo-100 bg-white/88 px-4 py-4 md:px-5 md:py-5">
+                    <div class="flex items-start justify-between gap-3 mb-4">
+                        <h3 class="text-lg md:text-xl lg:text-2xl font-black leading-snug text-indigo-800 text-left">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
+                        <button onclick="speakCurrentQuestion()" class="shrink-0 w-10 h-10 bg-cyan-50 hover:bg-cyan-100 text-cyan-700 border border-cyan-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
+                            <i class="fa-solid fa-volume-high text-cyan-600"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 md:gap-3">`;
+        q.options.forEach((opt) => {
+            const formattedOpt = capitalizeFirstLetter(opt);
+            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[64px] w-full px-3 py-3 bg-white hover:bg-cyan-50 border-2 border-cyan-200 rounded-2xl font-black text-slate-800 text-center text-base md:text-lg transition-all flex items-center justify-center shadow-xs pastel-btn"><span>${escapeHtml(formattedOpt)}</span><span class="option-icon text-fuchsia-500 text-base md:text-lg"></span></button>`;
+        });
+        html += `</div></div></div></div>`;
     } else if (exploreMath?.layout === 'estimate_split') {
         // Ước lượng số lượng: toàn bộ hình + câu hỏi + đáp án nằm trong một khung.
         html = `
@@ -3735,14 +4230,14 @@ function loadQuestion() {
         ${composeSpeakerBtnHtml}
         ${findNumberSpeakerBtnHtml}
         ${exploreMath?.visual || ''}
-        ${exploreMath?.hidePrompt ? '' : `<div class="flex flex-col items-center justify-center max-w-3xl text-center px-2 mt-2 mb-0.5">
-            <h3 class="${isFindNumber ? 'text-base md:text-lg text-purple-700' : (exploreMath ? (isCompactTopic34 ? 'text-lg md:text-xl text-purple-700' : 'text-xl md:text-2xl lg:text-2xl text-purple-700') : 'text-sm md:text-base lg:text-lg text-slate-900')} font-black leading-snug">
-                ${exploreMath?.promptHtml || escapeHtml(exploreMath?.prompt || q.question_text)}
+        ${exploreMath?.hidePrompt ? '' : `<div class="flex flex-col items-center justify-center ${isLargeTopic8910 ? 'max-w-5xl' : 'max-w-3xl'} text-center px-2 mt-2 mb-0.5">
+            <h3 class="${isFindNumber ? 'text-base md:text-lg text-purple-700' : (exploreMath ? (isCompactTopic34 ? 'text-lg md:text-xl text-purple-700' : 'text-xl md:text-2xl lg:text-2xl text-purple-700') : (isLargeTopic8910 ? 'text-2xl md:text-3xl lg:text-[32px] text-slate-900' : 'text-sm md:text-base lg:text-lg text-slate-900'))} font-black leading-snug">
+                ${exploreMath?.promptHtml || (isLargeTopic8910 ? topic8910QuestionHtml : escapeHtml(exploreMath?.prompt || q.question_text))}
             </h3>
             ${practiceSpeakerBtnHtml}
         </div>`}
         
-        <div class="w-full ${isCarryLearning ? 'max-w-2xl' : (isCompactTopic34 ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : (isCompactTopic34 ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5'))} ${isCarryLearning ? 'mt-2' : 'mt-1'}">
+        <div class="w-full ${isCarryLearning ? 'max-w-2xl' : ((isCompactTopic34 || isLargeTopic8910) ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : ((isCompactTopic34 || isLargeTopic8910) ? 'grid-cols-2 md:grid-cols-4 gap-3 md:gap-3.5' : 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5'))} ${isCarryLearning ? 'mt-2' : (isLargeTopic8910 ? 'mt-3' : 'mt-1')}">
     `;
 
     q.options.forEach((opt, idx) => {
@@ -3760,8 +4255,8 @@ function loadQuestion() {
                 </button>`;
         } else {
             html += `
-                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-1.5 md:py-2 min-h-[42px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base'} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
-                    <span>${exploreMath ? '' : `<strong class="text-pink-600 mr-2 text-base md:text-lg">${letter}.</strong>`} ${escapeHtml(formattedOpt)}</span>
+                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-1.5 md:py-2 min-h-[42px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : (isLargeTopic8910 ? 'p-4 md:p-5 min-h-[72px] bg-white hover:bg-pink-50 border-pink-200 font-black text-slate-900 text-center justify-center text-lg md:text-xl lg:text-2xl' : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base')} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
+                    <span>${exploreMath ? '' : `<strong class="text-pink-600 mr-2 ${isLargeTopic8910 ? 'text-lg md:text-xl' : 'text-base md:text-lg'}">${letter}.</strong>`} ${escapeHtml(formattedOpt)}</span>
                     <span class="option-icon text-pink-500 text-base md:text-lg"></span>
                 </button>`;
         }
@@ -3998,6 +4493,7 @@ function checkAnswer(selectedOpt) {
         if (isCarryGuided) revealCarryConceptFeedback_(q);
         if (isNeighborBasic) revealNeighborRuleFeedback_(q);
         if (isMulDivVisual) revealMulDivFeedback_();
+        if (isUnknownNumberQuestion_(q)) revealUnknownNumberFeedback_(q);
 
         playAudio('correct');
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
@@ -4027,6 +4523,10 @@ function checkAnswer(selectedOpt) {
                 b.disabled = true;
             }
         });
+
+        // Mục 7 là phần khó: dù chọn sai vẫn mở lời giải từng bước để bé học cách làm.
+        // Chỉ khi chọn đúng mới thay ô x bằng đáp án; chọn sai vẫn giữ x để bé nhìn lại bài toán.
+        if (isUnknownNumberQuestion_(q)) revealUnknownNumberFeedback_(q, false);
 
         // Cấp 1 đã có đúng một gợi ý cố định từ đầu; Cấp 2 không mở thêm gợi ý khi sai.
         playAudio('wrong');
