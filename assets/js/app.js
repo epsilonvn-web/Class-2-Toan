@@ -1184,7 +1184,7 @@ function hideAuthError() {
     if (el) el.classList.add('hidden'); 
 }
 
-const APPS_SCRIPT_TIMEOUT_MS = 15000;
+const APPS_SCRIPT_TIMEOUT_MS = 30000;
 
 async function callAppsScript(action, payload, timeoutMs = APPS_SCRIPT_TIMEOUT_MS) {
     const controller = new AbortController();
@@ -1203,11 +1203,16 @@ async function callAppsScript(action, payload, timeoutMs = APPS_SCRIPT_TIMEOUT_M
         try {
             return JSON.parse(rawText);
         } catch (e) {
-            throw new Error('Google Apps Script trả về dữ liệu không hợp lệ. Anh kiểm tra lại bản Deploy Web app và quyền truy cập "Anyone" nhé.');
+            console.error('[Toan2] Apps Script returned non-JSON:', rawText.slice(0, 300));
+            const parseErr = new Error('BACKEND_INVALID_RESPONSE');
+            parseErr.code = 'BACKEND_INVALID_RESPONSE';
+            throw parseErr;
         }
     } catch (err) {
         if (err && err.name === 'AbortError') {
-            throw new Error('Máy chủ phản hồi quá chậm. Bé kiểm tra mạng rồi thử đăng nhập lại nhé!');
+            const timeoutErr = new Error('REQUEST_TIMEOUT');
+            timeoutErr.code = 'REQUEST_TIMEOUT';
+            throw timeoutErr;
         }
         throw err;
     } finally {
@@ -1243,16 +1248,17 @@ async function doLogin() {
             return;
         }
         const sessionToken = result.sessionToken || result.token;
-        if (!sessionToken) throw new Error('Máy chủ không trả về session token.');
+        if (!sessionToken) { const e = new Error('SESSION_TOKEN_MISSING'); e.code = 'SESSION_TOKEN_MISSING'; throw e; }
         currentUser = hydrateAccountFields({ ...result.student, isGuest: false, token: sessionToken });
         // Persistent session: client CHỈ lưu token; role/tier luôn lấy từ backend khi login/restoreSession.
         localStorage.setItem('toan2_token', sessionToken);
         localStorage.removeItem('toan2_pending_logout_token');
         enterDashboard();
     } catch (err) {
-        const connErr = 'Lỗi kết nối máy chủ: ' + err.message;
-        showAuthError(connErr);
-        showAppNotice(connErr);
+        console.warn('[Toan2] Login request failed:', err);
+        const friendly = 'Hệ thống đang bận một chút. Bé thử lại nhé!';
+        showAuthError(friendly);
+        // Không bật popup kỹ thuật ở màn đăng nhập; thông báo ngắn ngay dưới form là đủ.
     } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-1"></i> Đăng nhập';
@@ -1297,9 +1303,9 @@ async function doRegister() {
         document.getElementById('login-mahs').value = result.student.maHS;
         switchAuthTab('login');
     } catch (err) {
-        const connErr = 'Lỗi kết nối: ' + err.message;
-        showAuthError(connErr);
-        showAppNotice(connErr);
+        console.warn('[Toan2] Register request failed:', err);
+        const friendly = 'Hệ thống đang bận một chút. Bé thử lại nhé!';
+        showAuthError(friendly);
     } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-user-plus mr-1"></i> Đăng ký ngay';
@@ -1314,7 +1320,7 @@ function showSessionRestorePending(message) {
     // Vì client không được phép tin role/tier lưu cục bộ, app chờ backend xác thực lại rồi mới vào dashboard.
     document.getElementById('screen-dashboard')?.classList.add('hidden');
     document.getElementById('screen-login')?.classList.remove('hidden');
-    showAuthError(message || 'Chưa kết nối được máy chủ. Phiên đăng nhập của bé vẫn được giữ và app sẽ tự thử lại.');
+    showAuthError(message || 'Hệ thống đang kết nối lại. Bé chờ một chút nhé!');
 }
 
 function scheduleSessionRestoreRetry(delayMs = 5000) {
@@ -1363,7 +1369,7 @@ async function tryAutoLogin(isRetry = false) {
             return;
         }
 
-        showSessionRestorePending(res?.error || 'Chưa xác thực được phiên. Phiên vẫn được giữ và app sẽ tự thử lại.');
+        showSessionRestorePending('Hệ thống đang kết nối lại. Bé chờ một chút nhé!');
         scheduleSessionRestoreRetry();
     } catch (err) {
         // Nếu token đã được thay bằng phiên đăng nhập mới, request cũ không được phép can thiệp UI/session.
@@ -3207,15 +3213,160 @@ function revealMulDivFeedback_() {
 }
 
 
+
+// ===== MỤC 5 - HÌNH HỌC =====
+// Dữ liệu gốc vẫn dùng sub_code 4.1-4.5, nhưng giao diện Khám phá hiển thị thành Mục 5.
+// Vì vậy nhận diện bằng explore_topic_id=5, không dựa vào số sub hiển thị.
+function buildGeometryPresentation_(q) {
+    if (Number(q?.explore_topic_id) !== 5) return null;
+    const sub = String(q?.sub_id || q?.sub_topic || '').trim();
+    if (!/^4\.[1-5]$/.test(sub)) return null;
+    const esc = (v) => escapeHtml(String(v ?? ''));
+    const raw = String(q?.question_text || '');
+
+    const wrap = (title, inner, note='') => `
+        <div class="w-full min-h-[270px] flex flex-col items-center justify-center rounded-3xl border-2 border-amber-200 bg-gradient-to-br from-white via-amber-50/70 to-orange-50/60 p-3 md:p-4 overflow-hidden shadow-sm">
+            <div class="text-sm md:text-base font-black text-amber-700 mb-2">${title}</div>
+            <div class="w-full flex-1 flex items-center justify-center min-h-0">${inner}</div>
+            ${note ? `<div class="mt-2 text-xs md:text-sm font-extrabold text-slate-500 text-center leading-snug">${esc(note)}</div>` : ''}
+        </div>`;
+
+    let visual = '';
+
+    if (sub === '4.1') {
+        const answerText = String(q?.answer || '');
+        const labels = (answerText.match(/^\s*([^,]+),\s*([^,]+),\s*([^\s,]+)\s+thẳng hàng/i) || []).slice(1,4);
+        const pts = labels.length === 3 ? labels : ['A','B','C'];
+        visual = wrap('📏 BA ĐIỂM TRÊN MỘT ĐƯỜNG THẲNG', `
+            <svg viewBox="0 0 520 250" class="w-full max-w-[560px] h-auto" role="img" aria-label="Ba điểm thẳng hàng trên thước">
+                <defs>
+                    <linearGradient id="geoRuler" x1="0" x2="1"><stop stop-color="#fde68a"/><stop offset="1" stop-color="#fcd34d"/></linearGradient>
+                </defs>
+                <rect x="42" y="110" width="436" height="70" rx="16" fill="url(#geoRuler)" stroke="#d97706" stroke-width="4"/>
+                ${Array.from({length:22},(_,i)=>`<line x1="${58+i*19}" y1="110" x2="${58+i*19}" y2="${i%5===0?138:126}" stroke="#92400e" stroke-width="2"/>`).join('')}
+                <line x1="62" y1="92" x2="458" y2="92" stroke="#334155" stroke-width="5" stroke-linecap="round"/>
+                ${[150,260,370].map((x,i)=>`<g><circle cx="${x}" cy="92" r="10" fill="#ec4899" stroke="#fff" stroke-width="4"/><text x="${x}" y="67" text-anchor="middle" font-size="24" font-weight="900" fill="#7c3aed">${esc(pts[i])}</text></g>`).join('')}
+                <path d="M62 92l18-9v18zM458 92l-18-9v18z" fill="#334155"/>
+                <text x="260" y="222" text-anchor="middle" font-size="20" font-weight="900" fill="#92400e">Cùng nằm trên một đường thẳng</text>
+            </svg>`, 'Quan sát vị trí của ba điểm trên đường thẳng.');
+    } else if (sub === '4.2') {
+        const nums = (raw.match(/\d+(?:[.,]\d+)?\s*cm/gi) || []).map(x => Number(x.replace(/\s*cm/i,'').replace(',','.'))).filter(Number.isFinite);
+        const a = nums[0] || 10, b = nums[1] || 8;
+        visual = wrap('📐 ĐƯỜNG GẤP KHÚC', `
+            <svg viewBox="0 0 520 280" class="w-full max-w-[560px] h-auto" role="img" aria-label="Đường gấp khúc gồm hai đoạn">
+                <rect x="24" y="25" width="472" height="220" rx="28" fill="#fff" stroke="#fed7aa" stroke-width="3"/>
+                <polyline points="72,202 238,70 448,188" fill="none" stroke="#7c3aed" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="72" cy="202" r="11" fill="#ec4899"/><circle cx="238" cy="70" r="11" fill="#f59e0b"/><circle cx="448" cy="188" r="11" fill="#10b981"/>
+                <text x="65" y="230" font-size="22" font-weight="900" fill="#475569">A</text><text x="232" y="49" font-size="22" font-weight="900" fill="#475569">B</text><text x="451" y="218" font-size="22" font-weight="900" fill="#475569">C</text>
+                <g transform="translate(123 116) rotate(-38)"><rect x="-5" y="-24" width="100" height="38" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/><text x="45" y="2" text-anchor="middle" font-size="21" font-weight="900" fill="#c2410c">${a} cm</text></g>
+                <g transform="translate(325 104) rotate(29)"><rect x="-5" y="-24" width="100" height="38" rx="14" fill="#ecfeff" stroke="#22d3ee" stroke-width="2"/><text x="45" y="2" text-anchor="middle" font-size="21" font-weight="900" fill="#0e7490">${b} cm</text></g>
+            </svg>`, 'Độ dài đường gấp khúc bằng tổng độ dài các đoạn thẳng.');
+    } else if (sub === '4.3') {
+        const count = Math.max(3, Math.min(10, Number(q?.answer) || 3));
+        const positions = [
+            [70,55],[170,55],[270,55],[370,55],[120,140],[220,140],[320,140],[420,140],[180,215],[300,215]
+        ];
+        const tris = positions.slice(0,count).map((p,i)=>{
+            const [x,y]=p; const fills=['#f9a8d4','#93c5fd','#86efac','#fde68a','#c4b5fd','#67e8f9','#fdba74','#fca5a5','#a7f3d0','#bfdbfe'];
+            return `<polygon points="${x},${y+54} ${x+34},${y-8} ${x+68},${y+54}" fill="${fills[i]}" stroke="#475569" stroke-width="3" stroke-linejoin="round"/>`;
+        }).join('');
+        visual = wrap('🔺 NHÌN KĨ RỒI ĐẾM HÌNH', `
+            <svg viewBox="0 0 520 300" class="w-full max-w-[560px] h-auto" role="img" aria-label="Các mảnh tam giác để quan sát và đếm">
+                <rect x="20" y="18" width="480" height="264" rx="28" fill="#fff" stroke="#fed7aa" stroke-width="3"/>
+                ${tris}
+                <text x="260" y="278" text-anchor="middle" font-size="18" font-weight="900" fill="#7c3aed">Chỉ từng hình một để tránh đếm trùng</text>
+            </svg>`, 'Con có thể dùng ngón tay chỉ lần lượt từng hình.');
+    } else if (sub === '4.4') {
+        const ans = String(q?.answer || '').toLowerCase();
+        const quoted = (raw.match(/[\'“”"]([^\'“”"]+)[\'“”"]/ ) || [])[1] || 'Vật thể';
+        let shape='';
+        if (ans.includes('trụ')) shape=`<g transform="translate(168 45)"><ellipse cx="90" cy="30" rx="62" ry="25" fill="#bae6fd" stroke="#0284c7" stroke-width="4"/><rect x="28" y="30" width="124" height="120" fill="#7dd3fc" stroke="#0284c7" stroke-width="4"/><ellipse cx="90" cy="150" rx="62" ry="25" fill="#38bdf8" stroke="#0284c7" stroke-width="4"/><ellipse cx="90" cy="30" rx="62" ry="25" fill="#e0f2fe" stroke="#0284c7" stroke-width="4"/></g>`;
+        else if (ans.includes('lập phương')) shape=`<g transform="translate(175 55)"><polygon points="80,0 150,38 80,78 10,38" fill="#fde68a" stroke="#d97706" stroke-width="4"/><polygon points="10,38 80,78 80,160 10,120" fill="#fbbf24" stroke="#d97706" stroke-width="4"/><polygon points="80,78 150,38 150,120 80,160" fill="#f59e0b" stroke="#d97706" stroke-width="4"/></g>`;
+        else if (ans.includes('cầu')) shape=`<g><defs><radialGradient id="geoBall" cx="38%" cy="30%"><stop stop-color="#fdf2f8"/><stop offset=".35" stop-color="#f9a8d4"/><stop offset="1" stop-color="#db2777"/></radialGradient></defs><circle cx="260" cy="132" r="88" fill="url(#geoBall)" stroke="#be185d" stroke-width="4"/><ellipse cx="228" cy="98" rx="22" ry="13" fill="#fff" opacity=".65"/></g>`;
+        else shape=`<g transform="translate(155 62)"><polygon points="45,20 180,20 215,50 80,50" fill="#ddd6fe" stroke="#7c3aed" stroke-width="4"/><polygon points="80,50 215,50 215,145 80,145" fill="#a78bfa" stroke="#7c3aed" stroke-width="4"/><polygon points="45,20 80,50 80,145 45,112" fill="#c4b5fd" stroke="#7c3aed" stroke-width="4"/></g>`;
+        visual = wrap('🧊 NHẬN DIỆN KHỐI HÌNH', `
+            <div class="w-full flex flex-col items-center justify-center">
+                <svg viewBox="0 0 520 245" class="w-full max-w-[540px] h-auto" role="img" aria-label="Minh họa khối hình">${shape}</svg>
+                <div class="-mt-2 rounded-2xl border-2 border-amber-200 bg-white px-4 py-2 text-lg md:text-xl font-black text-amber-800 text-center">${esc(quoted)}</div>
+            </div>`, 'Quan sát mặt, cạnh và dạng tròn của vật thể.');
+    } else {
+        const kind = /chữ nhật/i.test(raw) ? 'Hình chữ nhật' : (/vuông/i.test(raw) ? 'Hình vuông' : 'Hình tam giác');
+        const target = kind === 'Hình chữ nhật'
+            ? `<rect x="180" y="58" width="170" height="105" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="6" stroke-dasharray="10 8"/>`
+            : kind === 'Hình vuông'
+                ? `<rect x="205" y="47" width="125" height="125" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="6" stroke-dasharray="10 8"/>`
+                : `<polygon points="260,38 160,176 360,176" fill="#ecfeff" stroke="#06b6d4" stroke-width="6" stroke-dasharray="10 8"/>`;
+        const pieces = [0,1,2,3,4,5].map((i)=>{
+            const x=35+(i%3)*52, y=58+Math.floor(i/3)*76;
+            const fills=['#f9a8d4','#93c5fd','#86efac','#fde68a','#c4b5fd','#fdba74'];
+            return `<polygon points="${x},${y+48} ${x+24},${y+6} ${x+48},${y+48}" fill="${fills[i]}" stroke="#475569" stroke-width="2.5"/>`;
+        }).join('');
+        visual = wrap('🧩 XẾP HÌNH TỪ CÁC MẢNH', `
+            <svg viewBox="0 0 520 230" class="w-full max-w-[560px] h-auto" role="img" aria-label="Các mảnh tam giác và hình mục tiêu">
+                <rect x="20" y="20" width="150" height="185" rx="22" fill="#fff" stroke="#fecdd3" stroke-width="3"/>
+                ${pieces}
+                <path d="M184 112h42" stroke="#64748b" stroke-width="5" stroke-linecap="round"/><path d="M216 100l14 12-14 12" fill="none" stroke="#64748b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                ${target}
+                <text x="270" y="210" text-anchor="middle" font-size="19" font-weight="900" fill="#7c3aed">Mục tiêu: ${kind}</text>
+            </svg>`, 'Quan sát hình mục tiêu rồi tưởng tượng cách xoay và ghép các mảnh.');
+    }
+
+    return {
+        prompt: raw,
+        visual,
+        layout: 'geometry_split',
+        inlineSpeaker: true
+    };
+}
+
 function buildMeasureTimePresentation_(q) {
     const sub = String(q?.sub_topic || q?.sub_id || '').trim();
     if (!/^5\.[1-6]$/.test(sub) || !q?.explore_type) return null;
     const vd = q.visual_data || {};
     const esc = (v) => escapeHtml(String(v ?? ''));
+
+    // Minh họa ngữ cảnh cho toàn bộ Mục 5. Giữ hình nhỏ gọn để không lấn át mô hình toán học chính.
+    const topic5Art = (() => {
+        if (sub === '5.1') return `<svg viewBox="0 0 220 82" class="w-full max-w-[220px] h-[72px] md:h-[82px]" aria-hidden="true">
+            <rect x="9" y="52" width="202" height="18" rx="9" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+            ${Array.from({length:21},(_,i)=>`<line x1="${18+i*9}" y1="52" x2="${18+i*9}" y2="${i%5===0?62:58}" stroke="#92400e" stroke-width="1.6"/>`).join('')}
+            <g transform="rotate(-9 112 32)"><rect x="45" y="19" width="132" height="20" rx="10" fill="#f9a8d4" stroke="#db2777" stroke-width="2"/><polygon points="177,19 207,29 177,39" fill="#fde68a" stroke="#d97706" stroke-width="2"/><polygon points="201,27 211,29 201,31" fill="#334155"/></g>
+            <circle cx="25" cy="27" r="13" fill="#cffafe"/><path d="M19 28l5 5 9-12" fill="none" stroke="#0891b2" stroke-width="3" stroke-linecap="round"/>
+        </svg>`;
+        if (sub === '5.2') return `<svg viewBox="0 0 220 82" class="w-full max-w-[220px] h-[72px] md:h-[82px]" aria-hidden="true">
+            <line x1="73" y1="18" x2="73" y2="66" stroke="#64748b" stroke-width="6"/><line x1="25" y1="31" x2="121" y2="31" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/>
+            <path d="M18 44 Q43 65 68 44" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/><path d="M78 44 Q103 65 128 44" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+            <circle cx="42" cy="42" r="10" fill="#fb7185"/><path d="M42 31q5-8 10-2" fill="none" stroke="#15803d" stroke-width="2"/>
+            <path d="M151 25 h34 l7 11 v31 h-48 v-31z" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/><rect x="157" y="15" width="22" height="12" rx="5" fill="#38bdf8"/><path d="M147 49q21-12 42 0v16h-42z" fill="#67e8f9"/>
+            <text x="168" y="57" text-anchor="middle" font-size="12" font-weight="900" fill="#0369a1">1 l</text>
+        </svg>`;
+        if (sub === '5.3') return `<svg viewBox="0 0 220 82" class="w-full max-w-[220px] h-[72px] md:h-[82px]" aria-hidden="true">
+            <rect x="47" y="10" width="126" height="64" rx="12" fill="#fff" stroke="#34d399" stroke-width="3"/><rect x="47" y="10" width="126" height="20" rx="10" fill="#10b981"/>
+            ${Array.from({length:5},(_,r)=>Array.from({length:7},(_,c)=>`<rect x="${57+c*15}" y="${36+r*7}" width="9" height="5" rx="2" fill="${r===2&&c===4?'#f9a8d4':'#d1fae5'}"/>`).join('')).join('')}
+            <circle cx="25" cy="24" r="11" fill="#fde047"/>${Array.from({length:8},(_,i)=>{const a=i*Math.PI/4;return `<line x1="${25+Math.cos(a)*15}" y1="${24+Math.sin(a)*15}" x2="${25+Math.cos(a)*20}" y2="${24+Math.sin(a)*20}" stroke="#f59e0b" stroke-width="2"/>`}).join('')}
+            <path d="M184 62h24l-5-25h-14z" fill="#a78bfa"/><path d="M190 37q7-14 14 0" fill="none" stroke="#7c3aed" stroke-width="3"/>
+        </svg>`;
+        if (sub === '5.4') return `<svg viewBox="0 0 220 82" class="w-full max-w-[220px] h-[72px] md:h-[82px]" aria-hidden="true">
+            <circle cx="77" cy="42" r="31" fill="#fff" stroke="#a78bfa" stroke-width="5"/><line x1="77" y1="42" x2="77" y2="21" stroke="#7c3aed" stroke-width="5" stroke-linecap="round"/><line x1="77" y1="42" x2="96" y2="51" stroke="#ec4899" stroke-width="4" stroke-linecap="round"/><circle cx="77" cy="42" r="5" fill="#0f766e"/>
+            <path d="M53 14l-12-9 5 18M101 14l12-9-5 18" fill="#f9a8d4" stroke="#db2777" stroke-width="2"/><path d="M53 69l-8 9M101 69l8 9" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+            <rect x="128" y="30" width="65" height="35" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><path d="M128 37h65" stroke="#f59e0b" stroke-width="2"/><text x="160" y="57" text-anchor="middle" font-size="16" font-weight="900" fill="#92400e">GIỜ HỌC</text>
+        </svg>`;
+        if (sub === '5.5') return `<svg viewBox="0 0 220 82" class="w-full max-w-[220px] h-[72px] md:h-[82px]" aria-hidden="true">
+            <rect x="24" y="28" width="110" height="45" rx="8" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/><path d="M20 28h118l-10-18H30z" fill="#fb7185"/><path d="M30 10h18v18H30zm36 0h18v18H66zm36 0h18v18h-18z" fill="#fda4af"/>
+            <rect x="42" y="44" width="32" height="29" rx="5" fill="#bfdbfe"/><circle cx="106" cy="52" r="12" fill="#fde047"/><circle cx="101" cy="49" r="3" fill="#334155"/><circle cx="111" cy="49" r="3" fill="#334155"/><path d="M101 57q5 5 10 0" fill="none" stroke="#334155" stroke-width="2"/>
+            <rect x="149" y="18" width="58" height="25" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/><text x="178" y="35" text-anchor="middle" font-size="13" font-weight="900" fill="#15803d">500đ</text><circle cx="163" cy="62" r="11" fill="#fde68a" stroke="#d97706" stroke-width="2"/><circle cx="191" cy="62" r="11" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+        </svg>`;
+        return `<svg viewBox="0 0 220 82" class="w-full max-w-[220px] h-[72px] md:h-[82px]" aria-hidden="true">
+            <defs><linearGradient id="t5sky" x1="0" x2="1"><stop stop-color="#fde68a"/><stop offset="1" stop-color="#c4b5fd"/></linearGradient></defs><rect x="8" y="12" width="204" height="58" rx="24" fill="url(#t5sky)" opacity=".45"/>
+            <circle cx="38" cy="39" r="13" fill="#facc15"/><path d="M74 54h34V31l-17-13-17 13z" fill="#fff" stroke="#60a5fa" stroke-width="2"/><rect x="86" y="39" width="10" height="15" fill="#93c5fd"/><path d="M132 22q15 8 0 16q15 8 0 16" fill="none" stroke="#f97316" stroke-width="4" stroke-linecap="round"/><path d="M178 22a20 20 0 1 0 17 31a16 16 0 1 1-17-31" fill="#818cf8"/><path d="M52 64h122" stroke="#10b981" stroke-width="5" stroke-linecap="round"/>
+        </svg>`;
+    })();
+
     const panel = (inner, note='') => `
         <div class="w-full h-full min-h-[260px] flex flex-col items-center justify-center rounded-3xl border-2 border-emerald-100 bg-gradient-to-br from-white via-emerald-50/55 to-cyan-50/55 p-3 md:p-4 overflow-hidden">
-            ${inner}
-            ${note ? `<div class="mt-3 text-xs md:text-sm font-extrabold text-slate-500 text-center leading-snug">${esc(note)}</div>` : ''}
+            <div class="w-full flex items-center justify-center mb-1 md:mb-2">${topic5Art}</div>
+            <div class="w-full flex items-center justify-center min-h-0">${inner}</div>
+            ${note ? `<div class="mt-2 md:mt-3 text-xs md:text-sm font-extrabold text-slate-500 text-center leading-snug">${esc(note)}</div>` : ''}
         </div>`;
     const clockSvg = (hour, minute, label='') => {
         const h = Number(hour) || 0, m = Number(minute) || 0;
@@ -3612,7 +3763,8 @@ function getExploreMathPresentation(q) {
     if (activeExamContext || activeRoadmapContext) return null;
     const unknownNumberPresentation = buildUnknownNumberPresentation_(q);
     if (unknownNumberPresentation) return unknownNumberPresentation;
-    if (!/^[12356]\./.test(sub)) return null;
+    // Mục 5 Hình học trên UI vẫn dùng sub_code 4.x trong kho dữ liệu, nên phải cho 4.x đi qua renderer.
+    if (!/^[123456]\./.test(sub)) return null;
     const raw = String(q.question_text || '').replace(/×/g,'x').replace(/−/g,'-');
     const nums = (raw.match(/\d+/g)||[]).map(Number);
     const math = raw.match(/(\d+)\s*([+\-x:])\s*(\d+)\s*=\s*\?/i);
@@ -3800,6 +3952,9 @@ function getExploreMathPresentation(q) {
         }
         return {prompt, promptHtml, visual};
     }
+
+    const geometryPresentation = buildGeometryPresentation_(q);
+    if (geometryPresentation) return geometryPresentation;
 
     const measureTimePresentation = buildMeasureTimePresentation_(q);
     if (measureTimePresentation) return measureTimePresentation;
@@ -4154,6 +4309,30 @@ function loadQuestion() {
                     <span class="text-xs md:text-sm font-extrabold text-rose-600">${escapeHtml(q.mascot_text)}</span>
                 </div>`;
         }
+    } else if (exploreMath?.layout === 'geometry_split') {
+        // Mục 5 - Hình học: hình minh họa lớn bên trái, câu hỏi + đáp án bên phải.
+        html = `
+        ${mediaHtml}
+        ${passageHtml}
+        <div class="w-full max-w-6xl rounded-3xl border-2 border-amber-200 bg-gradient-to-br from-white via-amber-50/45 to-orange-50/40 shadow-sm p-3 md:p-4">
+            <div class="grid grid-cols-1 md:grid-cols-[1.12fr_0.88fr] gap-3 md:gap-5 items-stretch">
+                <div class="min-w-0 flex items-center justify-center">
+                    ${exploreMath.visual || ''}
+                </div>
+                <div class="min-w-0 flex flex-col justify-center rounded-3xl border-2 border-orange-100 bg-white/90 px-4 py-4 md:px-5 md:py-5">
+                    <div class="flex items-start justify-between gap-3 mb-4">
+                        <h3 class="text-lg md:text-xl lg:text-2xl font-black leading-snug text-slate-900 text-left">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
+                        <button onclick="speakCurrentQuestion()" class="shrink-0 w-10 h-10 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
+                            <i class="fa-solid fa-volume-high text-pink-600"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 md:gap-3">`;
+        q.options.forEach((opt, idx) => {
+            const formattedOpt = capitalizeFirstLetter(opt);
+            const letter = String.fromCharCode(65 + idx);
+            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[70px] w-full px-3 py-3 bg-white hover:bg-amber-50 border-2 border-amber-200 rounded-2xl font-black text-slate-800 text-left text-base md:text-lg transition-all flex items-center gap-2 shadow-xs pastel-btn"><strong class="text-rose-600">${letter}.</strong><span class="flex-1">${escapeHtml(formattedOpt)}</span><span class="option-icon text-pink-500 text-base md:text-lg"></span></button>`;
+        });
+        html += `</div></div></div></div>`;
     } else if (exploreMath?.layout === 'measure_split') {
         // Mục đo lường – thời gian: giữ layout quen thuộc, minh họa tự vẽ bên trái, câu hỏi + đáp án bên phải.
         html = `
