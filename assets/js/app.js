@@ -1184,22 +1184,39 @@ function hideAuthError() {
     if (el) el.classList.add('hidden'); 
 }
 
-async function callAppsScript(action, payload) {
-    const res = await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action, payload })
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const rawText = await res.text();
+const APPS_SCRIPT_TIMEOUT_MS = 15000;
+
+async function callAppsScript(action, payload, timeoutMs = APPS_SCRIPT_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     try {
-        return JSON.parse(rawText);
-    } catch (e) {
-        throw new Error('Google Apps Script trả về dữ liệu không hợp lệ (không phải JSON) — thường do link Apps Script chưa được Deploy đúng cách (cần đặt quyền truy cập là "Anyone"/"Bất kỳ ai") hoặc đã hết hạn uỷ quyền. Anh vui lòng kiểm tra lại bước Deploy > Manage deployments trên Apps Script nhé.');
+        const res = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action, payload }),
+            cache: 'no-store',
+            credentials: 'omit',
+            signal: controller.signal
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const rawText = await res.text();
+        try {
+            return JSON.parse(rawText);
+        } catch (e) {
+            throw new Error('Google Apps Script trả về dữ liệu không hợp lệ. Anh kiểm tra lại bản Deploy Web app và quyền truy cập "Anyone" nhé.');
+        }
+    } catch (err) {
+        if (err && err.name === 'AbortError') {
+            throw new Error('Máy chủ phản hồi quá chậm. Bé kiểm tra mạng rồi thử đăng nhập lại nhé!');
+        }
+        throw err;
+    } finally {
+        clearTimeout(timeoutId);
     }
 }
 
 async function doLogin() {
+    clearTimeout(sessionRestoreRetryTimer);
     hideAuthError();
     const maHSInput = document.getElementById('login-mahs');
     const maPinInput = document.getElementById('login-mapin');
@@ -1322,6 +1339,11 @@ async function tryAutoLogin(isRetry = false) {
 
     try {
         const res = await callAppsScript('restoreSession', { token });
+
+        // Nếu trong lúc request đang chạy người dùng đã đăng nhập và nhận token mới,
+        // tuyệt đối bỏ qua phản hồi của token cũ để không xóa nhầm phiên vừa đăng nhập.
+        if (localStorage.getItem('toan2_token') !== token) return;
+
         if (res.ok && res.student) {
             clearTimeout(sessionRestoreRetryTimer);
             hideAuthError();
@@ -1344,8 +1366,11 @@ async function tryAutoLogin(isRetry = false) {
         showSessionRestorePending(res?.error || 'Chưa xác thực được phiên. Phiên vẫn được giữ và app sẽ tự thử lại.');
         scheduleSessionRestoreRetry();
     } catch (err) {
+        // Nếu token đã được thay bằng phiên đăng nhập mới, request cũ không được phép can thiệp UI/session.
+        if (localStorage.getItem('toan2_token') !== token) return;
+
         // Lỗi mạng/HTTP tạm thời: giữ token, giữ trạng thái "đang chờ restore", tuyệt đối không về Khách.
-        showSessionRestorePending('Mạng đang gián đoạn. Phiên đăng nhập vẫn được giữ; app sẽ tự kết nối lại.');
+        showSessionRestorePending('Mạng đang gián đoạn hoặc máy chủ phản hồi chậm. Phiên đăng nhập vẫn được giữ; app sẽ tự kết nối lại.');
         scheduleSessionRestoreRetry(isRetry ? 7000 : 5000);
     } finally {
         sessionRestoreInFlight = false;
@@ -1355,6 +1380,14 @@ async function tryAutoLogin(isRetry = false) {
 async function flushPendingLogout() {
     const pendingToken = localStorage.getItem('toan2_pending_logout_token');
     if (!pendingToken) return;
+
+    // Trạng thái localStorage bất thường không được phép thu hồi token đang hoạt động.
+    const activeToken = localStorage.getItem('toan2_token');
+    if (activeToken && pendingToken === activeToken) {
+        localStorage.removeItem('toan2_pending_logout_token');
+        return;
+    }
+
     try {
         const res = await callAppsScript('logout', { token: pendingToken });
         if (res?.ok) localStorage.removeItem('toan2_pending_logout_token');
@@ -5422,6 +5455,47 @@ function stopSpeaking() {
     } catch (e) {}
 }
 
+function normalizeVietnameseMathSpeech_(text) {
+    let s = String(text ?? '');
+
+    // ASCII '-' có thể là dấu trừ, dấu nối, khoảng số hoặc ngày tháng.
+    // Chỉ đọc là “trừ” khi ngữ cảnh thực sự là biểu thức toán; các dạng
+    // 2-3 đoạn, 2026-09-30, mã học sinh... vẫn được giữ nguyên.
+    const rawHasMathContext = /[=+×÷−<>≤≥≠]|(?:^|\s)(?:tính|phép\s*tính|phép\s*cộng|phép\s*trừ|hiệu|số\s*bị\s*trừ|số\s*trừ)(?:\s|$)/i.test(s);
+    const wholeIsSubtraction = /^\s*(?:[xX]|\d+(?:[.,]\d+)?)\s*-\s*(?:[xX]|\d+(?:[.,]\d+)?)(?:\s*=\s*(?:[xX?]|\d+(?:[.,]\d+)?))?\s*[?.!]*\s*$/.test(s);
+
+    // Dấu trừ ASCII có khoảng trắng hai bên luôn được xem là phép trừ.
+    s = s.replace(/([0-9xX?)])\s+-\s+([0-9xX?(])/g, '$1 trừ $2');
+    if (rawHasMathContext || wholeIsSubtraction) {
+        s = s.replace(/([0-9xX?)])\s*-\s*([0-9xX?(])/g, '$1 trừ $2');
+    }
+
+    // Ký hiệu toán học rõ nghĩa: chuẩn hóa trước khi gửi sang Google TTS
+    // để tránh engine tự hiểu '-' giữa hai số là “đến”.
+    s = s
+        .replace(/−/g, ' trừ ')
+        .replace(/\+/g, ' cộng ')
+        .replace(/÷/g, ' chia ')
+        .replace(/×/g, ' nhân ')
+        .replace(/≤/g, ' nhỏ hơn hoặc bằng ')
+        .replace(/≥/g, ' lớn hơn hoặc bằng ')
+        .replace(/≠/g, ' khác ')
+        .replace(/=/g, ' bằng ')
+        .replace(/</g, ' nhỏ hơn ')
+        .replace(/>/g, ' lớn hơn ');
+
+    // Một số dữ liệu dùng "x" hoặc ":" làm toán tử. Chỉ đổi khi nằm giữa số
+    // và có ngữ cảnh toán, tránh đọc nhầm ẩn số x hay giờ dạng 7:30.
+    s = s.replace(/(\d+(?:[.,]\d+)?)\s+[xX]\s+(\d+(?:[.,]\d+)?)/g, '$1 nhân $2');
+    if (rawHasMathContext) {
+        s = s.replace(/(\d+(?:[.,]\d+)?)\s*:\s*(\d+(?:[.,]\d+)?)/g, '$1 chia $2');
+    } else {
+        s = s.replace(/(\d+(?:[.,]\d+)?)\s+:\s+(\d+(?:[.,]\d+)?)/g, '$1 chia $2');
+    }
+
+    return s.replace(/\s{2,}/g, ' ').trim();
+}
+
 function speakVietnamese(text, rate = 0.96) {
     if (!text) return;
     try {
@@ -5432,8 +5506,9 @@ function speakVietnamese(text, rate = 0.96) {
             .replace(/b-a/g, 'bờ a ba')
             .replace(/c\/k/g, 'cờ hoặc ca')
             .replace(/g\/gh/g, 'gờ đơn hoặc gờ kép')
-            .replace(/ng\/ngh/g, 'ngờ đơn hoặc ngờ kép')
-            .trim();
+            .replace(/ng\/ngh/g, 'ngờ đơn hoặc ngờ kép');
+
+        cleanText = normalizeVietnameseMathSpeech_(cleanText).trim();
 
         if (!cleanText) return;
 
