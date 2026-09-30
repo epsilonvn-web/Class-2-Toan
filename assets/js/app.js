@@ -833,12 +833,12 @@ const MINIGAME_PALETTES = [
     ['bg-purple-50/80','border-purple-300','text-purple-600'], ['bg-teal-50/80','border-teal-300','text-teal-600']
 ];
 const GAME_SCRIPT_MAP = {
-    'sudoku': 'assets/js/games/sudoku.js?v=20260930-wide-numpad-side', 'balance-scale': 'assets/js/games/balance-scale.js?v=20260930-full-games',
-    'math-train': 'assets/js/games/math-train.js?v=20260930-full-games', 'target-number': 'assets/js/games/target-number.js?v=20260930-full-games',
-    'number-river': 'assets/js/games/number-river.js?v=20260930-full-games', 'missing-number': 'assets/js/games/missing-number.js?v=20260930-full-games',
-    'pattern-detective': 'assets/js/games/pattern-detective.js?v=20260930-full-games', 'shape-builder': 'assets/js/games/shape-builder.js?v=20260930-full-games',
-    'time-master': 'assets/js/games/time-master.js?v=20260930-full-games', 'little-shop': 'assets/js/games/little-shop.js?v=20260930-full-games',
-    'math-factory': 'assets/js/games/math-factory.js?v=20260930-full-games', 'math-race': 'assets/js/games/math-race.js?v=20260930-full-games'
+    'sudoku': 'assets/js/games/sudoku.js?v=20260930-wide-numpad-side', 'balance-scale': 'assets/js/games/balance-scale.js?v=20260930-interactive-v2',
+    'math-train': 'assets/js/games/math-train.js?v=20260930-interactive-v2', 'target-number': 'assets/js/games/target-number.js?v=20260930-interactive-v2',
+    'number-river': 'assets/js/games/number-river.js?v=20260930-interactive-v2', 'missing-number': 'assets/js/games/missing-number.js?v=20260930-interactive-v2',
+    'pattern-detective': 'assets/js/games/pattern-detective.js?v=20260930-interactive-v2', 'shape-builder': 'assets/js/games/shape-builder.js?v=20260930-interactive-v2',
+    'time-master': 'assets/js/games/time-master.js?v=20260930-interactive-v2', 'little-shop': 'assets/js/games/little-shop.js?v=20260930-interactive-v2',
+    'math-factory': 'assets/js/games/math-factory.js?v=20260930-interactive-v2', 'math-race': 'assets/js/games/math-race.js?v=20260930-interactive-v2'
 };
 const GAME_START_FN_MAP = {
     'sudoku': 'startSudokuGame', 'balance-scale': 'startBalanceScaleGame',
