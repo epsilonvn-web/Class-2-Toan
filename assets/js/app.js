@@ -388,9 +388,139 @@ function getStudentFirstName() {
     return parts[parts.length - 1] || "Bé";
 }
 
+
+function buildGeometryAssemblyNumberOptions_(answer, seed = 0) {
+    const a = Math.max(0, Number(answer) || 0);
+    const pool = [a, a + 1, Math.max(0, a - 1), a + 2, Math.max(0, a - 2), a + 3]
+        .filter((v, i, arr) => arr.indexOf(v) === i)
+        .map(String);
+    while (pool.length < 4) pool.push(String(pool.length + a + 4));
+    const out = pool.slice(0, 4);
+    const shift = Math.abs(Number(seed) || 0) % out.length;
+    return out.slice(shift).concat(out.slice(0, shift));
+}
+
+function enhanceGeometryAssemblyQuestion_(q) {
+    if (!q || String(q.sub_id || q.sub_topic || '').trim() !== '4.5') return q;
+    const seed = Math.abs(Number(q.question_id) || 45000);
+    const variant = seed % 12;
+    const cycle = Math.max(0, Math.floor((seed - 45000) / 12));
+    const shapes = ['Hình vuông', 'Hình chữ nhật', 'Hình tam giác'];
+    const shape = shapes[seed % shapes.length];
+    let question = '';
+    let answer = '';
+    let options = [];
+    let hint = '';
+    let vd = { assembly_task: '', target_shape: shape };
+
+    if (variant === 0) {
+        const total = 7 + (cycle % 3);
+        const used = 3 + (cycle % 3);
+        const left = total - used;
+        question = `Trong khay có ${total} mảnh tam giác. Bạn dùng ${used} mảnh để hoàn thành một hình ghép. Hỏi còn lại bao nhiêu mảnh?`;
+        answer = String(left); options = buildGeometryAssemblyNumberOptions_(left, seed);
+        hint = `Lấy số mảnh ban đầu trừ số mảnh đã dùng: ${total} − ${used} = ${left}.`;
+        vd = { ...vd, assembly_task:'remaining', piece_count:total, used_count:used, leftover:left };
+    } else if (variant === 1) {
+        const count = [4,6,8,10][cycle % 4];
+        const squares = count / 2;
+        question = `Cứ 2 mảnh tam giác vuông cân ghép được 1 hình vuông nhỏ. Với ${count} mảnh, ghép được bao nhiêu hình vuông nhỏ?`;
+        answer = String(squares); options = buildGeometryAssemblyNumberOptions_(squares, seed);
+        hint = `Ghép theo từng cặp 2 mảnh: ${count} ÷ 2 = ${squares}.`;
+        vd = { ...vd, assembly_task:'pair_count', piece_count:count, pieces_per_target:2, target_count:squares, target_shape:'Hình vuông' };
+    } else if (variant === 2) {
+        const targetCount = 2 + (cycle % 4);
+        const need = targetCount * 2;
+        question = `Mỗi hình vuông nhỏ cần 2 mảnh tam giác. Muốn ghép ${targetCount} hình vuông như nhau, cần tất cả bao nhiêu mảnh tam giác?`;
+        answer = String(need); options = buildGeometryAssemblyNumberOptions_(need, seed);
+        hint = `Có ${targetCount} nhóm, mỗi nhóm 2 mảnh: ${targetCount} × 2 = ${need}.`;
+        vd = { ...vd, assembly_task:'pieces_needed', target_count:targetCount, pieces_per_target:2, piece_count:need, target_shape:'Hình vuông' };
+    } else if (variant === 3) {
+        const intro = ['Hai mảnh tam giác vuông cân giống nhau', 'Hai nửa tam giác của một miếng ghép', 'Hai tam giác trong khay thực hành'][cycle % 3];
+        question = `${intro} được ghép khít theo cạnh dài như hình. Đường bao ngoài tạo thành hình gì?`;
+        answer = 'Hình vuông';
+        options = ['Hình chữ nhật','Hình vuông','Hình tam giác','Hình tròn'];
+        hint = 'Quan sát đường bao ngoài: có 4 cạnh bằng nhau và 4 góc vuông.';
+        vd = { ...vd, assembly_task:'target_name', piece_count:2, target_shape:'Hình vuông' };
+    } else if (variant === 4) {
+        const targetShape = shapes[cycle % shapes.length];
+        const vertices = targetShape === 'Hình tam giác' ? 3 : 4;
+        question = `Sau khi ghép các mảnh, đường bao ngoài tạo thành ${targetShape.toLowerCase()}. Hình đó có bao nhiêu đỉnh?`;
+        answer = String(vertices); options = buildGeometryAssemblyNumberOptions_(vertices, seed);
+        hint = `Chỉ đếm các góc ở đường bao ngoài của ${targetShape.toLowerCase()}, không đếm đường ghép bên trong.`;
+        vd = { ...vd, assembly_task:'vertices', target_shape:targetShape, vertex_count:vertices, piece_count:4 };
+    } else if (variant === 5) {
+        const total = 8 + 2 * (cycle % 3);
+        const used = total - (2 + (cycle % 2));
+        const left = total - used;
+        const diff = used - left;
+        question = `Có ${total} mảnh tam giác. Bạn dùng ${used} mảnh để ghép hình, còn ${left} mảnh. Số mảnh đã dùng nhiều hơn số mảnh còn lại bao nhiêu?`;
+        answer = String(diff); options = buildGeometryAssemblyNumberOptions_(diff, seed);
+        hint = `So sánh hai nhóm: ${used} − ${left} = ${diff}.`;
+        vd = { ...vd, assembly_task:'difference', piece_count:total, used_count:used, leftover:left, difference:diff };
+    } else if (variant === 6) {
+        const total = [5,7,9][cycle % 3];
+        const maxSquares = Math.floor(total / 2);
+        const left = total % 2;
+        question = `Mỗi hình vuông nhỏ cần đúng 2 mảnh tam giác. Với ${total} mảnh, ghép được nhiều nhất bao nhiêu hình vuông hoàn chỉnh?`;
+        answer = String(maxSquares); options = buildGeometryAssemblyNumberOptions_(maxSquares, seed);
+        hint = `${total} mảnh chia thành các cặp 2 mảnh: ghép được ${maxSquares} hình và còn ${left} mảnh.`;
+        vd = { ...vd, assembly_task:'max_complete', piece_count:total, pieces_per_target:2, target_count:maxSquares, leftover:left, target_shape:'Hình vuông' };
+    } else if (variant === 7) {
+        const targetCount = 2 + (cycle % 3);
+        const leftover = 1 + (cycle % 2);
+        const total = targetCount * 2 + leftover;
+        question = `Bạn đã ghép ${targetCount} hình vuông, mỗi hình dùng 2 mảnh tam giác và còn dư ${leftover} mảnh. Lúc đầu bạn có bao nhiêu mảnh?`;
+        answer = String(total); options = buildGeometryAssemblyNumberOptions_(total, seed);
+        hint = `Số mảnh đã dùng là ${targetCount} × 2 = ${targetCount*2}; cộng ${leftover} mảnh còn dư được ${total}.`;
+        vd = { ...vd, assembly_task:'reverse_total', target_count:targetCount, pieces_per_target:2, leftover, piece_count:total, target_shape:'Hình vuông' };
+    } else if (variant === 8) {
+        const total = [6,8,10][cycle % 3];
+        const targetCount = total / 2;
+        question = `Có ${total} mảnh tam giác và mỗi hình vuông cần 2 mảnh. Phương án nào dưới đây dùng hết các mảnh?`;
+        answer = `Ghép ${targetCount} hình vuông`;
+        options = [`Ghép ${Math.max(1,targetCount-1)} hình vuông`,`Ghép ${targetCount} hình vuông`,`Ghép ${targetCount+1} hình vuông`,`Chỉ ghép 1 hình vuông`];
+        hint = `${total} ÷ 2 = ${targetCount}, nên dùng hết mảnh khi ghép ${targetCount} hình vuông.`;
+        vd = { ...vd, assembly_task:'choose_plan', piece_count:total, pieces_per_target:2, target_count:targetCount, target_shape:'Hình vuông' };
+    } else if (variant === 9) {
+        const targetCount = 2 + (cycle % 3);
+        const need = targetCount * 2;
+        question = `Một hình vuông được cắt theo đường chéo thành 2 mảnh tam giác. Muốn ghép lại ${targetCount} hình vuông như ban đầu, cần bao nhiêu mảnh tam giác?`;
+        answer = String(need); options = buildGeometryAssemblyNumberOptions_(need, seed);
+        hint = `Mỗi hình vuông có 2 nửa tam giác: ${targetCount} × 2 = ${need}.`;
+        vd = { ...vd, assembly_task:'reassemble', target_count:targetCount, pieces_per_target:2, piece_count:need, target_shape:'Hình vuông' };
+    } else if (variant === 10) {
+        const aCount = 2 + cycle;
+        const bCount = aCount + 2 + (cycle % 2);
+        const diff = bCount - aCount;
+        question = `Hình A dùng ${aCount} mảnh tam giác, hình B dùng ${bCount} mảnh. Hình B dùng nhiều hơn hình A bao nhiêu mảnh?`;
+        answer = String(diff); options = buildGeometryAssemblyNumberOptions_(diff, seed);
+        hint = `Lấy ${bCount} mảnh của hình B trừ ${aCount} mảnh của hình A: ${bCount} − ${aCount} = ${diff}.`;
+        vd = { ...vd, assembly_task:'compare_targets', target_a:aCount, target_b:bCount, difference:diff, target_shape:'Hình vuông' };
+    } else {
+        const total = [5,7,9][cycle % 3];
+        question = `Có ${total} mảnh tam giác. Mỗi hình vuông cần 2 mảnh. Cần thêm ít nhất bao nhiêu mảnh để có thể dùng hết tất cả mảnh vào các hình vuông?`;
+        answer = '1'; options = ['0','1','2','3'];
+        hint = `${total} là số lẻ. Thêm 1 mảnh sẽ được ${total+1}, là số chẵn và chia hết thành các cặp 2 mảnh.`;
+        vd = { ...vd, assembly_task:'add_to_even', piece_count:total, add_count:1, pieces_per_target:2, target_shape:'Hình vuông' };
+    }
+
+    return {
+        ...q,
+        question_text: question,
+        options,
+        answer,
+        hint,
+        explanation: hint,
+        audio_text: question,
+        explore_type: 'geometry_assembly_reasoning',
+        visual_data: vd
+    };
+}
+
 function normalizeQuestion(q) {
     if (!q) return null;
-    return {
+    const normalized = {
         question_id: q.id ?? q.question_id ?? q.question_no ?? 0,
         // Kho dữ liệu Toán 2 (bản mới) đã tách riêng "sub" = TÊN đầy đủ chủ đề con và "sub_code" = MÃ "X.Y"
         // (dùng để khớp roadmap 24 tuần). Vẫn dự phòng cho định dạng cũ (chỉ có "sub" là mã) để không vỡ dữ liệu cũ.
@@ -425,6 +555,7 @@ function normalizeQuestion(q) {
         diem: Number(q.diem ?? q.score ?? 0.5),
         explanation: q.explanation ?? q.h ?? 'Không có giải thích chi tiết.'
     };
+    return normalized;
 }
 
 function normalizeTopic(t) {
@@ -514,7 +645,7 @@ function getExploreSubtopicDisplayLabel_(topicNum, index, rawLabel) {
     return `${major}.${minor}${label ? ` ${label}` : ''}`;
 }
 
-const DATA_VERSION = '20260930-topic6-visual-v1';
+const DATA_VERSION = '20260930-topic56-solution-assembly-v2';
 const TOPICS_DATA_FILES = [
     'assets/data/kho_hoc_toan_2_hk1.json',
     'assets/data/kho_hoc_toan_2_hk2.json'
@@ -573,7 +704,8 @@ async function fetchAllTopicsData() {
         const mucNum = Number(q.explore_topic_id || inferExploreTopicIdFromSubCode_(q.sub_id || q.sub_topic) || 0);
         if (!mucNum || q.explore_hidden) return;
         if (!byMuc[mucNum]) byMuc[mucNum] = [];
-        byMuc[mucNum].push(q);
+        // Chỉ Khám phá Mục 5.5 dùng bộ câu hỏi lắp ghép mới; Roadmap/Bài tập/Đề thi giữ nguyên dữ liệu gốc.
+        byMuc[mucNum].push(mucNum === 5 ? enhanceGeometryAssemblyQuestion_({ ...q }) : q);
     });
 
     allTopicsDataCache = TOPICS_CONFIG.map(t => ({
@@ -3290,25 +3422,54 @@ function buildGeometryPresentation_(q) {
                 <div class="-mt-2 rounded-2xl border-2 border-amber-200 bg-white px-4 py-2 text-lg md:text-xl font-black text-amber-800 text-center">${esc(quoted)}</div>
             </div>`, 'Quan sát mặt, cạnh và dạng tròn của vật thể.');
     } else {
-        const kind = /chữ nhật/i.test(raw) ? 'Hình chữ nhật' : (/vuông/i.test(raw) ? 'Hình vuông' : 'Hình tam giác');
-        const target = kind === 'Hình chữ nhật'
-            ? `<rect x="180" y="58" width="170" height="105" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="6" stroke-dasharray="10 8"/>`
-            : kind === 'Hình vuông'
-                ? `<rect x="205" y="47" width="125" height="125" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="6" stroke-dasharray="10 8"/>`
-                : `<polygon points="260,38 160,176 360,176" fill="#ecfeff" stroke="#06b6d4" stroke-width="6" stroke-dasharray="10 8"/>`;
-        const pieces = [0,1,2,3,4,5].map((i)=>{
-            const x=35+(i%3)*52, y=58+Math.floor(i/3)*76;
-            const fills=['#f9a8d4','#93c5fd','#86efac','#fde68a','#c4b5fd','#fdba74'];
-            return `<polygon points="${x},${y+48} ${x+24},${y+6} ${x+48},${y+48}" fill="${fills[i]}" stroke="#475569" stroke-width="2.5"/>`;
-        }).join('');
-        visual = wrap('🧩 XẾP HÌNH TỪ CÁC MẢNH', `
-            <svg viewBox="0 0 520 230" class="w-full max-w-[560px] h-auto" role="img" aria-label="Các mảnh tam giác và hình mục tiêu">
-                <rect x="20" y="20" width="150" height="185" rx="22" fill="#fff" stroke="#fecdd3" stroke-width="3"/>
-                ${pieces}
-                <path d="M184 112h42" stroke="#64748b" stroke-width="5" stroke-linecap="round"/><path d="M216 100l14 12-14 12" fill="none" stroke="#64748b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-                ${target}
-                <text x="270" y="210" text-anchor="middle" font-size="19" font-weight="900" fill="#7c3aed">Mục tiêu: ${kind}</text>
-            </svg>`, 'Quan sát hình mục tiêu rồi tưởng tượng cách xoay và ghép các mảnh.');
+        const avd = q.visual_data || {};
+        const task = String(avd.assembly_task || '');
+        const kind = String(avd.target_shape || (/chữ nhật/i.test(raw) ? 'Hình chữ nhật' : (/vuông/i.test(raw) ? 'Hình vuông' : 'Hình tam giác')));
+        const pieceCount = Math.max(0, Number(avd.piece_count || 6));
+        const usedCount = Math.max(0, Number(avd.used_count || 0));
+        const targetCount = Math.max(0, Number(avd.target_count || 1));
+        const piecesPerTarget = Math.max(1, Number(avd.pieces_per_target || 2));
+        const leftover = Math.max(0, Number(avd.leftover || 0));
+        const triangle = (i=0) => `<span class="inline-block w-0 h-0 border-l-[18px] border-r-[18px] border-b-[32px] md:border-l-[20px] md:border-r-[20px] md:border-b-[36px] border-l-transparent border-r-transparent ${['border-b-pink-400','border-b-sky-400','border-b-emerald-400','border-b-amber-400','border-b-violet-400','border-b-orange-400'][i%6]} drop-shadow-sm"></span>`;
+        const piecesHtml = Array.from({length:Math.min(pieceCount,12)},(_,i)=>triangle(i)).join('');
+        const targetShapeHtml = (shape=kind, label='') => {
+            const s=String(shape).toLowerCase();
+            const body = s.includes('tam giác')
+                ? `<svg viewBox="0 0 120 100" class="w-[100px] h-[84px]"><polygon points="60,8 8,91 112,91" fill="#ecfeff" stroke="#06b6d4" stroke-width="5"/><line x1="60" y1="8" x2="60" y2="91" stroke="#67e8f9" stroke-width="3" stroke-dasharray="5 4"/></svg>`
+                : s.includes('chữ nhật')
+                    ? `<svg viewBox="0 0 140 95" class="w-[120px] h-[82px]"><rect x="8" y="10" width="124" height="74" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="5"/><line x1="8" y1="10" x2="132" y2="84" stroke="#fdba74" stroke-width="3" stroke-dasharray="5 4"/></svg>`
+                    : `<svg viewBox="0 0 110 110" class="w-[92px] h-[92px]"><rect x="10" y="10" width="90" height="90" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="5"/><line x1="10" y1="10" x2="100" y2="100" stroke="#c4b5fd" stroke-width="3"/></svg>`;
+            return `<div class="flex flex-col items-center justify-center">${body}${label?`<div class="mt-1 text-xs md:text-sm font-black text-violet-700">${esc(label)}</div>`:''}</div>`;
+        };
+        const targetsHtml = Array.from({length:Math.min(targetCount,5)},(_,i)=>targetShapeHtml(kind, targetCount>1?`Hình ${i+1}`:'')).join('');
+        let center = '';
+        let note = '';
+
+        if (task === 'target_name') {
+            center = `<div class="flex flex-col items-center gap-3">${targetShapeHtml('Hình vuông','Hai tam giác ghép khít')}<div class="text-sm md:text-base font-black text-slate-600">Nhìn đường bao ngoài, không nhìn đường chéo bên trong.</div></div>`;
+            note = 'Hai mảnh tam giác là hai nửa của cùng một hình vuông.';
+        } else if (task === 'vertices') {
+            center = targetShapeHtml(kind, kind);
+            note = 'Chỉ đếm các đỉnh trên đường bao ngoài của hình đã ghép.';
+        } else if (task === 'compare_targets') {
+            const aCount=Math.max(0,Number(avd.target_a||2)), bCount=Math.max(0,Number(avd.target_b||4));
+            center = `<div class="grid grid-cols-2 gap-4 w-full max-w-sm"><div class="rounded-2xl border-2 border-cyan-200 bg-white p-3 text-center"><div class="font-black text-cyan-700 mb-2">Hình A</div><div class="flex justify-center gap-1 flex-wrap">${Array.from({length:Math.min(aCount,8)},(_,i)=>triangle(i)).join('')}</div><div class="mt-2 font-black text-slate-600">${aCount} mảnh</div></div><div class="rounded-2xl border-2 border-violet-200 bg-white p-3 text-center"><div class="font-black text-violet-700 mb-2">Hình B</div><div class="flex justify-center gap-1 flex-wrap">${Array.from({length:Math.min(bCount,8)},(_,i)=>triangle(i+2)).join('')}</div><div class="mt-2 font-black text-slate-600">${bCount} mảnh</div></div></div>`;
+            note = 'So sánh trực tiếp số mảnh của hai hình.';
+        } else {
+            const rule = (task==='remaining'||task==='difference')
+                ? `<div class="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-sm font-black text-rose-700">Dùng ${usedCount} / ${pieceCount} mảnh</div>`
+                : `<div class="rounded-xl border border-violet-200 bg-violet-50 px-3 py-1.5 text-sm font-black text-violet-700">${piecesPerTarget} tam giác → 1 hình vuông</div>`;
+            const resultHtml = ['remaining','difference'].includes(task)
+                ? `<div class="flex flex-wrap items-center justify-center gap-1.5 min-h-[84px]">${Array.from({length:Math.min(usedCount,10)},(_,i)=>triangle(i+2)).join('')}</div><div class="mt-2 text-sm font-black text-violet-700">${usedCount} mảnh đã dùng</div>`
+                : `<div class="flex flex-wrap items-center justify-center gap-2 min-h-[84px]">${targetsHtml || targetShapeHtml(kind)}</div>`;
+            center = `<div class="w-full grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-3"><div class="rounded-2xl border-2 border-pink-200 bg-white p-3"><div class="text-xs font-black text-pink-600 mb-2">Khay mảnh ghép</div><div class="flex flex-wrap justify-center gap-2 min-h-[84px] items-center">${piecesHtml}</div><div class="mt-2 text-sm font-black text-slate-600">${pieceCount} mảnh tam giác</div></div><div class="flex flex-col items-center gap-2">${rule}<span class="text-3xl text-slate-300">→</span></div><div class="rounded-2xl border-2 border-violet-200 bg-white p-3"><div class="text-xs font-black text-violet-600 mb-2">Kết quả thao tác</div>${resultHtml}${leftover?`<div class="mt-2 text-sm font-black text-amber-700">Còn ${leftover} mảnh</div>`:''}</div></div>`;
+            if (task === 'reverse_total') note = `Đã ghép ${targetCount} hình và còn ${leftover} mảnh chưa dùng.`;
+            else if (task === 'pieces_needed' || task === 'reassemble') note = `Mỗi hình cần ${piecesPerTarget} mảnh tam giác.`;
+            else if (task === 'pair_count' || task === 'max_complete' || task === 'choose_plan' || task === 'add_to_even') note = `Ghép các mảnh theo từng cặp ${piecesPerTarget} mảnh.`;
+            else note = 'Quan sát số mảnh trong khay và số mảnh được dùng để ghép hình.';
+        }
+
+        visual = wrap('🧩 LẮP GHÉP HÌNH – NHÌN HÌNH RỒI SUY LUẬN', center, note);
     }
 
     return {
@@ -3554,6 +3715,385 @@ function buildPatternLogicPresentation_(q) {
 }
 
 
+
+// ==========================================
+// LỜI GIẢI SƯ PHẠM MỤC 5-6
+// Giữ hình minh họa ở cột trái; chỉ hiện lời giải ngay dưới hình sau khi bé trả lời đúng.
+// ==========================================
+function isTopic56PracticeQuestion_(q) {
+    if (!q || activeExamContext || activeRoadmapContext) return false;
+    return [5, 6].includes(Number(pendingTopicQuiz?.topicNum));
+}
+
+function buildTopic56SolutionData_(q) {
+    if (!isTopic56PracticeQuestion_(q)) return null;
+    const topicNum = Number(pendingTopicQuiz?.topicNum);
+    const sub = String(q?.sub_id || q?.sub_topic || '').trim();
+    const raw = String(q?.question_text || '');
+    const answer = String(q?.answer ?? '');
+    const vd = q?.visual_data || {};
+    let rule = '';
+    let steps = [];
+    let check = answer ? `Đáp án đúng: ${answer}.` : '';
+
+    if (topicNum === 5) {
+        if (sub === '4.1') {
+            rule = 'Ba điểm thẳng hàng khi cả ba cùng nằm trên một đường thẳng.';
+            steps = ['Quan sát đường thẳng trong hình.', 'Kiểm tra lần lượt ba điểm có cùng nằm trên đường đó hay không.', `Chọn đáp án ${answer}.`];
+        } else if (sub === '4.2') {
+            const nums = (raw.match(/\d+(?:[.,]\d+)?\s*cm/gi) || []).map(x=>Number(x.replace(/\s*cm/i,'').replace(',','.'))).filter(Number.isFinite);
+            rule = 'Độ dài đường gấp khúc bằng tổng độ dài các đoạn thẳng tạo nên nó.';
+            if (nums.length >= 2) {
+                const sum = nums.reduce((a,b)=>a+b,0);
+                steps = [`Đọc độ dài từng đoạn: ${nums.join(' cm, ')} cm.`, `Cộng các đoạn: ${nums.join(' + ')} = ${sum} cm.`, `Đối chiếu với đáp án: ${answer}.`];
+            }
+        } else if (sub === '4.3') {
+            rule = 'Đếm hình theo một thứ tự cố định để không bỏ sót và không đếm trùng.';
+            steps = ['Bắt đầu từ góc trên bên trái.', 'Chỉ lần lượt từng hình theo hàng hoặc theo chiều kim đồng hồ.', `Tổng số hình cần đếm là ${answer}.`];
+        } else if (sub === '4.4') {
+            rule = 'Nhận diện khối dựa vào mặt, cạnh và bề mặt cong; không chỉ dựa vào màu sắc hay tư thế.';
+            steps = ['Quan sát hình vật thể.', 'So sánh đặc điểm với khối lập phương, hộp chữ nhật, khối trụ và khối cầu.', `Vật thể phù hợp với ${answer}.`];
+        } else if (sub === '4.5') {
+            const task = String(vd.assembly_task || '');
+            rule = 'Nhìn số mảnh và quy tắc ghép trên hình trước, rồi mới tính.';
+            if (task === 'remaining') steps = [`Có ${vd.piece_count} mảnh ban đầu.`, `Đã dùng ${vd.used_count} mảnh.`, `${vd.piece_count} − ${vd.used_count} = ${vd.leftover}, nên còn ${vd.leftover} mảnh.`];
+            else if (task === 'pair_count') steps = [`Mỗi hình vuông cần ${vd.pieces_per_target} mảnh.`, `Chia ${vd.piece_count} mảnh thành các cặp ${vd.pieces_per_target} mảnh.`, `${vd.piece_count} ÷ ${vd.pieces_per_target} = ${vd.target_count} hình vuông.`];
+            else if (task === 'pieces_needed' || task === 'reassemble') steps = [`Mỗi hình cần ${vd.pieces_per_target} mảnh.`, `Có ${vd.target_count} hình cần ghép.`, `${vd.target_count} × ${vd.pieces_per_target} = ${vd.piece_count} mảnh.`];
+            else if (task === 'target_name') steps = ['Ghép hai tam giác theo cạnh dài.', 'Quan sát đường bao ngoài có 4 cạnh bằng nhau và 4 góc vuông.', 'Hình tạo thành là hình vuông.'];
+            else if (task === 'vertices') steps = ['Bỏ qua các đường ghép ở bên trong.', 'Chỉ đi theo đường bao ngoài và đếm từng góc.', `${vd.target_shape} có ${vd.vertex_count} đỉnh.`];
+            else if (task === 'difference') steps = [`Đã dùng ${vd.used_count} mảnh và còn ${vd.leftover} mảnh.`, `Tìm phần hơn: ${vd.used_count} − ${vd.leftover} = ${vd.difference}.`];
+            else if (task === 'max_complete') steps = [`Ghép ${vd.piece_count} mảnh theo từng cặp ${vd.pieces_per_target}.`, `Tạo được ${vd.target_count} hình hoàn chỉnh và còn ${vd.leftover} mảnh.`, `Vậy nhiều nhất là ${vd.target_count} hình vuông.`];
+            else if (task === 'reverse_total') steps = [`${vd.target_count} hình dùng ${vd.target_count} × ${vd.pieces_per_target} = ${vd.target_count*vd.pieces_per_target} mảnh.`, `Cộng ${vd.leftover} mảnh còn dư.`, `Tổng ban đầu là ${vd.piece_count} mảnh.`];
+            else if (task === 'choose_plan') steps = [`Mỗi hình cần ${vd.pieces_per_target} mảnh.`, `${vd.piece_count} ÷ ${vd.pieces_per_target} = ${vd.target_count}.`, `Phương án dùng hết mảnh là ghép ${vd.target_count} hình vuông.`];
+            else if (task === 'compare_targets') steps = [`Hình A dùng ${vd.target_a} mảnh.`, `Hình B dùng ${vd.target_b} mảnh.`, `${vd.target_b} − ${vd.target_a} = ${vd.difference} mảnh.`];
+            else if (task === 'add_to_even') steps = [`Hiện có ${vd.piece_count} mảnh là số lẻ.`, `Mỗi hình cần 2 mảnh nên tổng số mảnh phải là số chẵn.`, `Thêm 1 mảnh để được ${vd.piece_count+1} mảnh.`];
+        }
+    } else if (topicNum === 6) {
+        const type = String(q?.explore_type || '');
+        if (type === 'length_ruler') {
+            const start=Number(vd.start||0), end=Number(vd.end||0), len=end-start;
+            rule = 'Độ dài vật bằng số ở vạch cuối trừ số ở vạch đầu.';
+            steps = [`Vạch đầu là ${start} cm, vạch cuối là ${end} cm.`, `${end} − ${start} = ${len} cm.`, `Chọn đáp án ${answer}.`];
+        } else if (type === 'length_convert') {
+            rule = '1 dm = 10 cm. Đổi về cùng một đơn vị trước khi tính hoặc so sánh.';
+            steps = [String(q?.hint || q?.explanation || '').replace(/^Cô giáo Thỏ Ngọc gợi ý:\s*/i,'').trim() || `Đổi số đo về cùng đơn vị rồi chọn ${answer}.`];
+        } else if (type === 'length_unit_choice' || type === 'length_estimate') {
+            rule = 'Chọn đơn vị phù hợp với kích thước thực tế của đồ vật hoặc quãng đường.';
+            steps = ['Xác định vật nhỏ, vật trong phòng hay quãng đường xa.', 'So sánh với các đơn vị cm, dm hoặc đơn vị được cho.', `Đáp án phù hợp là ${answer}.`];
+        } else if (type === 'length_path') {
+            const a=Number(vd.a||0), b=Number(vd.b||0), op=String(vd.op||'+'), unit=String(vd.unit||'m');
+            rule = op === '+' ? 'Tổng quãng đường bằng tổng độ dài các đoạn.' : 'Muốn tìm phần chênh lệch, lấy số đo lớn trừ số đo bé.';
+            const result = op === '+' ? a+b : Math.abs(a-b);
+            steps = [`Hai đoạn có độ dài ${a} ${unit} và ${b} ${unit}.`, `${Math.max(a,b)} ${op==='+'?'+':'−'} ${op==='+'?Math.min(a,b):Math.min(a,b)} = ${result} ${unit}.`, `Đối chiếu với đáp án ${answer}.`];
+        } else if (type === 'weight_balance') {
+            const ws=Array.isArray(vd.weights)?vd.weights.map(Number).filter(Number.isFinite):[];
+            const total=ws.reduce((a,b)=>a+b,0);
+            rule = 'Cân thăng bằng nghĩa là khối lượng hai bên bằng nhau.';
+            steps = [`Cộng các quả cân bên phải: ${ws.length?ws.join(' + '):'?'}${ws.length?` = ${total} kg`:''}.`, 'Vì cân đang thăng bằng nên vật bên trái có khối lượng bằng tổng đó.', `Chọn ${answer}.`];
+        } else if (type === 'weight_arithmetic') {
+            const a=Number(vd.a||0), b=Number(vd.b||0), op=String(vd.op||'+');
+            const result=op==='-'?a-b:a+b;
+            rule = 'Tính với số đo khối lượng như với số tự nhiên, rồi ghi đơn vị kg.';
+            steps = [`Thực hiện phép tính: ${a} ${op==='-'?'−':'+'} ${b} = ${result}.`, `Ghi đơn vị: ${result} kg.`, `Đáp án đúng là ${answer}.`];
+        } else if (type === 'weight_compare') {
+            const a=Number(vd.a||0), b=Number(vd.b||0);
+            rule = 'Hai số đo cùng đơn vị kg có thể so sánh trực tiếp.';
+            steps = [`So sánh ${a} và ${b}.`, `${a} ${a>b?'>':a<b?'<':'='} ${b}.`, `Chọn ${answer}.`];
+        } else if (type === 'liter_measure') {
+            const a=Number(vd.a||0), b=Number(vd.b||0), kind=String(vd.kind||'plus');
+            rule = 'Lít (l) dùng để đo dung tích; đọc đúng tình huống rồi chọn cộng, trừ, chia hoặc so sánh.';
+            if (kind==='cups') steps = [`Có ${a} cốc, mỗi cốc ${b} l.`, `Tổng dung tích là ${a} × ${b} = ${a*b} l.`, `Chọn ${answer}.`];
+            else if (kind==='groups') steps = [`Có ${a} l, mỗi can chứa ${b} l.`, `${a} ÷ ${b} = ${b?Math.floor(a/b):0} can.`, `Chọn ${answer}.`];
+            else if (kind==='minus'||kind==='difference') steps = [`So sánh hoặc tìm phần chênh lệch giữa ${a} l và ${b} l.`, `${Math.max(a,b)} − ${Math.min(a,b)} = ${Math.abs(a-b)} l.`, `Chọn ${answer}.`];
+            else if (kind==='compare') steps = [`Hai số đo đều là lít nên so sánh trực tiếp ${a} và ${b}.`, `${a} ${a>b?'>':a<b?'<':'='} ${b}.`, `Chọn ${answer}.`];
+            else steps = [`Cộng hai lượng chất lỏng: ${a} + ${b} = ${a+b} l.`, `Chọn ${answer}.`];
+        } else if (type === 'measure_choice') {
+            rule = 'Khối lượng đo bằng kg; dung tích chất lỏng đo bằng l.';
+            steps = ['Nhìn vật hoặc chất được hỏi.', 'Nếu hỏi nặng bao nhiêu thì chọn kg; nếu hỏi chứa bao nhiêu chất lỏng thì chọn l.', `Đáp án đúng là ${answer}.`];
+        } else if (type.startsWith('calendar_')) {
+            rule = 'Đọc lịch theo cột thứ và hàng tuần; sau 1 tuần là sau 7 ngày.';
+            if (type==='calendar_week_jump' && Number(vd.from)) {
+                const from=Number(vd.from), to=from+7;
+                steps = [`Ngày bắt đầu là ${from}.`, `Sau 1 tuần: ${from} + 7 = ${to}.`, `Đối chiếu với đáp án ${answer}.`];
+            } else {
+                steps = [String(q?.hint || q?.explanation || '').replace(/^Cô giáo Thỏ Ngọc gợi ý:\s*/i,'').trim() || 'Xác định đúng tháng, thứ và ngày trên lịch.', `Chọn ${answer}.`];
+            }
+        } else if (type === 'clock_read') {
+            const h=Number(vd.hour||0), m=Number(vd.minute||0);
+            rule = 'Kim ngắn chỉ giờ, kim dài chỉ phút.';
+            steps = [`Đọc kim giờ: ${h} giờ.`, `Đọc kim phút: ${m} phút.`, `Thời gian là ${h} giờ ${m} phút; chọn ${answer}.`];
+        } else if (type === 'clock_compare') {
+            const ah=Number(vd.a?.hour||0), am=Number(vd.a?.minute||0), bh=Number(vd.b?.hour||0), bm=Number(vd.b?.minute||0);
+            rule = 'So giờ trước; nếu cùng giờ mới so tiếp số phút.';
+            steps = [`Đồng hồ A: ${ah}:${String(am).padStart(2,'0')}. Đồng hồ B: ${bh}:${String(bm).padStart(2,'0')}.`, 'So sánh hai thời điểm theo giờ rồi đến phút.', `Chọn ${answer}.`];
+        } else if (type === 'clock_duration') {
+            const sh=Number(vd.start?.hour||0), sm=Number(vd.start?.minute||0), eh=Number(vd.end?.hour||0), em=Number(vd.end?.minute||0);
+            const startMin=sh*60+sm, endMin=eh*60+em, dur=Math.max(0,endMin-startMin);
+            rule = 'Khoảng thời gian bằng thời điểm kết thúc trừ thời điểm bắt đầu.';
+            steps = [`Bắt đầu lúc ${sh}:${String(sm).padStart(2,'0')}, kết thúc lúc ${eh}:${String(em).padStart(2,'0')}.`, `Khoảng cách là ${dur} phút.`, `Đối chiếu với đáp án ${answer}.`];
+        } else if (type.includes('money')) {
+            rule = 'Tính tiền bằng cách cộng các mệnh giá; nếu mua hàng thì so sánh với giá cần trả.';
+            steps = [String(q?.hint || q?.explanation || '').replace(/^Cô giáo Thỏ Ngọc gợi ý:\s*/i,'').trim() || 'Cộng lần lượt các tờ/đồng tiền rồi đối chiếu với giá.', `Kết quả là ${answer}.`];
+        } else if (type === 'clock_24h' || type === 'daily_schedule') {
+            rule = 'Đọc giờ và phút trước; sau đó dùng buổi trong ngày để đổi giữa cách nói 12 giờ và 24 giờ.';
+            steps = [String(q?.hint || q?.explanation || '').replace(/^Cô giáo Thỏ Ngọc gợi ý:\s*/i,'').trim() || 'Quan sát kim giờ, kim phút và thời điểm trong ngày.', `Chọn ${answer}.`];
+        } else if (type === 'time_reasoning') {
+            rule = 'Dựa vào mốc thời gian chuẩn: 1 giờ = 60 phút, 1 ngày = 24 giờ và các buổi nối tiếp nhau.';
+            steps = [String(q?.hint || q?.explanation || '').replace(/^Cô giáo Thỏ Ngọc gợi ý:\s*/i,'').trim() || 'Xác định mốc thời gian liên quan rồi suy luận.', `Kết luận: ${answer}.`];
+        } else {
+            rule = 'Đọc đúng đại lượng, đơn vị và dữ kiện trong hình trước khi tính.';
+            steps = [String(q?.hint || q?.explanation || '').replace(/^Cô giáo Thỏ Ngọc gợi ý:\s*/i,'').trim() || `Đối chiếu hình minh họa với câu hỏi để chọn ${answer}.`];
+        }
+    }
+
+    steps = steps.map(s=>String(s||'').trim()).filter(Boolean);
+    return { rule, steps, check };
+}
+
+function buildTopic56SolutionHtml_(q) {
+    const data = buildTopic56SolutionData_(q);
+    if (!data) return '';
+    const steps = data.steps.map((s,i)=>`<div class="flex items-start gap-2 text-sm md:text-base font-black text-slate-700 leading-relaxed"><span class="shrink-0 w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs">${i+1}</span><span>${escapeHtml(s)}</span></div>`).join('');
+    return `<div data-topic56-solution class="hidden mt-3 w-full rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/95 to-cyan-50/80 p-3 md:p-4 shadow-sm">
+        <div class="text-lg md:text-xl font-black text-emerald-700 mb-2">🌱 Cùng xem lời giải</div>
+        ${data.rule ? `<div class="mb-3 rounded-xl border-2 border-violet-200 bg-white/90 px-3 py-2 text-sm md:text-base font-black text-violet-800 leading-snug"><span class="text-violet-500">Quy tắc:</span> ${escapeHtml(data.rule)}</div>` : ''}
+        <div class="rounded-xl border border-emerald-100 bg-white/85 px-3 py-3 space-y-2">${steps}</div>
+        ${data.check ? `<div class="mt-3 rounded-xl border-2 border-sky-200 bg-sky-50 px-3 py-2 text-sm md:text-base font-black text-sky-800 text-center">✅ ${escapeHtml(data.check)}</div>` : ''}
+    </div>`;
+}
+
+function revealTopic56Solution_(q) {
+    if (!isTopic56PracticeQuestion_(q)) return;
+    document.querySelectorAll('[data-topic56-solution]').forEach(el=>el.classList.remove('hidden'));
+}
+
+// ==========================================
+// LỜI GIẢI SƯ PHẠM MỤC 8-11
+// Mục 8: lời giải xuất hiện ngay dưới hình minh họa sau khi trả lời đúng.
+// Mục 9-11: desktop/tablet dùng bố cục 2 cột như Mục 7 (trái lời giải, phải câu hỏi + đáp án).
+// Chỉ dùng trong Khám phá; không làm lộ lời giải ở Đề thi/Bài tập theo lộ trình.
+// ==========================================
+function isTopic811PracticeQuestion_(q) {
+    if (!q || activeExamContext || activeRoadmapContext) return false;
+    return [8, 9, 10, 11].includes(Number(pendingTopicQuiz?.topicNum));
+}
+
+function topic811ExplanationLines_(q) {
+    const raw = String(q?.explanation || q?.hint || '').trim();
+    if (!raw || raw === 'Không có giải thích chi tiết.') return [];
+    return raw
+        .replace(/\r/g, '')
+        .split(/\n+|(?<=[.!?;])\s+/)
+        .map(x => x.trim().replace(/^[•\-–]\s*/, ''))
+        .filter(Boolean);
+}
+
+function topic811ShapeName_(value) {
+    const map = {
+        circle: 'hình tròn', square: 'hình vuông', triangle: 'hình tam giác',
+        rectangle: 'hình chữ nhật'
+    };
+    const key = String(value ?? '').trim().toLowerCase();
+    return map[key] || String(value ?? '');
+}
+
+function topic811SignedStep_(n) {
+    const v = Number(n) || 0;
+    return v >= 0 ? `+ ${v}` : `− ${Math.abs(v)}`;
+}
+
+function topic811ApplyStepText_(base, step, result) {
+    const v = Number(step) || 0;
+    return `${base} ${v >= 0 ? '+' : '−'} ${Math.abs(v)} = ${result}`;
+}
+
+function buildTopic811SolutionData_(q) {
+    const topicNum = Number(pendingTopicQuiz?.topicNum);
+    if (![8, 9, 10, 11].includes(topicNum)) return null;
+
+    const sub = String(q?.sub_topic || q?.sub_id || '').trim();
+    const type = String(q?.explore_type || '').trim();
+    const vd = q?.visual_data || {};
+    const answer = String(q?.answer ?? '').trim();
+    const explanationLines = topic811ExplanationLines_(q);
+    let rule = '';
+    let tip = '';
+    let steps = [];
+    let check = answer ? `Đáp án đúng: ${answer}.` : '';
+
+    if (topicNum === 8) {
+        if (type === 'pattern_constant_step') {
+            const seq = Array.isArray(vd.sequence) ? vd.sequence : [];
+            const step = Number(vd.step || 0);
+            const missing = seq.findIndex(v => v === null || v === undefined);
+            rule = `Mỗi số thay đổi cùng một bước: ${topic811SignedStep_(step)}.`;
+            tip = 'So sánh hai số liền nhau để tìm bước nhảy trước khi điền ô trống.';
+            steps.push(`Nhận ra bước nhảy của dãy là ${topic811SignedStep_(step)}.`);
+            if (missing > 0 && Number.isFinite(Number(seq[missing - 1]))) {
+                steps.push(topic811ApplyStepText_(Number(seq[missing - 1]), step, answer));
+            } else if (missing >= 0 && missing < seq.length - 1 && Number.isFinite(Number(seq[missing + 1]))) {
+                const next = Number(seq[missing + 1]);
+                const reverse = -step;
+                steps.push(`Đi ngược một bước: ${topic811ApplyStepText_(next, reverse, answer)}.`);
+            }
+            check = `Điền ${answer} thì các bước nhảy của dãy vẫn giữ đúng quy luật.`;
+        } else if (type === 'pattern_cycle_steps') {
+            const seq = Array.isArray(vd.sequence) ? vd.sequence : [];
+            const cycle = Array.isArray(vd.steps) ? vd.steps.map(Number) : [];
+            const missing = seq.findIndex(v => v === null || v === undefined);
+            rule = `Hai bước nhảy lặp lại theo thứ tự${cycle.length ? `: ${cycle.map(topic811SignedStep_).join(' rồi ')}` : ''}.`;
+            tip = 'Không chỉ nhìn một khoảng cách; hãy kiểm tra hai bước liên tiếp rồi xem chúng có lặp lại không.';
+            steps.push('Tìm hai bước nhảy đầu tiên và kiểm tra thứ tự lặp lại.');
+            if (missing > 0 && cycle.length && Number.isFinite(Number(seq[missing - 1]))) {
+                const step = cycle[(missing - 1) % cycle.length];
+                steps.push(topic811ApplyStepText_(Number(seq[missing - 1]), step, answer));
+            }
+            check = `Thay ô trống bằng ${answer}, chu kỳ bước nhảy tiếp tục khớp.`;
+        } else if (type === 'number_triangle_sum') {
+            const vals = {
+                top: vd.top, left: vd.left, right: vd.right, center: vd.center
+            };
+            rule = 'Ba số ở các đỉnh cộng lại bằng số ở giữa.';
+            tip = 'Nếu thiếu số ở đỉnh, lấy số giữa trừ hai đỉnh đã biết.';
+            if (vals.center === null || vals.center === undefined) {
+                steps.push(`${vals.top} + ${vals.left} + ${vals.right} = ${answer}`);
+            } else if (vals.top === null || vals.top === undefined) {
+                steps.push(`${answer} = ${vals.center} − ${vals.left} − ${vals.right}`);
+            } else if (vals.left === null || vals.left === undefined) {
+                steps.push(`${answer} = ${vals.center} − ${vals.top} − ${vals.right}`);
+            } else if (vals.right === null || vals.right === undefined) {
+                steps.push(`${answer} = ${vals.center} − ${vals.top} − ${vals.left}`);
+            }
+            check = `Thay ${answer} vào sơ đồ, tổng ba đỉnh đúng bằng số ở giữa.`;
+        } else if (type === 'shape_repeat_pattern') {
+            rule = 'Tìm nhóm hình ngắn nhất đang lặp lại, rồi tiếp tục đúng thứ tự.';
+            tip = 'Có thể dùng ngón tay chia chuỗi thành các nhóm giống nhau để nhìn ra nhịp lặp.';
+            steps.push('Quan sát từ đầu chuỗi và khoanh nhóm hình lặp lại ngắn nhất.');
+            steps.push(`Vị trí còn thiếu phải là ${topic811ShapeName_(answer)} để nhóm lặp không bị phá vỡ.`);
+            check = `Điền ${topic811ShapeName_(answer)}, chuỗi hình tiếp tục đúng nhịp lặp.`;
+        }
+    } else if (topicNum === 9) {
+        if (sub === '8.1') {
+            rule = 'Đọc xem số lượng được thêm vào hay bớt đi, rồi chọn phép cộng hoặc phép trừ phù hợp.';
+            tip = 'Gạch chân số đã có, số thay đổi và câu hỏi cần tìm.';
+        } else if (sub === '8.2') {
+            rule = 'Với bài nhiều hơn – ít hơn, xác định rõ đại lượng nào lớn hơn, đại lượng nào bé hơn và phần chênh lệch.';
+            tip = 'Có thể vẽ hai đoạn thẳng để nhìn phần hơn/kém.';
+        } else if (sub === '8.3') {
+            rule = 'Các nhóm bằng nhau dùng phép nhân; chia đều hoặc chia thành các nhóm bằng nhau dùng phép chia.';
+            tip = 'Vẽ nhóm hoặc chấm tròn trước khi tính nếu con chưa chắc phép tính.';
+        } else if (sub === '8.4') {
+            rule = 'Bài toán hai bước: bước 1 tìm dữ kiện trung gian, bước 2 dùng kết quả đó để trả lời câu hỏi cuối.';
+            tip = 'Không lấy tất cả các số trong đề ghép vào một phép tính ngay.';
+        } else {
+            rule = 'Đọc dữ kiện → xác định câu hỏi → chọn phép tính → viết đáp số.';
+        }
+    } else if (topicNum === 10) {
+        if (sub === '9.1') {
+            rule = 'Phân loại đúng từng nhóm rồi kiểm đếm có hệ thống, mỗi đối tượng chỉ được tính một lần.';
+            tip = 'Đánh dấu hoặc gạch nhẹ mỗi vật sau khi đếm để tránh đếm lặp.';
+        } else if (sub === '9.2') {
+            rule = 'Đọc chú giải của biểu đồ trước, sau đó đếm số hình ở đúng hàng/cột cần hỏi.';
+            tip = 'Nếu 1 hình đại diện nhiều hơn 1 đơn vị, phải nhân theo chú giải.';
+        } else if (sub === '9.3') {
+            rule = 'Chắc chắn: luôn xảy ra; có thể: có lúc xảy ra; không thể: không xảy ra trong điều kiện đã cho.';
+            tip = 'Hãy tưởng tượng tất cả khả năng có thể xảy ra rồi mới chọn.';
+        } else {
+            rule = 'Đọc dữ liệu theo từng nhóm, đối chiếu đúng thông tin câu hỏi rồi mới kết luận.';
+        }
+    } else if (topicNum === 11) {
+        if (sub === '10.1') {
+            rule = 'Tính nhanh bằng cách nhóm các số tạo thành chục hoặc trăm tròn trước.';
+            tip = 'Đổi thứ tự nhóm số khi phép tính cho phép để tạo cặp dễ tính.';
+        } else if (sub === '10.2') {
+            rule = 'Liệt kê từng điều kiện của số cần tìm, rồi loại dần những số không thỏa mãn.';
+            tip = 'Kiểm tra lần lượt hàng trăm, hàng chục, hàng đơn vị và các ràng buộc chẵn/lẻ nếu có.';
+        } else if (sub === '10.3') {
+            rule = 'Đếm hình theo hệ thống: hình nhỏ trước, rồi ghép thành hình lớn hơn; không đếm trùng.';
+            tip = 'Có thể đánh số từng hình nhỏ rồi liệt kê các cách ghép.';
+        } else if (sub === '10.4') {
+            rule = 'Cân thăng bằng nghĩa là hai vế có cùng giá trị; dùng các phần giống nhau để suy ra phần còn thiếu.';
+            tip = 'Bỏ cùng một lượng ở cả hai vế thì cân vẫn giữ nguyên.';
+        } else {
+            rule = 'Tách bài toán thành các điều kiện nhỏ, xử lí từng điều kiện rồi kiểm tra lại kết quả.';
+        }
+    }
+
+    if (explanationLines.length) {
+        // Mục 8 ưu tiên phép suy luận dựng trực tiếp từ visual_data để lời giải bám đúng hình.
+        // Mục 9-11 ưu tiên lời giải biên soạn trong JSON vì đó là nội dung sư phạm của từng câu.
+        if (topicNum === 8 && steps.length) {
+            explanationLines.forEach(line => { if (!steps.includes(line)) steps.push(line); });
+        } else {
+            steps = explanationLines;
+        }
+    }
+
+    if (!steps.length) {
+        if (topicNum === 9) {
+            steps = [
+                'Xác định các dữ kiện đã cho và điều bài toán yêu cầu tìm.',
+                'Chọn phép tính phù hợp với mối quan hệ giữa các dữ kiện.',
+                `Tính và đối chiếu với đáp án: ${answer}.`
+            ];
+        } else if (topicNum === 10) {
+            steps = [
+                'Đọc đúng dữ liệu hoặc tất cả khả năng trong hình/bảng.',
+                'Kiểm đếm hoặc phân loại theo đúng yêu cầu của câu hỏi.',
+                `Đối chiếu kết quả và chọn ${answer}.`
+            ];
+        } else if (topicNum === 11) {
+            steps = [
+                'Tìm điều kiện quan trọng nhất của bài toán.',
+                'Suy luận từng bước, tránh thử đáp án ngẫu nhiên.',
+                `Kiểm tra lại tất cả điều kiện: kết quả là ${answer}.`
+            ];
+        } else if (topicNum === 8) {
+            steps = [
+                'Quan sát các phần tử đứng cạnh nhau để tìm quy luật.',
+                `Áp dụng đúng quy luật vào vị trí còn thiếu để được ${answer}.`
+            ];
+        }
+    }
+
+    return { topicNum, rule, tip, steps, check };
+}
+
+function buildTopic811SolutionHtml_(q, placement = 'side') {
+    const data = buildTopic811SolutionData_(q);
+    if (!data) return '';
+    const side = placement === 'side';
+    const stepsHtml = data.steps.map((step, idx) => `
+        <div class="flex items-start gap-2 text-sm md:text-base font-black text-slate-700 leading-relaxed">
+            <span class="shrink-0 w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs">${idx + 1}</span>
+            <span>${escapeHtml(step)}</span>
+        </div>`).join('');
+    return `<div data-topic811-solution class="hidden ${side ? 'h-full' : 'mt-3'} w-full rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/95 to-cyan-50/80 p-3 md:p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <div class="text-lg md:text-xl font-black text-emerald-700">🌱 Cùng xem lời giải</div>
+            ${data.tip ? `<div class="rounded-xl border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-xs md:text-sm font-black text-amber-800">💡 ${escapeHtml(data.tip)}</div>` : ''}
+        </div>
+        ${data.rule ? `<div class="mb-3 rounded-xl border-2 border-violet-200 bg-white/90 px-3 py-2 text-sm md:text-base font-black text-violet-800 leading-snug"><span class="text-violet-500">Quy tắc:</span> ${escapeHtml(data.rule)}</div>` : ''}
+        <div class="rounded-xl border border-emerald-100 bg-white/85 px-3 py-3 space-y-2">${stepsHtml}</div>
+        ${data.check ? `<div class="mt-3 rounded-xl border-2 border-sky-200 bg-sky-50 px-3 py-2 text-sm md:text-base font-black text-sky-800 text-center leading-snug">✅ ${escapeHtml(data.check)}</div>` : ''}
+    </div>`;
+}
+
+function topic811SolutionPlaceholderHtml_() {
+    return `<div data-topic811-solution-placeholder class="h-full min-h-[180px] rounded-2xl border-2 border-emerald-100 bg-gradient-to-br from-emerald-50/55 to-cyan-50/45 px-4 py-4 flex flex-col items-center justify-center text-center">
+        <div class="text-3xl mb-2">🌱</div>
+        <div class="text-base md:text-lg font-black text-emerald-700">Lời giải sẽ hiện ở đây</div>
+        <div class="mt-1 text-xs md:text-sm font-bold text-slate-500">Bé tìm được đáp án đúng rồi mình cùng xem cách suy luận nhé!</div>
+    </div>`;
+}
+
+function revealTopic811Solution_(q) {
+    if (!isTopic811PracticeQuestion_(q)) return;
+    document.querySelectorAll('[data-topic811-solution-placeholder]').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('[data-topic811-solution]').forEach(el => el.classList.remove('hidden'));
+}
+
+
 function isUnknownNumberQuestion_(q) {
     const sub = String(q?.sub_topic || q?.sub_id || '').trim();
     return /^7\.[1-4]$/.test(sub);
@@ -3647,8 +4187,8 @@ function getUnknownNumberMeta_(q) {
 function buildUnknownSolutionHtml_(meta) {
     if (!meta) return '';
     const xRed = '<span class="text-rose-600">x</span>';
-    const line = (html, strong=false) => `<div class="${strong ? 'text-2xl md:text-3xl text-rose-700' : 'text-xl md:text-2xl text-slate-700'} font-black leading-relaxed">${html}</div>`;
-    const hint = (html) => `<div class="inline-flex items-center gap-2 rounded-2xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-base md:text-lg font-black text-amber-800">💡 ${html}</div>`;
+    const line = (html, strong=false) => `<div class="${strong ? 'text-xl md:text-2xl text-rose-700' : 'text-lg md:text-xl text-slate-700'} font-black leading-snug">${html}</div>`;
+    const hint = (html) => `<div class="inline-flex items-center gap-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-1.5 text-sm md:text-base font-black text-amber-800">💡 ${html}</div>`;
     const lines = [];
     let hintHtml = '';
     let ruleText = '';
@@ -3705,14 +4245,14 @@ function buildUnknownSolutionHtml_(meta) {
         lines.push(line(`${xRed} = <span class="text-rose-600">${meta.answer}</span>`, true));
     }
 
-    return `<div data-unknown-solution class="hidden mt-5 w-full rounded-3xl border-2 border-emerald-200 bg-gradient-to-r from-emerald-50/90 to-cyan-50/80 p-4 md:p-6 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-            <div class="text-xl md:text-2xl font-black text-emerald-700">🌱 Cùng xem lời giải</div>
+    return `<div data-unknown-solution class="hidden w-full h-full rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/90 to-cyan-50/80 p-3 md:p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <div class="text-lg md:text-xl font-black text-emerald-700">🌱 Cùng xem lời giải</div>
             ${hintHtml}
         </div>
-        ${ruleText ? `<div class="mb-4 rounded-2xl border-2 border-violet-200 bg-white/90 px-4 py-3 text-lg md:text-xl font-black text-violet-800 text-left"><span class="text-violet-500">Quy tắc:</span> ${ruleText}</div>` : ''}
-        <div class="rounded-2xl bg-white/75 border border-emerald-100 px-3 py-3 md:px-5 md:py-4 space-y-1.5 text-center">${lines.join('')}</div>
-        ${checkText ? `<div class="mt-4 rounded-2xl border-2 border-sky-200 bg-sky-50 px-4 py-3 text-base md:text-lg font-black text-sky-800 text-center">✅ ${checkText}</div>` : ''}
+        ${ruleText ? `<div class="mb-3 rounded-xl border-2 border-violet-200 bg-white/90 px-3 py-2 text-base md:text-lg font-black text-violet-800 text-left leading-snug"><span class="text-violet-500">Quy tắc:</span> ${ruleText}</div>` : ''}
+        <div class="rounded-xl bg-white/80 border border-emerald-100 px-3 py-2.5 md:px-4 md:py-3 space-y-1 text-center">${lines.join('')}</div>
+        ${checkText ? `<div class="mt-3 rounded-xl border-2 border-sky-200 bg-sky-50 px-3 py-2 text-sm md:text-base font-black text-sky-800 text-center leading-snug">✅ ${checkText}</div>` : ''}
     </div>`;
 }
 
@@ -3722,16 +4262,16 @@ function buildUnknownNumberPresentation_(q) {
     const esc = (v) => escapeHtml(String(v));
     const numberBox = (value) => {
         const unknown = String(value).toLowerCase() === 'x';
-        return `<div ${unknown ? 'data-unknown-slot' : ''} class="relative min-w-[76px] h-[68px] md:min-w-[92px] md:h-[82px] px-3 rounded-2xl border-3 ${unknown ? 'border-rose-300 bg-rose-50 text-rose-600' : 'border-violet-200 bg-white text-violet-800'} flex items-center justify-center text-3xl md:text-4xl font-black shadow-sm">${unknown ? '<span class="text-rose-600">x</span>' : esc(value)}</div>`;
+        return `<div ${unknown ? 'data-unknown-slot' : ''} class="relative min-w-[62px] h-[56px] md:min-w-[74px] md:h-[64px] px-2.5 rounded-xl border-3 ${unknown ? 'border-rose-300 bg-rose-50 text-rose-600' : 'border-violet-200 bg-white text-violet-800'} flex items-center justify-center text-2xl md:text-3xl font-black shadow-sm">${unknown ? '<span class="text-rose-600">x</span>' : esc(value)}</div>`;
     };
-    const op = (value) => `<span class="px-1 md:px-2 text-3xl md:text-4xl font-black text-slate-500">${esc(value)}</span>`;
+    const op = (value) => `<span class="px-0.5 md:px-1 text-2xl md:text-3xl font-black text-slate-500">${esc(value)}</span>`;
     const pieces = [];
     meta.operands.forEach((value, i) => {
         pieces.push(numberBox(value));
         if (i < meta.operators.length) pieces.push(op(meta.operators[i]));
     });
-    const visual = `<div class="w-full rounded-3xl border-2 border-violet-150 bg-gradient-to-br from-white via-violet-50/65 to-pink-50/55 px-3 py-5 md:px-5 md:py-6 shadow-sm">
-        <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3">${pieces.join('')}</div>
+    const visual = `<div class="w-full rounded-2xl border-2 border-violet-150 bg-gradient-to-br from-white via-violet-50/65 to-pink-50/55 px-3 py-3 md:px-4 md:py-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-center gap-1.5 md:gap-2">${pieces.join('')}</div>
     </div>`;
     return {
         layout: 'unknown_number',
@@ -3755,6 +4295,7 @@ function revealUnknownNumberFeedback_(q, fillAnswer = true) {
     }
     // Mục 7 là phần kiến thức khó: sau MỌI lần bé chọn đáp án đều mở lời giải
     // để bé hiểu quy tắc và cách biến đổi, không chỉ biết đúng/sai.
+    document.querySelectorAll('[data-unknown-solution-placeholder]').forEach((panel) => panel.classList.add('hidden'));
     document.querySelectorAll('[data-unknown-solution]').forEach((panel) => panel.classList.remove('hidden'));
 }
 
@@ -4207,14 +4748,16 @@ function loadQuestion() {
     // Mục 3 (Cộng - trừ) và Mục 4 (Nhân - chia) có đáp án ngắn,
     // nên dùng bố cục gọn: 4 đáp án trên một hàng ở desktop.
     const isCompactTopic34 = !isEvaluationMode && [3, 4].includes(Number(pendingTopicQuiz?.topicNum));
-    // Mục 8-9-10: tăng cỡ chữ và tô đỏ riêng các con số trong câu hỏi.
-    const isLargeTopic8910 = !isEvaluationMode && [8, 9, 10].includes(Number(pendingTopicQuiz?.topicNum));
+    // Mục 8-11: vẫn tô đỏ các con số trong câu hỏi, nhưng giảm cỡ chữ để cân bố cục đẹp hơn.
+    const isLargeTopic8910 = !isEvaluationMode && [8, 9, 10, 11].includes(Number(pendingTopicQuiz?.topicNum));
     const topic8910QuestionHtml = isLargeTopic8910 ? highlightQuestionNumbers_(q.question_text) : escapeHtml(q.question_text);
     const isOperationTerms = !isEvaluationMode && q.explore_type === 'operation_terms';
     const isCarryConcept = !isEvaluationMode && isCarryConceptQuestion_(q);
     const isCarryLearning = !isEvaluationMode && !!exploreMath?.isCarryLearning;
     const isMulDivVisual = !isEvaluationMode && !!exploreMath?.isMulDivVisual;
     const isOrderInteractive = isTopic2OrderInteractive_(q);
+    const activeExploreTopicNum = Number(pendingTopicQuiz?.topicNum);
+    const isTopic911ReasoningLayout = !isEvaluationMode && [9, 10, 11].includes(activeExploreTopicNum);
 
     if (isEvaluationMode) {
         document.getElementById('q-badge-index').textContent = `CÂU ${currentQIndex + 1} / ${activeQuestionsList.length}`;
@@ -4316,8 +4859,9 @@ function loadQuestion() {
         ${passageHtml}
         <div class="w-full max-w-6xl rounded-3xl border-2 border-amber-200 bg-gradient-to-br from-white via-amber-50/45 to-orange-50/40 shadow-sm p-3 md:p-4">
             <div class="grid grid-cols-1 md:grid-cols-[1.12fr_0.88fr] gap-3 md:gap-5 items-stretch">
-                <div class="min-w-0 flex items-center justify-center">
+                <div class="min-w-0 flex flex-col items-center justify-center">
                     ${exploreMath.visual || ''}
+                    ${buildTopic56SolutionHtml_(q)}
                 </div>
                 <div class="min-w-0 flex flex-col justify-center rounded-3xl border-2 border-orange-100 bg-white/90 px-4 py-4 md:px-5 md:py-5">
                     <div class="flex items-start justify-between gap-3 mb-4">
@@ -4340,8 +4884,9 @@ function loadQuestion() {
         ${passageHtml}
         <div class="w-full max-w-6xl rounded-3xl border-2 border-emerald-200 bg-gradient-to-br from-white via-emerald-50/45 to-cyan-50/45 shadow-sm p-3 md:p-4">
             <div class="grid grid-cols-1 md:grid-cols-[1.08fr_0.92fr] gap-3 md:gap-5 items-stretch">
-                <div class="min-w-0 flex items-center justify-center">
+                <div class="min-w-0 flex flex-col items-center justify-center">
                     ${exploreMath.visual || ''}
+                    ${buildTopic56SolutionHtml_(q)}
                 </div>
                 <div class="min-w-0 flex flex-col justify-center rounded-3xl border-2 border-purple-100 bg-white/85 px-4 py-4 md:px-5 md:py-5">
                     <div class="flex items-start justify-between gap-3 mb-4">
@@ -4357,34 +4902,43 @@ function loadQuestion() {
         });
         html += `</div></div></div></div>`;
     } else if (exploreMath?.layout === 'unknown_number') {
-        // Mục 7 - Tìm số chưa biết: câu hỏi lớn ở trên, biểu thức tách xuống hẳn bên dưới.
-        // Mỗi số nằm trong một ô riêng; khi đúng, ô x đổi thành đáp án và hiện cách giải.
+        // Mục 7 - Tìm số chưa biết: desktop/tablet dùng 2 cột để tiết kiệm chiều cao.
+        // Trái = lời giải; phải = câu hỏi + biểu thức + đáp án. Mobile tự xếp 1 cột.
         html = `
         ${mediaHtml}
         ${passageHtml}
-        <div class="w-full max-w-6xl rounded-3xl border-2 border-violet-200 bg-gradient-to-br from-white via-violet-50/40 to-pink-50/35 shadow-sm px-4 py-4 md:px-6 md:py-5">
-            <div class="flex items-start justify-center gap-3 md:gap-4">
-                <h3 class="text-2xl md:text-3xl lg:text-[32px] font-black leading-snug text-slate-900 text-center">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
-                <button onclick="speakCurrentQuestion()" class="shrink-0 w-11 h-11 md:w-12 md:h-12 bg-pink-50 hover:bg-pink-100 text-pink-700 border-2 border-pink-200 rounded-2xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
-                    <i class="fa-solid fa-volume-high text-pink-600 text-lg"></i>
-                </button>
-            </div>
+        <div class="w-full max-w-6xl rounded-3xl border-2 border-violet-200 bg-gradient-to-br from-white via-violet-50/40 to-pink-50/35 shadow-sm p-3 md:p-4">
+            <div class="grid grid-cols-1 md:grid-cols-[0.95fr_1.05fr] gap-3 md:gap-4 items-stretch">
+                <div class="min-w-0 order-2 md:order-1">
+                    <div data-unknown-solution-placeholder class="h-full min-h-[150px] rounded-2xl border-2 border-emerald-100 bg-gradient-to-br from-emerald-50/55 to-cyan-50/45 px-4 py-4 flex flex-col items-center justify-center text-center">
+                        <div class="text-3xl mb-2">🌱</div>
+                        <div class="text-base md:text-lg font-black text-emerald-700">Lời giải sẽ hiện ở đây</div>
+                        <div class="mt-1 text-xs md:text-sm font-bold text-slate-500">Bé chọn một đáp án để xem quy tắc và các bước giải.</div>
+                    </div>
+                    ${exploreMath.solutionHtml || ''}
+                </div>
 
-            <div class="mt-5 md:mt-6">
-                ${exploreMath.visual || ''}
-            </div>
+                <div class="min-w-0 order-1 md:order-2 rounded-2xl border-2 border-violet-100 bg-white/88 px-3 py-3 md:px-4 md:py-4 flex flex-col justify-center">
+                    <div class="flex items-start justify-between gap-3">
+                        <h3 class="text-xl md:text-2xl lg:text-[26px] font-black leading-snug text-slate-900 text-left">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
+                        <button onclick="speakCurrentQuestion()" class="shrink-0 w-10 h-10 md:w-11 md:h-11 bg-pink-50 hover:bg-pink-100 text-pink-700 border-2 border-pink-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
+                            <i class="fa-solid fa-volume-high text-pink-600"></i>
+                        </button>
+                    </div>
 
-            ${exploreMath.solutionHtml || ''}
+                    <div class="mt-3">
+                        ${exploreMath.visual || ''}
+                    </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-5 md:mt-6">`;
+                    <div class="grid grid-cols-2 gap-2.5 md:gap-3 mt-3">`;
         q.options.forEach((opt, idx) => {
             const formattedOpt = capitalizeFirstLetter(opt);
             const letter = String.fromCharCode(65 + idx);
-            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[72px] md:min-h-[78px] w-full px-4 py-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-2 border-pink-200 rounded-2xl font-black text-slate-900 text-center text-xl md:text-2xl transition-all flex items-center justify-center gap-2 shadow-xs pastel-btn">
-                <strong class="text-rose-600 text-lg md:text-xl">${letter}.</strong><span>${escapeHtml(formattedOpt)}</span><span class="option-icon text-pink-500 text-lg"></span>
+            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[58px] md:min-h-[62px] w-full px-3 py-2.5 bg-pink-50/40 hover:bg-pink-100/70 border-2 border-pink-200 rounded-xl font-black text-slate-900 text-center text-lg md:text-xl transition-all flex items-center justify-center gap-2 shadow-xs pastel-btn">
+                <strong class="text-rose-600 text-base md:text-lg">${letter}.</strong><span>${escapeHtml(formattedOpt)}</span><span class="option-icon text-pink-500 text-base md:text-lg"></span>
             </button>`;
         });
-        html += `</div></div>`;
+        html += `</div></div></div></div>`;
     } else if (exploreMath?.layout === 'pattern_split') {
         // Mục quy luật: minh họa trực quan bên trái, câu hỏi + đáp án bên phải.
         html = `
@@ -4392,12 +4946,13 @@ function loadQuestion() {
         ${passageHtml}
         <div class="w-full max-w-6xl rounded-3xl border-2 border-cyan-200 bg-gradient-to-br from-white via-cyan-50/45 to-indigo-50/45 shadow-sm p-3 md:p-4">
             <div class="grid grid-cols-1 md:grid-cols-[1.10fr_0.90fr] gap-3 md:gap-5 items-stretch">
-                <div class="min-w-0 flex items-center justify-center">
+                <div class="min-w-0 flex flex-col justify-center">
                     ${exploreMath.visual || ''}
+                    ${buildTopic811SolutionHtml_(q, 'below')}
                 </div>
                 <div class="min-w-0 flex flex-col justify-center rounded-3xl border-2 border-indigo-100 bg-white/88 px-4 py-4 md:px-5 md:py-5">
                     <div class="flex items-start justify-between gap-3 mb-4">
-                        <h3 class="text-lg md:text-xl lg:text-2xl font-black leading-snug text-indigo-800 text-left">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
+                        <h3 class="text-base md:text-lg lg:text-xl font-black leading-snug text-indigo-800 text-left">${escapeHtml(exploreMath.prompt || q.question_text)}</h3>
                         <button onclick="speakCurrentQuestion()" class="shrink-0 w-10 h-10 bg-cyan-50 hover:bg-cyan-100 text-cyan-700 border border-cyan-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
                             <i class="fa-solid fa-volume-high text-cyan-600"></i>
                         </button>
@@ -4405,7 +4960,35 @@ function loadQuestion() {
                     <div class="grid grid-cols-2 gap-2.5 md:gap-3">`;
         q.options.forEach((opt) => {
             const formattedOpt = capitalizeFirstLetter(opt);
-            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[64px] w-full px-3 py-3 bg-white hover:bg-cyan-50 border-2 border-cyan-200 rounded-2xl font-black text-slate-800 text-center text-base md:text-lg transition-all flex items-center justify-center shadow-xs pastel-btn"><span>${escapeHtml(formattedOpt)}</span><span class="option-icon text-fuchsia-500 text-base md:text-lg"></span></button>`;
+            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[60px] w-full px-3 py-2.5 bg-white hover:bg-cyan-50 border-2 border-cyan-200 rounded-2xl font-black text-slate-800 text-center text-sm md:text-base transition-all flex items-center justify-center shadow-xs pastel-btn"><span>${escapeHtml(formattedOpt)}</span><span class="option-icon text-fuchsia-500 text-sm md:text-base"></span></button>`;
+        });
+        html += `</div></div></div></div>`;
+    } else if (isTopic911ReasoningLayout) {
+        // Mục 9-11: giống Mục 7 trên tablet/laptop.
+        // Trái = lời giải sau khi làm đúng; phải = câu hỏi + đáp án. Mobile tự xếp 1 cột.
+        html = `
+        ${mediaHtml}
+        ${passageHtml}
+        <div class="w-full max-w-6xl rounded-3xl border-2 border-violet-200 bg-gradient-to-br from-white via-violet-50/35 to-pink-50/30 shadow-sm p-3 md:p-4">
+            <div class="grid grid-cols-1 md:grid-cols-[0.95fr_1.05fr] gap-3 md:gap-4 items-stretch">
+                <div class="min-w-0 order-2 md:order-1">
+                    ${topic811SolutionPlaceholderHtml_()}
+                    ${buildTopic811SolutionHtml_(q, 'side')}
+                </div>
+                <div class="min-w-0 order-1 md:order-2 rounded-2xl border-2 border-violet-100 bg-white/90 px-3 py-3 md:px-4 md:py-4 flex flex-col justify-center">
+                    <div class="flex items-start justify-between gap-3">
+                        <h3 class="text-lg md:text-xl lg:text-2xl font-black leading-snug text-slate-900 text-left">${highlightQuestionNumbers_(q.question_text)}</h3>
+                        <button onclick="speakCurrentQuestion()" class="shrink-0 w-10 h-10 md:w-11 md:h-11 bg-pink-50 hover:bg-pink-100 text-pink-700 border-2 border-pink-200 rounded-xl flex items-center justify-center pastel-btn shadow-xs" title="Nghe câu hỏi" aria-label="Nghe câu hỏi">
+                            <i class="fa-solid fa-volume-high text-pink-600"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 md:gap-3 mt-3">`;
+        q.options.forEach((opt, idx) => {
+            const formattedOpt = capitalizeFirstLetter(opt);
+            const letter = String.fromCharCode(65 + idx);
+            html += `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn min-h-[56px] md:min-h-[60px] w-full px-3 py-2.5 bg-pink-50/40 hover:bg-pink-100/70 border-2 border-pink-200 rounded-xl font-black text-slate-900 text-left text-sm md:text-base transition-all flex items-center gap-2 shadow-xs pastel-btn">
+                <strong class="shrink-0 text-rose-600 text-sm md:text-base">${letter}.</strong><span class="flex-1">${escapeHtml(formattedOpt)}</span><span class="option-icon text-pink-500 text-sm md:text-base"></span>
+            </button>`;
         });
         html += `</div></div></div></div>`;
     } else if (exploreMath?.layout === 'estimate_split') {
@@ -4443,13 +5026,13 @@ function loadQuestion() {
         ${findNumberSpeakerBtnHtml}
         ${exploreMath?.visual || ''}
         ${exploreMath?.hidePrompt ? '' : `<div class="flex flex-col items-center justify-center ${isLargeTopic8910 ? 'max-w-5xl' : 'max-w-3xl'} text-center px-2 mt-2 mb-0.5">
-            <h3 class="${isFindNumber ? 'text-base md:text-lg text-purple-700' : (exploreMath ? (isCompactTopic34 ? 'text-lg md:text-xl text-purple-700' : 'text-xl md:text-2xl lg:text-2xl text-purple-700') : (isLargeTopic8910 ? 'text-2xl md:text-3xl lg:text-[32px] text-slate-900' : 'text-sm md:text-base lg:text-lg text-slate-900'))} font-black leading-snug">
+            <h3 class="${isFindNumber ? 'text-base md:text-lg text-purple-700' : (exploreMath ? (isCompactTopic34 ? 'text-lg md:text-xl text-purple-700' : 'text-xl md:text-2xl lg:text-2xl text-purple-700') : (isLargeTopic8910 ? 'text-xl md:text-2xl lg:text-[28px] text-slate-900' : 'text-sm md:text-base lg:text-lg text-slate-900'))} font-black leading-snug">
                 ${exploreMath?.promptHtml || (isLargeTopic8910 ? topic8910QuestionHtml : escapeHtml(exploreMath?.prompt || q.question_text))}
             </h3>
             ${practiceSpeakerBtnHtml}
         </div>`}
         
-        <div class="w-full ${isCarryLearning ? 'max-w-2xl' : ((isCompactTopic34 || isLargeTopic8910) ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : ((isCompactTopic34 || isLargeTopic8910) ? 'grid-cols-2 md:grid-cols-4 gap-3 md:gap-3.5' : 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5'))} ${isCarryLearning ? 'mt-2' : (isLargeTopic8910 ? 'mt-3' : 'mt-1')}">
+        <div class="w-full ${isCarryLearning ? 'max-w-2xl' : ((isCompactTopic34 || isLargeTopic8910) ? 'max-w-5xl' : 'max-w-3xl')} grid ${isCarryLearning ? 'grid-cols-2 md:grid-cols-4 gap-2 shrink-0' : (isFindNumber ? 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5' : ((isCompactTopic34 || isLargeTopic8910) ? 'grid-cols-2 md:grid-cols-4 gap-3 md:gap-3.5' : 'grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5'))} ${isCarryLearning ? 'mt-2' : (isLargeTopic8910 ? 'mt-2.5' : 'mt-1')}">
     `;
 
     q.options.forEach((opt, idx) => {
@@ -4467,8 +5050,8 @@ function loadQuestion() {
                 </button>`;
         } else {
             html += `
-                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-1.5 md:py-2 min-h-[42px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : (isLargeTopic8910 ? 'p-4 md:p-5 min-h-[72px] bg-white hover:bg-pink-50 border-pink-200 font-black text-slate-900 text-center justify-center text-lg md:text-xl lg:text-2xl' : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base')} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
-                    <span>${exploreMath ? '' : `<strong class="text-pink-600 mr-2 ${isLargeTopic8910 ? 'text-lg md:text-xl' : 'text-base md:text-lg'}">${letter}.</strong>`} ${escapeHtml(formattedOpt)}</span>
+                <button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}')" class="option-btn w-full ${exploreMath ? (isNumberCompose ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isFindNumber ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isOperationTerms ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : (isCarryLearning ? 'px-3 py-1.5 md:py-2 min-h-[42px] bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-base md:text-lg' : (isCompactTopic34 ? 'p-3 md:p-3.5 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl' : 'p-3.5 md:p-4 bg-white hover:bg-purple-50 border-purple-200 font-black text-purple-800 text-center justify-center text-lg md:text-xl'))))) : (isLargeTopic8910 ? 'p-3.5 md:p-4 min-h-[64px] bg-white hover:bg-pink-50 border-pink-200 font-black text-slate-900 text-center justify-center text-base md:text-lg lg:text-xl' : 'p-3 md:p-3.5 bg-pink-50/40 hover:bg-pink-100/70 border-pink-200 font-extrabold text-gray-800 text-left justify-between text-sm md:text-base')} border-2 rounded-2xl transition-all flex items-center shadow-xs pastel-btn">
+                    <span>${exploreMath ? '' : `<strong class="text-pink-600 mr-2 ${isLargeTopic8910 ? 'text-base md:text-lg' : 'text-base md:text-lg'}">${letter}.</strong>`} ${escapeHtml(formattedOpt)}</span>
                     <span class="option-icon text-pink-500 text-base md:text-lg"></span>
                 </button>`;
         }
@@ -4575,6 +5158,8 @@ function restoreQuestionState(q) {
         if (completedAnswer === q.answer) {
             revealOperationTermsFeedback_(q);
             revealCarryConceptFeedback_(q);
+            revealTopic56Solution_(q);
+            revealTopic811Solution_(q);
         }
     }
 }
@@ -4706,6 +5291,8 @@ function checkAnswer(selectedOpt) {
         if (isNeighborBasic) revealNeighborRuleFeedback_(q);
         if (isMulDivVisual) revealMulDivFeedback_();
         if (isUnknownNumberQuestion_(q)) revealUnknownNumberFeedback_(q);
+        revealTopic56Solution_(q);
+        revealTopic811Solution_(q);
 
         playAudio('correct');
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
