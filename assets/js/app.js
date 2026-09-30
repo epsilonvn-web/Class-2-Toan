@@ -816,7 +816,7 @@ const MINIGAME_LIST = [
     { id: 'place-value-factory', title: '3. Nhà máy đổi chục', desc: 'Xây số bằng khối trăm, chục và đơn vị', icon: '🏭', ready: true },
     { id: 'equal-share-farm', title: '4. Nông trại chia đều', desc: 'Chia nhóm bằng nhau để hiểu nhân và chia', icon: '🥕', ready: true },
     { id: 'number-bridge', title: '5. Cây cầu số', desc: 'Ghép các đoạn cầu vừa khít bằng cộng và tách số', icon: '🌉', ready: true },
-    { id: 'delivery-robot', title: '6. Robot giao hàng', desc: 'Xếp lệnh, đếm bước và tìm đường giao hàng', icon: '🤖', ready: true },
+    { id: 'number-train', title: '6. Đường ray số', desc: 'Ghép ray đúng quãng đường để đưa tàu về ga', icon: '🚂', ready: true },
     { id: 'data-detective', title: '7. Thám tử dữ liệu', desc: 'Phân loại, kiểm đếm và sửa báo cáo sai', icon: '🕵️', ready: true },
     { id: 'shape-builder', title: '8. Shape Builder', desc: 'Ghép hình và khám phá hình học', icon: '📐', ready: true },
     { id: 'time-master', title: '9. Time Master', desc: 'Chinh phục đồng hồ và thời gian', icon: '🕐', ready: true },
@@ -835,7 +835,7 @@ const MINIGAME_PALETTES = [
 const GAME_SCRIPT_MAP = {
     'sudoku': 'assets/js/games/sudoku.js?v=20260930-wide-numpad-side', 'balance-scale': 'assets/js/games/balance-scale.js?v=20260930-interactive-v2',
     'place-value-factory': 'assets/js/games/place-value-factory.js?v=20260930-v1', 'equal-share-farm': 'assets/js/games/equal-share-farm.js?v=20260930-v1',
-    'number-bridge': 'assets/js/games/number-bridge.js?v=20260930-v1', 'delivery-robot': 'assets/js/games/delivery-robot.js?v=20260930-v1',
+    'number-bridge': 'assets/js/games/number-bridge.js?v=20260930-v1', 'number-train': 'assets/js/games/number-train.js?v=20260930-v1',
     'data-detective': 'assets/js/games/data-detective.js?v=20260930-v1', 'shape-builder': 'assets/js/games/shape-builder.js?v=20260930-interactive-v2',
     'time-master': 'assets/js/games/time-master.js?v=20260930-interactive-v2', 'little-shop': 'assets/js/games/little-shop.js?v=20260930-interactive-v2',
     'math-factory': 'assets/js/games/math-factory.js?v=20260930-interactive-v2', 'math-race': 'assets/js/games/math-race.js?v=20260930-interactive-v2'
@@ -843,7 +843,7 @@ const GAME_SCRIPT_MAP = {
 const GAME_START_FN_MAP = {
     'sudoku': 'startSudokuGame', 'balance-scale': 'startBalanceScaleGame',
     'place-value-factory': 'startPlaceValueFactoryGame', 'equal-share-farm': 'startEqualShareFarmGame',
-    'number-bridge': 'startNumberBridgeGame', 'delivery-robot': 'startDeliveryRobotGame',
+    'number-bridge': 'startNumberBridgeGame', 'number-train': 'startNumberTrainGame',
     'data-detective': 'startDataDetectiveGame', 'shape-builder': 'startShapeBuilderGame',
     'time-master': 'startTimeMasterGame', 'little-shop': 'startLittleShopGame',
     'math-factory': 'startMathFactoryGame', 'math-race': 'startMathRaceGame'
@@ -851,7 +851,7 @@ const GAME_START_FN_MAP = {
 const GAME_STOP_FN_MAP = {
     'sudoku': 'stopSudokuGame', 'balance-scale': 'stopBalanceScaleGame',
     'place-value-factory': 'stopPlaceValueFactoryGame', 'equal-share-farm': 'stopEqualShareFarmGame',
-    'number-bridge': 'stopNumberBridgeGame', 'delivery-robot': 'stopDeliveryRobotGame',
+    'number-bridge': 'stopNumberBridgeGame', 'number-train': 'stopNumberTrainGame',
     'data-detective': 'stopDataDetectiveGame', 'shape-builder': 'stopShapeBuilderGame',
     'time-master': 'stopTimeMasterGame', 'little-shop': 'stopLittleShopGame',
     'math-factory': 'stopMathFactoryGame', 'math-race': 'stopMathRaceGame'
