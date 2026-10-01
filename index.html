@@ -278,7 +278,7 @@
            Chi thay presentation/layout, giu nguyen engine va workflow.
            ========================================================= */
         body { background:#ffffff !important; }
-        #screen-dashboard { background:transparent !important; max-width:72rem !important; }
+        #screen-dashboard { background:transparent !important; width:100% !important; max-width:none !important; }
 
         .app-main-header{
             display:grid !important;
@@ -348,7 +348,7 @@
         #header-level2-title,#header-level3-title,#header-level4-title{font-size:12px!important;font-weight:900!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
         #header-level3-tab>span,#header-level4-tab>span{color:#c084fc!important;font-size:13px!important;}
 
-        #app-footer{width:100%;max-width:72rem;height:76px;min-height:76px;flex:0 0 76px;margin:10px auto 0;padding:0 14px;border-radius:0;background-image:url('footer-bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#1827f2;border:0;box-shadow:none;}
+        #app-footer{width:100%;max-width:none;height:76px;min-height:76px;flex:0 0 76px;margin:10px 0 0;padding:0 14px;border-radius:0;background-image:url('footer-bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#1827f2;border:0;box-shadow:none;}
         #app-footer .footer-title{font-size:17px;font-weight:900;line-height:1.35;text-shadow:0 1px 0 #fff;}
         #app-footer .footer-sub{font-size:13px;font-weight:800;line-height:1.35;color:#1827f2;text-shadow:0 1px 0 #fff;}
 
@@ -496,8 +496,8 @@
         /* TOAN 2 - MOBILE TINH CHINH 2026-09-23 */
         /* Footer 8:1, rong dung bang phan artwork banner ben trong dashboard */
         #app-footer {
-            width: calc(100% - 1rem) !important;
-            max-width: calc(72rem - 1rem) !important;
+            width: 100% !important;
+            max-width: none !important;
             aspect-ratio: 8 / 1 !important;
             height: auto !important;
             min-height: 0 !important;
@@ -545,8 +545,8 @@
             }
 
             #app-footer {
-                width: calc(100% - 0.5rem) !important;
-                max-width: calc(100% - 0.5rem) !important;
+                width: 100% !important;
+                max-width: none !important;
                 aspect-ratio: 8 / 1 !important;
                 height: auto !important;
                 min-height: 0 !important;
@@ -681,7 +681,7 @@
         </div>
 
         <!-- 2. KHUNG CHÍNH CHUẨN TỶ LỆ 16:9 / 16:10 -->
-        <div id="screen-dashboard" class="w-full hidden flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2" style="max-width: 72rem !important;">
+        <div id="screen-dashboard" class="w-full hidden flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2">
             
             <header class="app-main-header w-full">
                 <button id="btn-header-home" onclick="goHome()" title="Về trang chủ" class="flex items-center justify-center bg-white border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]">
