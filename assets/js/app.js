@@ -1821,7 +1821,13 @@ async function changeAdminAccountType(maHS, loaiTaiKhoan, selectEl) {
 
         if (!res?.ok) throw new Error(res?.error || 'Không cập nhật được tài khoản');
 
-        // Backend V6 trả account đã đọc-lại sau khi ghi. Chỉ tin trạng thái đã được server xác nhận.
+        // DATEKEY_V1 là giao thức ngày tài khoản không phụ thuộc locale của Google Sheet/browser.
+        // Nếu Web App vẫn đang chạy deployment cũ, dừng tại đây thay vì báo thành công với ngày sai.
+        if (res.accountDateProtocol !== 'DATEKEY_V1') {
+            throw new Error('Apps Script đang chạy bản cũ. Anh Deploy bản V8 rồi thử lại nhé.');
+        }
+
+        // Backend trả account đã đọc-lại sau khi ghi. Chỉ tin trạng thái đã được server xác nhận.
         const confirmed = res.account || {};
         const confirmedTierRaw = String(
             confirmed.loaiTaiKhoan ?? confirmed.LoaiTaiKhoan ?? res.loaiTaiKhoan ?? ''
@@ -1851,12 +1857,10 @@ async function changeAdminAccountType(maHS, loaiTaiKhoan, selectEl) {
         updateTierSelectStyle(selectEl);
 
         const tierLabel = requestedTier === 'trial' ? 'Trial' : (requestedTier === 'vip' ? 'VIP' : 'Regular');
-        const expiry = requestedTier === 'trial'
-            ? (confirmed.hanDungThu ?? res.hanDungThu ?? '')
-            : requestedTier === 'vip'
-                ? (confirmed.hanVIP ?? res.hanVIP ?? '')
-                : '';
-        showAppNotice(`Đã chuyển ${maHS} sang ${tierLabel}${expiry ? ` đến ${formatAdminAccountDate(expiry)}` : ''}.`);
+        const expiryDisplay = requestedTier === 'regular'
+            ? ''
+            : String(res.effectiveUntilDisplay || '').trim();
+        showAppNotice(`Đã chuyển ${maHS} sang ${tierLabel}${expiryDisplay ? ` đến ${expiryDisplay}` : ''}.`);
     } catch (err) {
         selectEl.value = previousTier;
         updateTierSelectStyle(selectEl);
