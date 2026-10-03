@@ -1668,12 +1668,12 @@ async function openAdminAccountManager() {
         modal.innerHTML = `
           <div class="w-full max-w-6xl max-h-[94vh] bg-white rounded-3xl border-2 border-fuchsia-100 shadow-2xl overflow-hidden flex flex-col">
             <div class="px-5 py-4 bg-fuchsia-50/70 border-b border-fuchsia-100 flex items-start justify-between gap-3">
-              <div><h3 class="text-lg font-black text-fuchsia-700">👥 Quản lý tài khoản <span id="admin-account-count" class="ml-1 px-2 py-1 rounded-full bg-white border border-fuchsia-200 text-xs">0 tài khoản</span></h3><p class="text-xs font-bold text-slate-500 mt-1">Chuyển hạng tài khoản Regular / Trial / VIP. Trial có hạn 1 tháng, VIP có hạn 1 năm.</p></div>
+              <div><h3 class="text-lg font-black text-fuchsia-700">👥 Quản lý tài khoản <span id="admin-account-count" class="ml-1 px-2 py-1 rounded-full bg-white border border-fuchsia-200 text-xs">0 tài khoản</span></h3><p class="text-xs font-bold text-slate-500 mt-1">Chuyển hạng tài khoản Regular / Trial / VIP. Trial có hạn 30 ngày kể từ ngày kích hoạt, VIP có hạn 1 năm.</p></div>
               <button onclick="closeAdminAccountManager()" class="w-8 h-8 rounded-xl bg-white border border-fuchsia-200 text-fuchsia-500"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 border-b border-slate-100"><input id="admin-account-search" oninput="filterAdminAccountRows()" placeholder="Tìm theo ID, họ tên, lớp hoặc loại tài khoản..." class="w-full px-4 py-2.5 rounded-xl border-2 border-fuchsia-100 focus:border-fuchsia-300 outline-none text-sm font-bold"></div>
             <div class="overflow-auto flex-1 p-3"><table class="w-full text-sm"><thead class="sticky top-0 bg-fuchsia-50 text-fuchsia-700"><tr><th class="p-3 text-left">Mã HS</th><th class="p-3 text-left">Họ tên</th><th class="p-3">Lớp</th><th class="p-3">Loại tài khoản</th><th class="p-3">Hạn dùng thử</th><th class="p-3">Hạn VIP</th></tr></thead><tbody id="admin-account-body"></tbody></table></div>
-            <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-3 text-[11px] font-bold text-slate-500"><span>Regular: miễn phí • Trial: Premium 1 tháng • VIP: Premium 1 năm.</span><button onclick="loadAdminAccounts()" class="px-4 py-2 rounded-xl bg-white border border-fuchsia-200 text-fuchsia-600 font-black">⟳ Làm mới</button></div>
+            <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-3 text-[11px] font-bold text-slate-500"><span>Regular: miễn phí • Trial: Premium 30 ngày • VIP: Premium 1 năm.</span><button onclick="loadAdminAccounts()" class="px-4 py-2 rounded-xl bg-white border border-fuchsia-200 text-fuchsia-600 font-black">⟳ Làm mới</button></div>
           </div>`;
         document.body.appendChild(modal);
     }
@@ -1727,6 +1727,26 @@ function getTierSelectClass(tier) {
     return 'border-slate-300 text-slate-600 bg-slate-50';
 }
 
+// Chuẩn hóa ngày tài khoản về dd/MM/yyyy. Hỗ trợ cả chuỗi dd/MM/yyyy cũ
+// và Date/ISO do Google Apps Script trả về sau khi đọc lại từ Google Sheet.
+function formatAdminAccountDate(value) {
+    if (value === null || value === undefined || value === '') return '—';
+    const raw = String(value).trim();
+    if (!raw) return '—';
+
+    const dmy = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})(?:\s|$)/);
+    if (dmy) return `${String(dmy[1]).padStart(2, '0')}/${String(dmy[2]).padStart(2, '0')}/${dmy[3]}`;
+
+    const ymd = raw.match(/^(\d{4})-(\d{2})-(\d{2})(?:T|\s|$)/);
+    if (ymd) return `${ymd[3]}/${ymd[2]}/${ymd[1]}`;
+
+    const d = new Date(value);
+    if (!Number.isNaN(d.getTime())) {
+        return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+    }
+    return raw;
+}
+
 function updateTierSelectStyle(selectEl) {
     if (!selectEl) return;
     selectEl.classList.remove('border-purple-300','text-purple-700','bg-purple-50','border-amber-300','text-amber-700','bg-amber-50','border-slate-300','text-slate-600','bg-slate-50');
@@ -1762,9 +1782,9 @@ function renderAdminAccounts(rows) {
         const lop = r.lop ?? r.Lop ?? '';
         const tierRaw = String(r.loaiTaiKhoan ?? r.LoaiTaiKhoan ?? 'regular').toLowerCase();
         const tier = ['regular','trial','vip'].includes(tierRaw) ? tierRaw : 'regular';
-        const trial = r.hanDungThu ?? r.HanDungThu ?? '—';
-        const vip = r.hanVIP ?? r.HanVIP ?? '—';
-        return `<tr class="border-b border-slate-100 admin-account-row" data-search="${escapeHtml(`${id} ${name} ${lop} ${tier}`.toLowerCase())}"><td class="p-3 font-black text-slate-700">${escapeHtml(id)}</td><td class="p-3 font-bold text-slate-700">${escapeHtml(name)}</td><td class="p-3 text-center font-bold">${escapeHtml(lop)}</td><td class="p-3 text-center"><select onchange="updateTierSelectStyle(this); changeAdminAccountType('${String(id).replace(/'/g,"\\'")}', this.value, this)" class="min-w-[102px] px-3 py-2 rounded-xl border-2 font-black text-center ${getTierSelectClass(tier)}"><option class="text-slate-600" value="regular" ${tier==='regular'?'selected':''}>Regular</option><option class="text-amber-700" value="trial" ${tier==='trial'?'selected':''}>Trial</option><option class="text-purple-700" value="vip" ${tier==='vip'?'selected':''}>VIP</option></select></td><td class="p-3 text-center font-bold text-slate-500">${escapeHtml(trial || '—')}</td><td class="p-3 text-center font-bold text-purple-600">${escapeHtml(vip || '—')}</td></tr>`;
+        const trial = formatAdminAccountDate(r.hanDungThu ?? r.HanDungThu ?? '');
+        const vip = formatAdminAccountDate(r.hanVIP ?? r.HanVIP ?? '');
+        return `<tr class="border-b border-slate-100 admin-account-row" data-search="${escapeHtml(`${id} ${name} ${lop} ${tier}`.toLowerCase())}"><td class="p-3 font-black text-slate-700">${escapeHtml(id)}</td><td class="p-3 font-bold text-slate-700">${escapeHtml(name)}</td><td class="p-3 text-center font-bold">${escapeHtml(lop)}</td><td class="p-3 text-center"><select onchange="updateTierSelectStyle(this); changeAdminAccountType('${String(id).replace(/'/g,"\\'")}', this.value, this)" class="min-w-[102px] px-3 py-2 rounded-xl border-2 font-black text-center ${getTierSelectClass(tier)}"><option class="text-slate-600" value="regular" ${tier==='regular'?'selected':''}>Regular</option><option class="text-amber-700" value="trial" ${tier==='trial'?'selected':''}>Trial</option><option class="text-purple-700" value="vip" ${tier==='vip'?'selected':''}>VIP</option></select></td><td class="p-3 text-center font-bold text-slate-500">${escapeHtml(trial)}</td><td class="p-3 text-center font-bold text-purple-600">${escapeHtml(vip)}</td></tr>`;
     }).join('') || '<tr><td colspan="6" class="p-6 text-center text-slate-400">Chưa có tài khoản học sinh.</td></tr>';
 }
 
@@ -1822,8 +1842,8 @@ async function changeAdminAccountType(maHS, loaiTaiKhoan, selectEl) {
         const tr = selectEl.closest('tr');
         if (tr) {
             const cells = tr.querySelectorAll('td');
-            if (cells[4]) cells[4].textContent = (confirmed.hanDungThu ?? res.hanDungThu ?? '') || '—';
-            if (cells[5]) cells[5].textContent = (confirmed.hanVIP ?? res.hanVIP ?? '') || '—';
+            if (cells[4]) cells[4].textContent = formatAdminAccountDate(confirmed.hanDungThu ?? res.hanDungThu ?? '');
+            if (cells[5]) cells[5].textContent = formatAdminAccountDate(confirmed.hanVIP ?? res.hanVIP ?? '');
             tr.dataset.search = `${maHS} ${cachedAccount?.hoTen ?? cachedAccount?.HoTen ?? ''} ${cachedAccount?.lop ?? cachedAccount?.Lop ?? ''} ${confirmedTier || requestedTier}`.toLowerCase();
         }
 
@@ -1836,7 +1856,7 @@ async function changeAdminAccountType(maHS, loaiTaiKhoan, selectEl) {
             : requestedTier === 'vip'
                 ? (confirmed.hanVIP ?? res.hanVIP ?? '')
                 : '';
-        showAppNotice(`Đã chuyển ${maHS} sang ${tierLabel}${expiry ? ` đến ${expiry}` : ''}.`);
+        showAppNotice(`Đã chuyển ${maHS} sang ${tierLabel}${expiry ? ` đến ${formatAdminAccountDate(expiry)}` : ''}.`);
     } catch (err) {
         selectEl.value = previousTier;
         updateTierSelectStyle(selectEl);
