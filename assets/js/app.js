@@ -1773,13 +1773,86 @@ function filterAdminAccountRows() {
     document.querySelectorAll('.admin-account-row').forEach(tr => tr.classList.toggle('hidden', q && !tr.dataset.search.includes(q)));
 }
 async function changeAdminAccountType(maHS, loaiTaiKhoan, selectEl) {
+    if (!selectEl || selectEl.dataset.busy === '1') return;
+
+    const requestedTier = String(loaiTaiKhoan || '').trim().toLowerCase();
+    if (!['regular', 'trial', 'vip'].includes(requestedTier)) {
+        showAppNotice('Loại tài khoản không hợp lệ.');
+        return;
+    }
+
+    // Lưu hạng cũ để có thể khôi phục giao diện nếu backend từ chối / mất mạng.
+    const cachedAccount = adminAccountCache.find(r =>
+        String(r.maHS ?? r.MaHS ?? '').trim().toUpperCase() === String(maHS || '').trim().toUpperCase()
+    );
+    const previousTierRaw = String(cachedAccount?.loaiTaiKhoan ?? cachedAccount?.LoaiTaiKhoan ?? 'regular').toLowerCase();
+    const previousTier = ['regular', 'trial', 'vip'].includes(previousTierRaw) ? previousTierRaw : 'regular';
+
+    selectEl.dataset.busy = '1';
     selectEl.disabled = true;
+    selectEl.classList.add('opacity-60', 'cursor-wait');
+
     try {
-        const res = await callAppsScript('adminSetAccountType', { token: currentUser?.token, maHS, loaiTaiKhoan });
+        const res = await callAppsScript('adminSetAccountType', {
+            token: currentUser?.token,
+            maHS,
+            loaiTaiKhoan: requestedTier
+        }, 45000);
+
         if (!res?.ok) throw new Error(res?.error || 'Không cập nhật được tài khoản');
+
+        // Backend V6 trả account đã đọc-lại sau khi ghi. Chỉ tin trạng thái đã được server xác nhận.
+        const confirmed = res.account || {};
+        const confirmedTierRaw = String(
+            confirmed.loaiTaiKhoan ?? confirmed.LoaiTaiKhoan ?? res.loaiTaiKhoan ?? ''
+        ).trim().toLowerCase();
+        const confirmedTier = ['regular', 'trial', 'vip'].includes(confirmedTierRaw) ? confirmedTierRaw : '';
+
+        if (confirmedTier && confirmedTier !== requestedTier) {
+            throw new Error('Máy chủ chưa xác nhận hạng tài khoản mới. Anh thử làm mới rồi đổi lại giúp em.');
+        }
+
+        // Cập nhật cache + đúng hàng hiện tại, tránh vừa ghi xong lại reload toàn bảng gây nhảy về dữ liệu cũ.
+        if (cachedAccount) {
+            cachedAccount.loaiTaiKhoan = confirmedTier || requestedTier;
+            cachedAccount.hanDungThu = confirmed.hanDungThu ?? res.hanDungThu ?? '';
+            cachedAccount.hanVIP = confirmed.hanVIP ?? res.hanVIP ?? '';
+        }
+
+        const tr = selectEl.closest('tr');
+        if (tr) {
+            const cells = tr.querySelectorAll('td');
+            if (cells[4]) cells[4].textContent = (confirmed.hanDungThu ?? res.hanDungThu ?? '') || '—';
+            if (cells[5]) cells[5].textContent = (confirmed.hanVIP ?? res.hanVIP ?? '') || '—';
+            tr.dataset.search = `${maHS} ${cachedAccount?.hoTen ?? cachedAccount?.HoTen ?? ''} ${cachedAccount?.lop ?? cachedAccount?.Lop ?? ''} ${confirmedTier || requestedTier}`.toLowerCase();
+        }
+
+        selectEl.value = confirmedTier || requestedTier;
+        updateTierSelectStyle(selectEl);
+
+        const tierLabel = requestedTier === 'trial' ? 'Trial' : (requestedTier === 'vip' ? 'VIP' : 'Regular');
+        const expiry = requestedTier === 'trial'
+            ? (confirmed.hanDungThu ?? res.hanDungThu ?? '')
+            : requestedTier === 'vip'
+                ? (confirmed.hanVIP ?? res.hanVIP ?? '')
+                : '';
+        showAppNotice(`Đã chuyển ${maHS} sang ${tierLabel}${expiry ? ` đến ${expiry}` : ''}.`);
+    } catch (err) {
+        selectEl.value = previousTier;
+        updateTierSelectStyle(selectEl);
+
+        let message = err?.message || 'Không cập nhật được tài khoản.';
+        if (message === 'REQUEST_TIMEOUT') message = 'Máy chủ phản hồi chậm. Chưa xác nhận được thay đổi, anh thử lại sau ít giây nhé.';
+        if (message === 'BACKEND_INVALID_RESPONSE') message = 'Apps Script đang trả phản hồi không hợp lệ. Anh kiểm tra lại bản deploy Web app mới nhất nhé.';
+        showAppNotice(message);
+
+        // Chỉ tải lại khi lỗi để đồng bộ chính xác trạng thái đang lưu trên server.
         await loadAdminAccounts();
-    } catch (err) { showAppNotice(err.message); await loadAdminAccounts(); }
-    finally { selectEl.disabled = false; }
+    } finally {
+        selectEl.dataset.busy = '0';
+        selectEl.disabled = false;
+        selectEl.classList.remove('opacity-60', 'cursor-wait');
+    }
 }
 
 function resetStars() {
