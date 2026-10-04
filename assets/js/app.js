@@ -645,7 +645,7 @@ function getExploreSubtopicDisplayLabel_(topicNum, index, rawLabel) {
     return `${major}.${minor}${label ? ` ${label}` : ''}`;
 }
 
-const DATA_VERSION = '20261004-topic34-75x2-v1';
+const DATA_VERSION = '20261004-topic34-75x2-v2';
 const TOPICS_DATA_FILES = [
     'assets/data/kho_hoc_toan_2_hk1.json',
     'assets/data/kho_hoc_toan_2_hk2.json'
@@ -2188,7 +2188,10 @@ function renderExploreSubtopics(topicNum, topicName, topicObj) {
         const style = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
         const displayTitle = beautifySubtopicName(groupLabels[subName]).replace(/^\s*\d+(?:\.\d+)?[.)]?\s*/, '').trim();
         const displayCode = `${Number(topicNum)}.${idx + 1}`;
-        const count = groupMap[subName].length;
+        const rawCount = groupMap[subName].length;
+        // UI 3.4 (raw sub_code 2.3) has TWO learning modes using the SAME 75-question pool:
+        // 3.4.1 guided + 3.4.2 practice. The outer card therefore displays 150 learning items.
+        const count = (Number(topicNum) === 3 && String(subName) === '2.3') ? rawCount * 2 : rawCount;
         const topic3PedagogyDesc = {
             '2.2': 'Cầu 10: tách số → về 10 → tính phần còn lại',
             '2.3': 'Đơn vị trước → nhớ/mượn 1 chục → chục sau'
@@ -2564,68 +2567,6 @@ function startCarryLearningMode_(mode) {
     startTopicQuiz(topicNum, `${topicName} - ${carryLearningLabel} - ${modeLabel}`, firstCycleQuestions, `${carryLearningSub}-${mode}`);
 }
 
-
-// Mục 3.4 nâng cao nhân/chia: tách thành 2 nhánh 75 câu nhưng vẫn giữ sub_code 3.4
-// để không làm vỡ roadmap/bài tập/logic cũ. Thẻ 3.4 bên ngoài tự đếm tổng = 150 câu.
-function renderMulDivAdvancedBranches_(parentLabel, pool) {
-    if (!pendingTopicQuiz) return;
-    const sourcePool = Array.isArray(pool) ? pool : [];
-    pendingTopicQuiz.mulDivAdvancedPool = sourcePool;
-    pendingTopicQuiz.mulDivAdvancedParentLabel = parentLabel || '3.4 Nâng cao bảng nhân/chia 2 và 5';
-
-    const branches = [
-        {
-            key: '3.4.1',
-            icon: '🧩',
-            title: '3.4.1 Tìm số & quan hệ phép tính',
-            desc: 'Điền số còn thiếu, liên hệ phép nhân – phép chia, so sánh và nhận ra phép tính tương đương.'
-        },
-        {
-            key: '3.4.2',
-            icon: '🧠',
-            title: '3.4.2 Suy luận & bài toán thực tế',
-            desc: 'Vận dụng bảng nhân/chia 2 và 5 vào tình huống thực tế và các bài suy luận nhiều bước.'
-        }
-    ];
-
-    const container = document.getElementById('view-dashboard-grid');
-    if (!container) return;
-    container.className = 'w-full grid grid-cols-1 sm:grid-cols-2 gap-2.5';
-    container.innerHTML = branches.map((item, idx) => {
-        const palette = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
-        const count = sourcePool.filter(q => String(q.explore_branch || '').trim() === item.key).length;
-        return `
-            <button onclick="selectMulDivAdvancedBranch_('${item.key}')" class="p-4 ${palette.card} border-2 rounded-2xl text-left shadow-sm pastel-btn min-h-[126px] flex flex-col justify-between ${count ? '' : 'opacity-50 cursor-not-allowed'}" ${count ? '' : 'disabled'}>
-                <div class="flex items-start justify-between gap-3">
-                    <span class="text-lg md:text-xl font-black leading-snug"><span class="mr-2">${item.icon}</span>${escapeHtml(item.title)}</span>
-                    <span class="text-xs font-extrabold ${palette.badge} px-2.5 py-0.5 rounded-full border shrink-0">${count} câu</span>
-                </div>
-                <span class="mt-2 text-xs md:text-sm font-bold text-slate-500 leading-snug">${escapeHtml(item.desc)}</span>
-            </button>`;
-    }).join('');
-
-    const { topicName, topicNum } = pendingTopicQuiz;
-    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '✖️', pendingTopicQuiz.mulDivAdvancedParentLabel);
-    switchAppView('view-dashboard-grid');
-}
-
-function selectMulDivAdvancedBranch_(branchKey) {
-    stopSpeaking();
-    if (!pendingTopicQuiz) return;
-    const sourcePool = pendingTopicQuiz.mulDivAdvancedPool || [];
-    const pool = sourcePool.filter(q => String(q.explore_branch || '').trim() === String(branchKey));
-    if (!pool.length) return showAppNotice('Mục này đang được cập nhật thêm câu hỏi nhé bé!');
-
-    const branchLabel = String(branchKey) === '3.4.2'
-        ? '3.4.2 Suy luận & bài toán thực tế'
-        : '3.4.1 Tìm số & quan hệ phép tính';
-    const { topicName, topicNum } = pendingTopicQuiz;
-    practiceCycleRawPool = [...pool];
-    const firstCycleQuestions = shuffleArray([...pool]);
-    updateNavTabs(topicName, TOPICS_CONFIG.find(t => t.id === topicNum)?.icon || '✖️', pendingTopicQuiz.mulDivAdvancedParentLabel, branchLabel);
-    startTopicQuiz(topicNum, `${topicName} - ${branchLabel}`, firstCycleQuestions, branchKey);
-}
-
 function selectSubtopic(idx) {
     stopSpeaking();
     if (!pendingTopicQuiz) return;
@@ -2641,10 +2582,6 @@ function selectSubtopic(idx) {
 
     if (Number(topicNum) === 3 && isCarryLearningSub_(subLabel)) {
         return renderCarryLearningModes_(subLabel, displayLabel, pool);
-    }
-
-    if (String(subLabel || '').trim() === '3.4') {
-        return renderMulDivAdvancedBranches_(displayLabel, pool);
     }
 
     const finalTitle = displayLabel ? `${topicName} - ${displayLabel}` : topicName;
